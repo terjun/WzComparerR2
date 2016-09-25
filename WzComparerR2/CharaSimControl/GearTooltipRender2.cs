@@ -1059,8 +1059,8 @@ namespace WzComparerR2.CharaSimControl
 
             int reqJob;
             Gear.Props.TryGetValue(GearPropType.reqJob, out reqJob);
-            int[] origin = new int[] { 9, 4, 42, 4, 78, 5, 124, 4, 165, 5, 200, 5 };
-            int[] origin2 = new int[] { 10, 6, 44, 6, 79, 6, 126, 6, 166, 6, 201, 6 };
+            int[] origin = new int[] { 15, 7, 60, 7, 93, 7, 137, 7, 171, 7, 204, 7 };
+            int[] origin2 = new int[] { 15, 7, 60, 7, 93, 7, 137, 7, 171, 7, 204, 7 };
             for (int i = 0; i <= 5; i++)
             {
                 bool enable;
