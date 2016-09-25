@@ -27,19 +27,21 @@ namespace WzComparerR2.CharaSimControl
             TBrushes["w"] = new TextureBrush(Resource.UIToolTip_img_Item_Frame2_w, WrapMode.Tile);
             TBrushes["nw"] = new TextureBrush(Resource.UIToolTip_img_Item_Frame2_nw, WrapMode.Clamp);
             TBrushes["c"] = new TextureBrush(Resource.UIToolTip_img_Item_Frame2_c, WrapMode.Tile);
-            SetFontFamily("宋体");
+            SetFontFamily("돋움");
         }
 
         public static readonly Dictionary<string, TextureBrush> TBrushes;
-        public static readonly Font ItemNameFont = new Font("宋体", 14f, FontStyle.Bold, GraphicsUnit.Pixel);
-        public static readonly Font ItemDetailFont = new Font("宋体", 12f, GraphicsUnit.Pixel);
-        public static readonly Font EpicGearDetailFont = new Font("宋体", 12f, FontStyle.Bold, GraphicsUnit.Pixel);
+        public static readonly Font ItemNameFont = new Font("돋움", 14f, FontStyle.Bold, GraphicsUnit.Pixel);
+        public static readonly Font ItemDetailFont = new Font("돋움", 12f, GraphicsUnit.Pixel);
+        public static readonly Font EquipDetailFont = new Font("돋움", 11f, GraphicsUnit.Pixel);
+        public static readonly Font EpicGearDetailFont = new Font("돋움", 11f, GraphicsUnit.Pixel);
         public static readonly Font TahomaFont = new Font("Tahoma", 12f, GraphicsUnit.Pixel);
-        public static readonly Font SetItemPropFont = new Font("宋体", 12f, GraphicsUnit.Pixel);
-        public static readonly Font ItemReqLevelFont = new Font("宋体", 11f, GraphicsUnit.Pixel);
+        public static readonly Font SetItemPropFont = new Font("돋움", 11f, GraphicsUnit.Pixel);
+        public static readonly Font ItemReqLevelFont = new Font("돋움", 11f, GraphicsUnit.Pixel);
 
         public static Font ItemNameFont2 { get; private set; }
         public static Font ItemDetailFont2 { get; private set; }
+        public static Font EquipDetailFont2 { get; private set; }
 
         public static void SetFontFamily(string fontName)
         {
@@ -56,6 +58,13 @@ namespace WzComparerR2.CharaSimControl
                 ItemDetailFont2 = null;
             }
             ItemDetailFont2 = new Font(fontName, 12f, GraphicsUnit.Pixel);
+
+            if (EquipDetailFont2 != null)
+            {
+                EquipDetailFont2.Dispose();
+                EquipDetailFont2 = null;
+            }
+            EquipDetailFont2 = new Font(fontName, 11f, GraphicsUnit.Pixel);
         }
 
         public static readonly Color GearBackColor = Color.FromArgb(204, 0, 51, 85);

@@ -2307,7 +2307,7 @@ namespace WzComparerR2
 
             if (item != null)
             {
-                GearGraphics.SetFontFamily(item.Text);
+                GearGraphics.SetFontFamily("돋움");
                 ConfigManager.Reload();
                 CharaSimConfig.Default.SelectedFontIndex = comboBoxItemLanguage.SelectedIndex;
                 ConfigManager.Save();

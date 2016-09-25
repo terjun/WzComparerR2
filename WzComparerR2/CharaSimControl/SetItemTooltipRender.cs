@@ -60,7 +60,7 @@ namespace WzComparerR2.CharaSimControl
             format.Alignment = StringAlignment.Center;
 
             picHeight = 10;
-            g.DrawString(this.SetItem.setItemName, GearGraphics.ItemDetailFont2, GearGraphics.GreenBrush2, 130, 10, format);
+            g.DrawString(this.SetItem.setItemName, GearGraphics.EquipDetailFont2, GearGraphics.GreenBrush2, 130, 10, format);
             picHeight += 25;
 
             format.Alignment = StringAlignment.Far;
@@ -87,7 +87,7 @@ namespace WzComparerR2.CharaSimControl
                                 itemName = sr.Name;
                                 if (itemID.Key / 10000 == 500)
                                 {
-                                    typeName = "宠物";
+                                    typeName = "펫";
                                 }
                                 else
                                 {
@@ -105,7 +105,7 @@ namespace WzComparerR2.CharaSimControl
                 }
 
                 itemName = itemName ?? string.Empty;
-                typeName = typeName ?? "装备";
+                typeName = typeName ?? "장비";
 
                 if (!Regex.IsMatch(typeName, @"^(\(.*\)|（.*）)$"))
                 {
@@ -113,8 +113,8 @@ namespace WzComparerR2.CharaSimControl
                 }
 
                 Brush brush = setItemPart.Value.Enabled ? Brushes.White : GearGraphics.GrayBrush2;
-                g.DrawString(itemName, GearGraphics.ItemDetailFont2, brush, 8, picHeight);
-                g.DrawString(typeName, GearGraphics.ItemDetailFont2, brush, 254, picHeight, format);
+                g.DrawString(itemName, GearGraphics.EquipDetailFont2, brush, 8, picHeight);
+                g.DrawString(typeName, GearGraphics.EquipDetailFont2, brush, 254, picHeight, format);
                 picHeight += 18;
             }
 
@@ -123,8 +123,8 @@ namespace WzComparerR2.CharaSimControl
             picHeight += 9;
             foreach (KeyValuePair<int, SetItemEffect> effect in this.SetItem.effects)
             {
-                g.DrawString(effect.Key + "套装效果", GearGraphics.ItemDetailFont, GearGraphics.GreenBrush2, 8, picHeight);
-                picHeight += 16;
+                g.DrawString(effect.Key + "세트효과", GearGraphics.EquipDetailFont, GearGraphics.GreenBrush2, 8, picHeight);
+                picHeight += 15;
                 Brush brush = effect.Value.Enabled ? Brushes.White : GearGraphics.GrayBrush2;
 
                 //T116 合并套装
@@ -136,8 +136,8 @@ namespace WzComparerR2.CharaSimControl
                         List<Potential> ops = (List<Potential>)prop.Value;
                         foreach (Potential p in ops)
                         {
-                            g.DrawString(p.ConvertSummary(), GearGraphics.ItemDetailFont2, brush, 8, picHeight);
-                            picHeight += 16;
+                            g.DrawString(p.ConvertSummary(), GearGraphics.EquipDetailFont2, brush, 8, picHeight);
+                            picHeight += 15;
                         }
                     }
                     else if (prop.Key == GearPropType.OptionToMob)
@@ -145,8 +145,8 @@ namespace WzComparerR2.CharaSimControl
                         List<SetItemOptionToMob> ops = (List<SetItemOptionToMob>)prop.Value;
                         foreach (SetItemOptionToMob p in ops)
                         {
-                            g.DrawString(p.ConvertSummary(), GearGraphics.ItemDetailFont2, brush, 8, picHeight);
-                            picHeight += 16;
+                            g.DrawString(p.ConvertSummary(), GearGraphics.EquipDetailFont2, brush, 8, picHeight);
+                            picHeight += 15;
                         }
                     }
                     else if (prop.Key == GearPropType.activeSkill)
@@ -160,16 +160,19 @@ namespace WzComparerR2.CharaSimControl
                                 sr = new StringResult();
                                 sr.Name = p.SkillID.ToString();
                             }
-                            string summary = "激活技能<" + sr.Name + "> Lv." + p.Level;
-                            g.DrawString(summary, GearGraphics.ItemDetailFont2, brush, 8, picHeight);
-                            picHeight += 16;
+                            string summary = "<" + sr.Name + "> 스킬 사용 가능";
+                            g.DrawString(summary, GearGraphics.EquipDetailFont2, brush, 8, picHeight);
+                            picHeight += 15;
                         }
                     }
                     else
                     {
-                        g.DrawString(ItemStringHelper.GetGearPropString(prop.Key, Convert.ToInt32(prop.Value)),
+                        if (ItemStringHelper.GetGearPropString(prop.Key, Convert.ToInt32(prop.Value)) != null)
+                        {
+                            g.DrawString(ItemStringHelper.GetGearPropString(prop.Key, Convert.ToInt32(prop.Value)),
                             GearGraphics.SetItemPropFont, brush, 8, picHeight);
-                        picHeight += 16;
+                            picHeight += 15;
+                        }
                     }
                 }
             }
