@@ -54,8 +54,9 @@ namespace WzComparerR2.CharaSim
         private CharaProp crit = null;
         private CharaProp move = null;
         private CharaProp jump = null;
-        private CharaProp critDamMax = null;
-        private CharaProp critDamMin = null;
+        //private CharaProp critDamMax = null;
+        //private CharaProp critDamMin = null;
+        private CharaProp critDam = null;
         private CharaProp mastery = null;
         private CharaProp damR = null;
         private CharaProp bossDamR = null;
@@ -270,22 +271,30 @@ namespace WzComparerR2.CharaSim
             get { return jump; }
         }
         
-        /// <summary>
+        /*/// <summary>
         /// 获取角色的暴击最大伤害，这是一个隐藏的百分比属性。
         /// </summary>
         public CharaProp CriticalDamageMax
         {
             get { return critDamMax; }
-        }
+        }*/
         
-        /// <summary>
+        /*/// <summary>
         /// 获取角色的暴击最小伤害，这是一个隐藏的百分比属性。
         /// </summary>
         public CharaProp CriticalDamageMin
         {
             get { return critDamMin; }
+        }*/
+
+        /// <summary>
+        /// 获取角色的暴击伤害，这是一个隐藏的百分比属性。
+        /// </summary>
+        public CharaProp CriticalDamage
+        {
+            get { return critDam; }
         }
-        
+
         /// <summary>
         /// 获取角色的攻击熟练度，这是一个隐藏的百分比属性。
         /// </summary>

@@ -23,8 +23,9 @@ namespace WzComparerR2.CharaSim
             this.status.CriticalRate.BaseVal = 5;
             this.status.MoveSpeed.BaseVal = 100;
             this.status.Jump.BaseVal = 100;
-            this.status.CriticalDamageMax.BaseVal = 150;
-            this.status.CriticalDamageMin.BaseVal = 120;
+            //this.status.CriticalDamageMax.BaseVal = 150;
+            //this.status.CriticalDamageMin.BaseVal = 120;
+            this.status.CriticalDamage.BaseVal = 100;
 
             this.itemSlots = new ItemBase[5][];
             for (int i = 0; i < this.itemSlots.Length; i++)
@@ -100,8 +101,9 @@ namespace WzComparerR2.CharaSim
             status.MoveSpeed.ResetAdd();
             status.Jump.ResetAdd();
             status.CriticalRate.ResetAdd();
-            status.CriticalDamageMax.ResetAdd();
-            status.CriticalDamageMin.ResetAdd();
+            //status.CriticalDamageMax.ResetAdd();
+            //status.CriticalDamageMin.ResetAdd();
+            status.CriticalDamage.ResetAdd();
             status.DamageRate.ResetAll();
 
             //foreach (Buff buff in buffs)
@@ -233,8 +235,9 @@ namespace WzComparerR2.CharaSim
                 case GearPropType.incSpeed: status.MoveSpeed.GearAdd += value; break;
                 case GearPropType.incJump: status.Jump.GearAdd += value; break;
 
-                case GearPropType.incCriticaldamageMax: status.CriticalDamageMax.GearAdd += value; break;
-                case GearPropType.incCriticaldamageMin: status.CriticalDamageMin.GearAdd += value; break;
+                //case GearPropType.incCriticaldamageMax: status.CriticalDamageMax.GearAdd += value; break;
+                //case GearPropType.incCriticaldamageMin: status.CriticalDamageMin.GearAdd += value; break;
+                case GearPropType.incCriticaldamage: status.CriticalDamage.GearAdd += value; break;
             }
         }
 

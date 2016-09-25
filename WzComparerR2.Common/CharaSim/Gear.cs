@@ -70,6 +70,10 @@ namespace WzComparerR2.CharaSim
             {
                 return 0;
             }
+            if (this.Cash)
+            {
+                return 0;
+            }
 
             int reqLevel;
             this.Props.TryGetValue(GearPropType.reqLevel, out reqLevel);

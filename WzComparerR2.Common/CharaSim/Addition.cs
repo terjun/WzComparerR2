@@ -43,7 +43,7 @@ namespace WzComparerR2.CharaSim
                         }
                         if (this.Props.TryGetValue("damage", out val))
                         {
-                            sb.AppendFormat("크리티컬 최소 데미지 {0}%증가\r\n", val);
+                            sb.AppendFormat("크리티컬 데미지 {0}%증가\r\n", val);
                         }
                         if (sb.Length > 2)
                         {
@@ -110,7 +110,7 @@ namespace WzComparerR2.CharaSim
                 case AdditionType.skill:
                     switch (Convert.ToInt32(this.Props["id"]))
                     {
-                        //case 90000000: return "有一定几率增加必杀效果";
+                        //case 90000000: return "확률적으로 즉사 효과 추가";
                         case 90001001: return "확률적으로 기절 효과 추가";
                         case 90001002: return "확률적으로 슬로우 효과 추가";
                         case 90001003: return "확률적으로 독 효과 추가";
@@ -156,7 +156,7 @@ namespace WzComparerR2.CharaSim
                     }
                     return "직업이 " + string.Join(" 또는 ", reqJobs) + "일 때";
                 case GearPropType.reqLevel:
-                    return this.ConValue[0] + "级以上时";
+                    return "레벨 " + this.ConValue[0] + " 이상일 때";
                 case GearPropType.reqCraft:
                     int lastExp;
                     return "손재주 경험치가 " + this.ConValue[0] + "(" + getPersonalityLevel(this.ConValue[0], out lastExp) + "레벨 " + lastExp + "점) 이상일 때";
@@ -166,7 +166,7 @@ namespace WzComparerR2.CharaSim
                     {
                         weekdays[i] = GetWeekDayString(this.ConValue[i]);
                     }
-                    return string.Join(", ", weekdays) + "时";
+                    return string.Join(", ", weekdays) + "일 때";
                 default:
                     return null;
             }
@@ -222,13 +222,13 @@ namespace WzComparerR2.CharaSim
         {
             switch (weekDay)
             {
-                case 0: return "周日";
-                case 1: return "周一";
-                case 2: return "周二";
-                case 3: return "周三";
-                case 4: return "周四";
-                case 5: return "周五";
-                case 6: return "周六";
+                case 0: return "일요일";
+                case 1: return "월요일";
+                case 2: return "화요일";
+                case 3: return "수요일";
+                case 4: return "목요일";
+                case 5: return "금요일";
+                case 6: return "토요일";
                 default: return "周" + weekDay; //这怎么可能...
             }
         }
