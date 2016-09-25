@@ -25,12 +25,12 @@ namespace WzComparerR2.CharaSim
             {
                 case AdditionType.boss:
                     sb = new StringBuilder();
-                    sb.Append("攻击BOSS时，");
+                    sb.Append("보스 공격 시, ");
                     {
                         string v1;
                         if (this.Props.TryGetValue("prob", out v1))
-                            sb.Append("有" + v1 + "的几率");
-                        sb.Append("造成" + Props["damage"] + "%的额外伤害");
+                            sb.Append(v1 + "%의 확률로 ");
+                        sb.Append(Props["damage"] + "%의 데미지 추가");
                     }
                     return sb.ToString();
                 case AdditionType.critical:
@@ -39,11 +39,11 @@ namespace WzComparerR2.CharaSim
                         string val;
                         if (this.Props.TryGetValue("prob", out val))
                         {
-                            sb.AppendFormat("爆击概率提高{0}%\r\n", val);
+                            sb.AppendFormat("크리티컬 확률 {0}%\r\n", val);
                         }
                         if (this.Props.TryGetValue("damage", out val))
                         {
-                            sb.AppendFormat("爆击最小伤害增加{0}%\r\n", val);
+                            sb.AppendFormat("크리티컬 최소 데미지 {0}%증가\r\n", val);
                         }
                         if (sb.Length > 2)
                         {
@@ -59,11 +59,11 @@ namespace WzComparerR2.CharaSim
                             switch (v1[0])
                             {
                                 case 'I': elem = "冰"; break;
-                                case 'F': elem = "火"; break;
+                                case 'F': elem = "불"; break;
                                 case 'L': elem = "雷"; break;
                                 default: elem = v1[0].ToString(); break;
                             }
-                            return elem + "属性效果强化" + v1.Substring(1) + "%";
+                            return elem + "속성 효과 " + v1.Substring(1) + "% 강화";
                         }
                     }
                     break;
@@ -79,14 +79,14 @@ namespace WzComparerR2.CharaSim
                     }
                     return sb.ToString();
                 case AdditionType.mobcategory:
-                    return "攻击" + ItemStringHelper.GetMobCategoryName(Convert.ToInt32(this.Props["category"])) + "怪物时，造成" + this.Props["damage"] + "%额外伤害";
+                    return ItemStringHelper.GetMobCategoryName(Convert.ToInt32(this.Props["category"])) + " 몬스터 공격 시, " + this.Props["damage"] + "% 추가 데미지";
                 case AdditionType.mobdie:
                     sb = new StringBuilder();
                     {
                         string v1;
                         if (this.Props.TryGetValue("hpIncOnMobDie", out v1))
                         {
-                            sb.AppendLine("怪物死亡时 HP恢复" + v1);
+                            sb.AppendLine("몬스터 사망 시 HP " + v1 + " 회복");
                         }
                         if (this.Props.TryGetValue("hpIncRatioOnMobDie", out v1))
                         {
@@ -103,20 +103,20 @@ namespace WzComparerR2.CharaSim
                     }
                     if (sb.Length > 0)
                     {
-                        sb.Append("在部分地区功能可能会受到限制。");
+                        sb.Append("일부 지역에서는 기능이 제한될 수 있다.");
                         return sb.ToString();
                     }
                     break;
                 case AdditionType.skill:
                     switch (Convert.ToInt32(this.Props["id"]))
                     {
-                        case 90000000: return "有一定几率增加必杀效果";
-                        case 90001001: return "有一定几率增加眩晕效果";
-                        case 90001002: return "有一定几率增加缓速术效果";
-                        case 90001003: return "有一定几率增加毒效果";
-                        case 90001004: return "有一定几率增加暗黑效果";
-                        case 90001005: return "有一定几率增加封印效果";
-                        case 90001006: return "有一定几率增加结冰效果";
+                        //case 90000000: return "有一定几率增加必杀效果";
+                        case 90001001: return "확률적으로 기절 효과 추가";
+                        case 90001002: return "확률적으로 슬로우 효과 추가";
+                        case 90001003: return "확률적으로 독 효과 추가";
+                        case 90001004: return "확률적으로 암흑 효과 추가";
+                        case 90001005: return "확률적으로 봉인 효과 추가";
+                        case 90001006: return "확률적으로 결빙 효과 추가";
                     }
                     break;
                 case AdditionType.statinc:
@@ -154,12 +154,12 @@ namespace WzComparerR2.CharaSim
                     {
                         reqJobs[i] = ItemStringHelper.GetJobName(this.ConValue[i]) ?? this.ConValue[i].ToString();
                     }
-                    return "职业为" + string.Join(" 或者 ", reqJobs) + "时";
+                    return "직업이 " + string.Join(" 또는 ", reqJobs) + "일 때";
                 case GearPropType.reqLevel:
                     return this.ConValue[0] + "级以上时";
                 case GearPropType.reqCraft:
                     int lastExp;
-                    return "手技经验值在" + this.ConValue[0] + "(" + getPersonalityLevel(this.ConValue[0], out lastExp) + "级" + lastExp + "点)以上时";
+                    return "손재주 경험치가 " + this.ConValue[0] + "(" + getPersonalityLevel(this.ConValue[0], out lastExp) + "레벨 " + lastExp + "점) 이상일 때";
                 case GearPropType.reqWeekDay:
                     string[] weekdays = new string[this.ConValue.Count];
                     for (int i = 0; i < this.ConValue.Count; i++)

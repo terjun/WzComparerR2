@@ -215,13 +215,16 @@ namespace WzComparerR2.CharaSimControl
         /// <param Name="x">起始的x坐标。</param>
         /// <param Name="X1">每行终止的x坐标。</param>
         /// <param Name="y">起始行的y坐标。</param>
-        public static void DrawString(Graphics g, string s, Font font, int x, int x1, ref int y, int height)
+        public static void DrawString(Graphics g, string s, Font font, int x, int x1, ref int y, int height, Brush defaultBrush = null)
         {
             if (s == null)
                 return;
             StringFormat fmt = StringFormat.GenericTypographic;
             Stack<Brush> brushStack = new Stack<Brush>();
-            brushStack.Push(Brushes.White);
+            if (defaultBrush != null)
+                brushStack.Push(defaultBrush);
+            else
+                brushStack.Push(Brushes.White);
             Brush brush = brushStack.Peek();
             StringBuilder sb = new StringBuilder();
             int curX = x;

@@ -16,14 +16,14 @@ namespace WzComparerR2.CharaSim
             switch (category)
             {
                 case 0: return "无形态";
-                case 1: return "动物型";
-                case 2: return "植物型";
+                case 1: return "동물형";
+                case 2: return "식물형";
                 case 3: return "鱼类型";
-                case 4: return "爬虫类型";
-                case 5: return "精灵型";
-                case 6: return "恶魔型";
-                case 7: return "不死型";
-                case 8: return "无机物型";
+                case 4: return "파충류형";
+                case 5: return "정령형";
+                case 6: return "악마형";
+                case 7: return "불사형";
+                case 8: return "무형";
                 default: return null;
             }
         }
@@ -91,10 +91,10 @@ namespace WzComparerR2.CharaSim
                 case GearPropType.incCraft: return "손재주 : " + sign + value;
                 case GearPropType.damR:
                 case GearPropType.incDAMr: return "데미지 : " + sign + value + "%";
-                case GearPropType.incCr: return "爆击率 : " + sign + value + "%";
-                case GearPropType.knockback: return "直接攻击时" + value + "的比率发生后退现象。";
-                case GearPropType.incPVPDamage: return "大乱斗时追加攻击力" + sign + value;
-                case GearPropType.incPQEXPr: return "组队任务经验值增加" + value + "%";
+                case GearPropType.incCr: return "크리티컬 확률 : " + sign + value + "%";
+                case GearPropType.knockback: return "직접 타격시 " + value + "%의 확률로 넉백";
+                case GearPropType.incPVPDamage: return "대난투 시 추가 공격력" + sign + " " + value;
+                case GearPropType.incPQEXPr: return "파티퀘스트 경험치 " + value + "% 증가";
                 case GearPropType.incBDR:
                 case GearPropType.bdR: return "보스 공격시 데미지 +" + value + "%";
                 case GearPropType.incIMDR:
@@ -107,7 +107,7 @@ namespace WzComparerR2.CharaSim
                 case GearPropType.equipTradeBlock: return value == 0 ? null : "장착시 교환 불가";
                 case GearPropType.accountSharable: return value == 0 ? null : "계정 내 이동만 가능";
                 case GearPropType.onlyEquip: return value == 0 ? null : "고유 장착 아이템";
-                case GearPropType.notExtend: return value == 0 ? null : "无法延长有效时间。";
+                case GearPropType.notExtend: return value == 0 ? null : "유효기간 연장 불가";
                 case GearPropType.tradeAvailable:
                     switch (value)
                     {
@@ -118,7 +118,7 @@ namespace WzComparerR2.CharaSim
                 case GearPropType.accountShareTag:
                     switch (value)
                     {
-                        case 1: return " #c使用物品共享牌，可以在同一账号内的角色间移动1次。#";
+                        case 1: return " #c쉐어 네임 텍을 사용하면 1회 같은 계정 내 캐릭터로 이동할 수 있습니다.#";
                         default: return null;
                     }
                 case GearPropType.noPotential: return value == 0 ? null : "잠재능력 설정 불가";
@@ -147,12 +147,12 @@ namespace WzComparerR2.CharaSim
         {
             switch (rank)
             {
-                case GearGrade.C: return "C级(一般物品)";
-                case GearGrade.B: return "B级(高级物品)";
-                case GearGrade.A: return "A级(史诗物品)";
-                case GearGrade.S: return "S级(传说物品)";
-                case GearGrade.SS: return "SS级(传说极品)";
-                case GearGrade.Special: return "(特殊物品)";
+                //case GearGrade.C: return "C级(一般物品)";
+                case GearGrade.B: return "(레어 아이템)";
+                case GearGrade.A: return "(에픽 아이템)";
+                case GearGrade.S: return "(유니크 아이템)";
+                case GearGrade.SS: return "(레전드리 아이템)";
+                case GearGrade.Special: return "(스페셜 아이템)";
                 default: return null;
             }
         }
@@ -232,15 +232,15 @@ namespace WzComparerR2.CharaSim
                 case GearType.handCannon: return "핸드캐논";
                 case GearType.badge: return "뱃지";
                 case GearType.emblem: return "엠블렘";
-                case GearType.soulShield: return "灵魂盾";
-                case GearType.demonShield: return "精气盾";
+                case GearType.soulShield: return "소울실드";
+                case GearType.demonShield: return "포스실드";
                 case GearType.totem: return "图腾";
                 case GearType.petEquip: return "펫장비";
                 case GearType.taming:
                 case GearType.taming2:
                 case GearType.taming3: 
-                case GearType.tamingChair: return "骑兽";
-                case GearType.saddle: return "鞍子";
+                case GearType.tamingChair: return "라이딩";
+                case GearType.saddle: return "안장";
                 case GearType.katana: return "武士刀";
                 case GearType.fan: return "折扇";
                 case GearType.swordZB: return "대검";
@@ -302,9 +302,7 @@ namespace WzComparerR2.CharaSim
                 case 8: return "느림";
                 case 9: return "매우느림";
                 default:
-                    if (attackSpeed < 2) return "吃屎一样快";
-                    else if (attackSpeed > 9) return "吃屎一样慢";
-                    else return attackSpeed.ToString();
+                    return attackSpeed.ToString();
             }
         }
 
@@ -414,7 +412,7 @@ namespace WzComparerR2.CharaSim
                 case ItemPropType.accountSharable:
                     return GetGearPropString(GearPropType.accountSharable, value);
                 case ItemPropType.quest:
-                    return value == 0 ? null : "任务道具";
+                    return value == 0 ? null : "퀘스트 아이템";
                 case ItemPropType.pquest:
                     return value == 0 ? null : "组队任务道具";
                 default:
@@ -438,138 +436,142 @@ namespace WzComparerR2.CharaSim
         {
             switch (jobCode)
             {
-                case 0: return "新手";
-                case 100: return "战士";
-                case 110: return "剑客";
-                case 111: return "勇士";
-                case 112: return "英雄";
-                case 120: return "准骑士";
-                case 121: return "骑士";
-                case 122: return "圣骑士";
-                case 130: return "枪战士";
-                case 131: return "龙骑士";
-                case 132: return "黑骑士";
-                case 200: return "魔法师";
-                case 210: return "法师（火，毒）";
-                case 211: return "巫师（火，毒）";
-                case 212: return "魔导师（火，毒）";
-                case 220: return "法师（冰，雷）";
-                case 221: return "巫师（冰，雷）";
-                case 222: return "魔导师（冰，雷）";
-                case 230: return "牧师";
-                case 231: return "祭司";
-                case 232: return "主教";
-                case 300: return "弓箭手";
-                case 310: return "猎人";
-                case 311: return "射手";
-                case 312: return "神射手";
-                case 320: return "弩弓手";
-                case 321: return "游侠";
-                case 322: return "箭神";
-                case 400: return "飞侠";
-                case 410: return "刺客";
-                case 411: return "无影人";
-                case 412: return "隐士";
-                case 420: return "侠客";
-                case 421: return "独行客";
-                case 422: return "侠盗";
-                case 430: return "见习刀客";
-                case 431: return "双刀客";
-                case 432: return "双刀侠";
-                case 433: return "血刀";
-                case 434: return "暗影双刀";
-                case 500: return "海盗";
-                case 501: return "海盗(炮手)";
-                case 510: return "拳手";
-                case 511: return "斗士";
-                case 512: return "冲锋队长";
-                case 520: return "火枪手";
-                case 521: return "大副";
-                case 522: return "船长";
-                case 530: return "火炮手";
-                case 531: return "毁灭炮手";
-                case 532: return "神炮王";
+                case 0: return "초보자";
+                case 100: return "검사";
+                case 110: return "파이터";
+                case 111: return "크루세이더";
+                case 112: return "히어로";
+                case 120: return "페이지";
+                case 121: return "나이트";
+                case 122: return "팔라딘";
+                case 130: return "스피어맨";
+                case 131: return "드래곤나이트";
+                case 132: return "다크나이트";
+                case 200: return "매지션";
+                case 210: return "위자드(불,독)";
+                case 211: return "메이지(불,독)";
+                case 212: return "아크메이지(불,독)";
+                case 220: return "위자드(썬,콜)";
+                case 221: return "메이지(썬,콜)";
+                case 222: return "아크메이지(썬,콜)";
+                case 230: return "클레릭";
+                case 231: return "프리스트";
+                case 232: return "비숍";
+                case 300: return "아쳐";
+                case 310: return "헌터";
+                case 311: return "레인저";
+                case 312: return "보우마스터";
+                case 320: return "사수";
+                case 321: return "저격수";
+                case 322: return "신궁";
+                case 400: return "로그";
+                case 410: return "어쌔신";
+                case 411: return "허밋";
+                case 412: return "나이트로드";
+                case 420: return "시프";
+                case 421: return "시프마스터";
+                case 422: return "섀도어";
+                case 430: return "세미듀어러";
+                case 431: return "듀어러";
+                case 432: return "듀얼마스터";
+                case 433: return "슬래셔";
+                case 434: return "듀얼블레이더";
+                case 500: return "해적";
+                case 501: return "해적";
+                case 510: return "인파이터";
+                case 511: return "버커니어";
+                case 512: return "바이퍼";
+                case 520: return "건슬링거";
+                case 521: return "발키리";
+                case 522: return "캡틴";
+                case 530: return "캐논슈터";
+                case 531: return "캐논블래스터";
+                case 532: return "캐논마스터";
 
-                case 1000: return "初心者";
+                case 1000: return "노블레스";
                 case 1100:
                 case 1110:
                 case 1111:
-                case 1112: return "魂骑士";
+                case 1112: return "소울마스터";
                 case 1200:
                 case 1210:
                 case 1211:
-                case 1212: return "炎术士";
+                case 1212: return "플레임위자드";
                 case 1300:
                 case 1310:
                 case 1311:
-                case 1312: return "风灵使者";
+                case 1312: return "윈드브레이커";
                 case 1400:
                 case 1410:
                 case 1411:
-                case 1412: return "夜行者";
+                case 1412: return "나이트워커";
                 case 1500:
                 case 1510:
                 case 1511:
-                case 1512: return "奇袭者";
+                case 1512: return "스트라이커";
 
-                case 2000: return "战童";
-                case 2001: return "小不点";
-                case 2002: return "双弩精灵";
-                case 2100: return "战神(1次)";
-                case 2110: return "战神(2次)";
-                case 2111: return "战神(3次)";
-                case 2112: return "战神(4次)";
-                case 2200: return "龙神(1次)";
-                case 2210: return "龙神(2次)";
-                case 2211: return "龙神(3次)";
-                case 2212: return "龙神(4次)";
-                case 2213: return "龙神(5次)";
-                case 2214: return "龙神(6次)";
-                case 2215: return "龙神(7次)";
-                case 2216: return "龙神(8次)";
-                case 2217: return "龙神(9次)";
-                case 2218: return "龙神(10次)";
-                case 2300: return "双弩精灵(1次)";
-                case 2310: return "双弩精灵(2次)";
-                case 2311: return "双弩精灵(3次)";
-                case 2312: return "双弩精灵(4次)";
-                case 2400: return "幻影(1次)";
-                case 2410: return "幻影(2次)";
-                case 2411: return "幻影(3次)";
-                case 2412: return "幻影(4次)";
-                case 2700: return "夜光(1次)";
-                case 2710: return "夜光(2次)";
-                case 2711: return "夜光(3次)";
-                case 2712: return "夜光(4次)";
+                case 2000: return "레전드";
+                case 2001: return "에반";
+                case 2002: return "메르세데스";
+                case 2100: return "아란(1차)";
+                case 2110: return "아란(2차)";
+                case 2111: return "아란(3차)";
+                case 2112: return "아란(4차)";
+                case 2200: return "에반(1차)";
+                case 2210: return "에반(2차)";
+                case 2211: return "에반(3차)";
+                case 2212: return "에반(4차)";
+                case 2213: return "에반(5차)";
+                case 2214: return "에반(6차)";
+                case 2215: return "에반(7차)";
+                case 2216: return "에반(8차)";
+                case 2217: return "에반(9차)";
+                case 2218: return "에반(10차)";
+                case 2300: return "메르세데스(1차)";
+                case 2310: return "메르세데스(2차)";
+                case 2311: return "메르세데스(3차)";
+                case 2312: return "메르세데스(4차)";
+                case 2400: return "팬텀(1차)";
+                case 2410: return "팬텀(2차)";
+                case 2411: return "팬텀(3차)";
+                case 2412: return "팬텀(4차)";
+                case 2500: return "은월(1차)";
+                case 2510: return "은월(2차)";
+                case 2511: return "은월(3차)";
+                case 2512: return "은월(4차)";
+                case 2700: return "루미너스(1차)";
+                case 2710: return "루미너스(2차)";
+                case 2711: return "루미너스(3차)";
+                case 2712: return "루미너스(4차)";
 
 
-                case 3000: return "预备兵";
-                case 3001:
-                case 3100: return "恶魔猎手(1次)";
-                case 3110: return "恶魔猎手(2次)";
-                case 3111: return "恶魔猎手(3次)";
-                case 3112: return "恶魔猎手(4次)";
-                case 3101: return "恶魔复仇者(1次)";
-                case 3120: return "恶魔复仇者(2次)";
-                case 3121: return "恶魔复仇者(3次)";
-                case 3122: return "恶魔复仇者(4次)";
-                case 3200: return "唤灵斗师(1次)";
-                case 3210: return "唤灵斗师(2次)";
-                case 3211: return "唤灵斗师(3次)";
-                case 3212: return "唤灵斗师(4次)";
-                case 3300: return "豹弩游侠(1次)";
-                case 3310: return "豹弩游侠(2次)";
-                case 3311: return "豹弩游侠(3次)";
-                case 3312: return "豹弩游侠(4次)";
-                case 3500: return "机械师(1次)";
-                case 3510: return "机械师(2次)";
-                case 3511: return "机械师(3次)";
-                case 3512: return "机械师(4次)";
-                case 3002: return "尖兵";
-                case 3600: return "尖兵(1次)";
-                case 3610: return "尖兵(2次)";
-                case 3611: return "尖兵(3次)";
-                case 3612: return "尖兵(4次)";
+                case 3000: return "시티즌";
+                case 3001: return "초보자";
+                case 3100: return "데몬슬레이어(1차)";
+                case 3110: return "데몬슬레이어(2차)";
+                case 3111: return "데몬슬레이어(3차)";
+                case 3112: return "데몬슬레이어(4차)";
+                case 3101: return "데몬어벤져(1차)";
+                case 3120: return "데몬어벤져(2차)";
+                case 3121: return "데몬어벤져(3차)";
+                case 3122: return "데몬어벤져(4차)";
+                case 3200: return "배틀메이지(1차)";
+                case 3210: return "배틀메이지(2차)";
+                case 3211: return "배틀메이지(3차)";
+                case 3212: return "배틀메이지(4차)";
+                case 3300: return "와일드헌터(1차)";
+                case 3310: return "와일드헌터(2차)";
+                case 3311: return "와일드헌터(3차)";
+                case 3312: return "와일드헌터(4차)";
+                case 3500: return "메카닉(1차)";
+                case 3510: return "메카닉(2차)";
+                case 3511: return "메카닉(3차)";
+                case 3512: return "메카닉(4차)";
+                case 3002: return "제논";
+                case 3600: return "제논(1차)";
+                case 3610: return "제논(2차)";
+                case 3611: return "제논(3차)";
+                case 3612: return "제논(4차)";
 
                 case 4001: return "剑豪";
                 case 4002: return "阴阳师";
@@ -583,29 +585,29 @@ namespace WzComparerR2.CharaSim
                 case 4212: return "阴阳师(4次)";
 
 
-                case 5000: return "无名少年";
-                case 5100: return "米哈尔(1次)";
-                case 5110: return "米哈尔(2次)";
-                case 5111: return "米哈尔(3次)";
-                case 5112: return "米哈尔(4次)";
+                case 5000: return "미하일";
+                case 5100: return "미하일(1차)";
+                case 5110: return "미하일(2차)";
+                case 5111: return "미하일(3차)";
+                case 5112: return "미하일(4차)";
 
 
-                case 6000: return "狂龙战士";
-                case 6100: return "狂龙战士(1次)";
-                case 6110: return "狂龙战士(2次)";
-                case 6111: return "狂龙战士(3次)";
-                case 6112: return "狂龙战士(4次)";
-                case 6001: return "爆莉萌天使";
-                case 6500: return "爆莉萌天使(1次)";
-                case 6510: return "爆莉萌天使(2次)";
-                case 6511: return "爆莉萌天使(3次)";
-                case 6512: return "爆莉萌天使(4次)";
+                case 6000: return "카이저";
+                case 6100: return "카이저(1차)";
+                case 6110: return "카이저(2차)";
+                case 6111: return "카이저(3차)";
+                case 6112: return "카이저(4차)";
+                case 6001: return "엔젤릭버스터";
+                case 6500: return "엔젤릭버스터(1차)";
+                case 6510: return "엔젤릭버스터(2차)";
+                case 6511: return "엔젤릭버스터(3차)";
+                case 6512: return "엔젤릭버스터(4차)";
 
-                case 10000: return "神之子";
-                case 10100: return "神之子(1次)";
-                case 10110: return "神之子(2次)";
-                case 10111: return "神之子(3次)";
-                case 10112: return "神之子(4次)";
+                case 10000: return "제로";
+                case 10100: return "제로(1차)";
+                case 10110: return "제로(2차)";
+                case 10111: return "제로(3차)";
+                case 10112: return "제로(4차)";
 
                 case 11000: return "林之灵";
                 case 11200: return "林之灵(1次)";
@@ -613,11 +615,11 @@ namespace WzComparerR2.CharaSim
                 case 11211: return "林之灵(3次)";
                 case 11212: return "林之灵(4次)";
 
-                case 14000: return "超能力者";
-                case 14200: return "超能力者(1次)";
-                case 14210: return "超能力者(2次)";
-                case 14211: return "超能力者(3次)";
-                case 14212: return "超能力者(4次)";
+                case 14000: return "키네시스";
+                case 14200: return "키네시스(1차)";
+                case 14210: return "키네시스(2차)";
+                case 14211: return "키네시스(3차)";
+                case 14212: return "키네시스(4차)";
             }
             return null;
         }

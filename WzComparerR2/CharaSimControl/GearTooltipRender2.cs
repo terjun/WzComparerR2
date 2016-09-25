@@ -189,7 +189,7 @@ namespace WzComparerR2.CharaSimControl
             format = (StringFormat)StringFormat.GenericTypographic.Clone();
             format.Alignment = StringAlignment.Center;
 
-            /*//装备rank
+            //装备rank
             string rankStr = null;
             if (Gear.GetBooleanValue(GearPropType.specialGrade))
             {
@@ -203,7 +203,7 @@ namespace WzComparerR2.CharaSimControl
             {
                 g.DrawString(rankStr, GearGraphics.EquipDetailFont, Brushes.White, 130, picH, format);
                 picH += 15;
-            }*/
+            }
 
             //额外属性
             string attrStr = GetGearAttributeString();
@@ -447,8 +447,7 @@ namespace WzComparerR2.CharaSimControl
                 }
                 if (Gear.Props.TryGetValue(GearPropType.superiorEqp, out value) && value > 0) //极真
                 {
-                    g.DrawString(ItemStringHelper.GetGearPropString(GearPropType.superiorEqp, value), GearGraphics.EquipDetailFont, GearGraphics.GreenBrush2, 11, picH);
-                    picH += 15;
+                    GearGraphics.DrawString(g, ItemStringHelper.GetGearPropString(GearPropType.superiorEqp, value), GearGraphics.EquipDetailFont, 13, 247, ref picH, 15, GearGraphics.GreenBrush2);
                 }
 
                 int maxStar = Gear.GetMaxStar();
@@ -534,7 +533,7 @@ namespace WzComparerR2.CharaSimControl
                     picH += 8;
                 }
                 g.DrawImage(GetAdditionalOptionIcon(Gear.Grade), 8, picH - 1);
-                g.DrawString("潜在属性", GearGraphics.EquipDetailFont, GearGraphics.GetPotentialTextBrush(Gear.Grade), 26, picH);
+                g.DrawString("잠재옵션", GearGraphics.EquipDetailFont, GearGraphics.GetPotentialTextBrush(Gear.Grade), 26, picH);
                 picH += 17;
                 foreach (Potential potential in Gear.Options)
                 {
@@ -574,7 +573,7 @@ namespace WzComparerR2.CharaSimControl
                     picH += 8;
                 }
                 g.DrawImage(GetAdditionalOptionIcon(Gear.AdditionGrade), 8, picH - 1);
-                g.DrawString("附加潜能", GearGraphics.EquipDetailFont, GearGraphics.GetPotentialTextBrush(Gear.AdditionGrade), 26, picH);
+                g.DrawString("에디셔널 잠재옵션", GearGraphics.EquipDetailFont, GearGraphics.GetPotentialTextBrush(Gear.AdditionGrade), 26, picH);
                 picH += 17;
 
                 foreach (Potential potential in Gear.AdditionalOptions)
