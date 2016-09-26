@@ -102,7 +102,7 @@ namespace WzComparerR2.CharaSimControl
             }
             if (Skill.ReqLevel > 0)
             {
-                GearGraphics.DrawString(g, "#c[要求等级：" + Skill.ReqLevel.ToString() + "]#", GearGraphics.ItemDetailFont2, 92, 272, ref picH, 16);
+                GearGraphics.DrawString(g, "#c[요구레벨 : " + Skill.ReqLevel.ToString() + "]#", GearGraphics.ItemDetailFont2, 92, 272, ref picH, 16);
             }
             if (Skill.ReqAmount > 0)
             {
@@ -187,7 +187,7 @@ namespace WzComparerR2.CharaSimControl
                     {
                         skillName = kv.Key.ToString();
                     }
-                    skillDescEx.Add("#c[필요 스킬] " + skillName + ": " + kv.Value + " 이상#");
+                    skillDescEx.Add("#c[필요스킬] " + skillName + ": " + kv.Value + " 이상#");
                 }
             }
 
