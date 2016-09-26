@@ -58,9 +58,9 @@ namespace WzComparerR2.CharaSim
                         {
                             switch (v1[0])
                             {
-                                case 'I': elem = "冰"; break;
+                                case 'I': elem = "얼음"; break;
                                 case 'F': elem = "불"; break;
-                                case 'L': elem = "雷"; break;
+                                case 'L': elem = "전기"; break;
                                 default: elem = v1[0].ToString(); break;
                             }
                             return elem + "속성 효과 " + v1.Substring(1) + "% 강화";
@@ -90,15 +90,15 @@ namespace WzComparerR2.CharaSim
                         }
                         if (this.Props.TryGetValue("hpIncRatioOnMobDie", out v1))
                         {
-                            sb.AppendLine("怪物死亡时 有" + Props["hpRatioProp"] + "%的几率 伤害的" + v1 + "%转换为HP (但不超过最大HP的10%。)");
+                            sb.AppendLine("몬스터 사망 시 " + Props["hpRatioProp"] + "%의 확률로 데미지의 " + v1 + "%의 HP 회복 ( 단 최대 HP의 10%를 넘을 수 없다. )");
                         }
                         if (this.Props.TryGetValue("mpIncOnMobDie", out v1))
                         {
-                            sb.AppendLine("怪物死亡时 HP恢复" + v1);
+                            sb.AppendLine("몬스터 사망 시 MP " + v1 + " 회복");
                         }
                         if (this.Props.TryGetValue("mpIncRatioOnMobDie", out v1))
                         {
-                            sb.AppendLine("怪物死亡时 有" + Props["mpRatioProp"] + "%的几率 伤害的" + v1 + "%转换为MP (但不超过最大MP的10%。)");
+                            sb.AppendLine("몬스터 사망 시 " + Props["hpRatioProp"] + "%의 확률로 데미지의 " + v1 + "%의 MP 회복 ( 단 최대 MP의 10%를 넘을 수 없다. )");
                         }
                     }
                     if (sb.Length > 0)
