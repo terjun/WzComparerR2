@@ -46,6 +46,9 @@ namespace WzComparerR2
         {
             this.advTree1.Nodes.Clear();
 
+            this.advTree1.Nodes.Add(new Node(string.Format("[KMS] 장비 미리보기, 최종 번역 <font color=\"#808080\">박현민</font>")));
+            this.advTree1.Nodes.Add(new Node(string.Format("[KMS] 문자열 번역 <font color=\"#808080\">슈린냥</font>")));
+
             if (PluginBase.PluginManager.LoadedPlugins.Count > 0)
             {
                 foreach (var plugin in PluginBase.PluginManager.LoadedPlugins)

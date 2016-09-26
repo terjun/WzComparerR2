@@ -54,7 +54,7 @@
             this.labelX1.Name = "labelX1";
             this.labelX1.Size = new System.Drawing.Size(68, 18);
             this.labelX1.TabIndex = 0;
-            this.labelX1.Text = "程序版本：";
+            this.labelX1.Text = "프로그램：";
             // 
             // labelX2
             // 
@@ -67,7 +67,7 @@
             this.labelX2.Name = "labelX2";
             this.labelX2.Size = new System.Drawing.Size(68, 18);
             this.labelX2.TabIndex = 1;
-            this.labelX2.Text = "文件版本：";
+            this.labelX2.Text = "파일버전：";
             // 
             // labelX3
             // 
@@ -80,7 +80,7 @@
             this.labelX3.Name = "labelX3";
             this.labelX3.Size = new System.Drawing.Size(68, 18);
             this.labelX3.TabIndex = 2;
-            this.labelX3.Text = "版权所有：";
+            this.labelX3.Text = "제작자：";
             // 
             // lblAsmVer
             // 
@@ -133,7 +133,7 @@
             this.buttonX1.Size = new System.Drawing.Size(75, 23);
             this.buttonX1.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
             this.buttonX1.TabIndex = 8;
-            this.buttonX1.Text = "关掉我";
+            this.buttonX1.Text = "확인";
             // 
             // advTree1
             // 
@@ -191,7 +191,7 @@
             this.labelX4.Name = "labelX4";
             this.labelX4.Size = new System.Drawing.Size(62, 18);
             this.labelX4.TabIndex = 10;
-            this.labelX4.Text = "CLR版本：";
+            this.labelX4.Text = ".NET 버전：";
             // 
             // FrmAbout
             // 
@@ -217,7 +217,7 @@
             this.MinimizeBox = false;
             this.Name = "FrmAbout";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "关于";
+            this.Text = "정보";
             ((System.ComponentModel.ISupportInitialize)(this.advTree1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
