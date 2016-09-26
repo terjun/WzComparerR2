@@ -18,7 +18,7 @@ namespace WzComparerR2.CharaSim
                 case 0: return "无形态";
                 case 1: return "동물형";
                 case 2: return "식물형";
-                case 3: return "鱼类型";
+                case 3: return "어류형";
                 case 4: return "파충류형";
                 case 5: return "정령형";
                 case 6: return "악마형";
@@ -132,7 +132,7 @@ namespace WzComparerR2.CharaSim
                 case GearPropType.incMHPr_incMMPr: return "최대 HP / 최대 MP : " + sign + value + "%";
                 case GearPropType.incPAD_incMAD: return "공격력 / 마력 : " + sign + value;
                 case GearPropType.incPDD_incMDD: return "방어력 : " + sign + value;
-                //case GearPropType.incACC_incEVA: return "命中值/回避值：" + sign + value;
+                //case GearPropType.incACC_incEVA: return "명중치 / 회피치：" + sign + value;
 
                 case GearPropType.incARC: return "ARC : " + sign + value;
                 default: return null;
@@ -229,7 +229,7 @@ namespace WzComparerR2.CharaSim
                 case GearType.pickaxe: return "채광 도구";
                 case GearType.shovel: return "약초채집 도구";
                 case GearType.pocket: return "포켓 아이템";
-                case GearType.dualBow: return "듀얼보우건";
+                case GearType.dualBow: return "듀얼 보우건";
                 case GearType.handCannon: return "핸드캐논";
                 case GearType.badge: return "뱃지";
                 case GearType.emblem: return "엠블렘";
@@ -393,9 +393,9 @@ namespace WzComparerR2.CharaSim
         {
             switch (specJob)
             {
-                case 61: return "狂龙战士可以装备";
-                case 65: return "爆莉萌天使可以装备";
-                case 36: return "尖兵可以装备";
+                case 61: return "카이저 착용 가능";
+                case 65: return "엔젤릭 버스터 착용 가능";
+                case 36: return "제논 착용 가능";
                 default: return null;
             }
         }
@@ -415,7 +415,7 @@ namespace WzComparerR2.CharaSim
                 case ItemPropType.quest:
                     return value == 0 ? null : "퀘스트 아이템";
                 case ItemPropType.pquest:
-                    return value == 0 ? null : "组队任务道具";
+                    return value == 0 ? null : "파티 퀘스트 아이템";
                 default:
                     return null;
             }
@@ -547,7 +547,7 @@ namespace WzComparerR2.CharaSim
 
 
                 case 3000: return "시티즌";
-                case 3001: return "초보자";
+                case 3001: return "데몬";
                 case 3100: return "데몬슬레이어(1차)";
                 case 3110: return "데몬슬레이어(2차)";
                 case 3111: return "데몬슬레이어(3차)";
@@ -573,6 +573,10 @@ namespace WzComparerR2.CharaSim
                 case 3610: return "제논(2차)";
                 case 3611: return "제논(3차)";
                 case 3612: return "제논(4차)";
+                case 3700: return "블래스터";
+                case 3710: return "블래스터(2차)";
+                case 3711: return "블래스터(3차)";
+                case 3712: return "블래스터(4차)";
 
                 case 4001: return "剑豪";
                 case 4002: return "阴阳师";

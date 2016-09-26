@@ -450,17 +450,25 @@ namespace WzComparerR2.CharaSimControl
                     GearGraphics.DrawString(g, ItemStringHelper.GetGearPropString(GearPropType.superiorEqp, value), GearGraphics.EquipDetailFont, 13, 247, ref picH, 15, GearGraphics.GreenBrush2);
                 }
 
-                int maxStar = Gear.GetMaxStar();
-
-                if (Gear.Star > 0) //星星
+                if (Gear.Props.TryGetValue(GearPropType.exceptUpgrade, out value) && value != 0)
                 {
-                    g.DrawString(Gear.Star + "성 강화 적용 (최대 " + maxStar + "성)", GearGraphics.EquipDetailFont, Brushes.White, 11, picH);
+                    g.DrawString("강화불가", GearGraphics.EquipDetailFont, Brushes.White, 11, picH);
                     picH += 15;
                 }
                 else
                 {
-                    g.DrawString("최대 " + maxStar + "성까지 강화 가능", GearGraphics.EquipDetailFont, Brushes.White, 11, picH);
-                    picH += 15;
+                    int maxStar = Gear.GetMaxStar();
+
+                    if (Gear.Star > 0) //星星
+                    {
+                        g.DrawString(Gear.Star + "성 강화 적용 (최대 " + maxStar + "성)", GearGraphics.EquipDetailFont, Brushes.White, 11, picH);
+                        picH += 15;
+                    }
+                    else
+                    {
+                        g.DrawString("최대 " + maxStar + "성까지 강화 가능", GearGraphics.EquipDetailFont, Brushes.White, 11, picH);
+                        picH += 15;
+                    }
                 }
                 /*picH += 2;
                 g.DrawString("金锤子已提高的强化次数", GearGraphics.EquipDetailFont, GearGraphics.GoldHammerBrush, 11, picH);
@@ -758,18 +766,18 @@ namespace WzComparerR2.CharaSimControl
                 {
                     var info = Gear.Levels[i];
                     g.DrawString("레벨 " + info.Level + (i >= Gear.Levels.Count - 1 ? "(MAX)" : null), GearGraphics.EquipDetailFont, GearGraphics.GreenBrush2, 10, picHeight);
-                    picHeight += 16;
+                    picHeight += 15;
                     foreach (var kv in info.BonusProps)
                     {
                         GearLevelInfo.Range range = kv.Value;
 
                         string propString = ItemStringHelper.GetGearPropString(kv.Key, kv.Value.Min);
-                        if (range.Max != range.Min)
-                        {
-                            propString += " ~ " + kv.Value.Max + (propString.EndsWith("%") ? "%" : null);
-                        }
                         if (propString != null)
                         {
+                            if (range.Max != range.Min)
+                            {
+                                propString += " ~ " + kv.Value.Max + (propString.EndsWith("%") ? "%" : null);
+                            }
                             g.DrawString(propString, GearGraphics.EquipDetailFont, Brushes.White, 10, picHeight);
                             picHeight += 15;
                         }

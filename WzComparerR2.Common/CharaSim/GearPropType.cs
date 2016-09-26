@@ -160,5 +160,6 @@ namespace WzComparerR2.CharaSim
         nActivatedSocket,
         jokerToSetItem,
         medalTag,
+        exceptUpgrade,
     }
 }
