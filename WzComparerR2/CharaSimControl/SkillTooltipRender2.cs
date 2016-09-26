@@ -92,7 +92,7 @@ namespace WzComparerR2.CharaSimControl
             //绘制desc
             picH = 35;
             if (!Skill.PreBBSkill)
-                GearGraphics.DrawString(g, "[最高等级：" + Skill.MaxLevel + "]", GearGraphics.ItemDetailFont2, 92, 272, ref picH, 16);
+                GearGraphics.DrawString(g, "[마스터 레벨 : " + Skill.MaxLevel + "]", GearGraphics.ItemDetailFont2, 92, 272, ref picH, 16);
 
             if (sr.Desc != null)
             {
@@ -117,7 +117,7 @@ namespace WzComparerR2.CharaSimControl
             if (Skill.Level > 0)
             {
                 string hStr = SummaryParser.GetSkillSummary(Skill, Skill.Level, sr, SummaryParams.Default);
-                GearGraphics.DrawString(g, "[现在等级 " + Skill.Level + "]", GearGraphics.ItemDetailFont, 10, 274, ref picH, 16);
+                GearGraphics.DrawString(g, "[현재레벨 " + Skill.Level + "]", GearGraphics.ItemDetailFont, 10, 274, ref picH, 16);
                 if (hStr != null)
                 {
                     GearGraphics.DrawString(g, hStr, GearGraphics.ItemDetailFont2, 10, 274, ref picH, 16);
@@ -127,7 +127,7 @@ namespace WzComparerR2.CharaSimControl
             if (Skill.Level < Skill.MaxLevel)
             {
                 string hStr = SummaryParser.GetSkillSummary(Skill, Skill.Level + 1, sr, SummaryParams.Default);
-                GearGraphics.DrawString(g, "[下次等级 " + (Skill.Level + 1) + "]", GearGraphics.ItemDetailFont, 10, 274, ref picH, 16);
+                GearGraphics.DrawString(g, "[다음레벨 " + (Skill.Level + 1) + "]", GearGraphics.ItemDetailFont, 10, 274, ref picH, 16);
                 if (hStr != null)
                 {
                     GearGraphics.DrawString(g, hStr, GearGraphics.ItemDetailFont2, 10, 274, ref picH, 16);
@@ -141,23 +141,23 @@ namespace WzComparerR2.CharaSimControl
                 List<string> attr = new List<string>();
                 if (Skill.Invisible)
                 {
-                    attr.Add("隐藏技能");
+                    attr.Add("스킬창에 표시되지 않음");
                 }
                 if (Skill.Hyper != HyperSkillType.None)
                 {
-                    attr.Add("超级技能:" + Skill.Hyper);
+                    attr.Add("하이퍼스킬: " + Skill.Hyper);
                 }
                 if (Skill.CombatOrders)
                 {
-                    attr.Add("战斗命令加成");
+                    attr.Add("컴뱃오더스 적용 가능");
                 } 
                 if (Skill.NotRemoved)
                 {
-                    attr.Add("无法被移除");
+                    attr.Add("버프 해제 불가");
                 }
                 if (Skill.MasterLevel > 0 && Skill.MasterLevel < Skill.MaxLevel)
                 {
-                    attr.Add("初始掌握:Lv." + Skill.MasterLevel);
+                    attr.Add("마스터리북 미사용시 마스터 레벨: Lv." + Skill.MasterLevel);
                 }
 
                 if (attr.Count > 0)
@@ -170,7 +170,7 @@ namespace WzComparerR2.CharaSimControl
             {
                 foreach (string action in Skill.Action)
                 {
-                    skillDescEx.Add("#c[技能延时] " + action + ": " + CharaSimLoader.GetActionDelay(action) + " ms#");
+                    skillDescEx.Add("#c[딜레이] " + action + ": " + CharaSimLoader.GetActionDelay(action) + " ms#");
                 }
             }
 
@@ -187,7 +187,7 @@ namespace WzComparerR2.CharaSimControl
                     {
                         skillName = kv.Key.ToString();
                     }
-                    skillDescEx.Add("#c[前置技能] " + skillName + ": " + kv.Value + " 级#");
+                    skillDescEx.Add("#c[필요 스킬] " + skillName + ": " + kv.Value + " 이상#");
                 }
             }
 

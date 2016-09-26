@@ -289,9 +289,9 @@ namespace WzComparerR2.CharaSimControl
 
             if (item.Props.TryGetValue(ItemPropType.reqLevel, out value))
             {
-                g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAliasGridFit;
+                g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.SystemDefault;
                 g.PixelOffsetMode = PixelOffsetMode.HighQuality;
-                g.DrawString("要求等级 :" + value, GearGraphics.ItemReqLevelFont, Brushes.White, 97, picH);
+                g.DrawString("REQ LEV : " + value, GearGraphics.ItemReqLevelFont, Brushes.White, 97, picH);
                 picH += 15;
                 g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.SystemDefault;
             }
@@ -314,11 +314,11 @@ namespace WzComparerR2.CharaSimControl
             }
             if (item.Specs.TryGetValue(ItemSpecType.recipeValidDay, out value) && value > 0)
             {
-                GearGraphics.DrawString(g, "(可制作时间：" + value + "天)", GearGraphics.ItemDetailFont, 98, right, ref picH, 16);
+                GearGraphics.DrawString(g, "( 제작 가능 기간 : " + value + "일 )", GearGraphics.ItemDetailFont, 98, right, ref picH, 16);
             }
             if (item.Specs.TryGetValue(ItemSpecType.recipeUseCount, out value) && value > 0)
             {
-                GearGraphics.DrawString(g, "(可制作次数：" + value + "次)", GearGraphics.ItemDetailFont, 98, right, ref picH, 16);
+                GearGraphics.DrawString(g, "( 제작 가능 횟수 : " + value + "회 )", GearGraphics.ItemDetailFont, 98, right, ref picH, 16);
             }
 
             picH += 3;
@@ -352,7 +352,7 @@ namespace WzComparerR2.CharaSimControl
                 picH = Math.Max(picH, iconY + 107);
                 g.DrawLine(Pens.White, 6, picH, 283, picH);//分割线
                 picH += 10;
-                g.DrawString("<使用限制条件>", GearGraphics.ItemDetailFont, GearGraphics.SetItemNameBrush, 8, picH);
+                g.DrawString("< 사용 제한조건 >", GearGraphics.ItemDetailFont, GearGraphics.SetItemNameBrush, 8, picH);
                 picH += 17;
 
                 //技能标题
@@ -361,7 +361,12 @@ namespace WzComparerR2.CharaSimControl
                     sr = new StringResult();
                     sr.Name = "(null)";
                 }
-                g.DrawString(string.Format("· {0}{1}级以上", sr.Name, reqSkillLevel), GearGraphics.ItemDetailFont, GearGraphics.SetItemNameBrush, 13, picH);
+                switch (sr.Name)
+                {
+                    case "장비제작": sr.Name = "장비 제작"; break;
+                    case "장신구제작": sr.Name = "장신구 제작"; break;
+                }
+                g.DrawString(string.Format("· {0} {1}레벨 이상", sr.Name, reqSkillLevel), GearGraphics.ItemDetailFont, GearGraphics.SetItemNameBrush, 13, picH);
                 picH += 16;
                 picH += 6;
             }

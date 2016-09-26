@@ -53,35 +53,35 @@ namespace WzComparerR2.CharaSimControl
             StringBuilder sbExt = new StringBuilder();
             if (MobInfo.Boss)
             {
-                sbExt.Append("Boss ");
+                sbExt.Append("보스 ");
             }
             if (MobInfo.Undead)
             {
-                sbExt.Append("不死系 ");
+                sbExt.Append("언데드 ");
             }
             if (MobInfo.FirstAttack)
             {
-                sbExt.Append("主动攻击 ");
+                sbExt.Append("선제공격 ");
             }
             if (!MobInfo.BodyAttack)
             {
-                sbExt.Append("无触碰伤害 ");
+                sbExt.Append("바디어택 ");
             }
             if (MobInfo.DamagedByMob)
             {
-                sbExt.Append("只受怪物伤害 ");
+                sbExt.Append("몬스터의 데미지를 받음 ");
             }
             if (MobInfo.Invincible)
             {
-                sbExt.Append("无敌 ");
+                sbExt.Append("무적 ");
             }
             if (MobInfo.NotAttack)
             {
-                sbExt.Append("无法攻击 ");
+                sbExt.Append("공격하지 않음 ");
             }
             if (MobInfo.FixedDamage > 0)
             {
-                sbExt.Append("固定伤害" + MobInfo.FixedDamage + " ");
+                sbExt.Append("고정 데미지(" + MobInfo.FixedDamage + ") ");
             }
 
             if (sbExt.Length > 1)
@@ -93,23 +93,23 @@ namespace WzComparerR2.CharaSimControl
 
             if (MobInfo.RemoveAfter > 0)
             {
-                propBlocks.Add(PrepareText(g, "出生" + MobInfo.RemoveAfter + "秒后自动消失", GearGraphics.ItemDetailFont, Brushes.GreenYellow, 0, picY));
+                propBlocks.Add(PrepareText(g, "생성 " + MobInfo.RemoveAfter + "초 후 자동으로 사라짐", GearGraphics.ItemDetailFont, Brushes.GreenYellow, 0, picY));
                 picY += 16;
             }
 
-            propBlocks.Add(PrepareText(g, "Level: " + MobInfo.Level, GearGraphics.ItemDetailFont, Brushes.White, 0, picY));
+            propBlocks.Add(PrepareText(g, "레벨: " + MobInfo.Level, GearGraphics.ItemDetailFont, Brushes.White, 0, picY));
             propBlocks.Add(PrepareText(g, "HP: " + (!string.IsNullOrEmpty(MobInfo.FinalMaxHP) ? MobInfo.FinalMaxHP : MobInfo.MaxHP.ToString()),
                 GearGraphics.ItemDetailFont, Brushes.White, 0, picY += 16));
             propBlocks.Add(PrepareText(g, "MP: " + (!string.IsNullOrEmpty(MobInfo.FinalMaxMP) ? MobInfo.FinalMaxMP : MobInfo.MaxMP.ToString()),
                 GearGraphics.ItemDetailFont, Brushes.White, 0, picY += 16));
-            propBlocks.Add(PrepareText(g, "PAD: " + MobInfo.PADamage, GearGraphics.ItemDetailFont, Brushes.White, 0, picY += 16));
-            propBlocks.Add(PrepareText(g, "MAD: " + MobInfo.MADamage, GearGraphics.ItemDetailFont, Brushes.White, 0, picY += 16));
-            propBlocks.Add(PrepareText(g, "PDr: " + MobInfo.PDRate + "%", GearGraphics.ItemDetailFont, Brushes.White, 0, picY += 16));
-            propBlocks.Add(PrepareText(g, "MDr: " + MobInfo.MDRate + "%", GearGraphics.ItemDetailFont, Brushes.White, 0, picY += 16));
-            propBlocks.Add(PrepareText(g, "Acc: " + MobInfo.Acc, GearGraphics.ItemDetailFont, Brushes.White, 0, picY += 16));
-            propBlocks.Add(PrepareText(g, "Eva: " + MobInfo.Eva, GearGraphics.ItemDetailFont, Brushes.White, 0, picY += 16));
-            propBlocks.Add(PrepareText(g, "KB: " + MobInfo.Pushed, GearGraphics.ItemDetailFont, Brushes.White, 0, picY += 16));
-            propBlocks.Add(PrepareText(g, "Exp: " + MobInfo.Exp, GearGraphics.ItemDetailFont, Brushes.White, 0, picY += 16));
+            propBlocks.Add(PrepareText(g, "물리공격력: " + MobInfo.PADamage, GearGraphics.ItemDetailFont, Brushes.White, 0, picY += 16));
+            propBlocks.Add(PrepareText(g, "마법공격력: " + MobInfo.MADamage, GearGraphics.ItemDetailFont, Brushes.White, 0, picY += 16));
+            propBlocks.Add(PrepareText(g, "물리방어율: " + MobInfo.PDRate + "%", GearGraphics.ItemDetailFont, Brushes.White, 0, picY += 16));
+            propBlocks.Add(PrepareText(g, "마법방어율: " + MobInfo.MDRate + "%", GearGraphics.ItemDetailFont, Brushes.White, 0, picY += 16));
+            propBlocks.Add(PrepareText(g, "명중치: " + MobInfo.Acc, GearGraphics.ItemDetailFont, Brushes.White, 0, picY += 16));
+            propBlocks.Add(PrepareText(g, "회피치: " + MobInfo.Eva, GearGraphics.ItemDetailFont, Brushes.White, 0, picY += 16));
+            propBlocks.Add(PrepareText(g, "넉백: " + MobInfo.Pushed, GearGraphics.ItemDetailFont, Brushes.White, 0, picY += 16));
+            propBlocks.Add(PrepareText(g, "경험치: " + MobInfo.Exp, GearGraphics.ItemDetailFont, Brushes.White, 0, picY += 16));
             propBlocks.Add(PrepareText(g, GetElemAttrString(MobInfo.ElemAttr), GearGraphics.ItemDetailFont, Brushes.White, 0, picY += 16));
             picY += 28;
 
@@ -124,13 +124,13 @@ namespace WzComparerR2.CharaSimControl
                 }
 
                 StringBuilder sb = new StringBuilder();
-                sb.Append("死后召唤 ");
+                sb.Append("죽을 시 소환: ");
                 int rowCount = 0;
                 foreach (var kv in reviveCounts)
                 {
                     if (rowCount++ > 0)
                     {
-                        sb.AppendLine().Append("    ");
+                        sb.AppendLine().Append("       ");
                     }
                     string mobName = GetMobName(kv.Key);
                     sb.AppendFormat("{0}({1:D7})", mobName, kv.Key);
@@ -227,7 +227,7 @@ namespace WzComparerR2.CharaSimControl
             StringBuilder sb1 = new StringBuilder(),
                 sb2 = new StringBuilder();
 
-            sb1.Append("冰雷火毒圣暗物");
+            sb1.Append("얼번불성암물독");
             sb2.Append(GetElemAttrResistString(elemAttr.I));
             sb2.Append(GetElemAttrResistString(elemAttr.L));
             sb2.Append(GetElemAttrResistString(elemAttr.F));
