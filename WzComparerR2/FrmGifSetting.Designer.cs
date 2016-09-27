@@ -89,7 +89,7 @@
             this.labelX1.Name = "labelX1";
             this.labelX1.Size = new System.Drawing.Size(99, 16);
             this.labelX1.TabIndex = 0;
-            this.labelX1.Text = "BackGroundColor";
+            this.labelX1.Text = "배경색";
             // 
             // checkBoxX1
             // 
@@ -103,7 +103,7 @@
             this.checkBoxX1.Size = new System.Drawing.Size(163, 16);
             this.checkBoxX1.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
             this.checkBoxX1.TabIndex = 2;
-            this.checkBoxX1.Text = "Background &Transparent";
+            this.checkBoxX1.Text = "투명한 배경(&T)";
             // 
             // buttonX1
             // 
@@ -114,7 +114,7 @@
             this.buttonX1.Size = new System.Drawing.Size(75, 23);
             this.buttonX1.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
             this.buttonX1.TabIndex = 10;
-            this.buttonX1.Text = "&OK";
+            this.buttonX1.Text = "확인(&O)";
             this.buttonX1.Click += new System.EventHandler(this.buttonX1_Click);
             // 
             // buttonX2
@@ -127,7 +127,7 @@
             this.buttonX2.Size = new System.Drawing.Size(75, 23);
             this.buttonX2.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
             this.buttonX2.TabIndex = 11;
-            this.buttonX2.Text = "&Cancel";
+            this.buttonX2.Text = "취소(&C)";
             this.buttonX2.Click += new System.EventHandler(this.buttonX2_Click);
             // 
             // labelX2
@@ -141,7 +141,7 @@
             this.labelX2.Name = "labelX2";
             this.labelX2.Size = new System.Drawing.Size(56, 16);
             this.labelX2.TabIndex = 5;
-            this.labelX2.Text = "FileName";
+            this.labelX2.Text = "파일명";
             // 
             // comboBoxEx1
             // 
@@ -161,7 +161,7 @@
             // 
             // comboItem1
             // 
-            this.comboItem1.Text = "BuildIn";
+            this.comboItem1.Text = "내장";
             // 
             // comboItem2
             // 
@@ -209,7 +209,7 @@
             this.labelX4.Name = "labelX4";
             this.labelX4.Size = new System.Drawing.Size(68, 16);
             this.labelX4.TabIndex = 0;
-            this.labelX4.Text = "BackGround";
+            this.labelX4.Text = "배경";
             // 
             // rdoMosaic
             // 
@@ -223,9 +223,9 @@
             this.rdoMosaic.Name = "rdoMosaic";
             this.rdoMosaic.Size = new System.Drawing.Size(64, 16);
             this.rdoMosaic.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
-            this.superTooltip1.SetSuperTooltip(this.rdoMosaic, new DevComponents.DotNetBar.SuperTooltipInfo("", "", "使用马赛克晶格作为背景生成Gif动画", null, null, DevComponents.DotNetBar.eTooltipColor.System));
+            this.superTooltip1.SetSuperTooltip(this.rdoMosaic, new DevComponents.DotNetBar.SuperTooltipInfo("", "", "모자이크 방식으로 배경을 설정합니다.", null, null, DevComponents.DotNetBar.eTooltipColor.System));
             this.rdoMosaic.TabIndex = 3;
-            this.rdoMosaic.Text = "Mosaic";
+            this.rdoMosaic.Text = "모자이크";
             this.rdoMosaic.CheckedChanged += new System.EventHandler(this.rdoMosaic_CheckedChanged);
             // 
             // panelExMosaic
@@ -263,7 +263,7 @@
             this.labelX7.Name = "labelX7";
             this.labelX7.Size = new System.Drawing.Size(62, 16);
             this.labelX7.TabIndex = 4;
-            this.labelX7.Text = "BlockSize";
+            this.labelX7.Text = "블럭 크기";
             // 
             // labelX6
             // 
@@ -276,7 +276,7 @@
             this.labelX6.Name = "labelX6";
             this.labelX6.Size = new System.Drawing.Size(44, 16);
             this.labelX6.TabIndex = 2;
-            this.labelX6.Text = "Color1";
+            this.labelX6.Text = "색상2";
             // 
             // labelX5
             // 
@@ -289,7 +289,7 @@
             this.labelX5.Name = "labelX5";
             this.labelX5.Size = new System.Drawing.Size(44, 16);
             this.labelX5.TabIndex = 0;
-            this.labelX5.Text = "Color0";
+            this.labelX5.Text = "색상1";
             // 
             // slider2
             // 
@@ -371,9 +371,9 @@
             this.rdoColor.Name = "rdoColor";
             this.rdoColor.Size = new System.Drawing.Size(57, 16);
             this.rdoColor.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
-            this.superTooltip1.SetSuperTooltip(this.rdoColor, new DevComponents.DotNetBar.SuperTooltipInfo("", "", "使用透明或纯色背景生成Gif动画。", null, null, DevComponents.DotNetBar.eTooltipColor.System));
+            this.superTooltip1.SetSuperTooltip(this.rdoColor, new DevComponents.DotNetBar.SuperTooltipInfo("", "", "투명 또는 설정한 색으로 배경을 설정합니다.", null, null, DevComponents.DotNetBar.eTooltipColor.System));
             this.rdoColor.TabIndex = 1;
-            this.rdoColor.Text = "Color";
+            this.rdoColor.Text = "단색";
             this.rdoColor.CheckedChanged += new System.EventHandler(this.rdoColor_CheckedChanged);
             // 
             // superTooltip1
@@ -392,7 +392,7 @@
             this.checkBoxX2.Size = new System.Drawing.Size(144, 16);
             this.checkBoxX2.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
             this.checkBoxX2.TabIndex = 8;
-            this.checkBoxX2.Text = "Save Frames As .png";
+            this.checkBoxX2.Text = "각 프레임을 PNG로 저장";
             // 
             // labelX8
             // 
@@ -405,7 +405,7 @@
             this.labelX8.Name = "labelX8";
             this.labelX8.Size = new System.Drawing.Size(37, 16);
             this.labelX8.TabIndex = 8;
-            this.labelX8.Text = "Delay";
+            this.labelX8.Text = "딜레이";
             // 
             // integerInput1
             // 
@@ -436,7 +436,7 @@
             this.labelX9.Name = "labelX9";
             this.labelX9.Size = new System.Drawing.Size(50, 16);
             this.labelX9.TabIndex = 16;
-            this.labelX9.Text = "Encoder";
+            this.labelX9.Text = "인코더";
             // 
             // comboBoxEx2
             // 
@@ -457,15 +457,15 @@
             // 
             // comboItem3
             // 
-            this.comboItem3.Text = "Default";
+            this.comboItem3.Text = "기본";
             // 
             // comboItem4
             // 
-            this.comboItem4.Text = "PathToImage";
+            this.comboItem4.Text = "이미지 경로";
             // 
             // comboItem5
             // 
-            this.comboItem5.Text = "PathToWz";
+            this.comboItem5.Text = "Wz 경로";
             // 
             // FrmGifSetting
             // 
@@ -491,7 +491,7 @@
             this.MinimizeBox = false;
             this.Name = "FrmGifSetting";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "Gif输出设置";
+            this.Text = "Gif 설정";
             this.panelExMosaic.ResumeLayout(false);
             this.panelExMosaic.PerformLayout();
             this.panelExColor.ResumeLayout(false);
