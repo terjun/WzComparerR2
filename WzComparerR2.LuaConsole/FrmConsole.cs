@@ -157,7 +157,7 @@ end
 
             public void Help()
             {
-                this.WriteLine(@"-- 标准输出函数：
+                this.WriteLine(@"-- 표준 출력을 위해서는 아래 함수를 사용하세요. 
 env:Write(object)
 env:Write(string format, object[] args)
 env:WriteLine(object)
@@ -175,7 +175,7 @@ env:WriteLine(string format, object[] args)");
         {
             if (e.CloseReason == CloseReason.UserClosing && this.isRunning)
             {
-                if (DialogResult.Yes == MessageBoxEx.Show("还有未完成的任务，是否关闭？", "提示", MessageBoxButtons.YesNo, MessageBoxIcon.Information))
+                if (DialogResult.Yes == MessageBoxEx.Show("진행중인 작업이 있습니다. 종료하시겠습니까?", "경고", MessageBoxButtons.YesNo, MessageBoxIcon.Information))
                 {
                     e.Cancel = false;
                 }
@@ -222,7 +222,7 @@ env:WriteLine(string format, object[] args)");
             if (!isRunning)
             {
                 InitLuaEnv();
-                textBoxX2.AppendText("===虚拟机已重置===\r\n");
+                textBoxX2.AppendText("===Lua 콘솔 초기화===\r\n");
             }
         }
 
