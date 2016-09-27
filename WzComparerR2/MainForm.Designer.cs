@@ -2115,7 +2115,7 @@
             // 
             this.tsmi2HandleUol.Name = "tsmi2HandleUol";
             this.tsmi2HandleUol.Size = new System.Drawing.Size(195, 22);
-            this.tsmi2HandleUol.Text = "Handle Uol";
+            this.tsmi2HandleUol.Text = "Uol 따라가기";
             this.tsmi2HandleUol.Click += new System.EventHandler(this.tsmi2HandleUol_Click);
             // 
             // tsmi2Splitter1
