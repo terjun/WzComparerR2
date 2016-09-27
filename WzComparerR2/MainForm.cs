@@ -342,7 +342,7 @@ namespace WzComparerR2
                     using (var bmp = frame.Png.ExtractPng())
                     {
                         var dlg = new SaveFileDialog();
-                        dlg.Filter = "Png图片(*.png)|*.png|全部文件(*.*)|*.*";
+                        dlg.Filter = "PNG (*.png)|*.png|모든 파일 (*.*)|*.*";
                         dlg.FileName = pictureBoxEx1.PictureName + ".png";
                         if (dlg.ShowDialog() == DialogResult.OK)
                         {
@@ -352,7 +352,7 @@ namespace WzComparerR2
                 }
                 else
                 {
-                    labelItemStatus.Text = "没有文件被保存。";
+                    labelItemStatus.Text = "그림 저장 실패";
                 }
                 return;
             }
@@ -371,7 +371,7 @@ namespace WzComparerR2
             {
                 var dlg = new SaveFileDialog();
                 
-                dlg.Filter = "Gif图片(*.gif)|*.gif|全部文件(*.*)|*.*";
+                dlg.Filter = "GIF (*.gif)|*.gif|모든 파일 (*.*)|*.*";
                 dlg.FileName = gifFileName;
                 if (dlg.ShowDialog() != DialogResult.OK)
                 {
@@ -381,7 +381,7 @@ namespace WzComparerR2
             }
 
             this.pictureBoxEx1.SaveAsGif((AnimationItem)aniItem.Clone(), gifFileName, config);
-            labelItemStatus.Text = "图片保存于" + gifFileName;
+            labelItemStatus.Text = "그림 저장 완료: " + gifFileName;
         }
 
         private Node handleUol(Node currentNode, string uolString)
@@ -512,7 +512,7 @@ namespace WzComparerR2
         {
             using (FolderBrowserDialog dlg = new FolderBrowserDialog())
             {
-                dlg.Description = "请选择自动保存图片的文件夹...";
+                dlg.Description = "이미지를 자동으로 저장할 폴더를 선택하세요.";
                 dlg.SelectedPath = ImageHandlerConfig.Default.AutoSavePictureFolder;
                 if (DialogResult.OK == dlg.ShowDialog())
                 {
@@ -531,7 +531,7 @@ namespace WzComparerR2
         {
             using (OpenFileDialog dlg = new OpenFileDialog())
             {
-                dlg.Title = "请选择冒险岛wz文件...";
+                dlg.Title = "Wz 파일 열기";
                 dlg.Filter = "base.wz|*.wz";
                 if (dlg.ShowDialog() == DialogResult.OK)
                 {
@@ -548,7 +548,7 @@ namespace WzComparerR2
                 {
                     if (string.Compare(wz_f.Header.FileName, wzFilePath, true) == 0)
                     {
-                        MessageBoxEx.Show("已经打开的wz。", "喵~");
+                        MessageBoxEx.Show("이미 열려있는 wz 파일입니다.", "오류");
                         return;
                     }
                 }
@@ -570,7 +570,7 @@ namespace WzComparerR2
                 this.openedWz.Add(wz);
                 OnWzOpened(new WzStructureEventArgs(wz)); //触发事件
                 QueryPerformance.End();
-                labelItemStatus.Text = "读取成功,用时" + (Math.Round(QueryPerformance.GetLastInterval(), 4) * 1000) + "ms,共读取" + wz.img_number + "img.";
+                labelItemStatus.Text = "Wz 열기 완료: 소요 시간 " + (Math.Round(QueryPerformance.GetLastInterval(), 4) * 1000) + "ms, " + wz.img_number + "개의 img";
                 
                 ConfigManager.Reload();
                 WcR2Config.Default.RecentDocuments.Remove(wzFilePath);
@@ -580,11 +580,11 @@ namespace WzComparerR2
             }
             catch (FileNotFoundException)
             {
-                MessageBoxEx.Show("文件没有找到", "嗯?");
+                MessageBoxEx.Show("파일을 찾을 수 없습니다.", "오류");
             }
             catch (Exception ex)
             {
-                MessageBoxEx.Show(ex.ToString(), "嗯?");
+                MessageBoxEx.Show(ex.ToString(), "오류");
                 wz.Clear();
             }
             finally
@@ -597,7 +597,7 @@ namespace WzComparerR2
         {
             if (advTree1.SelectedNode == null)
             {
-                MessageBoxEx.Show("没有选中要关闭的wz.", "喵~");
+                MessageBoxEx.Show("닫을 wz 파일이 없습니다.", "오류");
                 return;
             }
             Node baseWzNode = advTree1.SelectedNode;
@@ -606,14 +606,14 @@ namespace WzComparerR2
             if (baseWzNode.Text.ToLower() == "list.wz")
             {
                 advTree1.Nodes.Remove(baseWzNode);
-                labelItemStatus.Text = "已经关闭list.wz...";
+                labelItemStatus.Text = "List.wz는 사용되지 않습니다.";
                 return;
             }
 
             Wz_File wz_f = advTree1.SelectedNode.AsWzNode()?.GetNodeWzFile();
             if (wz_f == null)
             {
-                MessageBoxEx.Show("没有正确选择要关闭的wz。", "喵~");
+                MessageBoxEx.Show("올바른 wz 파일을 선택하세요.", "오류");
                 return;
             }
             Wz_Structure wz = wz_f.WzStructure;
@@ -640,9 +640,9 @@ namespace WzComparerR2
             OnWzClosing(new WzStructureEventArgs(wz));
             wz.Clear();
             if (this.openedWz.Remove(wz))
-                labelItemStatus.Text = "已经关闭所选wz...";
+                labelItemStatus.Text = "Wz 닫기 완료";
             else
-                labelItemStatus.Text = "wz已经关闭,但是发生了诡异的错误...";
+                labelItemStatus.Text = "Wz 닫기 실패: 알 수 없는 오류 발생";
         }
 
         private void buttonItemCloseAll_Click(object sender, EventArgs e)
@@ -658,7 +658,7 @@ namespace WzComparerR2
             openedWz.Clear();
             CharaSimLoader.LoadedSetItems.Clear();
             stringLinker.Clear();
-            labelItemStatus.Text = "已经清理全部已读取资源...";
+            labelItemStatus.Text = "모두 닫기 완료";
             GC.Collect();
         }
 
@@ -782,17 +782,17 @@ namespace WzComparerR2
                         QueryPerformance.End();
                         double ms = (Math.Round(QueryPerformance.GetLastInterval(), 4) * 1000);
 
-                        labelItemStatus.Text = "读取image成功~用时" + ms + "ms...";
+                        labelItemStatus.Text = "불러오기 완료: 소요시간 " + ms + "ms";
                     }
                     else
                     {
 
-                        labelItemStatus.Text = "读取image失败..." + ex.Message;
+                        labelItemStatus.Text = "불러오기 실패: " + ex.Message;
                     }
                 }
                 catch (Exception ex)
                 {
-                    labelItemStatus.Text = "读取image失败:" + ex.Message;
+                    labelItemStatus.Text = "불러오기 실패: " + ex.Message;
                 }
             }
             listViewExWzDetail.EndUpdate();
@@ -1086,9 +1086,9 @@ namespace WzComparerR2
             }
             else
             {
-                path = "(" + objPathList.Count + ")个节点";
+                path = "(" + objPathList.Count + ")개 노드";
             }
-            labelItemStatus.Text = "无法找到imageNode: " + path;
+            labelItemStatus.Text = "imageNode 불러오기 실패: " + path;
         }
 
         private Wz_Node SearchNode(Wz_Node parent, string[] path, int startIndex)
@@ -1202,7 +1202,7 @@ namespace WzComparerR2
             }
             sb.Remove(sb.Length - 1, 1);
             Clipboard.SetText(sb.ToString(), TextDataFormat.UnicodeText);
-            labelItemStatus.Text = "已复制string条目到剪切板。";
+            labelItemStatus.Text = "클립보드에 복사되었습니다.";
         }
 
         private List<string[]> detectObjPathByStringPath(string id, string stringNodePath)
@@ -1425,11 +1425,11 @@ namespace WzComparerR2
                 }
                 advTree1.EndUpdate();
                 QueryPerformance.End();
-                labelItemStatus.Text = "排序成功,用时" + (Math.Round(QueryPerformance.GetLastInterval(), 4) * 1000) + "ms.";
+                labelItemStatus.Text = "정렬 완료: 소요시간 " + (Math.Round(QueryPerformance.GetLastInterval(), 4) * 1000) + "ms";
             }
             else
             {
-                labelItemStatus.Text = "没有打开的wz";
+                labelItemStatus.Text = "정렬 실패: 열린 wz 파일이 없음";
             }
         }
 
@@ -1438,13 +1438,13 @@ namespace WzComparerR2
             Wz_Image img = advTree1.SelectedNode?.AsWzNode()?.GetValue<Wz_Image>();
             if (img == null)
             {
-                MessageBoxEx.Show("没有选中一个用于导出的wz_img。");
+                MessageBoxEx.Show("내보낼 img를 선택하세요.");
                 return;
             }
             SaveFileDialog dlg = new SaveFileDialog();
             dlg.DefaultExt = ".img";
             dlg.FileName = img.Name;
-            dlg.Filter = "*.img|*.img";
+            dlg.Filter = "IMG (*.img)|*.img";
             if (dlg.ShowDialog() == DialogResult.OK)
             {
                 FileStream fs = null;
@@ -1464,7 +1464,7 @@ namespace WzComparerR2
                 }
                 catch (Exception ex)
                 {
-                    MessageBoxEx.Show(ex.ToString(), "错了");
+                    MessageBoxEx.Show(ex.ToString(), "오류");
                 }
                 finally
                 {
@@ -1508,7 +1508,7 @@ namespace WzComparerR2
             Node searchNode = searchAdvTree(advTree, cellIndex, searchText.Split('\\'), exact, true);
             advTree.SelectedNode = searchNode;
             if (searchNode == null)
-                MessageBoxEx.Show("已经搜索到末尾。", "喵呜~");
+                MessageBoxEx.Show("검색 결과가 없습니다.", "오류");
         }
 
         private Node searchAdvTree(AdvTree advTree, int cellIndex, string[] patten, bool exact, bool ignoreCase)
@@ -1591,12 +1591,12 @@ namespace WzComparerR2
             {
                 if (!this.stringLinker.Load(findStringWz()))
                 {
-                    MessageBoxEx.Show("没有初始化string链接，请手动指定一个String.wz。", "喵~~");
+                    MessageBoxEx.Show("String.wz를 먼저 열어주세요.", "오류");
                     return;
                 }
                 QueryPerformance.End();
                 double ms = (Math.Round(QueryPerformance.GetLastInterval(), 4) * 1000);
-                labelItemStatus.Text = "初始化StringLinker成功, 用时" + ms + "ms.";
+                labelItemStatus.Text = "StringLinker 초기화 완료: 소요시간 " + ms + "ms";
             }
             if (comboBoxItem2.SelectedIndex < 0)
                 comboBoxItem2.SelectedIndex = 0;
@@ -1703,7 +1703,7 @@ namespace WzComparerR2
             Wz_File stringWzFile = advTree1.SelectedNode?.AsWzNode()?.GetNodeWzFile();
             if (stringWzFile == null)
             {
-                MessageBoxEx.Show("没有选择一个用于初始化StringLinker的WzFile。", "喵...");
+                MessageBoxEx.Show("String.wz를 선택하세요.", "오류");
                 return;
             }
             QueryPerformance.Start();
@@ -1712,18 +1712,18 @@ namespace WzComparerR2
             if (r)
             {
                 double ms = (Math.Round(QueryPerformance.GetLastInterval(), 4) * 1000);
-                labelItemStatus.Text = "初始化StringLinker成功, 用时" + ms + "ms.";
+                labelItemStatus.Text = "StringLinker 초기화 완료: 소요시간 " + ms + "ms";
             }
             else
             {
-                MessageBoxEx.Show("初始化StringLinker失败。", "喵..");
+                MessageBoxEx.Show("StringLinker 초기화에 실패했습니다.", "오류");
             }
         }
 
         private void buttonItemClearStringWz_Click(object sender, EventArgs e)
         {
             stringLinker.Clear();
-            labelItemStatus.Text = "StringLinker已经清空...";
+            labelItemStatus.Text = "StringLinker 정리 완료";
         }
 
         private void buttonItemPatcher_Click(object sender, EventArgs e)
@@ -1779,14 +1779,14 @@ namespace WzComparerR2
             using (OpenFileDialog dlg = new OpenFileDialog())
             {
                 List<string> supportExt = new List<string>();
-                supportExt.Add("Sound File(*.mp3;*.ogg;*.wav)|*.mp3;*.ogg;*.wav");
+                supportExt.Add("오디오 파일 (*.mp3;*.ogg;*.wav)|*.mp3;*.ogg;*.wav");
                 foreach (string ext in this.soundPlayer.GetPluginSupportedExt())
                 {
                     supportExt.Add(ext);
                 }
                 supportExt.Add("Any File|*.*");
 
-                dlg.Title = "请选择一个声音文件...";
+                dlg.Title = "오디오 파일 열기";
                 dlg.Filter = string.Join("|", supportExt.ToArray());
                 dlg.Multiselect = false;
 
@@ -1835,8 +1835,8 @@ namespace WzComparerR2
             using (SaveFileDialog dlg = new SaveFileDialog())
             {
                 dlg.AddExtension = true;
-                dlg.Title = "请选择保存路径...";
-                dlg.Filter = "*.*|*.*";
+                dlg.Title = "저장할 폴더 선택";
+                dlg.Filter = "모든 파일 (*.*)|*.*";
                 dlg.AddExtension = false;
                 dlg.FileName = soundPlayer.PlayingSoundName;
                 if (dlg.ShowDialog() == DialogResult.OK)
@@ -1847,11 +1847,11 @@ namespace WzComparerR2
                         fs = new FileStream(dlg.FileName, FileMode.Create);
                         fs.Write(data, 0, data.Length);
 
-                        MessageBoxEx.Show("保存成功！");
+                        MessageBoxEx.Show("저장 성공");
                     }
                     catch (Exception ex)
                     {
-                        MessageBoxEx.Show("保存失败\r\n\r\n" + ex.ToString(), "错误");
+                        MessageBoxEx.Show("저장 실패\r\n\r\n" + ex.ToString(), "오류");
                     }
                     finally
                     {
@@ -1909,7 +1909,7 @@ namespace WzComparerR2
             CustomSoundFile soundFile = new CustomSoundFile(fileName, 0, (int)(new FileInfo(fileName).Length));
             soundPlayer.PreLoad(soundFile);
             soundPlayer.PlayingSoundName = Path.GetFileName(fileName);
-            labelItemSoundTitle.Text = "(载入文件)" + soundPlayer.PlayingSoundName;
+            labelItemSoundTitle.Text = "(외부파일) " + soundPlayer.PlayingSoundName;
             labelItemSoundTitle.Tooltip = fileName;
         }
         #endregion
@@ -1930,17 +1930,17 @@ namespace WzComparerR2
                 {
                     dlg.FileName += ".txt";
                 }
-                dlg.Filter = "*.*|*.*";
+                dlg.Filter = "모든 파일 (*.*)|*.*";
                 if (dlg.ShowDialog() == DialogResult.OK)
                 {
                     try
                     {
                         File.WriteAllText(dlg.FileName, (string)item);
-                        this.labelItemStatus.Text = "保存成功。";
+                        this.labelItemStatus.Text = "문서 저장 완료";
                     }
                     catch (Exception ex)
                     {
-                        MessageBoxEx.Show("文件保存失败。\r\n" + ex.ToString(), "提示");
+                        MessageBoxEx.Show("문서 저장 실패\r\n" + ex.ToString(), "오류");
                     }
                 }
             }
@@ -1981,11 +1981,11 @@ namespace WzComparerR2
                                 }
                             }
                         }
-                        this.labelItemStatus.Text = "保存成功。";
+                        this.labelItemStatus.Text = "오디오 저장 완료";
                     }
                     catch (Exception ex)
                     {
-                        MessageBoxEx.Show("文件保存失败。\r\n" + ex.ToString(), "提示");
+                        MessageBoxEx.Show("오디오 저장 실패\r\n" + ex.ToString(), "오류");
                     }
                 }
             }
@@ -1997,14 +1997,14 @@ namespace WzComparerR2
             Wz_Uol uol = advTree3.SelectedNode?.AsWzNode()?.Value as Wz_Uol;
             if (uol == null)
             {
-                labelItemStatus.Text = "没有选中适当的uol节点...";
+                labelItemStatus.Text = "Uol 노드가 선택되어 있지 않습니다.";
                 return;
             }
 
             Node uolNode = handleUol(advTree3.SelectedNode, uol.Uol);
             if (uolNode == null)
             {
-                labelItemStatus.Text = "没有找到uol对应的节点...请试着载入更底层的父节点重新执行..";
+                labelItemStatus.Text = "Uol 대상 노드를 찾을 수 없습니다.";
                 return;
             }
             else
@@ -2176,7 +2176,7 @@ namespace WzComparerR2
             Wz_File wzf = selectedNode.GetNodeWzFile();
             if (wzf == null)
             {
-                labelItemStatus.Text = "没有查询到节点所属的wzfile。";
+                labelItemStatus.Text = "Wz 파일의 노드를 불러올 수 없습니다.";
                 return;
             }
 
@@ -2318,7 +2318,7 @@ namespace WzComparerR2
         {
             int count = CharaSimLoader.LoadedSetItems.Count;
             CharaSimLoader.LoadedSetItems.Clear();
-            labelItemStatus.Text = "已经清空预读套装共" + count + "项。";
+            labelItemStatus.Text = "세트 아이템 " + count + "개를 해제했습니다.";
         }
 
         private void buttonItemCharItem_CheckedChanged(object sender, EventArgs e)
@@ -2335,7 +2335,7 @@ namespace WzComparerR2
             success = this.charaSimCtrl.UIItem.AddItem(this.tooltipQuickView.TargetItem as ItemBase);
             if (!success)
             {
-                labelItemStatus.Text = "背包加入物品失败...";
+                labelItemStatus.Text = "선택된 파일이 없거나 더 이상 넣을 수 없습니다.";
             }
         }
 
@@ -2556,7 +2556,7 @@ namespace WzComparerR2
             if (compareThread != null)
             {
                 compareThread.Suspend();
-                if (DialogResult.Yes == MessageBoxEx.Show("正在执行一个对比操作，要中止吗？", "Compare", MessageBoxButtons.YesNoCancel))
+                if (DialogResult.Yes == MessageBoxEx.Show("진행중인 비교 작업이 있습니다. 중단하시겠습니까?", "경고", MessageBoxButtons.YesNoCancel))
                 {
                     compareThread.Resume();
                     compareThread.Abort();
@@ -2570,12 +2570,12 @@ namespace WzComparerR2
 
             if (openedWz.Count < 2)
             {
-                MessageBoxEx.Show("没有成功打开两个WZ。", "Compare");
+                MessageBoxEx.Show("비교할 두 개 이상의 Wz 파일을 선택하세요.", "오류");
                 return;
             }
 
             FolderBrowserDialog dlg = new FolderBrowserDialog();
-            dlg.Description = "请选择输出报告的文件夹";
+            dlg.Description = "저장할 폴더를 선택하세요";
 
             if (dlg.ShowDialog() == DialogResult.OK)
             {
@@ -2596,13 +2596,13 @@ namespace WzComparerR2
 
                         while (true)
                         {
-                            string txt = string.Format("待比较wz文件：\r\n\r\n  new : {0} (ver:{1})\r\n  old : {2} (ver:{3})\r\n\r\n如果继续对比请选择Yes，如果想交换文件顺序请选择No。",
+                            string txt = string.Format("Wz 파일：\r\n\r\n  new : {0} (ver:{1})\r\n  old : {2} (ver:{3})\r\n\r\nYes를 누르시면 비교가 시작되며, No를 누르시면 Wz 파일을 변경할 수 있습니다.",
                                 fileNew.Header.FileName,
                                 fileNew.Header.WzVersion,
                                 fileOld.Header.FileName,
                                 fileOld.Header.WzVersion
                                 );
-                            switch (MessageBoxEx.Show(txt, "Easy Compare", MessageBoxButtons.YesNoCancel))
+                            switch (MessageBoxEx.Show(txt, "Wz 비교", MessageBoxButtons.YesNoCancel))
                             {
                                 case DialogResult.Yes:
                                     comparer.EasyCompareWzFiles(fileNew, fileOld, dlg.SelectedPath);
@@ -2623,17 +2623,17 @@ namespace WzComparerR2
                     }
                     catch (ThreadAbortException)
                     {
-                        MessageBoxEx.Show(this, "比较已经中止。", "Compare");
+                        MessageBoxEx.Show(this, "비교가 중단되었습니다.", "오류");
                     }
                     catch (Exception ex)
                     {
-                        MessageBoxEx.Show(this, "出现异常\r\n" + ex.ToString(), "Compare");
+                        MessageBoxEx.Show(this, "비교가 중단되었습니다." + ex.ToString(), "오류");
                     }
                     finally
                     {
                         sw.Stop();
                         compareThread = null;
-                        labelXComp1.Text = "wz对比结束...共用时" + sw.Elapsed.ToString();
+                        labelXComp1.Text = "Wz 비교 완료: 소요시간 " + sw.Elapsed.ToString();
                         labelXComp2.Text = "";
                     }
                 });
@@ -2725,7 +2725,7 @@ namespace WzComparerR2
         private void btnExportSkill_Click(object sender, EventArgs e)
         {
             FolderBrowserDialog dlg = new FolderBrowserDialog();
-            dlg.Description = "请选择技能列表输出文件夹";
+            dlg.Description = "내보내고자 하는 폴더를 선택하세요";
             if (dlg.ShowDialog() == DialogResult.OK)
             {
                 if (!this.stringLinker.HasValues)
@@ -2741,14 +2741,14 @@ namespace WzComparerR2
                     sw.Close();
                     fs.Dispose();
                 }
-                MessageBoxEx.Show("数据导出完毕。");
+                MessageBoxEx.Show("내보내기 완료");
             }
         }
 
         private void btnExportSkillOption_Click(object sender, EventArgs e)
         {
             FolderBrowserDialog dlg = new FolderBrowserDialog();
-            dlg.Description = "请选择魂宝珠系统输出文件夹";
+            dlg.Description = "내보내고자 하는 폴더를 선택하세요.";
             if (dlg.ShowDialog() == DialogResult.OK)
             {
                 if (!this.stringLinker.HasValues)
@@ -2756,7 +2756,7 @@ namespace WzComparerR2
 
                 DBConnection conn = new DBConnection(this.stringLinker);
                 conn.ExportSkillOption(dlg.SelectedPath);
-                MessageBoxEx.Show("数据导出完毕。");
+                MessageBoxEx.Show("내보내기 완료");
             }
         }
 
@@ -2818,7 +2818,7 @@ namespace WzComparerR2
 
         private void buttonItemUpdate_Click(object sender, EventArgs e)
         {
-            System.Diagnostics.Process.Start("https://github.com/Kagamia/WzComparerR2/releases");
+            System.Diagnostics.Process.Start("https://github.com/KENNYSOFT/WzComparerR2/releases");
         }
     }
 
