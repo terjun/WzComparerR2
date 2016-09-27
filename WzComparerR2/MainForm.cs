@@ -79,7 +79,7 @@ namespace WzComparerR2
             charaSimCtrl = new CharaSimControlGroup();
             charaSimCtrl.StringLinker = this.stringLinker;
             charaSimCtrl.Character = new Character();
-            charaSimCtrl.Character.Name = "Test";
+            charaSimCtrl.Character.Name = "WzComparerR2";
 
             string[] images = new string[] { "dir", "mp3", "num", "png", "str", "uol", "vector", "img" };
             foreach (string img in images)

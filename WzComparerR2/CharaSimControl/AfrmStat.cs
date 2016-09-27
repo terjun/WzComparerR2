@@ -41,22 +41,22 @@ namespace WzComparerR2.CharaSimControl
         private void initCtrl()
         {
             this.btnHPUp = new ACtrlButton();
-            this.btnHPUp.Location = new Point(167, 157);
+            this.btnHPUp.Location = new Point(187, 157);
 
             this.btnMPUp = new ACtrlButton();
-            this.btnMPUp.Location = new Point(167, 175);
+            this.btnMPUp.Location = new Point(187, 175);
 
             this.btnStrUp = new ACtrlButton();
-            this.btnStrUp.Location = new Point(167, 262);
+            this.btnStrUp.Location = new Point(187, 262);
 
             this.btnDexUp = new ACtrlButton();
-            this.btnDexUp.Location = new Point(167, 280);
+            this.btnDexUp.Location = new Point(187, 280);
 
             this.btnIntUp = new ACtrlButton();
-            this.btnIntUp.Location = new Point(167, 298);
+            this.btnIntUp.Location = new Point(187, 298);
 
             this.btnLukUp = new ACtrlButton();
-            this.btnLukUp.Location = new Point(167, 316);
+            this.btnLukUp.Location = new Point(187, 316);
 
             ACtrlButton[] addBtnList = new ACtrlButton[] { btnHPUp, btnMPUp, btnStrUp, btnDexUp, btnIntUp, btnLukUp };
             for (int i = 0; i < addBtnList.Length; i++)
@@ -74,7 +74,7 @@ namespace WzComparerR2.CharaSimControl
             this.btnClose.Pressed = new BitmapOrigin(Resource.BtClose3_pressed_0);
             this.btnClose.MouseOver = new BitmapOrigin(Resource.BtClose3_mouseOver_0);
             this.btnClose.Disabled = new BitmapOrigin(Resource.BtClose3_disabled_0);
-            this.btnClose.Location = new Point(170, 6);
+            this.btnClose.Location = new Point(190, 6);
             this.btnClose.Size = new Size(13, 13);
             this.btnClose.ButtonStateChanged += new EventHandler(aCtrl_RefreshCall);
             this.btnClose.MouseClick += new MouseEventHandler(btnClose_MouseClick);
@@ -84,7 +84,7 @@ namespace WzComparerR2.CharaSimControl
             this.btnDetailOpen.Pressed = new BitmapOrigin(Resource.Stat_main_BtDetailOpen_pressed_0);
             this.btnDetailOpen.MouseOver = new BitmapOrigin(Resource.Stat_main_BtDetailOpen_mouseOver_0);
             this.btnDetailOpen.Disabled = new BitmapOrigin(Resource.Stat_main_BtDetailOpen_disabled_0);
-            this.btnDetailOpen.Location = new Point(112,344);
+            this.btnDetailOpen.Location = new Point(132,343);
             this.btnDetailOpen.Size = new Size(68, 16);
             this.btnDetailOpen.ButtonStateChanged += new EventHandler(aCtrl_RefreshCall);
             this.btnDetailOpen.MouseClick += new MouseEventHandler(btnDetailOpen_MouseClick);
@@ -94,7 +94,7 @@ namespace WzComparerR2.CharaSimControl
             this.btnDetailClose.Pressed = new BitmapOrigin(Resource.Stat_main_BtDetailClose_pressed_0);
             this.btnDetailClose.MouseOver = new BitmapOrigin(Resource.Stat_main_BtDetailClose_mouseOver_0);
             this.btnDetailClose.Disabled = new BitmapOrigin(Resource.Stat_main_BtDetailClose_disabled_0);
-            this.btnDetailClose.Location = new Point(112, 344);
+            this.btnDetailClose.Location = new Point(132, 343);
             this.btnDetailClose.Size = new Size(68, 16);
             this.btnDetailClose.ButtonStateChanged += new EventHandler(aCtrl_RefreshCall);
             this.btnDetailClose.MouseClick += new MouseEventHandler(btnDetailClose_MouseClick);
@@ -104,7 +104,7 @@ namespace WzComparerR2.CharaSimControl
             this.btnAuto.Pressed = new BitmapOrigin(Resource.Stat_main_BtAuto_pressed_0);
             this.btnAuto.MouseOver = new BitmapOrigin(Resource.Stat_main_BtAuto_mouseOver_0);
             this.btnAuto.Disabled = new BitmapOrigin(Resource.Stat_main_BtAuto_disabled_0);
-            this.btnAuto.Location = new Point(108, 217);
+            this.btnAuto.Location = new Point(128, 217);
             this.btnAuto.Size = new Size(67, 34);
             this.btnAuto.ButtonStateChanged += new EventHandler(aCtrl_RefreshCall);
         }
@@ -150,7 +150,7 @@ namespace WzComparerR2.CharaSimControl
 
             Size size = Resource.Stat_main_backgrnd.Size;
             if (fullMode)
-                size = new Size(size.Width + Resource.Stat_detail_backgrnd.Width, size.Height);
+                size = new Size(size.Width + Resource.Stat_detail_backgrnd.Width, Resource.Stat_detail_backgrnd.Height);
 
             //绘制背景
             Bitmap stat = new Bitmap(size.Width, size.Height);
@@ -173,13 +173,13 @@ namespace WzComparerR2.CharaSimControl
         {
             if (this.fullMode)
             {
-                this.btnDetailOpen.Visible = true;
-                this.btnDetailClose.Visible = false;
+                this.btnDetailOpen.Visible = false;
+                this.btnDetailClose.Visible = true;
             }
             else
             {
-                this.btnDetailOpen.Visible = false;
-                this.btnDetailClose.Visible = true; 
+                this.btnDetailOpen.Visible = true;
+                this.btnDetailClose.Visible = false; 
             }
 
             if (this.character != null)
@@ -274,9 +274,15 @@ namespace WzComparerR2.CharaSimControl
         private void renderDetail(Graphics g)
         {
             g.TranslateTransform(Resource.Stat_main_backgrnd.Width,
-                Resource.Stat_main_backgrnd.Height - Resource.Stat_detail_backgrnd.Height);
+                0);
             g.DrawImage(Resource.Stat_detail_backgrnd, 0, 0);
             g.DrawImage(Resource.Stat_detail_backgrnd2, 6, 7);
+            g.DrawImage(Resource.Stat_detail_backgrnd3, 11, 12);
+
+            g.DrawImage(Resource.Stat_detail_abilityTitle_normal_0, 11, 201);
+            g.DrawImage(Resource.Stat_detail_metierLine_disabled_0, 14, 233);
+            g.DrawImage(Resource.Stat_detail_metierLine_disabled_0, 14, 271);
+            g.DrawImage(Resource.Stat_detail_metierLine_disabled_0, 14, 309);
 
             if (this.character != null)
             {
@@ -327,13 +333,13 @@ namespace WzComparerR2.CharaSimControl
 
         private void btnDetailOpen_MouseClick(object sender, MouseEventArgs e)
         {
-            this.fullMode = false;
+            this.fullMode = true;
             this.waitForRefresh = true;
         }
 
         private void btnDetailClose_MouseClick(object sender, MouseEventArgs e)
         {
-            this.fullMode = true;
+            this.fullMode = false;
             this.waitForRefresh = true;
         }
 
