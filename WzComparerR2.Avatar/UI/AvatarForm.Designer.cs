@@ -153,7 +153,7 @@
             this.bar1.AutoSyncBarCaption = true;
             this.bar1.CloseSingleTab = true;
             this.bar1.Controls.Add(this.panelDockContainer1);
-            this.bar1.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.bar1.Font = new System.Drawing.Font("돋움", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.bar1.GrabHandleStyle = DevComponents.DotNetBar.eGrabHandleStyle.Caption;
             this.bar1.IsMaximized = false;
             this.bar1.Items.AddRange(new DevComponents.DotNetBar.BaseItem[] {
@@ -166,7 +166,7 @@
             this.bar1.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
             this.bar1.TabIndex = 0;
             this.bar1.TabStop = false;
-            this.bar1.Text = "零件";
+            this.bar1.Text = "패널";
             // 
             // panelDockContainer1
             // 
@@ -206,7 +206,7 @@
             // 
             this.dockContainerItem1.Control = this.panelDockContainer1;
             this.dockContainerItem1.Name = "dockContainerItem1";
-            this.dockContainerItem1.Text = "零件";
+            this.dockContainerItem1.Text = "패널";
             // 
             // bar2
             // 
@@ -216,7 +216,7 @@
             this.bar2.AutoSyncBarCaption = true;
             this.bar2.CloseSingleTab = true;
             this.bar2.Controls.Add(this.panelDockContainer2);
-            this.bar2.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.bar2.Font = new System.Drawing.Font("돋움", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.bar2.GrabHandleStyle = DevComponents.DotNetBar.eGrabHandleStyle.Caption;
             this.bar2.IsMaximized = false;
             this.bar2.Items.AddRange(new DevComponents.DotNetBar.BaseItem[] {
@@ -229,7 +229,7 @@
             this.bar2.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
             this.bar2.TabIndex = 1;
             this.bar2.TabStop = false;
-            this.bar2.Text = "动作";
+            this.bar2.Text = "동작";
             // 
             // panelDockContainer2
             // 
@@ -305,7 +305,7 @@
             this.labelX4.Size = new System.Drawing.Size(31, 18);
             this.labelX4.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
             this.labelX4.TabIndex = 13;
-            this.labelX4.Text = "武器";
+            this.labelX4.Text = "장비";
             // 
             // chkEar
             // 
@@ -320,7 +320,7 @@
             this.chkEar.Size = new System.Drawing.Size(45, 19);
             this.chkEar.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
             this.chkEar.TabIndex = 11;
-            this.chkEar.Text = "ear";
+            this.chkEar.Text = "엘프귀";
             this.chkEar.CheckedChanged += new System.EventHandler(this.chkEar_CheckedChanged);
             // 
             // chkTamingPlay
@@ -461,7 +461,7 @@
             this.labelX3.Size = new System.Drawing.Size(31, 18);
             this.labelX3.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
             this.labelX3.TabIndex = 3;
-            this.labelX3.Text = "骑兽";
+            this.labelX3.Text = "탈것";
             // 
             // labelX2
             // 
@@ -476,7 +476,7 @@
             this.labelX2.Size = new System.Drawing.Size(31, 18);
             this.labelX2.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
             this.labelX2.TabIndex = 2;
-            this.labelX2.Text = "表情";
+            this.labelX2.Text = "표정";
             // 
             // labelX1
             // 
@@ -491,7 +491,7 @@
             this.labelX1.Size = new System.Drawing.Size(31, 18);
             this.labelX1.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
             this.labelX1.TabIndex = 1;
-            this.labelX1.Text = "身体";
+            this.labelX1.Text = "동작";
             // 
             // cmbActionBody
             // 
@@ -522,7 +522,7 @@
             this.chkHairShade.Size = new System.Drawing.Size(85, 19);
             this.chkHairShade.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
             this.chkHairShade.TabIndex = 10;
-            this.chkHairShade.Text = "hairShade";
+            this.chkHairShade.Text = "머리그림자";
             this.chkHairShade.CheckedChanged += new System.EventHandler(this.chkHairShade_CheckedChanged);
             // 
             // chkHairCover
@@ -538,14 +538,14 @@
             this.chkHairCover.Size = new System.Drawing.Size(83, 19);
             this.chkHairCover.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
             this.chkHairCover.TabIndex = 9;
-            this.chkHairCover.Text = "hairCover";
+            this.chkHairCover.Text = "머리눌림";
             this.chkHairCover.CheckedChanged += new System.EventHandler(this.chkHairCover_CheckedChanged);
             // 
             // dockContainerItem2
             // 
             this.dockContainerItem2.Control = this.panelDockContainer2;
             this.dockContainerItem2.Name = "dockContainerItem2";
-            this.dockContainerItem2.Text = "动作";
+            this.dockContainerItem2.Text = "행동";
             // 
             // dockSite8
             // 
@@ -610,13 +610,13 @@
             this.bar3.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
             this.bar3.TabIndex = 0;
             this.bar3.TabStop = false;
-            this.bar3.Text = "工具";
+            this.bar3.Text = "도구";
             // 
             // btnCode
             // 
             this.btnCode.Image = global::WzComparerR2.Avatar.Properties.Resources.script_code;
             this.btnCode.Name = "btnCode";
-            this.btnCode.Tooltip = "代码";
+            this.btnCode.Tooltip = "코드";
             this.btnCode.Click += new System.EventHandler(this.btnCode_Click);
             // 
             // btnCharac
@@ -627,25 +627,25 @@
             this.btnCharac.SubItems.AddRange(new DevComponents.DotNetBar.BaseItem[] {
             this.btnMale,
             this.btnFemale});
-            this.btnCharac.Tooltip = "初始化";
+            this.btnCharac.Tooltip = "초기화";
             // 
             // btnMale
             // 
             this.btnMale.Name = "btnMale";
-            this.btnMale.Text = "男性角色";
+            this.btnMale.Text = "남자기본";
             this.btnMale.Click += new System.EventHandler(this.btnMale_Click);
             // 
             // btnFemale
             // 
             this.btnFemale.Name = "btnFemale";
-            this.btnFemale.Text = "女性角色";
+            this.btnFemale.Text = "여자기본";
             this.btnFemale.Click += new System.EventHandler(this.btnFemale_Click);
             // 
             // btnReset
             // 
             this.btnReset.Image = global::WzComparerR2.Avatar.Properties.Resources.arrow_in;
             this.btnReset.Name = "btnReset";
-            this.btnReset.Tooltip = "坐标重置";
+            this.btnReset.Tooltip = "재설정";
             this.btnReset.Click += new System.EventHandler(this.btnReset_Click);
             // 
             // btnLock
@@ -653,7 +653,7 @@
             this.btnLock.AutoCheckOnClick = true;
             this.btnLock.Image = global::WzComparerR2.Avatar.Properties.Resources._lock;
             this.btnLock.Name = "btnLock";
-            this.btnLock.Tooltip = "锁定";
+            this.btnLock.Tooltip = "잠금";
             // 
             // dockSite3
             // 
@@ -701,7 +701,7 @@
             this.Controls.Add(this.dockSite8);
             this.DoubleBuffered = true;
             this.Name = "AvatarForm";
-            this.Text = "Avatar";
+            this.Text = "아바타";
             this.dockSite2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.bar1)).EndInit();
             this.bar1.ResumeLayout(false);

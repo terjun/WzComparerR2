@@ -858,7 +858,7 @@ namespace WzComparerR2.Avatar.UI
 
         private void btnMale_Click(object sender, EventArgs e)
         {
-            if (MessageBoxEx.Show("初始化为男性角色？", "提示") == DialogResult.OK)
+            if (MessageBoxEx.Show("기본 남자 캐릭터를 불러오시겠습니까?", "확인") == DialogResult.OK)
             {
                 LoadCode("2000,12000,20000,30000,1040036,1060026", 0);
             }
@@ -866,7 +866,7 @@ namespace WzComparerR2.Avatar.UI
 
         private void btnFemale_Click(object sender, EventArgs e)
         {
-            if (MessageBoxEx.Show("初始化为女性角色？", "提示") == DialogResult.OK)
+            if (MessageBoxEx.Show("기본 여자 캐릭터를 불러오시겠습니까?", "확인") == DialogResult.OK)
             {
                 LoadCode("2000,12000,21000,31000,1041046,1061039", 0);
             }
@@ -884,21 +884,21 @@ namespace WzComparerR2.Avatar.UI
             var matches = Regex.Matches(code, @"(\d+)([,\s]|$)");
             if (matches.Count <= 0)
             {
-                MessageBoxEx.Show("无法解析的装备代码。", "错误");
+                MessageBoxEx.Show("아이템 코드에 해당되는 아이템이 없습니다.", "오류");
                 return;
             }
 
             var characWz = PluginManager.FindWz(Wz_Type.Character);
             if (characWz == null)
             {
-                MessageBoxEx.Show("没有打开Character.Wz。", "错误");
+                MessageBoxEx.Show("Character.wz 파일을 열 수 없습니다.", "오류");
                 return;
             }
 
             //试图初始化
             if (!this.inited && !this.AvatarInit())
             {
-                MessageBoxEx.Show("Avatar初始化失败。", "错误");
+                MessageBoxEx.Show("아바타 플러그인을 초기화할 수 없습니다.", "오류");
                 return;
             }
 
@@ -935,12 +935,12 @@ namespace WzComparerR2.Avatar.UI
             if (failList.Count > 0)
             {
                 StringBuilder sb = new StringBuilder();
-                sb.AppendLine("以下部件没有找到：");
+                sb.AppendLine("해당 아이템 코드를 찾을 수 없습니다 : ");
                 foreach (var gearID in failList)
                 {
                     sb.Append("  ").AppendLine(gearID.ToString("D8"));
                 }
-                MessageBoxEx.Show(sb.ToString(), "嗯..");
+                MessageBoxEx.Show(sb.ToString(), "오류");
             }
 
         }

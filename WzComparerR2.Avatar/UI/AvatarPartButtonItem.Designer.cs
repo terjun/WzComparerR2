@@ -34,12 +34,12 @@
             // btnItemShow
             // 
             this.btnItemShow.Name = "btnItemShow";
-            this.btnItemShow.Text = "显示/隐藏";
+            this.btnItemShow.Text = "보이기/감추기";
             // 
             // btnItemDel
             // 
             this.btnItemDel.Name = "btnItemDel";
-            this.btnItemDel.Text = "移除";
+            this.btnItemDel.Text = "삭제";
             // 
             // AvatarPartButtonItem
             // 
