@@ -2606,7 +2606,7 @@ namespace WzComparerR2
 
                         while (true)
                         {
-                            string txt = string.Format("Wz 파일：\r\n\r\n  new : {0} (ver:{1})\r\n  old : {2} (ver:{3})\r\n\r\nYes를 누르시면 비교가 시작되며, No를 누르시면 Wz 파일을 변경할 수 있습니다.",
+                            string txt = string.Format("Wz 파일 :\r\n\r\n  신버전 : {0} (V{1})\r\n  구버전 : {2} (V:{3})\r\n\r\nYes를 누르시면 비교가 시작되고, No를 누르시면 신버전과 구버전을 뒤집을 수 있습니다.",
                                 fileNew.Header.FileName,
                                 fileNew.Header.WzVersion,
                                 fileOld.Header.FileName,

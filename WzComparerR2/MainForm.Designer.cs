@@ -2262,7 +2262,7 @@
             this.chkOutputRemovedImg.Size = new System.Drawing.Size(135, 23);
             this.chkOutputRemovedImg.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
             this.chkOutputRemovedImg.TabIndex = 8;
-            this.chkOutputRemovedImg.Text = "OutputRemovedImg";
+            this.chkOutputRemovedImg.Text = "제거된 img 출력";
             // 
             // chkOutputAddedImg
             // 
@@ -2275,7 +2275,7 @@
             this.chkOutputAddedImg.Size = new System.Drawing.Size(135, 23);
             this.chkOutputAddedImg.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
             this.chkOutputAddedImg.TabIndex = 7;
-            this.chkOutputAddedImg.Text = "OutputAddedImg";
+            this.chkOutputAddedImg.Text = "추가된 img 출력";
             // 
             // labelX1
             // 
@@ -2288,7 +2288,7 @@
             this.labelX1.Name = "labelX1";
             this.labelX1.Size = new System.Drawing.Size(44, 16);
             this.labelX1.TabIndex = 6;
-            this.labelX1.Text = "wzPng:";
+            this.labelX1.Text = "PNG :";
             // 
             // chkOutputPng
             // 
@@ -2304,7 +2304,7 @@
             this.chkOutputPng.Size = new System.Drawing.Size(107, 23);
             this.chkOutputPng.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
             this.chkOutputPng.TabIndex = 5;
-            this.chkOutputPng.Text = "OutputPngFile";
+            this.chkOutputPng.Text = "PNG 파일 출력";
             // 
             // cmbComparePng
             // 
@@ -2356,7 +2356,7 @@
             this.btnEasyCompare.Size = new System.Drawing.Size(100, 30);
             this.btnEasyCompare.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
             this.btnEasyCompare.TabIndex = 0;
-            this.btnEasyCompare.Text = "Easy Compare";
+            this.btnEasyCompare.Text = "비교";
             this.btnEasyCompare.Click += new System.EventHandler(this.btnEasyCompare_Click);
             // 
             // superTabItem2
