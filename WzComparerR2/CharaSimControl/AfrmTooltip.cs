@@ -14,8 +14,8 @@ namespace WzComparerR2.CharaSimControl
         public AfrmTooltip()
         {
             this.menu = new ContextMenuStrip();
-            this.menu.Items.Add(new ToolStripMenuItem("复制(&C)", null, tsmiCopy_Click));
-            this.menu.Items.Add(new ToolStripMenuItem("保存(&S)", null, tsmiSave_Click));
+            this.menu.Items.Add(new ToolStripMenuItem("복사(&C)", null, tsmiCopy_Click));
+            this.menu.Items.Add(new ToolStripMenuItem("저장(&S)", null, tsmiSave_Click));
             this.ContextMenuStrip = this.menu;
 
             this.Size = new Size(1, 1);
@@ -193,7 +193,7 @@ namespace WzComparerR2.CharaSimControl
             {
                 using (SaveFileDialog dlg = new SaveFileDialog())
                 {
-                    dlg.Filter = "*.png|*.png|*.*|*.*";
+                    dlg.Filter = "PNG (*.png)|*.png|*.*|*.*";
                     dlg.FileName = this.ImageFileName;
 
                     if (dlg.ShowDialog() == DialogResult.OK)
