@@ -27,8 +27,23 @@ namespace WzComparerR2.CharaSimControl
         private ACtrlButton btnFull;
         private ACtrlButton btnSmall;
         private ACtrlButton btnCoin;
+        private ACtrlButton btnPoint;
         private ACtrlButton btnGather;
         private ACtrlButton btnSort;
+        private ACtrlButton btnDisassemble3;
+        private ACtrlButton btnDisassemble4;
+        private ACtrlButton btnExtract3;
+        private ACtrlButton btnExtract4;
+        private ACtrlButton btnAppraise3;
+        private ACtrlButton btnAppraise4;
+        private ACtrlButton btnBits3;
+        private ACtrlButton btnBits4;
+        private ACtrlButton btnPot3;
+        private ACtrlButton btnPot4;
+        private ACtrlButton btnUpgrade3;
+        private ACtrlButton btnUpgrade4;
+        private ACtrlButton btnToad3;
+        private ACtrlButton btnToad4;
         private ACtrlButton btnClose;
         private bool waitForRefresh;
 
@@ -62,9 +77,9 @@ namespace WzComparerR2.CharaSimControl
             {
                 this.itemTabs[i] = new ItemTab(this);
                 this.itemTabs[i].TabEnabled = new BitmapOrigin((Bitmap)Resource.ResourceManager.GetObject("Item_Tab_enabled_" + i),
-                   -9 - 31 * i, -26);
+                   -9 - 31 * i, -28);
                 this.itemTabs[i].TabDisabled = new BitmapOrigin((Bitmap)Resource.ResourceManager.GetObject("Item_Tab_disabled_" + i),
-                    -9 - 31 * i, -26);
+                    -9 - 31 * i, -28);
             }
             this.itemTabs[0].Selected = true;
 
@@ -112,7 +127,7 @@ namespace WzComparerR2.CharaSimControl
             this.btnSmall.Pressed = new BitmapOrigin(Resource.Item_BtSmall_pressed_0);
             this.btnSmall.MouseOver = new BitmapOrigin(Resource.Item_BtSmall_mouseOver_0);
             this.btnSmall.Disabled = new BitmapOrigin(Resource.Item_BtSmall_disabled_0);
-            this.btnSmall.Location = new Point(147, 267);
+            this.btnSmall.Location = new Point(147, 337);
             this.btnSmall.Size = new Size(16, 16);
             this.btnSmall.MouseClick += new MouseEventHandler(btnSmall_MouseClick);
             this.btnSmall.ButtonStateChanged += new EventHandler(aCtrl_RefreshCall);
@@ -125,6 +140,15 @@ namespace WzComparerR2.CharaSimControl
             this.btnCoin.Location = new Point(9, 267);
             this.btnCoin.Size = new Size(40, 16);
             this.btnCoin.ButtonStateChanged += new EventHandler(aCtrl_RefreshCall);
+
+            this.btnPoint = new ACtrlButton();
+            this.btnPoint.Normal = new BitmapOrigin(Resource.Item_BtPoint_normal_0);
+            this.btnPoint.Pressed = new BitmapOrigin(Resource.Item_BtPoint_pressed_0);
+            this.btnPoint.MouseOver = new BitmapOrigin(Resource.Item_BtPoint_mouseOver_0);
+            this.btnPoint.Disabled = new BitmapOrigin(Resource.Item_BtPoint_disabled_0);
+            this.btnPoint.Location = new Point(9, 285);
+            this.btnPoint.Size = new Size(82, 16);
+            this.btnPoint.ButtonStateChanged += new EventHandler(aCtrl_RefreshCall);
 
             this.btnGather = new ACtrlButton();
             this.btnGather.Normal = new BitmapOrigin(Resource.Item_BtGather_normal_0);
@@ -145,6 +169,132 @@ namespace WzComparerR2.CharaSimControl
             this.btnSort.Size = new Size(16, 16);
             this.btnSort.ButtonStateChanged += new EventHandler(aCtrl_RefreshCall);
             this.btnSort.MouseClick += new MouseEventHandler(btnSort_MouseClick);
+
+            this.btnDisassemble3 = new ACtrlButton();
+            this.btnDisassemble3.Normal = new BitmapOrigin(Resource.Item_BtDisassemble3_normal_0);
+            this.btnDisassemble3.Pressed = new BitmapOrigin(Resource.Item_BtDisassemble3_pressed_0);
+            this.btnDisassemble3.MouseOver = new BitmapOrigin(Resource.Item_BtDisassemble3_mouseOver_0);
+            this.btnDisassemble3.Disabled = new BitmapOrigin(Resource.Item_BtDisassemble3_disabled_0);
+            this.btnDisassemble3.Location = new Point(9, 303);
+            this.btnDisassemble3.Size = new Size(24, 24);
+            this.btnDisassemble3.ButtonStateChanged += new EventHandler(aCtrl_RefreshCall);
+
+            this.btnDisassemble4 = new ACtrlButton();
+            this.btnDisassemble4.Normal = new BitmapOrigin(Resource.Item_BtDisassemble4_normal_0);
+            this.btnDisassemble4.Pressed = new BitmapOrigin(Resource.Item_BtDisassemble4_pressed_0);
+            this.btnDisassemble4.MouseOver = new BitmapOrigin(Resource.Item_BtDisassemble4_mouseOver_0);
+            this.btnDisassemble4.Disabled = new BitmapOrigin(Resource.Item_BtDisassemble4_disabled_0);
+            this.btnDisassemble4.Location = new Point(412, 337);
+            this.btnDisassemble4.Size = new Size(16, 16);
+            this.btnDisassemble4.ButtonStateChanged += new EventHandler(aCtrl_RefreshCall);
+
+            this.btnExtract3 = new ACtrlButton();
+            this.btnExtract3.Normal = new BitmapOrigin(Resource.Item_BtExtract3_normal_0);
+            this.btnExtract3.Pressed = new BitmapOrigin(Resource.Item_BtExtract3_pressed_0);
+            this.btnExtract3.MouseOver = new BitmapOrigin(Resource.Item_BtExtract3_mouseOver_0);
+            this.btnExtract3.Disabled = new BitmapOrigin(Resource.Item_BtExtract3_disabled_0);
+            this.btnExtract3.Location = new Point(35, 303);
+            this.btnExtract3.Size = new Size(24, 24);
+            this.btnExtract3.ButtonStateChanged += new EventHandler(aCtrl_RefreshCall);
+
+            this.btnExtract4 = new ACtrlButton();
+            this.btnExtract4.Normal = new BitmapOrigin(Resource.Item_BtExtract4_normal_0);
+            this.btnExtract4.Pressed = new BitmapOrigin(Resource.Item_BtExtract4_pressed_0);
+            this.btnExtract4.MouseOver = new BitmapOrigin(Resource.Item_BtExtract4_mouseOver_0);
+            this.btnExtract4.Disabled = new BitmapOrigin(Resource.Item_BtExtract4_disabled_0);
+            this.btnExtract4.Location = new Point(430, 337);
+            this.btnExtract4.Size = new Size(16, 16);
+            this.btnExtract4.ButtonStateChanged += new EventHandler(aCtrl_RefreshCall);
+
+            this.btnAppraise3 = new ACtrlButton();
+            this.btnAppraise3.Normal = new BitmapOrigin(Resource.Item_BtAppraise3_normal_0);
+            this.btnAppraise3.Pressed = new BitmapOrigin(Resource.Item_BtAppraise3_pressed_0);
+            this.btnAppraise3.MouseOver = new BitmapOrigin(Resource.Item_BtAppraise3_mouseOver_0);
+            this.btnAppraise3.Disabled = new BitmapOrigin(Resource.Item_BtAppraise3_disabled_0);
+            this.btnAppraise3.Location = new Point(61, 303);
+            this.btnAppraise3.Size = new Size(24, 24);
+            this.btnAppraise3.ButtonStateChanged += new EventHandler(aCtrl_RefreshCall);
+
+            this.btnAppraise4 = new ACtrlButton();
+            this.btnAppraise4.Normal = new BitmapOrigin(Resource.Item_BtAppraise4_normal_0);
+            this.btnAppraise4.Pressed = new BitmapOrigin(Resource.Item_BtAppraise4_pressed_0);
+            this.btnAppraise4.MouseOver = new BitmapOrigin(Resource.Item_BtAppraise4_mouseOver_0);
+            this.btnAppraise4.Disabled = new BitmapOrigin(Resource.Item_BtAppraise4_disabled_0);
+            this.btnAppraise4.Location = new Point(448, 337);
+            this.btnAppraise4.Size = new Size(16, 16);
+            this.btnAppraise4.ButtonStateChanged += new EventHandler(aCtrl_RefreshCall);
+
+            this.btnBits3 = new ACtrlButton();
+            this.btnBits3.Normal = new BitmapOrigin(Resource.Item_BtBits3_normal_0);
+            this.btnBits3.Pressed = new BitmapOrigin(Resource.Item_BtBits3_pressed_0);
+            this.btnBits3.MouseOver = new BitmapOrigin(Resource.Item_BtBits3_mouseOver_0);
+            this.btnBits3.Disabled = new BitmapOrigin(Resource.Item_BtBits3_disabled_0);
+            this.btnBits3.Location = new Point(113, 303);
+            this.btnBits3.Size = new Size(24, 24);
+            this.btnBits3.ButtonStateChanged += new EventHandler(aCtrl_RefreshCall);
+
+            this.btnBits4 = new ACtrlButton();
+            this.btnBits4.Normal = new BitmapOrigin(Resource.Item_BtBits4_normal_0);
+            this.btnBits4.Pressed = new BitmapOrigin(Resource.Item_BtBits4_pressed_0);
+            this.btnBits4.MouseOver = new BitmapOrigin(Resource.Item_BtBits4_mouseOver_0);
+            this.btnBits4.Disabled = new BitmapOrigin(Resource.Item_BtBits4_disabled_0);
+            this.btnBits4.Location = new Point(484, 337);
+            this.btnBits4.Size = new Size(16, 16);
+            this.btnBits4.ButtonStateChanged += new EventHandler(aCtrl_RefreshCall);
+
+            this.btnPot3 = new ACtrlButton();
+            this.btnPot3.Normal = new BitmapOrigin(Resource.Item_BtPot3_normal_0);
+            this.btnPot3.Pressed = new BitmapOrigin(Resource.Item_BtPot3_pressed_0);
+            this.btnPot3.MouseOver = new BitmapOrigin(Resource.Item_BtPot3_mouseOver_0);
+            this.btnPot3.Disabled = new BitmapOrigin(Resource.Item_BtPot3_disabled_0);
+            this.btnPot3.Location = new Point(87, 303);
+            this.btnPot3.Size = new Size(24, 24);
+            this.btnPot3.ButtonStateChanged += new EventHandler(aCtrl_RefreshCall);
+
+            this.btnPot4 = new ACtrlButton();
+            this.btnPot4.Normal = new BitmapOrigin(Resource.Item_BtPot4_normal_0);
+            this.btnPot4.Pressed = new BitmapOrigin(Resource.Item_BtPot4_pressed_0);
+            this.btnPot4.MouseOver = new BitmapOrigin(Resource.Item_BtPot4_mouseOver_0);
+            this.btnPot4.Disabled = new BitmapOrigin(Resource.Item_BtPot4_disabled_0);
+            this.btnPot4.Location = new Point(466, 337);
+            this.btnPot4.Size = new Size(16, 16);
+            this.btnPot4.ButtonStateChanged += new EventHandler(aCtrl_RefreshCall);
+
+            this.btnUpgrade3 = new ACtrlButton();
+            this.btnUpgrade3.Normal = new BitmapOrigin(Resource.Item_BtUpgrade3_normal_0);
+            this.btnUpgrade3.Pressed = new BitmapOrigin(Resource.Item_BtUpgrade3_pressed_0);
+            this.btnUpgrade3.MouseOver = new BitmapOrigin(Resource.Item_BtUpgrade3_mouseOver_0);
+            this.btnUpgrade3.Disabled = new BitmapOrigin(Resource.Item_BtUpgrade3_disabled_0);
+            this.btnUpgrade3.Location = new Point(139, 303);
+            this.btnUpgrade3.Size = new Size(24, 24);
+            this.btnUpgrade3.ButtonStateChanged += new EventHandler(aCtrl_RefreshCall);
+
+            this.btnUpgrade4 = new ACtrlButton();
+            this.btnUpgrade4.Normal = new BitmapOrigin(Resource.Item_BtUpgrade4_normal_0);
+            this.btnUpgrade4.Pressed = new BitmapOrigin(Resource.Item_BtUpgrade4_pressed_0);
+            this.btnUpgrade4.MouseOver = new BitmapOrigin(Resource.Item_BtUpgrade4_mouseOver_0);
+            this.btnUpgrade4.Disabled = new BitmapOrigin(Resource.Item_BtUpgrade4_disabled_0);
+            this.btnUpgrade4.Location = new Point(392, 337);
+            this.btnUpgrade4.Size = new Size(16, 16);
+            this.btnUpgrade4.ButtonStateChanged += new EventHandler(aCtrl_RefreshCall);
+
+            this.btnToad3 = new ACtrlButton();
+            this.btnToad3.Normal = new BitmapOrigin(Resource.Item_BtToad3_normal_0);
+            this.btnToad3.Pressed = new BitmapOrigin(Resource.Item_BtToad3_pressed_0);
+            this.btnToad3.MouseOver = new BitmapOrigin(Resource.Item_BtToad3_mouseOver_0);
+            this.btnToad3.Disabled = new BitmapOrigin(Resource.Item_BtToad3_disabled_0);
+            this.btnToad3.Location = new Point(113, 303);
+            this.btnToad3.Size = new Size(24, 24);
+            this.btnToad3.ButtonStateChanged += new EventHandler(aCtrl_RefreshCall);
+
+            this.btnToad4 = new ACtrlButton();
+            this.btnToad4.Normal = new BitmapOrigin(Resource.Item_BtToad4_normal_0);
+            this.btnToad4.Pressed = new BitmapOrigin(Resource.Item_BtToad4_pressed_0);
+            this.btnToad4.MouseOver = new BitmapOrigin(Resource.Item_BtToad4_mouseOver_0);
+            this.btnToad4.Disabled = new BitmapOrigin(Resource.Item_BtToad4_disabled_0);
+            this.btnToad4.Location = new Point(484, 337);
+            this.btnToad4.Size = new Size(16, 16);
+            this.btnToad4.ButtonStateChanged += new EventHandler(aCtrl_RefreshCall);
 
             this.btnClose = new ACtrlButton();
             this.btnClose.Normal = new BitmapOrigin(Resource.BtClose3_normal_0);
@@ -191,6 +341,24 @@ namespace WzComparerR2.CharaSimControl
                 this.btnFull.Visible = false;
                 this.btnSmall.Visible = true;
                 this.vScroll.Visible = false;
+                this.btnCoin.Location = new Point(9, 337);
+                this.btnPoint.Location = new Point(190, 337);
+                this.btnGather.Location = new Point(129, 337);
+                this.btnSort.Location = new Point(129, 337);
+                this.btnDisassemble3.Visible = false;
+                this.btnDisassemble4.Visible = true;
+                this.btnExtract3.Visible = false;
+                this.btnExtract4.Visible = true;
+                this.btnAppraise3.Visible = false;
+                this.btnAppraise4.Visible = true;
+                this.btnBits3.Visible = false;
+                this.btnBits4.Visible = true;
+                this.btnPot3.Visible = false;
+                this.btnPot4.Visible = true;
+                this.btnUpgrade3.Visible = false;
+                this.btnUpgrade4.Visible = true;
+                this.btnToad3.Visible = false;
+                this.btnToad4.Visible = true;
                 this.btnClose.Location = new Point(574, 6);
                 renderFull();
             }
@@ -201,6 +369,24 @@ namespace WzComparerR2.CharaSimControl
                 this.vScroll.Visible = true;
                 this.vScroll.Maximum = this.SelectedTab.ScrollMaxValue - 6;
                 this.vScroll.Value = this.SelectedTab.ScrollValue;
+                this.btnCoin.Location = new Point(9, 267);
+                this.btnPoint.Location = new Point(9, 285);
+                this.btnGather.Location = new Point(129, 267);
+                this.btnSort.Location = new Point(129, 267);
+                this.btnDisassemble3.Visible = true;
+                this.btnDisassemble4.Visible = false;
+                this.btnExtract3.Visible = true;
+                this.btnExtract4.Visible = false;
+                this.btnAppraise3.Visible = true;
+                this.btnAppraise4.Visible = false;
+                this.btnBits3.Visible = true;
+                this.btnBits4.Visible = false;
+                this.btnPot3.Visible = true;
+                this.btnPot4.Visible = false;
+                this.btnUpgrade3.Visible = true;
+                this.btnUpgrade4.Visible = false;
+                this.btnToad3.Visible = true;
+                this.btnToad4.Visible = false;
                 this.btnClose.Location = new Point(150, 6);
                 renderSmall();
             }
@@ -236,7 +422,7 @@ namespace WzComparerR2.CharaSimControl
             Graphics g = Graphics.FromImage(this.Bitmap);
             g.DrawImage(Resource.Item_FullBackgrnd2, 6, 23);
             renderTabs(g);
-            g.DrawImage(Resource.Item_FullBackgrnd3, 10, 51);
+            g.DrawImage(Resource.Item_FullBackgrnd3, 7, 45);
             foreach (AControl ctrl in this.aControls)
             {
                 ctrl.Draw(g);
@@ -602,8 +788,23 @@ namespace WzComparerR2.CharaSimControl
                 yield return this.btnFull;
                 yield return this.btnSmall;
                 yield return this.btnCoin;
+                yield return this.btnPoint;
                 yield return this.btnGather;
                 yield return this.btnSort;
+                yield return this.btnDisassemble3;
+                yield return this.btnDisassemble4;
+                yield return this.btnExtract3;
+                yield return this.btnExtract4;
+                yield return this.btnAppraise3;
+                yield return this.btnAppraise4;
+                yield return this.btnBits3;
+                yield return this.btnBits4;
+                yield return this.btnPot3;
+                yield return this.btnPot4;
+                yield return this.btnUpgrade3;
+                yield return this.btnUpgrade4;
+                yield return this.btnToad3;
+                yield return this.btnToad4;
                 yield return this.btnClose;
             }
         }
