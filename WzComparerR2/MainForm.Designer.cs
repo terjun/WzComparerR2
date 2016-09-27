@@ -1320,7 +1320,7 @@
             this.ribbonBar3.Size = new System.Drawing.Size(262, 147);
             this.ribbonBar3.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
             this.ribbonBar3.TabIndex = 0;
-            this.ribbonBar3.Text = "플레이어";
+            this.ribbonBar3.Text = "Player";
             // 
             // 
             // 
@@ -1367,7 +1367,7 @@
             // labelItemSoundTitle
             // 
             this.labelItemSoundTitle.Name = "labelItemSoundTitle";
-            this.labelItemSoundTitle.Text = "player";
+            this.labelItemSoundTitle.Text = "플레이어";
             this.labelItemSoundTitle.Width = 254;
             // 
             // itemContainer9
