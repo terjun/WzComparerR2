@@ -431,7 +431,7 @@ namespace WzComparerR2.CharaSimControl
             ItemBase[] itemArray = this.SelectedTab.Items;
             for (int i = 0; i < itemArray.Length; i++)
             {
-                int idx = i % 24, group = i / 24;
+                int idx = i % 32, group = i / 32;
                 Point origin = getItemIconOrigin(i);
                 origin.Offset(0, 32);
                 renderItemBase(g, itemArray[i], origin);
@@ -504,7 +504,7 @@ namespace WzComparerR2.CharaSimControl
 
         private Point getItemIconOrigin(int index)
         {
-            int idx = index % 24, group = index / 24;
+            int idx = index % 32, group = index / 32;
             Point p = new Point((idx % 4 + group * 4) * 36, idx / 4 * 35);
             p.Offset(10, 51);
             return p;
@@ -517,9 +517,9 @@ namespace WzComparerR2.CharaSimControl
             if (p.X < 0 || p.Y < 0)
                 return -1;
             int x = p.X / 36, y = p.Y / 35;
-            if (y >= 6 || (fullMode ? x >= 24 : x >= 4))
+            if ((fullMode ? y >= 8 : y >= 6) || (fullMode ? x >= 16 : x >= 4))
                 return -1;
-            int idx = y * 4 + x % 4 + x / 4 * 24;
+            int idx = y * 4 + x % 4 + x / 4 * 32;
             if (new Rectangle(getItemIconOrigin(idx), new Size(33, 33)).Contains(point))
                 return idx;
             else
@@ -909,7 +909,7 @@ namespace WzComparerR2.CharaSimControl
                 this.items = new ItemBase[ItemCount];
             }
 
-            public const int ItemCount = 96;
+            public const int ItemCount = 128;
             private AfrmItem owner;
             private ItemBase[] items;
             private bool selected;
