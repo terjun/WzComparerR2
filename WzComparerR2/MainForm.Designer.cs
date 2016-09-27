@@ -2386,7 +2386,7 @@
             this.btnExportSkillOption.Size = new System.Drawing.Size(111, 23);
             this.btnExportSkillOption.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
             this.btnExportSkillOption.TabIndex = 1;
-            this.btnExportSkillOption.Text = "ExportSkillOption";
+            this.btnExportSkillOption.Text = "스킬 옵션 내보내기";
             this.btnExportSkillOption.Click += new System.EventHandler(this.btnExportSkillOption_Click);
             // 
             // btnExportSkill
@@ -2398,7 +2398,7 @@
             this.btnExportSkill.Size = new System.Drawing.Size(75, 23);
             this.btnExportSkill.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
             this.btnExportSkill.TabIndex = 0;
-            this.btnExportSkill.Text = "ExportSkill";
+            this.btnExportSkill.Text = "스킬 내보내기";
             this.btnExportSkill.Click += new System.EventHandler(this.btnExportSkill_Click);
             // 
             // superTabItem3
