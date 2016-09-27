@@ -332,6 +332,8 @@ namespace WzComparerR2
             }
             var aniItem = this.pictureBoxEx1.Items[0];
 
+            var config = ImageHandlerConfig.Default;
+
             //单帧图像
             var frameData = (aniItem as FrameAnimator)?.Data;
             if (frameData != null && frameData.Frames.Count == 1)
@@ -341,13 +343,23 @@ namespace WzComparerR2
                 {
                     using (var bmp = frame.Png.ExtractPng())
                     {
-                        var dlg = new SaveFileDialog();
-                        dlg.Filter = "PNG (*.png)|*.png|모든 파일 (*.*)|*.*";
-                        dlg.FileName = pictureBoxEx1.PictureName + ".png";
-                        if (dlg.ShowDialog() == DialogResult.OK)
+                        string pngFileName = pictureBoxEx1.PictureName + ".png";
+                        if (config.AutoSaveEnabled)
                         {
-                            bmp.Save(dlg.FileName, System.Drawing.Imaging.ImageFormat.Png);
+                            pngFileName = Path.Combine(config.AutoSavePictureFolder, pngFileName);
                         }
+                        else
+                        {
+                            var dlg = new SaveFileDialog();
+                            dlg.Filter = "PNG (*.png)|*.png|모든 파일 (*.*)|*.*";
+                            dlg.FileName = pngFileName;
+                            if (dlg.ShowDialog() != DialogResult.OK)
+                            {
+                                return;
+                            }
+                            pngFileName = dlg.FileName;
+                        }
+                        bmp.Save(pngFileName, System.Drawing.Imaging.ImageFormat.Png);
                     }
                 }
                 else
@@ -356,8 +368,6 @@ namespace WzComparerR2
                 }
                 return;
             }
-
-            var config = ImageHandlerConfig.Default;
 
             string aniName = this.cmbItemAniNames.SelectedItem as string;
             string gifFileName = pictureBoxEx1.PictureName
