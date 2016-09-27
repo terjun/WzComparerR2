@@ -43,7 +43,7 @@ namespace WzComparerR2.MapRender
         protected override void LoadContent()
         {
             base.LoadContent();
-            this.font = new XnaFont(this.GraphicsDevice, "微软雅黑", 24);
+            this.font = new XnaFont(this.GraphicsDevice, "돋움", 24);
             this.scene = new MapScene(this.GraphicsDevice);
             this.scene.LoadMap(this.mapImg);
         }
