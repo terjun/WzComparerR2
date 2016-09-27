@@ -2084,6 +2084,7 @@ namespace WzComparerR2.MapRender
                 {
                     frameNode = uol.HandleUol(frameNode);
                 }
+                frameNode = frameNode.GetLinkedSourceNode(PluginManager.FindWz);
                 RenderFrame frame;
                 if (!loadedRes.TryGetValue(frameNode.FullPath, out frame))
                 {
