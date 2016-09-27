@@ -21,7 +21,7 @@ namespace WzComparerR2.CharaSimControl
 
             initCtrl();
             this.AllowDrop = true;
-            this.TotemVisible = true;
+            this.TotemVisible = false;
         }
 
         private BitVector32 partVisible;
@@ -157,8 +157,8 @@ namespace WzComparerR2.CharaSimControl
             this.btnPet.Pressed = new BitmapOrigin(Resource.Equip_character_BtPet_pressed_0);
             this.btnPet.MouseOver = new BitmapOrigin(Resource.Equip_character_BtPet_mouseOver_0);
             this.btnPet.Disabled = new BitmapOrigin(Resource.Equip_character_BtPet_disabled_0);
-            this.btnPet.Location = new Point(139, 264);
-            this.btnPet.Size = new Size(36, 17);
+            this.btnPet.Location = new Point(142, 266);
+            this.btnPet.Size = new Size(32, 12);
             this.btnPet.ButtonStateChanged += new EventHandler(aCtrl_RefreshCall);
             this.btnPet.MouseClick += new System.Windows.Forms.MouseEventHandler(btnPet_MouseClick);
 
@@ -167,8 +167,8 @@ namespace WzComparerR2.CharaSimControl
             this.btnDragon.Pressed = new BitmapOrigin(Resource.Equip_character_BtDragon_pressed_0);
             this.btnDragon.MouseOver = new BitmapOrigin(Resource.Equip_character_BtDragon_mouseOver_0);
             this.btnDragon.Disabled = new BitmapOrigin(Resource.Equip_character_BtDragon_disabled_0);
-            this.btnDragon.Location = new Point(10, 264);
-            this.btnDragon.Size = new Size(43, 17);
+            this.btnDragon.Location = new Point(10, 266);
+            this.btnDragon.Size = new Size(43, 12);
             this.btnDragon.ButtonStateChanged += new EventHandler(aCtrl_RefreshCall);
             this.btnDragon.MouseClick += new MouseEventHandler(btnDragon_MouseClick);
 
@@ -177,8 +177,8 @@ namespace WzComparerR2.CharaSimControl
             this.btnMechanic.Pressed = new BitmapOrigin(Resource.Equip_character_BtMechanic_pressed_0);
             this.btnMechanic.MouseOver = new BitmapOrigin(Resource.Equip_character_BtMechanic_mouseOver_0);
             this.btnMechanic.Disabled = new BitmapOrigin(Resource.Equip_character_BtMechanic_disabled_0);
-            this.btnMechanic.Location = new Point(10, 264);
-            this.btnMechanic.Size = new Size(43, 17);
+            this.btnMechanic.Location = new Point(10, 266);
+            this.btnMechanic.Size = new Size(43, 12);
             this.btnMechanic.ButtonStateChanged += new EventHandler(aCtrl_RefreshCall);
             this.btnMechanic.MouseClick += new MouseEventHandler(btnMechanic_MouseClick);
 
