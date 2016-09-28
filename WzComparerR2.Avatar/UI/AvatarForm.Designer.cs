@@ -627,7 +627,7 @@
             this.btnCharac.SubItems.AddRange(new DevComponents.DotNetBar.BaseItem[] {
             this.btnMale,
             this.btnFemale});
-            this.btnCharac.Tooltip = "초기화";
+            this.btnCharac.Tooltip = "기본설정";
             // 
             // btnMale
             // 
@@ -645,7 +645,7 @@
             // 
             this.btnReset.Image = global::WzComparerR2.Avatar.Properties.Resources.arrow_in;
             this.btnReset.Name = "btnReset";
-            this.btnReset.Tooltip = "재설정";
+            this.btnReset.Tooltip = "원래위치로";
             this.btnReset.Click += new System.EventHandler(this.btnReset_Click);
             // 
             // btnLock
