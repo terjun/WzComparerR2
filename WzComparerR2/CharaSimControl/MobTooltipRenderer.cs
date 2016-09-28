@@ -43,7 +43,7 @@ namespace WzComparerR2.CharaSimControl
                 string mobName = GetMobName(MobInfo.ID);
                 var block = PrepareText(g, mobName ?? "(null)", GearGraphics.ItemNameFont2, Brushes.White, 0, 0);
                 titleBlocks.Add(block);
-                block = PrepareText(g, "ID:" + MobInfo.ID, GearGraphics.ItemDetailFont, Brushes.White, block.Size.Width + 4, 4);
+                block = PrepareText(g, "" + MobInfo.ID, GearGraphics.ItemDetailFont, Brushes.White, block.Size.Width + 4, 4);
                 titleBlocks.Add(block);
             }
 
@@ -53,35 +53,35 @@ namespace WzComparerR2.CharaSimControl
             StringBuilder sbExt = new StringBuilder();
             if (MobInfo.Boss)
             {
-                sbExt.Append("보스 ");
+                sbExt.Append("[보스] ");
             }
             if (MobInfo.Undead)
             {
-                sbExt.Append("언데드 ");
+                sbExt.Append("[언데드] ");
             }
             if (MobInfo.FirstAttack)
             {
-                sbExt.Append("선제공격 ");
+                sbExt.Append("[선제공격] ");
             }
             if (!MobInfo.BodyAttack)
             {
-                sbExt.Append("바디어택 ");
+                sbExt.Append("[바디어택] ");
             }
             if (MobInfo.DamagedByMob)
             {
-                sbExt.Append("몬스터의 데미지를 받음 ");
+                sbExt.Append("[몬스터의 데미지를 받음] ");
             }
             if (MobInfo.Invincible)
             {
-                sbExt.Append("무적 ");
+                sbExt.Append("[무적] ");
             }
             if (MobInfo.NotAttack)
             {
-                sbExt.Append("공격하지 않음 ");
+                sbExt.Append("[공격하지 않음] ");
             }
             if (MobInfo.FixedDamage > 0)
             {
-                sbExt.Append("고정 데미지(" + MobInfo.FixedDamage + ") ");
+                sbExt.Append("[" + MobInfo.FixedDamage + "의 고정 데미지를 받음] ");
             }
 
             if (sbExt.Length > 1)
