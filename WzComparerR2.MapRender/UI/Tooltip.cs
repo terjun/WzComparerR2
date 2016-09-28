@@ -54,23 +54,23 @@ namespace WzComparerR2.MapRender.UI
 
                         PrepareTextBlock(blocks, env.Fonts.TooltipTitleFont, sr == null ? "(null)" : sr.Name, ref current, Color.White);
                         current += new Vector2(4, 4);
-                        PrepareTextBlock(blocks, env.Fonts.TooltipContentFont, "id:" + p.LifeID.ToString("d7"), ref current, Color.White);
+                        PrepareTextBlock(blocks, env.Fonts.TooltipContentFont, p.LifeID.ToString("d7"), ref current, Color.White);
                         size.X = Math.Max(size.X, current.X);
                         current = new Vector2(0, current.Y + 16);
 
                         LifeInfo info = p.LifeInfo;
 
-                        PrepareTextLine(blocks, env.Fonts.TooltipContentFont, "Level: " + info.level + (info.boss ? " (Boss)" : null), ref current, Color.White, ref size.X);
+                        PrepareTextLine(blocks, env.Fonts.TooltipContentFont, "레벨: " + info.level + (info.boss ? " (Boss)" : null), ref current, Color.White, ref size.X);
                         PrepareTextLine(blocks, env.Fonts.TooltipContentFont, "HP/MP: " + info.maxHP + " / " + info.maxMP, ref current, Color.White, ref size.X);
-                        PrepareTextLine(blocks, env.Fonts.TooltipContentFont, "PAD/MAD: " + info.PADamage + " / " + info.MADamage, ref current, Color.White, ref size.X);
-                        PrepareTextLine(blocks, env.Fonts.TooltipContentFont, "PDr/MDr: " + info.PDRate + "% / " + info.MDRate + "%", ref current, Color.White, ref size.X);
-                        PrepareTextLine(blocks, env.Fonts.TooltipContentFont, "Acc/Eva: " + info.acc + " / " + info.eva, ref current, Color.White, ref size.X);
-                        PrepareTextLine(blocks, env.Fonts.TooltipContentFont, "KB: " + info.pushed, ref current, Color.White, ref size.X);
-                        PrepareTextLine(blocks, env.Fonts.TooltipContentFont, "Exp: " + info.exp, ref current, Color.White, ref size.X);
-                        if (info.undead) PrepareTextLine(blocks, env.Fonts.TooltipContentFont, "undead: 1", ref current, Color.White, ref size.X);
+                        PrepareTextLine(blocks, env.Fonts.TooltipContentFont, "물리/마법공격력: " + info.PADamage + " / " + info.MADamage, ref current, Color.White, ref size.X);
+                        PrepareTextLine(blocks, env.Fonts.TooltipContentFont, "물리/마법방어율: " + info.PDRate + "% / " + info.MDRate + "%", ref current, Color.White, ref size.X);
+                        PrepareTextLine(blocks, env.Fonts.TooltipContentFont, "회피/명중치: " + info.acc + " / " + info.eva, ref current, Color.White, ref size.X);
+                        PrepareTextLine(blocks, env.Fonts.TooltipContentFont, "넉백: " + info.pushed, ref current, Color.White, ref size.X);
+                        PrepareTextLine(blocks, env.Fonts.TooltipContentFont, "경험치: " + info.exp, ref current, Color.White, ref size.X);
+                        if (info.undead) PrepareTextLine(blocks, env.Fonts.TooltipContentFont, "언데드: 1", ref current, Color.White, ref size.X);
                         StringBuilder sb;
                         if ((sb = GetLifeElemAttrString(ref info.elemAttr)).Length > 0)
-                            PrepareTextLine(blocks, env.Fonts.TooltipContentFont, "elem: " + sb.ToString(), ref current, Color.White, ref size.X);
+                            PrepareTextLine(blocks, env.Fonts.TooltipContentFont, "속성: " + sb.ToString(), ref current, Color.White, ref size.X);
                         size.Y = current.Y;
                     }
                     break;
@@ -82,7 +82,7 @@ namespace WzComparerR2.MapRender.UI
 
                         PrepareTextBlock(blocks, env.Fonts.TooltipTitleFont, sr == null ? "(null)" : sr.Name, ref current, Color.White);
                         current += new Vector2(4, 4);
-                        PrepareTextBlock(blocks, env.Fonts.TooltipContentFont, "id:" + p.LifeID.ToString("d7"), ref current, Color.White);
+                        PrepareTextBlock(blocks, env.Fonts.TooltipContentFont, p.LifeID.ToString("d7"), ref current, Color.White);
                         size.X = Math.Max(size.X, current.X);
                         current = new Vector2(0, current.Y + 16);
 
@@ -90,7 +90,7 @@ namespace WzComparerR2.MapRender.UI
                         {
                             if (kv.Value == p.Frames)
                             {
-                                PrepareTextLine(blocks, env.Fonts.TooltipContentFont, "action: " + kv.Key, ref current, Color.White, ref size.X);
+                                PrepareTextLine(blocks, env.Fonts.TooltipContentFont, "동작: " + kv.Key, ref current, Color.White, ref size.X);
                             }
                         }
                         size.Y = current.Y;
@@ -101,14 +101,14 @@ namespace WzComparerR2.MapRender.UI
                     {
                         PortalPatch p = tooltipTarget as PortalPatch;
                         Vector2 current = Vector2.Zero;
-                        PrepareTextLine(blocks, env.Fonts.TooltipContentFont, "pName: " + p.PortalName, ref current, Color.White, ref size.X);
+                        PrepareTextLine(blocks, env.Fonts.TooltipContentFont, "이름: " + p.PortalName, ref current, Color.White, ref size.X);
                         string pTypeName = GetPortalTypeString(p.PortalType);
-                        PrepareTextLine(blocks, env.Fonts.TooltipContentFont, "pType: " + p.PortalType + (pTypeName == null ? null : (" (" + pTypeName + ")")), ref current, Color.White, ref size.X);
+                        PrepareTextLine(blocks, env.Fonts.TooltipContentFont, "유형: " + p.PortalType + (pTypeName == null ? null : (" (" + pTypeName + ")")), ref current, Color.White, ref size.X);
                         stringLinker.StringMap.TryGetValue(p.ToMap, out sr);
-                        PrepareTextLine(blocks, env.Fonts.TooltipContentFont, "toMap: " + (sr == null ? "(null)" : sr.Name) + "(" + p.ToMap + ")", ref current, Color.White, ref size.X);
-                        PrepareTextLine(blocks, env.Fonts.TooltipContentFont, "toName: " + p.ToName, ref current, Color.White, ref size.X);
+                        PrepareTextLine(blocks, env.Fonts.TooltipContentFont, "이동 맵: " + (sr == null ? "(null)" : sr.Name) + "(" + p.ToMap + ")", ref current, Color.White, ref size.X);
+                        PrepareTextLine(blocks, env.Fonts.TooltipContentFont, "이동 포탈: " + p.ToName, ref current, Color.White, ref size.X);
                         if (!string.IsNullOrEmpty(p.Script))
-                            PrepareTextLine(blocks, env.Fonts.TooltipContentFont, "script: " + p.Script, ref current, Color.White, ref size.X);
+                            PrepareTextLine(blocks, env.Fonts.TooltipContentFont, "스크립트: " + p.Script, ref current, Color.White, ref size.X);
                         size.Y = current.Y;
                     }
                     break;
@@ -133,13 +133,13 @@ namespace WzComparerR2.MapRender.UI
         private StringBuilder GetLifeElemAttrString(ref LifeInfo.ElemAttr elemAttr)
         {
             StringBuilder sb = new StringBuilder(14);
-            sb.Append(GetElemResistanceString("冰", elemAttr.I));
-            sb.Append(GetElemResistanceString("雷", elemAttr.L));
-            sb.Append(GetElemResistanceString("火", elemAttr.F));
-            sb.Append(GetElemResistanceString("毒", elemAttr.S));
-            sb.Append(GetElemResistanceString("圣", elemAttr.H));
-            sb.Append(GetElemResistanceString("暗", elemAttr.D));
-            sb.Append(GetElemResistanceString("物", elemAttr.P));
+            sb.Append(GetElemResistanceString("얼음", elemAttr.I));
+            sb.Append(GetElemResistanceString("번개", elemAttr.L));
+            sb.Append(GetElemResistanceString("불", elemAttr.F));
+            sb.Append(GetElemResistanceString("독", elemAttr.S));
+            sb.Append(GetElemResistanceString("성", elemAttr.H));
+            sb.Append(GetElemResistanceString("암흑", elemAttr.D));
+            sb.Append(GetElemResistanceString("물리", elemAttr.P));
             return sb;
         }
 
@@ -147,15 +147,15 @@ namespace WzComparerR2.MapRender.UI
         {
             switch (pType)
             {
-                case 0: return "地图出生点";
-                case 1: return "一般传送门(隐藏)";
-                case 2: return "一般传送门";
-                case 3: return "一般传送门(接触)";
-                case 6: return "时空门入口点";
-                case 7: return "脚本传送门";
-                case 8: return "脚本传送门(隐藏)";
-                case 9: return "脚本传送门(接触)";
-                case 10: return "地图内传送门";
+                case 0: return "캐릭터시작지점";
+                case 1: return "일반(숨겨짐)";
+                case 2: return "일반";
+                case 3: return "일반(접촉시활성)";
+                case 6: return "워프게이트";
+                case 7: return "스크립트";
+                case 8: return "스크립트(숨겨짐)";
+                case 9: return "스크립트(접촉시활성)";
+                case 10: return "블링크";
                 case 12: return "弹力装置";
                 default: return null;
             }
@@ -236,7 +236,7 @@ namespace WzComparerR2.MapRender.UI
                 case RenderObjectType.Mob:
                     {
                         LifePatch p = patch as LifePatch;
-                        string name = "lv." + p.LifeInfo.level + " ";
+                        string name = "Lv." + p.LifeInfo.level + " ";
                         if (stringLinker != null && stringLinker.StringMob.TryGetValue(p.LifeID, out sr))
                             name += sr.Name;
                         else
