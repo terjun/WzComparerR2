@@ -673,6 +673,32 @@ namespace WzComparerR2.CharaSimControl
                 picH += 5;
             }
 
+            foreach (KeyValuePair<int, ExclusiveEquip> kv in CharaSimLoader.LoadedExclusiveEquips)
+            {
+                if (kv.Value.itemIDs[Gear.ItemID])
+                {
+                    List<string> itemNames = new List<string>();
+                    foreach (int item in kv.Value.itemIDs.Items)
+                    {
+                        StringResult sr2;
+                        if (StringLinker == null || !StringLinker.StringEqp.TryGetValue(item, out sr2))
+                        {
+                            sr2 = new StringResult();
+                            sr2.Name = "(null)";
+                        }
+                        itemNames.Add(sr2.Name);
+                    }
+                    if (hasPart2)
+                    {
+                        g.DrawImage(res["dotline"].Image, 0, picH);
+                        picH += 8;
+                    }
+                    GearGraphics.DrawString(g, "#c" + string.Join(", ", itemNames.ToArray()) + "은 중복 착용이 불가능합니다.#", GearGraphics.EquipDetailFont2, 13, 247, ref picH, 15);
+                    picH += 5;
+                    break;
+                }
+            }
+
             picH += 2;
             format.Dispose();
             g.Dispose();

@@ -2206,6 +2206,10 @@ namespace WzComparerR2
                     {
                         CharaSimLoader.LoadSetItems();
                     }
+                    if (CharaSimLoader.LoadedExclusiveEquips.Count == 0)
+                    {
+                        CharaSimLoader.LoadExclusiveEquips();
+                    }
                     var gear = Gear.CreateFromNode(image.Node, PluginManager.FindWz);
                     obj = gear;
                     if (gear != null)
@@ -2229,6 +2233,10 @@ namespace WzComparerR2
                         if (CharaSimLoader.LoadedSetItems.Count == 0) //宠物 预读套装
                         {
                             CharaSimLoader.LoadSetItems();
+                        }
+                        if (CharaSimLoader.LoadedExclusiveEquips.Count == 0)
+                        {
+                            CharaSimLoader.LoadExclusiveEquips();
                         }
                         if ((image = selectedNode.GetValue<Wz_Image>()) == null || !image.TryExtract())
                             return;
@@ -2278,6 +2286,10 @@ namespace WzComparerR2
                     {
                         CharaSimLoader.LoadSetItems();
                     }
+                    if (CharaSimLoader.LoadedExclusiveEquips.Count == 0)
+                    {
+                        CharaSimLoader.LoadExclusiveEquips();
+                    }
                     var mob = Mob.CreateFromNode(image.Node, PluginManager.FindWz);
                     obj = mob;
                     if (mob != null)
@@ -2292,6 +2304,10 @@ namespace WzComparerR2
                     if (CharaSimLoader.LoadedSetItems.Count == 0)
                     {
                         CharaSimLoader.LoadSetItems();
+                    }
+                    if (CharaSimLoader.LoadedExclusiveEquips.Count == 0)
+                    {
+                        CharaSimLoader.LoadExclusiveEquips();
                     }
                     var npc = Npc.CreateFromNode(image.Node, PluginManager.FindWz);
                     obj = npc;
@@ -2328,7 +2344,7 @@ namespace WzComparerR2
         {
             int count = CharaSimLoader.LoadedSetItems.Count;
             CharaSimLoader.LoadedSetItems.Clear();
-            labelItemStatus.Text = "세트 아이템 " + count + "개를 해제했습니다.";
+            labelItemStatus.Text = "세트 아이템 " + count + "개 정리 완료";
         }
 
         private void buttonItemCharItem_CheckedChanged(object sender, EventArgs e)

@@ -12,14 +12,21 @@ namespace WzComparerR2.CharaSim
         static CharaSimLoader()
         {
             loadedSetItems = new Dictionary<int, SetItem>();
+            loadedExclusiveEquips = new Dictionary<int, ExclusiveEquip>();
         }
 
         private static Dictionary<int, SetItem> loadedSetItems;
+        private static Dictionary<int, ExclusiveEquip> loadedExclusiveEquips;
 
         public static Dictionary<int, SetItem> LoadedSetItems
         {
             get { return loadedSetItems; }
         } 
+
+        public static Dictionary<int, ExclusiveEquip> LoadedExclusiveEquips
+        {
+            get { return loadedExclusiveEquips; }
+        }
 
         public static void LoadSetItems()
         {
@@ -48,6 +55,29 @@ namespace WzComparerR2.CharaSim
                     SetItem setItem = SetItem.CreateFromNode(node, optionNode);
                     if (setItem != null)
                         loadedSetItems[setItemIndex] = setItem;
+                }
+            }
+        }
+
+        public static void LoadExclusiveEquips()
+        {
+            //搜索setItemInfo.img
+            Wz_Node etcWz = PluginManager.FindWz(Wz_Type.Etc);
+            if (etcWz == null)
+                return;
+            Wz_Node exclusiveEquipNode = etcWz.FindNodeByPath("ExclusiveEquip.img", true);
+            if (exclusiveEquipNode == null)
+                return;
+
+            loadedExclusiveEquips.Clear();
+            foreach (Wz_Node node in exclusiveEquipNode.Nodes)
+            {
+                int exclusiveEquipIndex;
+                if (Int32.TryParse(node.Text, out exclusiveEquipIndex))
+                {
+                    ExclusiveEquip exclusiveEquip = ExclusiveEquip.CreateFromNode(node);
+                    if (exclusiveEquip != null)
+                        loadedExclusiveEquips[exclusiveEquipIndex] = exclusiveEquip;
                 }
             }
         }
