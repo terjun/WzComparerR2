@@ -2221,7 +2221,7 @@ namespace WzComparerR2
                     Wz_Node itemNode = selectedNode;
                     if (Regex.IsMatch(itemNode.FullPathToFile, @"^Item\\(Cash|Consume|Etc|Install|Cash)\\\d{4}.img\\\d+$"))
                     {
-                        var item = Item.CreateFromNode(itemNode);
+                        var item = Item.CreateFromNode(itemNode, PluginManager.FindWz);
                         obj = item;
                         if (item != null)
                         {
@@ -2240,7 +2240,7 @@ namespace WzComparerR2
                         }
                         if ((image = selectedNode.GetValue<Wz_Image>()) == null || !image.TryExtract())
                             return;
-                        var item = Item.CreateFromNode(image.Node);
+                        var item = Item.CreateFromNode(image.Node, PluginManager.FindWz);
                         obj = item;
                         if (item != null)
                         {
