@@ -1130,7 +1130,7 @@
             this.buttonItemSetItems.Name = "buttonItemSetItems";
             this.buttonItemSetItems.SubItems.AddRange(new DevComponents.DotNetBar.BaseItem[] {
             this.itemContainer43});
-            this.buttonItemSetItems.Text = "SetItems";
+            this.buttonItemSetItems.Text = "세트 아이템";
             // 
             // itemContainer43
             // 
@@ -1150,7 +1150,7 @@
             // buttonItemClearSetItems
             // 
             this.buttonItemClearSetItems.Name = "buttonItemClearSetItems";
-            this.buttonItemClearSetItems.Text = "Clear SetItems";
+            this.buttonItemClearSetItems.Text = "세트 아이템 정리";
             this.buttonItemClearSetItems.Click += new System.EventHandler(this.buttonItemClearSetItems_Click);
             // 
             // itemContainer28
