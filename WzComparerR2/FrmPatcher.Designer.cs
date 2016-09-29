@@ -203,9 +203,9 @@
             this.chkPrePatch.Name = "chkPrePatch";
             this.chkPrePatch.Size = new System.Drawing.Size(76, 16);
             this.chkPrePatch.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
-            this.superTooltip1.SetSuperTooltip(this.chkPrePatch, new DevComponents.DotNetBar.SuperTooltipInfo("요약 패치", "", "실제 패치를 적용하기 전에 패치가 필요한 파일을 확인하고, 자유롭게 선택한 파일만 패치할 수 있습니다.", null, null, DevComponents.DotNetBar.eTooltipColor.Default, true, false, new System.Drawing.Size(180, 120)));
+            this.superTooltip1.SetSuperTooltip(this.chkPrePatch, new DevComponents.DotNetBar.SuperTooltipInfo("패치 요약", "", "실제 패치를 적용하기 전에 패치가 필요한 파일을 확인하고, 자유롭게 선택한 파일만 패치할 수 있습니다.", null, null, DevComponents.DotNetBar.eTooltipColor.Default, true, false, new System.Drawing.Size(180, 120)));
             this.chkPrePatch.TabIndex = 6;
-            this.chkPrePatch.Text = "요약 패치";
+            this.chkPrePatch.Text = "패치 요약";
             // 
             // buttonXOpen2
             // 
@@ -547,7 +547,7 @@
             this.superTabItem1.AttachedControl = this.superTabControlPanel1;
             this.superTabItem1.GlobalItem = false;
             this.superTabItem1.Name = "superTabItem1";
-            this.superTabItem1.Text = "Notice";
+            this.superTabItem1.Text = "알림";
             // 
             // superTabControlPanel2
             // 
@@ -597,40 +597,40 @@
             // columnHeader1
             // 
             this.columnHeader1.Name = "columnHeader1";
-            this.columnHeader1.Text = "FileName";
+            this.columnHeader1.Text = "파일명";
             this.columnHeader1.Width.Absolute = 100;
             // 
             // columnHeader2
             // 
             this.columnHeader2.Editable = false;
             this.columnHeader2.Name = "columnHeader2";
-            this.columnHeader2.Text = "PatchType";
+            this.columnHeader2.Text = "패치 유형";
             this.columnHeader2.Width.Absolute = 70;
             // 
             // columnHeader3
             // 
             this.columnHeader3.Editable = false;
             this.columnHeader3.Name = "columnHeader3";
-            this.columnHeader3.Text = "FileLength";
+            this.columnHeader3.Text = "용량";
             this.columnHeader3.Width.Absolute = 70;
             // 
             // columnHeader4
             // 
             this.columnHeader4.Editable = false;
             this.columnHeader4.Name = "columnHeader4";
-            this.columnHeader4.Text = "Checksum";
+            this.columnHeader4.Text = "패치 후 체크섬";
             this.columnHeader4.Width.Absolute = 70;
             // 
             // columnHeader5
             // 
             this.columnHeader5.Name = "columnHeader5";
-            this.columnHeader5.Text = "OldChecksum";
+            this.columnHeader5.Text = "패치 전 체크섬";
             this.columnHeader5.Width.Absolute = 70;
             // 
             // columnHeader6
             // 
             this.columnHeader6.Name = "columnHeader6";
-            this.columnHeader6.Text = "Action";
+            this.columnHeader6.Text = "동작";
             this.columnHeader6.Width.Absolute = 150;
             // 
             // nodeConnector1
@@ -648,7 +648,7 @@
             this.superTabItem2.AttachedControl = this.superTabControlPanel2;
             this.superTabItem2.GlobalItem = false;
             this.superTabItem2.Name = "superTabItem2";
-            this.superTabItem2.Text = "Files";
+            this.superTabItem2.Text = "파일";
             // 
             // superTabControlPanel3
             // 
@@ -695,7 +695,7 @@
             this.superTabItem3.AttachedControl = this.superTabControlPanel3;
             this.superTabItem3.GlobalItem = false;
             this.superTabItem3.Name = "superTabItem3";
-            this.superTabItem3.Text = "State";
+            this.superTabItem3.Text = "상태";
             // 
             // panelEx1
             // 

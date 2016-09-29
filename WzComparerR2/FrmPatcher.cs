@@ -347,7 +347,13 @@ namespace WzComparerR2
             Node node = new Node(part.FileName) { CheckBoxVisible = true, Checked = true };
             ElementStyle style = new ElementStyle();
             style.TextAlignment = eStyleTextAlignment.Far;
-            node.Cells.Add(new Cell(part.Type.ToString(), style));
+            switch (part.Type)
+            {
+                case 0: node.Cells.Add(new Cell("추가", style)); break;
+                case 1: node.Cells.Add(new Cell("변경", style)); break;
+                case 2: node.Cells.Add(new Cell("제거", style)); break;
+                default: node.Cells.Add(new Cell(part.Type.ToString(), style)); break;
+            }
             node.Cells.Add(new Cell(part.NewFileLength.ToString("n0"), style));
             node.Cells.Add(new Cell(part.NewChecksum.ToString("x8"), style));
             node.Cells.Add(new Cell(part.OldChecksum.ToString("x8"), style));
