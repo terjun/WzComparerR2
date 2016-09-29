@@ -70,7 +70,7 @@ namespace WzComparerR2.CharaSimControl
                 string itemName = setItemPart.Value.RepresentName;
                 string typeName = setItemPart.Value.TypeName;
 
-                if (string.IsNullOrEmpty(itemName) || string.IsNullOrEmpty(typeName))
+                if (string.IsNullOrEmpty(itemName))
                 {
                     foreach (var itemID in setItemPart.Value.ItemIDs)
                     {
@@ -80,11 +80,33 @@ namespace WzComparerR2.CharaSimControl
                             if (StringLinker.StringEqp.TryGetValue(itemID.Key, out sr))
                             {
                                 itemName = sr.Name;
-                                typeName = ItemStringHelper.GetSetItemGearTypeString(Gear.GetGearType(itemID.Key));
                             }
                             else if (StringLinker.StringItem.TryGetValue(itemID.Key, out sr)) //兼容宠物
                             {
                                 itemName = sr.Name;
+                            }
+                        }
+                        if (sr == null)
+                        {
+                            itemName = "(null)";
+                        }
+
+                        break;
+                    }
+                }
+                if (string.IsNullOrEmpty(typeName))
+                {
+                    foreach (var itemID in setItemPart.Value.ItemIDs)
+                    {
+                        StringResult sr = null; ;
+                        if (StringLinker != null)
+                        {
+                            if (StringLinker.StringEqp.TryGetValue(itemID.Key, out sr))
+                            {
+                                typeName = ItemStringHelper.GetSetItemGearTypeString(Gear.GetGearType(itemID.Key));
+                            }
+                            else if (StringLinker.StringItem.TryGetValue(itemID.Key, out sr)) //兼容宠物
+                            {
                                 if (itemID.Key / 10000 == 500)
                                 {
                                     typeName = "펫";
@@ -97,7 +119,7 @@ namespace WzComparerR2.CharaSimControl
                         }
                         if (sr == null)
                         {
-                            itemName = "(null)";
+                            typeName = null;
                         }
 
                         break;
