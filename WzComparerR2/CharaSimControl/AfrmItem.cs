@@ -44,6 +44,7 @@ namespace WzComparerR2.CharaSimControl
         private ACtrlButton btnUpgrade4;
         private ACtrlButton btnToad3;
         private ACtrlButton btnToad4;
+        private ACtrlButton btnCashshop;
         private ACtrlButton btnClose;
         private bool waitForRefresh;
 
@@ -296,6 +297,15 @@ namespace WzComparerR2.CharaSimControl
             this.btnToad4.Size = new Size(16, 16);
             this.btnToad4.ButtonStateChanged += new EventHandler(aCtrl_RefreshCall);
 
+            this.btnCashshop = new ACtrlButton();
+            this.btnCashshop.Normal = new BitmapOrigin(Resource.Item_BtCashshop_normal_0);
+            this.btnCashshop.Pressed = new BitmapOrigin(Resource.Item_BtCashshop_pressed_0);
+            this.btnCashshop.MouseOver = new BitmapOrigin(Resource.Item_BtCashshop_mouseOver_0);
+            this.btnCashshop.Disabled = new BitmapOrigin(Resource.Item_BtCashshop_disabled_0);
+            this.btnCashshop.Location = new Point(502, 337);
+            this.btnCashshop.Size = new Size(82, 16);
+            this.btnCashshop.ButtonStateChanged += new EventHandler(aCtrl_RefreshCall);
+
             this.btnClose = new ACtrlButton();
             this.btnClose.Normal = new BitmapOrigin(Resource.BtClose3_normal_0);
             this.btnClose.Pressed = new BitmapOrigin(Resource.BtClose3_pressed_0);
@@ -359,6 +369,7 @@ namespace WzComparerR2.CharaSimControl
                 this.btnUpgrade4.Visible = true;
                 this.btnToad3.Visible = false;
                 this.btnToad4.Visible = true;
+                this.btnCashshop.Visible = true;
                 this.btnClose.Location = new Point(574, 6);
                 renderFull();
             }
@@ -387,6 +398,7 @@ namespace WzComparerR2.CharaSimControl
                 this.btnUpgrade4.Visible = false;
                 this.btnToad3.Visible = true;
                 this.btnToad4.Visible = false;
+                this.btnCashshop.Visible = false;
                 this.btnClose.Location = new Point(150, 6);
                 renderSmall();
             }
@@ -805,6 +817,7 @@ namespace WzComparerR2.CharaSimControl
                 yield return this.btnUpgrade4;
                 yield return this.btnToad3;
                 yield return this.btnToad4;
+                yield return this.btnCashshop;
                 yield return this.btnClose;
             }
         }
