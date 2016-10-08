@@ -19,5 +19,11 @@ namespace WzComparerR2.CharaSim
         accountSharable,
         timeLimited,
         setItemID,
+        charismaEXP,
+        senseEXP,
+        insightEXP,
+        willEXP,
+        craftEXP,
+        charmEXP,
     }
 }

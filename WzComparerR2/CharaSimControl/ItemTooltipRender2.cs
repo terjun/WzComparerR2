@@ -327,6 +327,31 @@ namespace WzComparerR2.CharaSimControl
                 GearGraphics.DrawString(g, "( 제작 가능 횟수 : " + value + "회 )", GearGraphics.ItemDetailFont, 98, right, ref picH, 16);
             }
 
+            string incline = null;
+            ItemPropType[] inclineTypes = new ItemPropType[]{
+                    ItemPropType.charismaEXP,
+                    ItemPropType.insightEXP,
+                    ItemPropType.willEXP,
+                    ItemPropType.craftEXP,
+                    ItemPropType.senseEXP,
+                    ItemPropType.charmEXP };
+
+            string[] inclineString = new string[]{
+                    "카리스마","통찰력","의지","손재주","감성","매력"};
+
+            for (int i = 0; i < inclineTypes.Length; i++)
+            {
+                if (item.Props.TryGetValue(inclineTypes[i], out value) && value > 0)
+                {
+                    incline += ", " + inclineString[i] + " " + value;
+                }
+            }
+
+            if (!string.IsNullOrEmpty(incline))
+            {
+                GearGraphics.DrawString(g, "#c장착 시 1회에 한해 " + incline.Substring(2) + "의 경험치를 얻으실 수 있습니다.#", GearGraphics.ItemDetailFont, 98, right, ref picH, 16);
+            }
+
             picH += 3;
 
             if (item.Sample.Bitmap != null)
