@@ -952,7 +952,14 @@ namespace WzComparerR2.CharaSimControl
             }
             if (Gear.Props.TryGetValue(GearPropType.accountSharable, out value) && value != 0)
             {
-                tags.Add(ItemStringHelper.GetGearPropString(GearPropType.accountSharable, value));
+                if (Gear.Props.TryGetValue(GearPropType.sharableOnce, out value) && value != 0)
+                {
+                    tags.Add(ItemStringHelper.GetGearPropString(GearPropType.sharableOnce, value));
+                }
+                else
+                {
+                    tags.Add(ItemStringHelper.GetGearPropString(GearPropType.accountSharable, value));
+                }
             }
             if (Gear.Props.TryGetValue(GearPropType.noPotential, out value) && value != 0)
             {

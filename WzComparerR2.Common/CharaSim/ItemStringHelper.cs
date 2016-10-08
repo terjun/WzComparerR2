@@ -105,7 +105,8 @@ namespace WzComparerR2.CharaSim
                 case GearPropType.only: return value == 0 ? null : "고유 아이템";
                 case GearPropType.tradeBlock: return value == 0 ? null : "교환 불가";
                 case GearPropType.equipTradeBlock: return value == 0 ? null : "장착시 교환 불가";
-                case GearPropType.accountSharable: return value == 0 ? null : "계정 내 이동만 가능";
+                case GearPropType.accountSharable: return value == 0 ? null : "월드 내 나의 캐릭터간 이동만 가능";
+                case GearPropType.sharableOnce: return value == 0 ? null : "계정 내 1회 이동 가능(이동 후 교환불가)";
                 case GearPropType.onlyEquip: return value == 0 ? null : "고유장착 아이템";
                 case GearPropType.notExtend: return value == 0 ? null : "유효기간 연장 불가";
                 case GearPropType.tradeAvailable:
@@ -236,7 +237,7 @@ namespace WzComparerR2.CharaSim
                 case GearType.soulShield: return "소울실드";
                 case GearType.demonShield: return "포스실드";
                 case GearType.totem: return "图腾";
-                case GearType.petEquip: return "펫장비";
+                //case GearType.petEquip: return "펫장비";
                 case GearType.taming:
                 case GearType.taming2:
                 case GearType.taming3: 
