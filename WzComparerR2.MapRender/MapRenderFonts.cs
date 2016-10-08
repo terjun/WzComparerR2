@@ -15,6 +15,7 @@ namespace WzComparerR2.MapRender
             this.graphicsDevice = graphicsDevice;
             fonts["default"] = new XnaFont(graphicsDevice, "돋움", 12f);
             fonts["npcName"] = new XnaFont(graphicsDevice, new Font("돋움", 12f, GraphicsUnit.Pixel));
+            fonts["npcDesc"] = new XnaFont(graphicsDevice, new Font("돋움", 13f, GraphicsUnit.Pixel));
             fonts["mobName"] = new XnaFont(graphicsDevice, new Font("돋움", 12f, GraphicsUnit.Pixel));
             fonts["mapName"] = new XnaFont(graphicsDevice, new Font("돋움", 12f, FontStyle.Bold, GraphicsUnit.Pixel));
             fonts["tooltipTitle"] = new XnaFont(graphicsDevice, new Font("돋움", 14f, FontStyle.Bold, GraphicsUnit.Pixel));
@@ -47,6 +48,11 @@ namespace WzComparerR2.MapRender
         public XnaFont NpcNameFont
         {
             get { return this["npcName"]; }
+        }
+
+        public XnaFont NpcDescFont
+        {
+            get { return this["npcDesc"]; }
         }
 
         public XnaFont MobNameFont
