@@ -105,7 +105,8 @@ namespace WzComparerR2.MapRender.UI
                         string pTypeName = GetPortalTypeString(p.PortalType);
                         PrepareTextLine(blocks, env.Fonts.TooltipContentFont, "유형: " + p.PortalType + (pTypeName == null ? null : (" (" + pTypeName + ")")), ref current, Color.White, ref size.X);
                         stringLinker.StringMap.TryGetValue(p.ToMap, out sr);
-                        PrepareTextLine(blocks, env.Fonts.TooltipContentFont, "이동 맵: " + (sr == null ? "(null)" : sr.Name) + "(" + p.ToMap + ")", ref current, Color.White, ref size.X);
+                        if (sr != null)
+                            PrepareTextLine(blocks, env.Fonts.TooltipContentFont, "이동 맵: " + sr.Name + "(" + p.ToMap + ")", ref current, Color.White, ref size.X);
                         PrepareTextLine(blocks, env.Fonts.TooltipContentFont, "이동 포탈: " + p.ToName, ref current, Color.White, ref size.X);
                         if (!string.IsNullOrEmpty(p.Script))
                             PrepareTextLine(blocks, env.Fonts.TooltipContentFont, "스크립트: " + p.Script, ref current, Color.White, ref size.X);
@@ -247,12 +248,16 @@ namespace WzComparerR2.MapRender.UI
                 case RenderObjectType.Npc:
                     {
                         LifePatch p = patch as LifePatch;
-                        string name;
+                        string name, desc = null;
                         if (stringLinker != null && stringLinker.StringNpc.TryGetValue(p.LifeID, out sr))
+                        {
                             name = sr.Name;
+                            desc = sr.Desc;
+                        }
                         else
                             name = p.LifeID.ToString();
                         DrawNameTooltip(env, name, env.Fonts.NpcNameFont, p.Position, Color.Yellow);
+                        if (desc != null) DrawNameTooltip(env, desc, env.Fonts.NpcNameFont, p.Position + new Vector2(0, env.Fonts.NpcNameFont.MeasureString(name).Y + 3), Color.Yellow);
                     }
                     break;
             }
@@ -262,7 +267,7 @@ namespace WzComparerR2.MapRender.UI
         {
             SpriteBatchEx sprite = env.Sprite;
             Vector2 size = font.MeasureString(name);
-            Rectangle rect = new Rectangle((int)(mapPosition.X - size.X / 2 - 2), (int)(mapPosition.Y + 2), (int)(size.X + 4), (int)(size.Y + 3));
+            Rectangle rect = new Rectangle((int)(mapPosition.X - size.X / 2 - 2), (int)(mapPosition.Y + 2), (int)(size.X + 5), (int)(size.Y + 2));
             sprite.FillRectangle(rect, new Color(Color.Black, 0.7f), env.Camera.Origin);
             sprite.DrawStringEx(
                 font,
