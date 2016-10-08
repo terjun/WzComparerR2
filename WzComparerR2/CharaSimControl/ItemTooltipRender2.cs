@@ -285,6 +285,12 @@ namespace WzComparerR2.CharaSimControl
                     20 + 68 - 26,
                     picH + 6 + 68 - 26);
             }
+            if (Item.TimeLimited)
+            {
+                g.DrawImage(GearGraphics.EnlargeBitmap(Resource.Item_timeLimit_0),
+                    20,
+                    picH + 6);
+            }
             g.DrawImage(Resource.UIToolTip_img_Item_ItemIcon_cover, 18, picH + 4); //绘制左上角cover
 
             if (item.Props.TryGetValue(ItemPropType.reqLevel, out value))

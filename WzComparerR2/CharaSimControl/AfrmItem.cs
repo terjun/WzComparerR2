@@ -497,6 +497,10 @@ namespace WzComparerR2.CharaSimControl
             {
                 g.DrawImage(Resource.CashItem_0, origin.X + 20, origin.Y - 12);
             }
+            if (gear.TimeLimited)
+            {
+                g.DrawImage(Resource.Item_timeLimit_0, origin.X, origin.Y - 32);
+            }
         }
 
         private void renderItem(Graphics g, Item item, Point origin)
@@ -511,6 +515,10 @@ namespace WzComparerR2.CharaSimControl
             if (item.Cash)
             {
                 g.DrawImage(Resource.CashItem_0, origin.X + 20, origin.Y - 12);
+            }
+            if (item.TimeLimited)
+            {
+                g.DrawImage(Resource.Item_timeLimit_0, origin.X, origin.Y - 32);
             }
         }
 
