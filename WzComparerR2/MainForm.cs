@@ -92,7 +92,7 @@ namespace WzComparerR2
             if (!soundPlayer.Init())
             {
                 Un4seen.Bass.BASSError error = soundPlayer.GetLastError();
-                MessageBoxEx.Show("Bass初始化失败！\r\n\r\nerrorCode : " + (int)error + "(" + error + ")", "虫子");
+                MessageBoxEx.Show("Bass 사운드 플레이어 오류\r\n\r\nerrorCode : " + (int)error + "(" + error + ")", "오류");
             }
             soundTimer = new Timer(120d);
             soundTimer.Elapsed += new System.Timers.ElapsedEventHandler(soundTimer_Elapsed);
@@ -1521,11 +1521,11 @@ namespace WzComparerR2
                     writer.WriteEndDocument();
                     writer.Close();
 
-                    labelItemStatus.Text = img.Name + "导出完毕。";
+                    labelItemStatus.Text = "내보내기 완료: " + img.Name;
                 }
                 catch (Exception ex)
                 {
-                    MessageBoxEx.Show(ex.ToString(), "错了");
+                    MessageBoxEx.Show(ex.ToString(), "오류");
                 }
                 finally
                 {
