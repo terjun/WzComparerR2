@@ -182,8 +182,8 @@ namespace WzComparerR2.CharaSimControl
         {
             if (this.Bitmap != null)
             {
-                var dataObj = new ImageDataObject(this.Bitmap, this.ImageFileName);
-                Clipboard.SetDataObject(dataObj, false);
+                var dataObj = new DataObject(DataFormats.Bitmap, this.Bitmap);
+                Clipboard.SetDataObject(dataObj);
             }
         }
 
