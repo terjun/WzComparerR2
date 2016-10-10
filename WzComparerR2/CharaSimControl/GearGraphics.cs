@@ -125,17 +125,17 @@ namespace WzComparerR2.CharaSimControl
         /// 表示橙色品质的装备名字画刷，额外属性为0~5，并且已经附加卷轴。
         /// </summary>
         public static readonly Brush GearNameBrushC = new SolidBrush(Color.FromArgb(255, 136, 17));
-        private static Color gearBlueColor = Color.FromArgb(85, 170, 255);
+        private static Color gearBlueColor = Color.FromArgb(102, 255, 255);
         /// <summary>
         /// 表示蓝色品质的装备名字画刷，额外属性为6~22。
         /// </summary>
         public static readonly Brush GearNameBrushD = new SolidBrush(gearBlueColor);
-        private static Color gearPurpleColor = Color.FromArgb(204, 102, 255);
+        private static Color gearPurpleColor = Color.FromArgb(153, 102, 255);
         /// <summary>
         /// 表示紫色品质的装备名字画刷，额外属性为23~39。
         /// </summary>
         public static readonly Brush GearNameBrushE = new SolidBrush(gearPurpleColor);
-        private static Color gearGoldColor = Color.FromArgb(255, 255, 17);
+        private static Color gearGoldColor = Color.FromArgb(255, 204, 0);
         /// <summary>
         /// 表示金色品质的装备名字画刷，额外属性为40~54。
         /// </summary>
@@ -261,7 +261,7 @@ namespace WzComparerR2.CharaSimControl
                     if (strPos < s.Length && s[strPos] == 'c')//遇到#c 换橙刷子并flush
                     {
                         g.DrawString(sb.ToString(), font, brush, curX, y, fmt);
-                        brushStack.Push(GearGraphics.OrangeBrush);
+                        brushStack.Push(GearGraphics.OrangeBrush2);
                         brush = brushStack.Peek();
                         strPos++;
                     }
@@ -275,7 +275,7 @@ namespace WzComparerR2.CharaSimControl
                     else if (brushStack.Count == 1) //同#c
                     {
                         g.DrawString(sb.ToString(), font, brush, curX, y, fmt);
-                        brushStack.Push(GearGraphics.OrangeBrush);
+                        brushStack.Push(GearGraphics.OrangeBrush2);
                         brush = brushStack.Peek();
                     }
                     else//遇到# 换白刷子并flush

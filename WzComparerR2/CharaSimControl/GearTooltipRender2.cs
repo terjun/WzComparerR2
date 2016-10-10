@@ -272,8 +272,8 @@ namespace WzComparerR2.CharaSimControl
             if (Gear.TimeLimited)
             {
                 g.DrawImage(GearGraphics.EnlargeBitmap(Resource.Item_timeLimit_0),
-                    18,
-                    picH + 15);
+                    18 + 2,
+                    picH + 15 + 2);
             }
             //检查星岩
             bool hasSocket = Gear.GetBooleanValue(GearPropType.nActivatedSocket);
@@ -296,8 +296,8 @@ namespace WzComparerR2.CharaSimControl
             g.DrawImage(Resource.UIToolTip_img_Item_Equip_Summary_incline_0, 249 - 19, picH + 27); //暂时画个0
 
             //绘制属性需求
-            DrawGearReq(g, 97, picH + 58);
-            picH += 93;
+            DrawGearReq(g, 97, picH + 59);
+            picH += 94;
 
             //绘制属性变化
             DrawPropDiffEx(g, 12, picH);
@@ -484,7 +484,7 @@ namespace WzComparerR2.CharaSimControl
                 picH += 15;*/
                 hasPart2 = true;
             }
-            picH += 5;
+            picH += 8;
 
             //绘制浮动属性
             if ((Gear.VariableStat != null && Gear.VariableStat.Count > 0) || hasReduce)
@@ -546,18 +546,17 @@ namespace WzComparerR2.CharaSimControl
                     g.DrawImage(res["dotline"].Image, 0, picH);
                     picH += 8;
                 }
-                g.DrawImage(GetAdditionalOptionIcon(Gear.Grade), 8, picH - 1);
-                g.DrawString("잠재옵션", GearGraphics.EquipDetailFont, GearGraphics.GetPotentialTextBrush(Gear.Grade), 26, picH);
-                picH += 17;
+                g.DrawImage(GetAdditionalOptionIcon(Gear.Grade), 9, picH - 1);
+                g.DrawString("잠재옵션", GearGraphics.EquipDetailFont, GearGraphics.GetPotentialTextBrush(Gear.Grade), 25, picH);
+                picH += 15;
                 foreach (Potential potential in Gear.Options)
                 {
                     if (potential != null)
                     {
                         g.DrawString(potential.ConvertSummary(), GearGraphics.EquipDetailFont2, Brushes.White, 11, picH);
-                        picH += 16;
+                        picH += 15;
                     }
                 }
-                picH += 5;
             }
 
             if (hasSocket)
@@ -858,7 +857,7 @@ namespace WzComparerR2.CharaSimControl
                     }
                     if (info.Exp > 0)
                     {
-                        g.DrawString("필요 경험치 : " + info.Exp + "%", GearGraphics.EquipDetailFont, Brushes.White, 10, picHeight);
+                        g.DrawString("단위 경험치 : " + info.Exp + "%", GearGraphics.EquipDetailFont, Brushes.White, 10, picHeight);
                         picHeight += 15;
                     }
 
@@ -961,6 +960,10 @@ namespace WzComparerR2.CharaSimControl
                     tags.Add(ItemStringHelper.GetGearPropString(GearPropType.accountSharable, value));
                 }
             }
+            if (Gear.Props.TryGetValue(GearPropType.onlyEquip, out value) && value != 0)
+            {
+                tags.Add(ItemStringHelper.GetGearPropString(GearPropType.onlyEquip, value));
+            }
             if (Gear.Props.TryGetValue(GearPropType.noPotential, out value) && value != 0)
             {
                 tags.Add(ItemStringHelper.GetGearPropString(GearPropType.noPotential, value));
@@ -969,11 +972,7 @@ namespace WzComparerR2.CharaSimControl
             {
                 tags.Add(ItemStringHelper.GetGearPropString(GearPropType.fixedPotential, value));
             }
-
-            if (Gear.Props.TryGetValue(GearPropType.onlyEquip, out value) && value != 0)
-            {
-                tags.Add(ItemStringHelper.GetGearPropString(GearPropType.onlyEquip, value));
-            }
+            
             if (Gear.Props.TryGetValue(GearPropType.blockGoldHammer, out value) && value != 0)
             {
                 tags.Add(ItemStringHelper.GetGearPropString(GearPropType.blockGoldHammer, value));

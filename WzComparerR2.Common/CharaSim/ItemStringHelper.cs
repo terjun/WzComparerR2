@@ -131,7 +131,8 @@ namespace WzComparerR2.CharaSim
 
                 case GearPropType.incMHP_incMMP: return "최대 HP / 최대 MP : " + sign + value;
                 case GearPropType.incMHPr_incMMPr: return "최대 HP / 최대 MP : " + sign + value + "%";
-                case GearPropType.incPAD_incMAD: return "공격력 / 마력 : " + sign + value;
+                case GearPropType.incPAD_incMAD:
+                case GearPropType.incAD: return "공격력 / 마력 : " + sign + value;
                 case GearPropType.incPDD_incMDD: return "방어력 : " + sign + value;
                 //case GearPropType.incACC_incEVA: return "명중치 / 회피치：" + sign + value;
 

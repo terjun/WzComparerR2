@@ -27,6 +27,7 @@ namespace WzComparerR2.CharaSim
         incPAD_incMAD,
         incPAD,
         incMAD,
+        incAD,
         incPDD_incMDD,
         incPDD,
         incMDD,

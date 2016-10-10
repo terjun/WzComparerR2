@@ -499,7 +499,7 @@ namespace WzComparerR2.CharaSimControl
             }
             if (gear.TimeLimited)
             {
-                g.DrawImage(Resource.Item_timeLimit_0, origin.X, origin.Y - 32);
+                g.DrawImage(Resource.Item_timeLimit_0, origin.X + 1, origin.Y - 31);
             }
         }
 
