@@ -149,6 +149,7 @@ namespace WzComparerR2.CharaSimControl
         /// 表示红色品质的装备名字画刷，额外属性为70以上。
         /// </summary>
         public static readonly Brush GearNameBrushH = new SolidBrush(Color.FromArgb(255, 0, 119));
+        public static readonly Brush MasterLabelBrush = new SolidBrush(Color.FromArgb(0, 204, 255));
 
         public static Brush GetGearNameBrush(int diff, bool up)
         {

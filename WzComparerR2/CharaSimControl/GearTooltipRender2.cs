@@ -213,6 +213,17 @@ namespace WzComparerR2.CharaSimControl
                 picH += 15;
             }
 
+            if (Gear.Props.TryGetValue(GearPropType.royalSpecial, out value) && value > 0)
+            {
+                g.DrawString("스페셜라벨", GearGraphics.EquipDetailFont, GearGraphics.GearNameBrushA, 130, picH, format);
+                picH += 15;
+            }
+            else if (Gear.Props.TryGetValue(GearPropType.masterSpecial, out value) && value > 0)
+            {
+                g.DrawString("마스터라벨", GearGraphics.EquipDetailFont, GearGraphics.MasterLabelBrush, 130, picH, format);
+                picH += 15;
+            }
+
             //装备限时
             if (Gear.TimeLimited)
             {
@@ -265,9 +276,18 @@ namespace WzComparerR2.CharaSimControl
             }
             if (Gear.Cash) //绘制cash标识
             {
-                g.DrawImage(GearGraphics.EnlargeBitmap(Resource.CashItem_0),
-                    18 + 68 - 26,
-                    picH + 15 + 68 - 26);
+                if (Gear.Props.TryGetValue(GearPropType.royalSpecial, out value) && value > 0)
+                    g.DrawImage(GearGraphics.EnlargeBitmap(Resource.CashItem_label_0),
+                        18 + 68 - 26,
+                        picH + 15 + 68 - 26);
+                else if (Gear.Props.TryGetValue(GearPropType.masterSpecial, out value) && value > 0)
+                    g.DrawImage(GearGraphics.EnlargeBitmap(Resource.CashItem_label_3),
+                        18 + 68 - 26,
+                        picH + 15 + 68 - 26);
+                else
+                    g.DrawImage(GearGraphics.EnlargeBitmap(Resource.CashItem_0),
+                        18 + 68 - 26,
+                        picH + 15 + 68 - 26);
             }
             if (Gear.TimeLimited)
             {

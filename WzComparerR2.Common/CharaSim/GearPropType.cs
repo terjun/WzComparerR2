@@ -101,6 +101,8 @@ namespace WzComparerR2.CharaSim
         durability,
         reqCraft,
         cash,
+        royalSpecial,
+        masterSpecial,
         reduceReq,
 
         //技能特有属性
