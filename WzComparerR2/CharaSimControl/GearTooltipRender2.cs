@@ -232,6 +232,15 @@ namespace WzComparerR2.CharaSimControl
                 g.DrawString(expireStr, GearGraphics.EquipDetailFont, Brushes.White, 130, picH, format);
                 picH += 15;
             }
+            if (Gear.AbilityTimeLimited != null && Gear.AbilityTimeLimited.Count > 0)
+            {
+                DateTime time = DateTime.Now.AddDays(7d);
+                string expireStr;
+                if (!Gear.Cash) expireStr = time.ToString("yyyy년 M월 d일 HH시 mm분까지 효과 지속");
+                else expireStr = time.ToString("yyyy년 M월 d일 HH시 mm분까지 사용가능");
+                g.DrawString(expireStr, GearGraphics.EquipDetailFont, Brushes.White, 130, picH, format);
+                picH += 15;
+            }
 
             //分割线1号
             picH += 7;
@@ -427,15 +436,38 @@ namespace WzComparerR2.CharaSimControl
                 if ((int)p.Key < 100 && p.Value != 0)
                     props.Add(p.Key);
             }
+            foreach (KeyValuePair<GearPropType, int> p in Gear.AbilityTimeLimited)
+            {
+                if ((int)p.Key < 100 && p.Value != 0 && !props.Contains(p.Key))
+                    props.Add(p.Key);
+            }
             props.Sort();
             bool epic = Gear.Props.TryGetValue(GearPropType.epicItem, out value) && value > 0;
             foreach (GearPropType type in props)
             {
                 if (ItemStringHelper.GetGearPropString(type, Gear.Props[type]) != null)
                 {
-                    g.DrawString(ItemStringHelper.GetGearPropString(type, Gear.Props[type]),
-                        (epic && Gear.IsEpicPropType(type)) ? GearGraphics.EpicGearDetailFont : GearGraphics.EquipDetailFont,
-                        Brushes.White, 11, picH);
+                    if (!Gear.AbilityTimeLimited.ContainsKey(type))
+                    {
+                        g.DrawString(ItemStringHelper.GetGearPropString(type, Gear.Props[type]),
+                            (epic && Gear.IsEpicPropType(type)) ? GearGraphics.EpicGearDetailFont : GearGraphics.EquipDetailFont,
+                            Brushes.White, 11, picH);
+                    }
+                    else
+                    {
+                        g.DrawString(ItemStringHelper.GetGearPropString(type, Gear.Props[type] + Gear.AbilityTimeLimited[type]) + " (" + Gear.Props[type] + " +" + Gear.AbilityTimeLimited[type] + ")",
+                            (epic && Gear.IsEpicPropType(type)) ? GearGraphics.EpicGearDetailFont : GearGraphics.EquipDetailFont,
+                            Brushes.White, 11, picH);
+                        g.DrawString(ItemStringHelper.GetGearPropString(type, Gear.Props[type] + Gear.AbilityTimeLimited[type]) + " (" + Gear.Props[type] + " +" + Gear.AbilityTimeLimited[type],
+                            (epic && Gear.IsEpicPropType(type)) ? GearGraphics.EpicGearDetailFont : GearGraphics.EquipDetailFont,
+                            GearGraphics.GearNameBrushD, 11, picH);
+                        g.DrawString(ItemStringHelper.GetGearPropString(type, Gear.Props[type] + Gear.AbilityTimeLimited[type]) + " (" + Gear.Props[type],
+                            (epic && Gear.IsEpicPropType(type)) ? GearGraphics.EpicGearDetailFont : GearGraphics.EquipDetailFont,
+                            Brushes.White, 11, picH);
+                        g.DrawString(ItemStringHelper.GetGearPropString(type, Gear.Props[type] + Gear.AbilityTimeLimited[type]),
+                            (epic && Gear.IsEpicPropType(type)) ? GearGraphics.EpicGearDetailFont : GearGraphics.EquipDetailFont,
+                            GearGraphics.GearNameBrushD, 11, picH);
+                    }
                     picH += 15;
                     hasPart2 = true;
                 }
@@ -1001,6 +1033,12 @@ namespace WzComparerR2.CharaSimControl
             if (Gear.Props.TryGetValue(GearPropType.notExtend, out value) && value != 0)
             {
                 tags.Add(ItemStringHelper.GetGearPropString(GearPropType.notExtend, value));
+            }
+
+            if (Gear.AbilityTimeLimited != null && Gear.AbilityTimeLimited.Count > 0)
+            {
+                tags.Add("기간 한정 능력치");
+                tags.Add(ItemStringHelper.GetGearPropString(GearPropType.notExtend, 1));
             }
 
             return tags.Count > 0 ? string.Join(", ", tags.ToArray()) : null;

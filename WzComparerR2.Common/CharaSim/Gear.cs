@@ -13,6 +13,7 @@ namespace WzComparerR2.CharaSim
         {
             Props = new Dictionary<GearPropType, int>();
             VariableStat = new Dictionary<GearPropType, float>();
+            AbilityTimeLimited = new Dictionary<GearPropType, int>();
             Options = new Potential[3];
             AdditionalOptions = new Potential[3];
             Additions = new List<Addition>();
@@ -41,7 +42,8 @@ namespace WzComparerR2.CharaSim
         public List<Addition> Additions { get; private set; }
         public Dictionary<GearPropType, int> Props { get; private set; }
         public Dictionary<GearPropType, float> VariableStat { get; private set; }
-        
+        public Dictionary<GearPropType, int> AbilityTimeLimited { get; private set; }
+
 
         public bool Epic
         {
@@ -478,6 +480,33 @@ namespace WzComparerR2.CharaSim
                                     try
                                     {
                                         gear.VariableStat.Add(type, Convert.ToSingle(statNode.Value));
+                                    }
+                                    finally
+                                    {
+                                    }
+                                }
+                            }
+                            break;
+
+                        case "abilityTimeLimited": //升级奖励属性
+                            foreach (Wz_Node statNode in subNode.Nodes)
+                            {
+                                GearPropType type;
+                                if (Enum.TryParse(statNode.Text, out type))
+                                {
+                                    try
+                                    {
+                                        gear.AbilityTimeLimited.Add(type, Convert.ToInt32(statNode.Value));
+                                        int addDiff = Convert.ToInt32(statNode.Value);
+                                        switch (type)
+                                        {
+                                            case GearPropType.incMHP_incMMP:
+                                            case GearPropType.incMHP:
+                                            case GearPropType.incMMP:
+                                                addDiff = addDiff / 50;
+                                                break;
+                                        }
+                                        gear.diff += addDiff;
                                     }
                                     finally
                                     {
