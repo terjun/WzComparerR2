@@ -418,6 +418,8 @@ namespace WzComparerR2.CharaSim
                     return value == 0 ? null : "퀘스트 아이템";
                 case ItemPropType.pquest:
                     return value == 0 ? null : "파티 퀘스트 아이템";
+                case ItemPropType.multiPet:
+                    return value == 0 ? "일반펫 (다른 일반펫과 중복 사용불가)" : "멀티펫 (다른 펫과 최대 3개 중복 사용가능)";
                 default:
                     return null;
             }

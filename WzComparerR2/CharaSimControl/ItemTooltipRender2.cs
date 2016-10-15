@@ -261,15 +261,38 @@ namespace WzComparerR2.CharaSimControl
                 picH = 10;
             }
 
+            bool hasPart2 = false;
             format.Alignment = StringAlignment.Center;
             g.DrawString(sr.Name, GearGraphics.ItemNameFont2, Brushes.White, tooltip.Width / 2, picH, format);
-            picH += 22;
+            picH += 21;
 
             string attr = GetItemAttributeString();
             if (!string.IsNullOrEmpty(attr))
             {
                 g.DrawString(attr, GearGraphics.ItemDetailFont, GearGraphics.GearNameBrushC, tooltip.Width / 2, picH, format);
-                picH += 19;
+                picH += 16;
+                hasPart2 = true;
+            }
+
+            if (item.Props.TryGetValue(ItemPropType.limitedLife, out value) && value != 0)
+            {
+                string expireStr = string.Format("마법의 시간: {0}시간 {1}분", value / 3600, (value % 3600) / 60);
+                g.DrawString(expireStr, GearGraphics.ItemDetailFont, Brushes.White, tooltip.Width / 2, picH, format);
+                picH += 16;
+                hasPart2 = true;
+            }
+            else if (item.Props.TryGetValue(ItemPropType.life, out value) && value != 0)
+            {
+                DateTime time = DateTime.Now.AddDays(value);
+                string expireStr = time.ToString("마법의 시간: yyyy년 M월 d일 HH시까지");
+                g.DrawString(expireStr, GearGraphics.ItemDetailFont, Brushes.White, tooltip.Width / 2, picH, format);
+                picH += 16;
+                hasPart2 = true;
+            }
+
+            if (hasPart2)
+            {
+                picH += 1;
             }
 
             //绘制图标
@@ -444,6 +467,14 @@ namespace WzComparerR2.CharaSimControl
             if (item.Props.TryGetValue(ItemPropType.accountSharable, out value) && value != 0)
             {
                 tags.Add(ItemStringHelper.GetItemPropString(ItemPropType.accountSharable, value));
+            }
+            if (item.Props.TryGetValue(ItemPropType.multiPet, out value))
+            {
+                tags.Add(ItemStringHelper.GetItemPropString(ItemPropType.multiPet, value));
+            }
+            else if (item.ItemID / 10000 == 500)
+            {
+                tags.Add(ItemStringHelper.GetItemPropString(ItemPropType.multiPet, 0));
             }
 
             return tags.Count > 0 ? string.Join(", ", tags.ToArray()) : null;

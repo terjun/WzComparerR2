@@ -26,5 +26,8 @@ namespace WzComparerR2.CharaSim
         craftEXP,
         charmEXP,
         nickTag,
+        multiPet,
+        life,
+        limitedLife,
     }
 }
