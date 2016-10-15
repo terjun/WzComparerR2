@@ -66,13 +66,15 @@ namespace WzComparerR2.CharaSimControl
             format.Alignment = StringAlignment.Far;
 
             Wz_Node characterWz = PluginManager.FindWz(Wz_Type.Character);
+            Wz_Node itemWz = PluginManager.FindWz(Wz_Type.Item);
 
             foreach (var setItemPart in this.SetItem.itemIDs.Parts)
             {
                 string itemName = setItemPart.Value.RepresentName;
                 string typeName = setItemPart.Value.TypeName;
 
-                Gear gear = null;
+                bool Cash = false;
+                BitmapOrigin IconRaw = new BitmapOrigin();
 
                 if (characterWz != null)
                 {
@@ -83,9 +85,26 @@ namespace WzComparerR2.CharaSimControl
                             Wz_Node itemNode = typeNode.FindNodeByPath(string.Format("{0:D8}.img", itemID.Key), true);
                             if (itemNode != null)
                             {
-                                gear = Gear.CreateFromNode(itemNode, PluginManager.FindWz);
+                                Gear gear = Gear.CreateFromNode(itemNode, PluginManager.FindWz);
+                                Cash = gear.Cash;
+                                IconRaw = gear.IconRaw;
                                 break;
                             }
+                        }
+
+                        break;
+                    }
+                }
+                if (itemWz != null)
+                {
+                    foreach (var itemID in setItemPart.Value.ItemIDs)
+                    {
+                        Wz_Node itemNode = itemWz.FindNodeByPath(string.Format("Pet\\{0:D7}.img", itemID.Key), true);
+                        if (itemNode != null)
+                        {
+                            Item item = Item.CreateFromNode(itemNode, PluginManager.FindWz);
+                            Cash = item.Cash;
+                            IconRaw = item.IconRaw;
                         }
 
                         break;
@@ -116,7 +135,7 @@ namespace WzComparerR2.CharaSimControl
                         break;
                     }
                 }
-                if (string.IsNullOrEmpty(typeName) && (gear == null || !gear.Cash))
+                if (string.IsNullOrEmpty(typeName))
                 {
                     foreach (var itemID in setItemPart.Value.ItemIDs)
                     {
@@ -125,7 +144,8 @@ namespace WzComparerR2.CharaSimControl
                         {
                             if (StringLinker.StringEqp.TryGetValue(itemID.Key, out sr))
                             {
-                                typeName = ItemStringHelper.GetSetItemGearTypeString(Gear.GetGearType(itemID.Key));
+                                if (!Cash)
+                                    typeName = ItemStringHelper.GetSetItemGearTypeString(Gear.GetGearType(itemID.Key));
                             }
                             else if (StringLinker.StringItem.TryGetValue(itemID.Key, out sr)) //兼容宠物
                             {
@@ -157,7 +177,7 @@ namespace WzComparerR2.CharaSimControl
                 }
 
                 Brush brush = setItemPart.Value.Enabled ? Brushes.White : GearGraphics.GrayBrush2;
-                if (gear == null || !gear.Cash)
+                if (!Cash)
                 {
                     g.DrawString(itemName, GearGraphics.EquipDetailFont2, brush, 8, picHeight);
                     g.DrawString(typeName, GearGraphics.EquipDetailFont2, brush, 254, picHeight, format);
@@ -167,9 +187,9 @@ namespace WzComparerR2.CharaSimControl
                 {
                     g.FillRectangle(GearGraphics.GearIconBackBrush2, 10, picHeight, 36, 36);
                     g.DrawImage(Resource.Item_shadow, 10 + 2 + 3, picHeight + 2 + 32 - 6);
-                    if (gear != null && gear.IconRaw.Bitmap != null)
+                    if (IconRaw.Bitmap != null)
                     {
-                        g.DrawImage(gear.IconRaw.Bitmap, 10 + 2 - gear.IconRaw.Origin.X, picHeight + 2 + 32 - gear.IconRaw.Origin.Y);
+                        g.DrawImage(IconRaw.Bitmap, 10 + 2 - IconRaw.Origin.X, picHeight + 2 + 32 - IconRaw.Origin.Y);
                     }
                     g.DrawImage(Resource.CashItem_0, 10 + 2 + 20, picHeight + 2 + 32 - 12);
                     g.DrawString(itemName, GearGraphics.EquipDetailFont2, brush, 50, picHeight);
@@ -220,7 +240,7 @@ namespace WzComparerR2.CharaSimControl
                                 sr = new StringResult();
                                 sr.Name = p.SkillID.ToString();
                             }
-                            string summary = "<" + sr.Name + "> 스킬 사용 가능";
+                            string summary = "<" + sr.Name.TrimEnd(Environment.NewLine.ToCharArray()) + "> 스킬 사용 가능";
                             g.DrawString(summary, GearGraphics.EquipDetailFont2, brush, 8, picHeight);
                             picHeight += 15;
                         }
