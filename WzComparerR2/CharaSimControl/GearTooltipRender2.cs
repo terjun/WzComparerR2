@@ -317,6 +317,7 @@ namespace WzComparerR2.CharaSimControl
                 }
             }
 
+            g.DrawImage(Resource.UIToolTip_img_Item_ItemIcon_old, 14 - 2 + 5, picH + 9 + 5);
             g.DrawImage(Resource.UIToolTip_img_Item_ItemIcon_cover, 16, picH + 14); //绘制左上角cover
 
             //绘制攻击力变化

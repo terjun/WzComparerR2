@@ -140,7 +140,7 @@ namespace WzComparerR2.CharaSimControl
         /// 表示金色品质的装备名字画刷，额外属性为40~54。
         /// </summary>
         public static readonly Brush GearNameBrushF = new SolidBrush(gearGoldColor);
-        private static Color gearGreenColor = Color.FromArgb(51, 255, 0);
+        private static Color gearGreenColor = Color.FromArgb(204, 255, 0);
         /// <summary>
         /// 表示绿色品质的装备名字画刷，额外属性为55~69。
         /// </summary>
