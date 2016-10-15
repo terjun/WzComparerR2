@@ -1338,7 +1338,7 @@ namespace WzComparerR2.CharaSimControl
             int height = wce.Max(bmp => bmp.Rectangle.Bottom);
 
             //测试宽度
-            var font = GearGraphics.EquipDetailFont2;
+            var font = GearGraphics.ItemDetailFont;
             var fmt = StringFormat.GenericTypographic;
             int width = string.IsNullOrEmpty(medalName) ? 0 : (int)Math.Ceiling(g.MeasureString(medalName, font, 261, fmt).Width);
             int left = 130 - width / 2;

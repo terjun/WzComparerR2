@@ -25,5 +25,6 @@ namespace WzComparerR2.CharaSim
         willEXP,
         craftEXP,
         charmEXP,
+        nickTag,
     }
 }
