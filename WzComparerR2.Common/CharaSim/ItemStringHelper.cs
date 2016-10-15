@@ -112,14 +112,14 @@ namespace WzComparerR2.CharaSim
                 case GearPropType.tradeAvailable:
                     switch (value)
                     {
-                        case 1: return " #c카르마의 가위를 사용하면 1회 교환이 가능하게 할 수 있습니다.#";
-                        case 2: return " #c플래티넘 카르마의 가위를 사용하면 1회 교환이 가능하게 할 수 있습니다.#";
+                        case 1: return "#c카르마의 가위를 사용하면 1회 교환이 가능하게 할 수 있습니다.#";
+                        case 2: return "#c플래티넘 카르마의 가위를 사용하면 1회 교환이 가능하게 할 수 있습니다.#";
                         default: return null;
                     }
                 case GearPropType.accountShareTag:
                     switch (value)
                     {
-                        case 1: return " #c쉐어 네임 텍을 사용하면 1회 같은 계정 내 캐릭터로 이동할 수 있습니다.#";
+                        case 1: return "#c쉐어 네임 텍을 사용하면 1회 같은 계정 내 캐릭터로 이동할 수 있습니다.#";
                         default: return null;
                     }
                 case GearPropType.noPotential: return value == 0 ? null : "잠재능력 설정 불가";
@@ -127,7 +127,7 @@ namespace WzComparerR2.CharaSim
                 case GearPropType.blockGoldHammer: return value == 0 ? null : "황금망치 사용 불가";
                 case GearPropType.superiorEqp: return value == 0 ? null : "아이템 강화 성공시 더욱 높은 효과를 받을 수 있습니다.";
                 case GearPropType.nActivatedSocket: return value == 0 ? null : "#c可以镶嵌星岩#";
-                case GearPropType.jokerToSetItem: return value == 0 ? null : " #c어떠한 셋트 아이템에도 포함되는 럭키 아이템!#";
+                case GearPropType.jokerToSetItem: return value == 0 ? null : "#c어떠한 셋트 아이템에도 포함되는 럭키 아이템!#";
 
                 case GearPropType.incMHP_incMMP: return "최대 HP / 최대 MP : " + sign + value;
                 case GearPropType.incMHPr_incMMPr: return "최대 HP / 최대 MP : " + sign + value + "%";

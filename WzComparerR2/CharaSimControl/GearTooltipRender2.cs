@@ -630,7 +630,7 @@ namespace WzComparerR2.CharaSimControl
             {
                 if (Gear.Props.TryGetValue(type, out value) && value != 0)
                 {
-                    desc.Add(ItemStringHelper.GetGearPropString(type, value));
+                    desc.Add(" " + ItemStringHelper.GetGearPropString(type, value));
                 }
             }
 
@@ -689,7 +689,7 @@ namespace WzComparerR2.CharaSimControl
                 }
                 if (!string.IsNullOrEmpty(sr.Desc))
                 {
-                    GearGraphics.DrawString(g, sr.Desc, GearGraphics.EquipDetailFont2, 13, 247, ref picH, 15);
+                    GearGraphics.DrawString(g, sr.Desc.Replace("#"," #"), GearGraphics.EquipDetailFont2, 13, 244, ref picH, 15);
                 }
                 foreach (string str in desc)
                 {
@@ -971,9 +971,10 @@ namespace WzComparerR2.CharaSimControl
             }
             if (Gear.Props.TryGetValue(GearPropType.accountSharable, out value) && value != 0)
             {
-                if (Gear.Props.TryGetValue(GearPropType.sharableOnce, out value) && value != 0)
+                int value2;
+                if (Gear.Props.TryGetValue(GearPropType.sharableOnce, out value2) && value2 != 0)
                 {
-                    tags.Add(ItemStringHelper.GetGearPropString(GearPropType.sharableOnce, value));
+                    tags.Add(ItemStringHelper.GetGearPropString(GearPropType.sharableOnce, value2));
                 }
                 else
                 {
