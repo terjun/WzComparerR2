@@ -176,7 +176,7 @@ namespace WzComparerR2.CharaSim
                 //case GearType.hair2: return "纸娃娃(发型)";
                 case GearType.faceAccessory: return "얼굴장식";
                 case GearType.eyeAccessory: return "눈장식";
-                case GearType.earrings: return "귀걸이";
+                case GearType.earrings: return "귀고리";
                 case GearType.pendant: return "펜던트";
                 case GearType.belt: return "벨트";
                 case GearType.medal: return "훈장";
