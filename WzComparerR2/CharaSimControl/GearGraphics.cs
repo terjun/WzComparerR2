@@ -262,7 +262,7 @@ namespace WzComparerR2.CharaSimControl
                     if (strPos < s.Length && s[strPos] == 'c')//遇到#c 换橙刷子并flush
                     {
                         g.DrawString(sb.ToString(), font, brush, curX, y, fmt);
-                        brushStack.Push(GearGraphics.OrangeBrush2);
+                        brushStack.Push(GearGraphics.OrangeBrush);
                         brush = brushStack.Peek();
                         strPos++;
                     }
@@ -276,7 +276,7 @@ namespace WzComparerR2.CharaSimControl
                     else if (brushStack.Count == 1) //同#c
                     {
                         g.DrawString(sb.ToString(), font, brush, curX, y, fmt);
-                        brushStack.Push(GearGraphics.OrangeBrush2);
+                        brushStack.Push(GearGraphics.OrangeBrush);
                         brush = brushStack.Peek();
                     }
                     else//遇到# 换白刷子并flush

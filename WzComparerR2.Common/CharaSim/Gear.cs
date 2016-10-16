@@ -500,10 +500,32 @@ namespace WzComparerR2.CharaSim
                                         int addDiff = Convert.ToInt32(statNode.Value);
                                         switch (type)
                                         {
-                                            case GearPropType.incMHP_incMMP:
+                                            case GearPropType.incSTR:
+                                            case GearPropType.incDEX:
+                                            case GearPropType.incINT:
+                                            case GearPropType.incLUK:
+                                            case GearPropType.incPAD:
+                                            case GearPropType.incMAD:
+                                            case GearPropType.incSpeed:
+                                            case GearPropType.incJump:
+                                                break;
                                             case GearPropType.incMHP:
                                             case GearPropType.incMMP:
-                                                addDiff = addDiff / 50;
+                                                addDiff = (addDiff + 49) / 100;
+                                                break;
+                                            case GearPropType.incPDD_incMDD:
+                                            case GearPropType.incPDD:
+                                                addDiff = (addDiff + 4) / 10;
+                                                break;
+                                            case GearPropType.incPAD_incMAD:
+                                            case GearPropType.incAD:
+                                                addDiff = addDiff * 2;
+                                                break;
+                                            case GearPropType.incMHP_incMMP:
+                                                addDiff = (addDiff + 49) / 100 * 2;
+                                                break;
+                                            default:
+                                                addDiff = 0;
                                                 break;
                                         }
                                         gear.diff += addDiff;
