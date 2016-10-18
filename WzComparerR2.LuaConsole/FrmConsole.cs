@@ -256,7 +256,7 @@ env:WriteLine(string format, object[] args)");
         private void menuOpen_Click(object sender, EventArgs e)
         {
             OpenFileDialog dlg = new OpenFileDialog();
-            dlg.Filter = "*.lua|*.lua|*.*|*.*";
+            dlg.Filter = "Lua 스크립트 파일 (*.lua)|*.lua|*.*|*.*";
             if (dlg.ShowDialog() == DialogResult.OK)
             {
                 FrmLuaEditor frm = new FrmLuaEditor();
@@ -279,7 +279,7 @@ env:WriteLine(string format, object[] args)");
             if (string.IsNullOrEmpty(editor.FileName))
             {
                 SaveFileDialog dlg = new SaveFileDialog();
-                dlg.Filter = "*.lua|*.lua|*.*|*.*";
+                dlg.Filter = "Lua 스크립트 파일 (*.lua)|*.lua|*.*|*.*";
                 dlg.FileName = editor.Text + ".lua";
                 if (dlg.ShowDialog() != DialogResult.OK)
                 {
@@ -289,7 +289,7 @@ env:WriteLine(string format, object[] args)");
             }
 
             editor.SaveFile(editor.FileName);
-            textBoxX2.AppendText($"====已经保存{editor.FileName}====");
+            textBoxX2.AppendText($"===={editor.FileName} 저장 완료====");
         }
     }
 }
