@@ -212,7 +212,7 @@ namespace WzComparerR2.CharaSim
                 case GearType.orb: return "오브";
                 case GearType.novaMarrow: return "용의 정수";
                 case GearType.soulBangle: return "소울링";
-                case GearType.mailin: return "麦林";
+                case GearType.mailin: return "매그넘";
                 case GearType.cane: return "케인";
                 case GearType.wand: return "완드";
                 case GearType.staff: return "스태프";
@@ -339,7 +339,7 @@ namespace WzComparerR2.CharaSim
                 case GearType.soulBangle:
                 case GearType.soulShooter: return "엔젤릭 버스터 착용 가능";
                 case GearType.soulShield: return "미하일 착용 가능";
-                case GearType.mailin: return "机械师可以装备";
+                case GearType.mailin: return "메카닉 착용 가능";
 
                 case GearType.heroMedal: return "히어로 직업군 착용 가능";
                 case GearType.rosario: return "팔라딘 직업군 착용 가능";
