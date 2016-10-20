@@ -170,12 +170,12 @@ namespace WzComparerR2.CharaSimControl
                 sr.Name = "(null)";
             }
             string gearName = sr.Name;
-            string nameAdd = Gear.ScrollUp > 0 ? ("+" + Gear.ScrollUp) : null;
             switch (Gear.GetGender(Gear.ItemID))
             {
-                case 0: nameAdd += "남"; break;
-                case 1: nameAdd += "여"; break;
+                case 0: gearName += " (남)"; break;
+                case 1: gearName += " (여)"; break;
             }
+            string nameAdd = Gear.ScrollUp > 0 ? ("+" + Gear.ScrollUp) : null;
             if (!string.IsNullOrEmpty(nameAdd))
             {
                 gearName += " (" + nameAdd + ")";
@@ -183,7 +183,7 @@ namespace WzComparerR2.CharaSimControl
 
             format.Alignment = StringAlignment.Center;
             g.DrawString(gearName, GearGraphics.ItemNameFont2,
-                GearGraphics.GetGearNameBrush(Gear.diff, Gear.ScrollUp > 0), 130, picH, format);
+                GearGraphics.GetGearNameBrush(Gear.diff, Gear.ScrollUp > 0, Gear.ItemID / 10000 == 180), 130, picH, format);
             picH += 23;
             format.Dispose();
             format = (StringFormat)StringFormat.GenericTypographic.Clone();
@@ -1152,16 +1152,12 @@ namespace WzComparerR2.CharaSimControl
             //boss伤
             g.DrawImage(Resource.UIToolTip_img_Item_Equip_Summary_icon_bdr, x, y);
             x += 62;
-            this.Gear.Props.TryGetValue(GearPropType.bdR, out value);
+            this.Gear.Props.TryGetValue(GearPropType.imdR, out value);
             numValue = (value > 0 ? "+ " : null) + value + " % ";
             DrawReqNum(g, numValue, NumberType.LookAhead, x - 5, y + 6, StringAlignment.Far);
 
             //无视防御
             g.DrawImage(Resource.UIToolTip_img_Item_Equip_Summary_icon_igpddr, x, y);
-            x += 62;
-            this.Gear.Props.TryGetValue(GearPropType.imdR, out value);
-            numValue = (value > 0 ? "+ " : null) + value + " % ";
-            DrawReqNum(g, numValue, NumberType.LookAhead, x - 5 - 4, y + 6, StringAlignment.Far);
         }
 
         private void DrawJobReq(Graphics g, ref int picH)

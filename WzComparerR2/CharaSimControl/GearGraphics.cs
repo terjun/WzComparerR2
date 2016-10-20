@@ -151,11 +151,11 @@ namespace WzComparerR2.CharaSimControl
         public static readonly Brush GearNameBrushH = new SolidBrush(Color.FromArgb(255, 0, 119));
         public static readonly Brush MasterLabelBrush = new SolidBrush(Color.FromArgb(0, 204, 255));
 
-        public static Brush GetGearNameBrush(int diff, bool up)
+        public static Brush GetGearNameBrush(int diff, bool up, bool petEquip = false)
         {
             if (diff < 0)
                 return GearNameBrushA;
-            if (diff < 6)
+            if (diff < 6 || petEquip)
             {
                 if (!up)
                     return GearNameBrushB;
