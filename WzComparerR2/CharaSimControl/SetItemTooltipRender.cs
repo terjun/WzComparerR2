@@ -76,39 +76,35 @@ namespace WzComparerR2.CharaSimControl
                 bool Cash = false;
                 BitmapOrigin IconRaw = new BitmapOrigin();
 
-                if (characterWz != null)
+                foreach (var itemID in setItemPart.Value.ItemIDs)
                 {
-                    foreach (var itemID in setItemPart.Value.ItemIDs)
+                    StringResult sr;
+                    if (StringLinker != null)
                     {
-                        foreach (Wz_Node typeNode in characterWz.Nodes)
+                        if (StringLinker.StringEqp.TryGetValue(itemID.Key, out sr))
                         {
-                            Wz_Node itemNode = typeNode.FindNodeByPath(string.Format("{0:D8}.img", itemID.Key), true);
+                            string[] fullPath = sr.FullPath.Split('\\');
+                            Wz_Node itemNode = PluginBase.PluginManager.FindWz(string.Format(@"Character\{0}\{1:D8}.img", String.Join("\\", new List<string>(fullPath).GetRange(2, fullPath.Length - 3).ToArray()), itemID.Key));
                             if (itemNode != null)
                             {
                                 Gear gear = Gear.CreateFromNode(itemNode, PluginManager.FindWz);
                                 Cash = gear.Cash;
                                 IconRaw = gear.IconRaw;
-                                break;
                             }
                         }
-
-                        break;
-                    }
-                }
-                if (itemWz != null)
-                {
-                    foreach (var itemID in setItemPart.Value.ItemIDs)
-                    {
-                        Wz_Node itemNode = itemWz.FindNodeByPath(string.Format("Pet\\{0:D7}.img", itemID.Key), true);
-                        if (itemNode != null)
+                        else if (StringLinker.StringItem.TryGetValue(itemID.Key, out sr))
                         {
-                            Item item = Item.CreateFromNode(itemNode, PluginManager.FindWz);
-                            Cash = item.Cash;
-                            IconRaw = item.IconRaw;
+                            Wz_Node itemNode = PluginBase.PluginManager.FindWz(string.Format(@"Item\Pet\{0:D7}.img", itemID.Key));
+                            if (itemNode != null)
+                            {
+                                Item item = Item.CreateFromNode(itemNode, PluginManager.FindWz);
+                                Cash = item.Cash;
+                                IconRaw = item.IconRaw;
+                            }
                         }
-
-                        break;
                     }
+
+                    break;
                 }
 
                 if (string.IsNullOrEmpty(itemName))
