@@ -12,6 +12,7 @@ namespace WzComparerR2.CharaSim
         {
             itemIDs = new ExclusiveEquipIDList();
         }
+        public string info;
         public ExclusiveEquipIDList itemIDs;
         public string msg;
 
@@ -22,16 +23,16 @@ namespace WzComparerR2.CharaSim
 
             ExclusiveEquip exclusiveEquip = new ExclusiveEquip();
 
-            Dictionary<string, string> desc = new Dictionary<string, string>();
-
             foreach (Wz_Node subNode in exclusiveEquipNode.Nodes)
             {
                 switch (subNode.Text)
                 {
+                    case "info":
+                        exclusiveEquip.info = Convert.ToString(subNode.Value);
+                        break;
                     case "item":
                         foreach (Wz_Node itemNode in subNode.Nodes)
                         {
-                            int idx = Convert.ToInt32(itemNode.Text);
                             int itemID = Convert.ToInt32(itemNode.Value);
                             exclusiveEquip.itemIDs.Add(itemID);
                         }

@@ -751,7 +751,10 @@ namespace WzComparerR2.CharaSimControl
                         g.DrawImage(res["dotline"].Image, 0, picH);
                         picH += 8;
                     }
-                    GearGraphics.DrawString(g, "#c" + string.Join(", ", itemNames.ToArray()) + "은 중복 착용이 불가능합니다.#", GearGraphics.EquipDetailFont2, 13, 247, ref picH, 15);
+                    if(kv.Value.info != "쥬얼 링")
+                        GearGraphics.DrawString(g, "#c" + string.Join(", ", itemNames.ToArray()) + "은 중복 착용이 불가능합니다.#", GearGraphics.EquipDetailFont2, 13, 244, ref picH, 15);
+                    else
+                        GearGraphics.DrawString(g, "#c쥬얼 링류 아이템은 중복 착용이 불가능합니다.#", GearGraphics.EquipDetailFont2, 13, 244, ref picH, 15);
                     picH += 5;
                     break;
                 }
@@ -878,7 +881,7 @@ namespace WzComparerR2.CharaSimControl
                             {
                                 this.StringLinker.StringSkill.TryGetValue(kv.Key, out sr);
                             }
-                            string text = string.Format("{0} +{2}레벨", sr == null ? null : sr.Name, kv.Key, kv.Value);
+                            string text = string.Format(" {0} +{2}레벨", sr == null ? null : sr.Name, kv.Key, kv.Value);
                             g.DrawString(text, GearGraphics.EquipDetailFont, GearGraphics.OrangeBrush, 16, picHeight);
                             picHeight += 15;
                         }
@@ -888,7 +891,7 @@ namespace WzComparerR2.CharaSimControl
                         string title;
                         if (info.Prob < info.ProbTotal)
                         {
-                            title = string.Format("有 {2:P2}({0}/{1}) 的几率装备时获得技能 :", info.Prob, info.ProbTotal, info.Prob * 1.0 / info.ProbTotal);
+                            title = string.Format("{2:P2}({0}/{1}) 확률로 스킬 사용 가능 :", info.Prob, info.ProbTotal, info.Prob * 1.0 / info.ProbTotal);
                         }
                         else
                         {
@@ -903,7 +906,7 @@ namespace WzComparerR2.CharaSimControl
                             {
                                 this.StringLinker.StringSkill.TryGetValue(kv.Key, out sr);
                             }
-                            string text = string.Format("{0} {2}레벨", sr == null ? null : sr.Name, kv.Key, kv.Value);
+                            string text = string.Format(" {0} {2}레벨", sr == null ? null : sr.Name, kv.Key, kv.Value);
                             g.DrawString(text, GearGraphics.EquipDetailFont, GearGraphics.OrangeBrush, 16, picHeight);
                             picHeight += 15;
                         }
@@ -1147,7 +1150,9 @@ namespace WzComparerR2.CharaSimControl
             //魔防
             g.DrawImage(Resource.UIToolTip_img_Item_Equip_Summary_icon_mdd, x, y);
             x += 62;
-            DrawReqNum(g, "0", NumberType.LookAhead, x - 5, y + 6, StringAlignment.Far);
+            this.Gear.Props.TryGetValue(GearPropType.bdR, out value);
+            numValue = (value > 0 ? "+ " : null) + value + " % ";
+            DrawReqNum(g, numValue, NumberType.LookAhead, x - 5, y + 6, StringAlignment.Far);
 
             //boss伤
             g.DrawImage(Resource.UIToolTip_img_Item_Equip_Summary_icon_bdr, x, y);
