@@ -340,7 +340,7 @@ namespace WzComparerR2.CharaSimControl
             g.DrawImage(res["dotline"].Image, 0, picH);
             picH += 8;
 
-            bool hasPart2 = false;
+            bool hasPart2 = Gear.Cash;
             format.Alignment = StringAlignment.Center;
 
             //绘制属性
@@ -1194,22 +1194,19 @@ namespace WzComparerR2.CharaSimControl
             x += 62;
             DrawReqNum(g, "0", NumberType.LookAhead, x - 5, y + 6, StringAlignment.Far);
 
-            //魔防
-            g.DrawImage(Resource.UIToolTip_img_Item_Equip_Summary_icon_mdd, x, y);
+            //boss伤
+            g.DrawImage(Resource.UIToolTip_img_Item_Equip_Summary_icon_bdr, x, y);
             x += 62;
             this.Gear.Props.TryGetValue(GearPropType.bdR, out value);
             numValue = (value > 0 ? "+ " : null) + value + " % ";
             DrawReqNum(g, numValue, NumberType.LookAhead, x - 5, y + 6, StringAlignment.Far);
 
-            //boss伤
-            g.DrawImage(Resource.UIToolTip_img_Item_Equip_Summary_icon_bdr, x, y);
+            //无视防御
+            g.DrawImage(Resource.UIToolTip_img_Item_Equip_Summary_icon_igpddr, x, y);
             x += 62;
             this.Gear.Props.TryGetValue(GearPropType.imdR, out value);
             numValue = (value > 0 ? "+ " : null) + value + " % ";
             DrawReqNum(g, numValue, NumberType.LookAhead, x - 5, y + 6, StringAlignment.Far);
-
-            //无视防御
-            g.DrawImage(Resource.UIToolTip_img_Item_Equip_Summary_icon_igpddr, x, y);
         }
 
         private void DrawJobReq(Graphics g, ref int picH)
