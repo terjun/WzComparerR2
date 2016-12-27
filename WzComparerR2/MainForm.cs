@@ -1473,7 +1473,7 @@ namespace WzComparerR2
                         fs.Write(buffer, 0, count);
                         size -= count;
                     }
-                    labelItemStatus.Text = img.Name + "导出完毕。";
+                    labelItemStatus.Text = "내보내기 완료: " + img.Name;
                 }
                 catch (Exception ex)
                 {
@@ -1494,12 +1494,12 @@ namespace WzComparerR2
             Wz_Image img = advTree1.SelectedNode?.AsWzNode()?.GetValue<Wz_Image>();
             if (img == null)
             {
-                MessageBoxEx.Show("没有选中一个用于导出的wz_img。");
+                MessageBoxEx.Show("XML로 내보낼 img를 선택하세요.");
                 return;
             }
             SaveFileDialog dlg = new SaveFileDialog();
             dlg.DefaultExt = ".xml";
-            dlg.Filter = "*.xml|*.xml";
+            dlg.Filter = "XML (*.xml)|*.xml";
             dlg.FileName = img.Node.FullPathToFile.Replace('\\', '.') + ".xml";
             if (dlg.ShowDialog() == DialogResult.OK)
             {
@@ -1522,7 +1522,7 @@ namespace WzComparerR2
                     writer.WriteEndDocument();
                     writer.Close();
 
-                    labelItemStatus.Text = "내보내기 완료: " + img.Name;
+                    labelItemStatus.Text = "XML로 내보내기 완료: " + img.Name;
                 }
                 catch (Exception ex)
                 {
