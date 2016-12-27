@@ -395,11 +395,11 @@ namespace WzComparerR2.CharaSimControl
                     typeStr = "장비분류 : " + typeStr;
                 }
 
-                if (Gear.IsLeftWeapon(Gear.type) || Gear.type == GearType.katara)
+                if (!Gear.Cash && (Gear.IsLeftWeapon(Gear.type) || Gear.type == GearType.katara))
                 {
                     typeStr += " (한손무기)";
                 }
-                else if (Gear.IsDoubleHandWeapon(Gear.type))
+                else if (!Gear.Cash && Gear.IsDoubleHandWeapon(Gear.type))
                 {
                     typeStr += " (두손무기)";
                 }
@@ -414,7 +414,7 @@ namespace WzComparerR2.CharaSimControl
                 value = 6; //给予默认速度
             }
             //  if (gear.Props.TryGetValue(GearPropType.attackSpeed, out value) && value > 0)
-            if (value > 0)
+            if (!Gear.Cash && value > 0)
             {
                 g.DrawString("공격속도 : " + ItemStringHelper.GetAttackSpeedString(value) + (ShowSpeed ? (" (" + value + ")") : null),
                     GearGraphics.EquipDetailFont, Brushes.White, 11, picH);
@@ -684,7 +684,38 @@ namespace WzComparerR2.CharaSimControl
 
                 for (int i = 0; i < inclineTypes.Length; i++)
                 {
-                    if (Gear.Props.TryGetValue(inclineTypes[i], out value) && value > 0)
+                    bool success = Gear.Props.TryGetValue(inclineTypes[i], out value);
+
+                    if (inclineTypes[i] == GearPropType.charmEXP && Gear.Cash)
+                    {
+                        success = true;
+                        switch (Gear.type)
+                        {
+                            case GearType.cashWeapon:
+                            case GearType.shield:
+                            case GearType.katara: value = 60; break;
+                            case GearType.cap: value = 50; break;
+                            case GearType.cape: value = 30; break;
+                            case GearType.longcoat: value = 60; break;
+                            case GearType.coat: value = 30; break;
+                            case GearType.pants: value = 30; break;
+                            case GearType.shoes: value = 40; break;
+                            case GearType.glove: value = 40; break;
+                            case GearType.earrings: value = 40; break;
+                            case GearType.faceAccessory: value = 40; break;
+                            case GearType.eyeAccessory: value = 40; break;
+                            default: success = false; break;
+                        }
+
+                        int value2;
+                        if (Gear.Props.TryGetValue(GearPropType.cashForceCharmExp, out value2))
+                        {
+                            success = true;
+                            value = value2;
+                        }
+                    }
+
+                    if (success && value > 0)
                     {
                         incline += ", " + inclineString[i] + " " + value;
                     }
@@ -693,6 +724,11 @@ namespace WzComparerR2.CharaSimControl
                 if (!string.IsNullOrEmpty(incline))
                 {
                     desc.Add("\n #c장착 시 1회에 한해 " + incline.Substring(2) + "의 경험치를 얻으실 수 있습니다.#");
+                }
+
+                if (Gear.Cash)
+                {
+                    desc.Add(" #c사용 전 1회에 한해 타인과 교환할 수 있으며, 아이템 사용 후에는 교환이 제한됩니다.#");
                 }
             }
 

@@ -149,6 +149,7 @@ namespace WzComparerR2.CharaSim
         willEXP,
         craftEXP,
         charmEXP,
+        cashForceCharmExp,
         accountShareTag,
         noPotential,
         fixedPotential,
