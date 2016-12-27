@@ -61,7 +61,6 @@ namespace WzComparerR2.CharaSim
 
         public static void LoadExclusiveEquips()
         {
-            //搜索setItemInfo.img
             Wz_Node etcWz = PluginManager.FindWz(Wz_Type.Etc);
             if (etcWz == null)
                 return;

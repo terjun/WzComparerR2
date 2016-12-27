@@ -771,26 +771,37 @@ namespace WzComparerR2.CharaSimControl
             {
                 if (kv.Value.itemIDs[Gear.ItemID])
                 {
-                    List<string> itemNames = new List<string>();
-                    foreach (int item in kv.Value.itemIDs.Items)
-                    {
-                        StringResult sr2;
-                        if (StringLinker == null || !StringLinker.StringEqp.TryGetValue(item, out sr2))
-                        {
-                            sr2 = new StringResult();
-                            sr2.Name = "(null)";
-                        }
-                        itemNames.Add(sr2.Name);
-                    }
                     if (hasPart2)
                     {
                         g.DrawImage(res["dotline"].Image, 0, picH);
                         picH += 8;
                     }
-                    if(kv.Value.info != "쥬얼 링")
-                        GearGraphics.DrawString(g, "#c" + string.Join(", ", itemNames.ToArray()) + "은 중복 착용이 불가능합니다.#", GearGraphics.EquipDetailFont2, 13, 244, ref picH, 15);
+                    string exclusiveEquip;
+                    if (kv.Value.info != null && kv.Value.info.Length > 0)
+                    {
+                        exclusiveEquip = "#c" + kv.Value.info + "류 아이템은 중복 착용이 불가능합니다.#";
+                    }
                     else
-                        GearGraphics.DrawString(g, "#c쥬얼 링류 아이템은 중복 착용이 불가능합니다.#", GearGraphics.EquipDetailFont2, 13, 244, ref picH, 15);
+                    {
+                        List<string> itemNames = new List<string>();
+                        foreach (int item in kv.Value.itemIDs.Items)
+                        {
+                            StringResult sr2;
+                            if (StringLinker == null || !StringLinker.StringEqp.TryGetValue(item, out sr2))
+                            {
+                                sr2 = new StringResult();
+                                sr2.Name = "(null)";
+                            }
+                            itemNames.Add(sr2.Name);
+                        }
+
+                        char lastCharacter = itemNames.Last().Last();
+                        if (lastCharacter >= 44032 && lastCharacter <= 55203 && (lastCharacter - 44032) % 28 == 0)
+                            exclusiveEquip = "#c" + string.Join(", ", itemNames.ToArray()) + "는 중복 착용이 불가능합니다.#";
+                        else
+                            exclusiveEquip = "#c" + string.Join(", ", itemNames.ToArray()) + "은 중복 착용이 불가능합니다.#";
+                    }
+                    GearGraphics.DrawString(g, exclusiveEquip, GearGraphics.EquipDetailFont2, 13, 244, ref picH, 15);
                     picH += 5;
                     break;
                 }
