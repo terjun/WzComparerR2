@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Windows.Forms;
 using Resource = CharaSimResource.Resource;
 using WzComparerR2.PluginBase;
 using WzComparerR2.WzLib;
@@ -248,7 +249,7 @@ namespace WzComparerR2.CharaSimControl
                 sr.Name = "(null)";
             }
 
-            SizeF titleSize = g.MeasureString(sr.Name, GearGraphics.ItemNameFont2, short.MaxValue, format);
+            SizeF titleSize = TextRenderer.MeasureText(g, sr.Name.Replace(Environment.NewLine, ""), GearGraphics.ItemNameFont2, new Size(int.MaxValue, int.MaxValue), TextFormatFlags.NoPrefix);
             titleSize.Width += 12 * 2;
             if (titleSize.Width > 290)
             {
@@ -263,21 +264,29 @@ namespace WzComparerR2.CharaSimControl
 
             bool hasPart2 = false;
             format.Alignment = StringAlignment.Center;
-            g.DrawString(sr.Name, GearGraphics.ItemNameFont2, Brushes.White, tooltip.Width / 2, picH, format);
+            TextRenderer.DrawText(g, sr.Name.Replace(Environment.NewLine, ""), GearGraphics.ItemNameFont2, new Point(tooltip.Width, picH), Color.White, TextFormatFlags.HorizontalCenter | TextFormatFlags.NoPrefix);
             picH += 21;
 
             string attr = GetItemAttributeString();
             if (!string.IsNullOrEmpty(attr))
             {
-                g.DrawString(attr, GearGraphics.ItemDetailFont, GearGraphics.GearNameBrushC, tooltip.Width / 2, picH, format);
+                TextRenderer.DrawText(g, attr, GearGraphics.ItemDetailFont, new Point(tooltip.Width, picH), ((SolidBrush)GearGraphics.GearNameBrushC).Color, TextFormatFlags.HorizontalCenter);
                 picH += 16;
                 hasPart2 = true;
             }
 
+            if (item.TimeLimited)
+            {
+                DateTime time = DateTime.Now.AddDays(7d);
+                string expireStr = time.ToString("yyyy년 M월 d일 HH시 mm분까지 사용가능");
+                TextRenderer.DrawText(g, expireStr, GearGraphics.ItemDetailFont, new Point(tooltip.Width, picH), Color.White, TextFormatFlags.HorizontalCenter);
+                picH += 16;
+                hasPart2 = true;
+            }
             if (item.Props.TryGetValue(ItemPropType.limitedLife, out value) && value != 0)
             {
                 string expireStr = string.Format("마법의 시간: {0}시간 {1}분", value / 3600, (value % 3600) / 60);
-                g.DrawString(expireStr, GearGraphics.ItemDetailFont, Brushes.White, tooltip.Width / 2, picH, format);
+                TextRenderer.DrawText(g, expireStr, GearGraphics.ItemDetailFont, new Point(tooltip.Width, picH), Color.White, TextFormatFlags.HorizontalCenter);
                 picH += 16;
                 hasPart2 = true;
             }
@@ -285,7 +294,7 @@ namespace WzComparerR2.CharaSimControl
             {
                 DateTime time = DateTime.Now.AddDays(value);
                 string expireStr = time.ToString("마법의 시간: yyyy년 M월 d일 HH시까지");
-                g.DrawString(expireStr, GearGraphics.ItemDetailFont, Brushes.White, tooltip.Width / 2, picH, format);
+                TextRenderer.DrawText(g, expireStr, GearGraphics.ItemDetailFont, new Point(tooltip.Width, picH), Color.White, TextFormatFlags.HorizontalCenter);
                 picH += 16;
                 hasPart2 = true;
             }
@@ -323,7 +332,7 @@ namespace WzComparerR2.CharaSimControl
             {
                 g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.SystemDefault;
                 g.PixelOffsetMode = PixelOffsetMode.HighQuality;
-                g.DrawString("REQ LEV : " + value, GearGraphics.ItemReqLevelFont, Brushes.White, 97, picH);
+                g.DrawString("REQ LEV : " + value, GearGraphics.ItemReqLevelFont, Brushes.White, 100, picH);
                 picH += 15;
                 g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.SystemDefault;
             }
@@ -336,25 +345,25 @@ namespace WzComparerR2.CharaSimControl
 
             if (!string.IsNullOrEmpty(sr.Desc))
             {
-                GearGraphics.DrawString(g, sr.Desc + sr.AutoDesc, GearGraphics.ItemDetailFont2, 98, right, ref picH, 16);
+                GearGraphics.DrawString(g, sr.Desc + sr.AutoDesc, GearGraphics.ItemDetailFont2, 100, right, ref picH, 16);
             }
             if (item.Props.TryGetValue(ItemPropType.tradeAvailable, out value) && value > 0)
             {
                 attr = ItemStringHelper.GetItemPropString(ItemPropType.tradeAvailable, value);
                 if (!string.IsNullOrEmpty(attr))
-                    GearGraphics.DrawString(g, "#c" + attr + "#", GearGraphics.ItemDetailFont2, 98, right, ref picH, 16);
+                    GearGraphics.DrawString(g, "#c" + attr + "#", GearGraphics.ItemDetailFont2, 100, right, ref picH, 16);
             }
             if (item.Specs.TryGetValue(ItemSpecType.recipeValidDay, out value) && value > 0)
             {
-                GearGraphics.DrawString(g, "( 제작 가능 기간 : " + value + "일 )", GearGraphics.ItemDetailFont, 98, right, ref picH, 16);
+                GearGraphics.DrawString(g, "( 제작 가능 기간 : " + value + "일 )", GearGraphics.ItemDetailFont, 100, right, ref picH, 16);
             }
             if (item.Specs.TryGetValue(ItemSpecType.recipeUseCount, out value) && value > 0)
             {
-                GearGraphics.DrawString(g, "( 제작 가능 횟수 : " + value + "회 )", GearGraphics.ItemDetailFont, 98, right, ref picH, 16);
+                GearGraphics.DrawString(g, "( 제작 가능 횟수 : " + value + "회 )", GearGraphics.ItemDetailFont, 100, right, ref picH, 16);
             }
             if (item.Cash)
             {
-                GearGraphics.DrawString(g, "\n#c사용 전 1회에 한해 타인과 교환할 수 있으며, 아이템 사용 후에는 교환이 제한됩니다.#", GearGraphics.ItemDetailFont, 98, right, ref picH, 16);
+                GearGraphics.DrawString(g, "\n#c사용 전 1회에 한해 타인과 교환할 수 있으며, 아이템 사용 후에는 교환이 제한됩니다.#", GearGraphics.ItemDetailFont, 100, right, ref picH, 16);
             }
 
             string incline = null;
@@ -379,7 +388,7 @@ namespace WzComparerR2.CharaSimControl
 
             if (!string.IsNullOrEmpty(incline))
             {
-                GearGraphics.DrawString(g, "#c장착 시 1회에 한해 " + incline.Substring(2) + "의 경험치를 얻으실 수 있습니다.#", GearGraphics.ItemDetailFont, 98, right, ref picH, 16);
+                GearGraphics.DrawString(g, "#c장착 시 1회에 한해 " + incline.Substring(2) + "의 경험치를 얻으실 수 있습니다.#", GearGraphics.ItemDetailFont, 100, right, ref picH, 16);
             }
 
             picH += 3;
@@ -425,7 +434,7 @@ namespace WzComparerR2.CharaSimControl
                 picH = Math.Max(picH, iconY + 107);
                 g.DrawLine(Pens.White, 6, picH, 283, picH);//分割线
                 picH += 10;
-                g.DrawString("< 사용 제한조건 >", GearGraphics.ItemDetailFont, GearGraphics.SetItemNameBrush, 8, picH);
+                TextRenderer.DrawText(g, "< 사용 제한조건 >", GearGraphics.ItemDetailFont, new Point(8, picH), ((SolidBrush)GearGraphics.SetItemNameBrush).Color);
                 picH += 17;
 
                 //技能标题
@@ -439,7 +448,7 @@ namespace WzComparerR2.CharaSimControl
                     case "장비제작": sr.Name = "장비 제작"; break;
                     case "장신구제작": sr.Name = "장신구 제작"; break;
                 }
-                g.DrawString(string.Format("· {0} {1}레벨 이상", sr.Name, reqSkillLevel), GearGraphics.ItemDetailFont, GearGraphics.SetItemNameBrush, 13, picH);
+                TextRenderer.DrawText(g, string.Format("· {0} {1}레벨 이상", sr.Name, reqSkillLevel), GearGraphics.ItemDetailFont, new Point(13, picH), ((SolidBrush)GearGraphics.SetItemNameBrush).Color);
                 picH += 16;
                 picH += 6;
             }
@@ -576,7 +585,7 @@ namespace WzComparerR2.CharaSimControl
             //测试宽度
             var font = GearGraphics.ItemDetailFont;
             var fmt = StringFormat.GenericTypographic;
-            int width = string.IsNullOrEmpty(nickName) ? 0 : (int)Math.Ceiling(g.MeasureString(nickName, font, picW, fmt).Width);
+            int width = string.IsNullOrEmpty(nickName) ? 0 : TextRenderer.MeasureText(g, nickName, font).Width;
             int left = picW / 2 - width / 2;
             int right = left + width;
 
@@ -603,7 +612,7 @@ namespace WzComparerR2.CharaSimControl
             if (!string.IsNullOrEmpty(nickName))
             {
                 var brush = new SolidBrush(color);
-                g.DrawString(nickName, font, brush, picW / 2 - width / 2, picH, fmt);
+                TextRenderer.DrawText(g, nickName, font, new Point(picW / 2 - width / 2, picH), color);
                 brush.Dispose();
             }
 

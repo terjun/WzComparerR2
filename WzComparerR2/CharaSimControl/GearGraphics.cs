@@ -5,6 +5,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.Drawing.Drawing2D;
 using System.Runtime.InteropServices;
+using System.Windows.Forms;
 using CharaSimResource;
 using WzComparerR2.CharaSim;
 
@@ -216,17 +217,14 @@ namespace WzComparerR2.CharaSimControl
         /// <param Name="x">起始的x坐标。</param>
         /// <param Name="X1">每行终止的x坐标。</param>
         /// <param Name="y">起始行的y坐标。</param>
-        public static void DrawString(Graphics g, string s, Font font, int x, int x1, ref int y, int height, Brush defaultBrush = null)
+        public static void DrawString(Graphics g, string s, Font font, int x, int x1, ref int y, int height, Color? defaultColor = null, Color? orangeColor = null)
         {
             if (s == null)
                 return;
             StringFormat fmt = StringFormat.GenericTypographic;
-            Stack<Brush> brushStack = new Stack<Brush>();
-            if (defaultBrush != null)
-                brushStack.Push(defaultBrush);
-            else
-                brushStack.Push(Brushes.White);
-            Brush brush = brushStack.Peek();
+            Stack<Color> colorStack = new Stack<Color>();
+            colorStack.Push(defaultColor ?? Color.White);
+            Color color = colorStack.Peek();
             StringBuilder sb = new StringBuilder();
             int curX = x;
             int tempX = 0;
@@ -261,47 +259,42 @@ namespace WzComparerR2.CharaSimControl
                 {
                     if (strPos < s.Length && s[strPos] == 'c')//遇到#c 换橙刷子并flush
                     {
-                        g.DrawString(sb.ToString(), font, brush, curX, y, fmt);
-                        brushStack.Push(GearGraphics.OrangeBrush);
-                        brush = brushStack.Peek();
+                        TextRenderer.DrawText(g, sb.ToString(), font, new Point(curX, y), color, TextFormatFlags.NoPadding | TextFormatFlags.NoPrefix);
+                        colorStack.Push(orangeColor ?? ((SolidBrush)GearGraphics.OrangeBrush).Color);
+                        color = colorStack.Peek();
                         strPos++;
                     }
                     else if (strPos < s.Length && s[strPos] == 'g')//遇到#c 换绿刷子并flush
                     {
-                        g.DrawString(sb.ToString(), font, brush, curX, y, fmt);
-                        brushStack.Push(GearGraphics.GearNameBrushG);
-                        brush = brushStack.Peek();
+                        TextRenderer.DrawText(g, sb.ToString(), font, new Point(curX, y), color, TextFormatFlags.NoPadding | TextFormatFlags.NoPrefix);
+                        colorStack.Push(((SolidBrush)GearGraphics.GearNameBrushG).Color);
+                        color = colorStack.Peek();
                         strPos++;
                     }
-                    else if (brushStack.Count == 1) //同#c
+                    else if (colorStack.Count == 1) //同#c
                     {
-                        g.DrawString(sb.ToString(), font, brush, curX, y, fmt);
-                        brushStack.Push(GearGraphics.OrangeBrush);
-                        brush = brushStack.Peek();
+                        TextRenderer.DrawText(g, sb.ToString(), font, new Point(curX, y), color, TextFormatFlags.NoPadding | TextFormatFlags.NoPrefix);
+                        colorStack.Push(orangeColor ?? ((SolidBrush)GearGraphics.OrangeBrush).Color);
+                        color = colorStack.Peek();
                     }
                     else//遇到# 换白刷子并flush
                     {
-                        g.DrawString(sb.ToString(), font, brush, curX, y, fmt);
-                        brushStack.Pop();
-                        brush = brushStack.Peek();
+                        TextRenderer.DrawText(g, sb.ToString(), font, new Point(curX, y), color, TextFormatFlags.NoPadding | TextFormatFlags.NoPrefix);
+                        colorStack.Pop();
+                        color = colorStack.Peek();
                     }
                     sb.Remove(0, sb.Length);
                     curX += tempX;
                     tempX = 0;
                 }
-                else if (curChar < 0x0100 && curChar != '\r' && curChar != '\n')
+                else if (curChar != '\r' && curChar != '\n')
                 {
                     sb.Append(curChar);
-                    tempX += (int)font.Size / 2;
-                }
-                else if (curChar > 0xff)
-                {
-                    sb.Append(curChar);
-                    tempX += (int)font.Size;
+                    tempX = TextRenderer.MeasureText(g, sb.ToString(), font, new Size(int.MaxValue, int.MaxValue), TextFormatFlags.NoPadding | TextFormatFlags.NoPrefix).Width;
                 }
                 if (curX + tempX >= x1 || curChar == '\n' || strPos == s.Length)
                 {
-                    g.DrawString(sb.ToString(), font, brush, curX, y, fmt);
+                    TextRenderer.DrawText(g, sb.ToString(), font, new Point(curX, y), color, TextFormatFlags.NoPadding | TextFormatFlags.NoPrefix);
                     sb.Remove(0, sb.Length);
                     curX = x;
                     tempX = 0;

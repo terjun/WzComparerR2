@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Windows.Forms;
 using Resource = CharaSimResource.Resource;
 using WzComparerR2.PluginBase;
 using WzComparerR2.WzLib;
@@ -60,13 +61,10 @@ namespace WzComparerR2.CharaSimControl
             format.Alignment = StringAlignment.Center;
 
             picHeight = 10;
-            g.DrawString(this.SetItem.setItemName, GearGraphics.EquipDetailFont2, GearGraphics.GreenBrush2, 130, 10, format);
+            TextRenderer.DrawText(g, this.SetItem.setItemName, GearGraphics.EquipDetailFont2, new Point(261, 10), ((SolidBrush)GearGraphics.GreenBrush2).Color, TextFormatFlags.HorizontalCenter);
             picHeight += 25;
 
             format.Alignment = StringAlignment.Far;
-
-            Wz_Node characterWz = PluginManager.FindWz(Wz_Type.Character);
-            Wz_Node itemWz = PluginManager.FindWz(Wz_Type.Item);
 
             foreach (var setItemPart in this.SetItem.itemIDs.Parts)
             {
@@ -175,8 +173,8 @@ namespace WzComparerR2.CharaSimControl
                 Brush brush = setItemPart.Value.Enabled ? Brushes.White : GearGraphics.GrayBrush2;
                 if (!Cash)
                 {
-                    g.DrawString(itemName, GearGraphics.EquipDetailFont2, brush, 8, picHeight);
-                    g.DrawString(typeName, GearGraphics.EquipDetailFont2, brush, 254, picHeight, format);
+                    TextRenderer.DrawText(g, itemName, GearGraphics.EquipDetailFont2, new Point(8, picHeight), ((SolidBrush)brush).Color);
+                    TextRenderer.DrawText(g, typeName, GearGraphics.EquipDetailFont2, new Point(254 - TextRenderer.MeasureText(g, typeName, GearGraphics.EquipDetailFont2).Width, picHeight), ((SolidBrush)brush).Color);
                     picHeight += 18;
                 }
                 else
@@ -188,8 +186,8 @@ namespace WzComparerR2.CharaSimControl
                         g.DrawImage(IconRaw.Bitmap, 10 + 2 - IconRaw.Origin.X, picHeight + 2 + 32 - IconRaw.Origin.Y);
                     }
                     g.DrawImage(Resource.CashItem_0, 10 + 2 + 20, picHeight + 2 + 32 - 12);
-                    g.DrawString(itemName, GearGraphics.EquipDetailFont2, brush, 50, picHeight);
-                    g.DrawString(typeName, GearGraphics.EquipDetailFont2, brush, 254, picHeight, format);
+                    TextRenderer.DrawText(g, itemName, GearGraphics.EquipDetailFont2, new Point(50, picHeight), ((SolidBrush)brush).Color);
+                    TextRenderer.DrawText(g, typeName, GearGraphics.EquipDetailFont2, new Point(254 - TextRenderer.MeasureText(g, typeName, GearGraphics.EquipDetailFont2).Width, picHeight), ((SolidBrush)brush).Color);
                     picHeight += 40;
                 }
             }
@@ -199,7 +197,7 @@ namespace WzComparerR2.CharaSimControl
             picHeight += 9;
             foreach (KeyValuePair<int, SetItemEffect> effect in this.SetItem.effects)
             {
-                g.DrawString(effect.Key + "세트효과", GearGraphics.EquipDetailFont, GearGraphics.GreenBrush2, 8, picHeight);
+                TextRenderer.DrawText(g, effect.Key + "세트효과", GearGraphics.EquipDetailFont, new Point(8, picHeight), ((SolidBrush)GearGraphics.GreenBrush2).Color);
                 picHeight += 15;
                 Brush brush = effect.Value.Enabled ? Brushes.White : GearGraphics.GrayBrush2;
 
@@ -212,7 +210,7 @@ namespace WzComparerR2.CharaSimControl
                         List<Potential> ops = (List<Potential>)prop.Value;
                         foreach (Potential p in ops)
                         {
-                            g.DrawString(p.ConvertSummary(), GearGraphics.EquipDetailFont2, brush, 8, picHeight);
+                            TextRenderer.DrawText(g, p.ConvertSummary(), GearGraphics.EquipDetailFont2, new Point(8, picHeight), ((SolidBrush)brush).Color);
                             picHeight += 15;
                         }
                     }
@@ -221,7 +219,7 @@ namespace WzComparerR2.CharaSimControl
                         List<SetItemOptionToMob> ops = (List<SetItemOptionToMob>)prop.Value;
                         foreach (SetItemOptionToMob p in ops)
                         {
-                            g.DrawString(p.ConvertSummary(), GearGraphics.EquipDetailFont2, brush, 8, picHeight);
+                            TextRenderer.DrawText(g, p.ConvertSummary(), GearGraphics.EquipDetailFont2, new Point(8, picHeight), ((SolidBrush)brush).Color);
                             picHeight += 15;
                         }
                     }
@@ -236,8 +234,8 @@ namespace WzComparerR2.CharaSimControl
                                 sr = new StringResult();
                                 sr.Name = p.SkillID.ToString();
                             }
-                            string summary = "<" + sr.Name.TrimEnd(Environment.NewLine.ToCharArray()) + "> 스킬 사용 가능";
-                            g.DrawString(summary, GearGraphics.EquipDetailFont2, brush, 8, picHeight);
+                            string summary = "<" + sr.Name.Replace(Environment.NewLine, "") + "> 스킬 사용 가능";
+                            TextRenderer.DrawText(g, summary, GearGraphics.EquipDetailFont2, new Point(8, picHeight), ((SolidBrush)brush).Color);
                             picHeight += 15;
                         }
                     }
@@ -245,8 +243,8 @@ namespace WzComparerR2.CharaSimControl
                     {
                         if (ItemStringHelper.GetGearPropString(prop.Key, Convert.ToInt32(prop.Value)) != null)
                         {
-                            g.DrawString(ItemStringHelper.GetGearPropString(prop.Key, Convert.ToInt32(prop.Value)),
-                            GearGraphics.SetItemPropFont, brush, 8, picHeight);
+                            TextRenderer.DrawText(g, ItemStringHelper.GetGearPropString(prop.Key, Convert.ToInt32(prop.Value)),
+                            GearGraphics.SetItemPropFont, new Point(8, picHeight), ((SolidBrush)brush).Color);
                             picHeight += 15;
                         }
                     }
