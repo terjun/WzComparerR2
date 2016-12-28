@@ -351,6 +351,7 @@ namespace WzComparerR2.CharaSimControl
             if (item.Specs.TryGetValue(ItemSpecType.recipeUseCount, out value) && value > 0)
             {
                 GearGraphics.DrawString(g, "( 제작 가능 횟수 : " + value + "회 )", GearGraphics.ItemDetailFont, 98, right, ref picH, 16);
+            }
             if (item.Cash)
             {
                 GearGraphics.DrawString(g, "\n#c사용 전 1회에 한해 타인과 교환할 수 있으며, 아이템 사용 후에는 교환이 제한됩니다.#", GearGraphics.ItemDetailFont, 98, right, ref picH, 16);
