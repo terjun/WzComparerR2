@@ -91,6 +91,7 @@
     <Compile Include="CharaSimControl\AfrmTooltip.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="CharaSimControl\CashPackageRender.cs" />
     <Compile Include="CharaSimControl\GearTooltipRender2.cs" />
     <Compile Include="CharaSimControl\ItemTooltipRender.cs" />
     <Compile Include="CharaSimControl\AfrmStat.cs">

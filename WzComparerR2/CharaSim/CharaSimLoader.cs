@@ -13,10 +13,14 @@ namespace WzComparerR2.CharaSim
         {
             loadedSetItems = new Dictionary<int, SetItem>();
             loadedExclusiveEquips = new Dictionary<int, ExclusiveEquip>();
+            loadedCommoditiesBySN = new Dictionary<int, Commodity>();
+            loadedCommoditiesByItemId = new Dictionary<int, Commodity>();
         }
 
         private static Dictionary<int, SetItem> loadedSetItems;
         private static Dictionary<int, ExclusiveEquip> loadedExclusiveEquips;
+        private static Dictionary<int, Commodity> loadedCommoditiesBySN;
+        private static Dictionary<int, Commodity> loadedCommoditiesByItemId;
 
         public static Dictionary<int, SetItem> LoadedSetItems
         {
@@ -26,6 +30,16 @@ namespace WzComparerR2.CharaSim
         public static Dictionary<int, ExclusiveEquip> LoadedExclusiveEquips
         {
             get { return loadedExclusiveEquips; }
+        }
+
+        public static Dictionary<int, Commodity> LoadedCommoditiesBySN
+        {
+            get { return loadedCommoditiesBySN; }
+        }
+
+        public static Dictionary<int, Commodity> LoadedCommoditiesByItemId
+        {
+            get { return loadedCommoditiesByItemId; }
         }
 
         public static void LoadSetItems()
@@ -77,6 +91,32 @@ namespace WzComparerR2.CharaSim
                     ExclusiveEquip exclusiveEquip = ExclusiveEquip.CreateFromNode(node);
                     if (exclusiveEquip != null)
                         loadedExclusiveEquips[exclusiveEquipIndex] = exclusiveEquip;
+                }
+            }
+        }
+
+        public static void LoadCommodities()
+        {
+            Wz_Node etcWz = PluginManager.FindWz(Wz_Type.Etc);
+            if (etcWz == null)
+                return;
+            Wz_Node commodityNode = etcWz.FindNodeByPath("Commodity.img", true);
+            if (commodityNode == null)
+                return;
+
+            loadedCommoditiesBySN.Clear();
+            foreach (Wz_Node node in commodityNode.Nodes)
+            {
+                int commodityIndex;
+                if (Int32.TryParse(node.Text, out commodityIndex))
+                {
+                    Commodity commodity = Commodity.CreateFromNode(node);
+                    if (commodity != null)
+                    {
+                        loadedCommoditiesBySN[commodity.SN] = commodity;
+                        if (commodity.ItemId / 10000 == 910)
+                            loadedCommoditiesByItemId[commodity.ItemId] = commodity;
+                    }
                 }
             }
         }

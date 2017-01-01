@@ -18,9 +18,9 @@ namespace WzComparerR2.Common
             stringSkill2 = new Dictionary<string, StringResult>();
         }
 
-        public bool Load(Wz_File stringWz)
+        public bool Load(Wz_File stringWz, Wz_File itemWz)
         {
-            if (stringWz == null || stringWz.Node == null)
+            if (stringWz == null || stringWz.Node == null || itemWz == null || itemWz.Node == null)
                 return false;
             this.Clear();
             int id;
@@ -175,6 +175,32 @@ namespace WzComparerR2.Common
                                         stringEqp[id] = strResult;
                                     }
                                 }
+                            }
+                        }
+                        break;
+                }
+            }
+
+            foreach (Wz_Node node in itemWz.Node.FindNodeByPath("Special").Nodes)
+            {
+                Wz_Image image = node.Value as Wz_Image;
+                if (image == null)
+                    continue;
+                switch (node.Text)
+                {
+                    case "0910.img":
+                        if (!image.TryExtract()) break;
+                        foreach (Wz_Node tree in image.Node.Nodes)
+                        {
+                            if (Int32.TryParse(tree.Text, out id))
+                            {
+                                StringResult strResult = new StringResult();
+                                strResult.Name = GetDefaultString(tree, "name");
+                                strResult.Desc = GetDefaultString(tree, "desc");
+                                strResult.FullPath = tree.FullPath;
+
+                                AddAllValue(strResult, tree);
+                                stringItem[id] = strResult;
                             }
                         }
                         break;

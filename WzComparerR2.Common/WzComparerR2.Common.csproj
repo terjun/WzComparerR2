@@ -68,6 +68,8 @@
   <ItemGroup>
     <Compile Include="Animation\KeyFrame.cs" />
     <Compile Include="BuildInGifEncoder.cs" />
+    <Compile Include="CharaSim\CashPackage.cs" />
+    <Compile Include="CharaSim\Commodity.cs" />
     <Compile Include="CharaSim\ExclusiveEquip.cs" />
     <Compile Include="CharaSim\ExclusiveEquipIDList.cs" />
     <Compile Include="Controls\AnimationItemEventArgs.cs" />

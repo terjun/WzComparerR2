@@ -1311,6 +1311,14 @@ namespace WzComparerR2
                         addPath(1);
                     }
                     break;
+
+                case "0910.img":
+                    wzPath.Add("Item");
+                    wzPath.Add("Special");
+                    wzPath.Add("0910.img");
+                    imagePath.Add(id);
+                    addPath(0);
+                    break;
                 default:
                     break;
             }
@@ -1651,7 +1659,7 @@ namespace WzComparerR2
             QueryPerformance.Start();
             if (!this.stringLinker.HasValues)
             {
-                if (!this.stringLinker.Load(findStringWz()))
+                if (!this.stringLinker.Load(findStringWz(), findItemWz()))
                 {
                     MessageBoxEx.Show("String.wz를 먼저 열어주세요.", "오류");
                     return;
@@ -1719,6 +1727,21 @@ namespace WzComparerR2
             return null;
         }
 
+        private Wz_File findItemWz()
+        {
+            foreach (Wz_Structure wz in openedWz)
+            {
+                foreach (Wz_File file in wz.wz_files)
+                {
+                    if (file.Type == Wz_Type.Item)
+                    {
+                        return file;
+                    }
+                }
+            }
+            return null;
+        }
+
         private IEnumerable<KeyValuePair<int, StringResult>> searchStringLinker(IEnumerable<Dictionary<int, StringResult>> dicts, string key, bool exact)
         {
             string[] match = key.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
@@ -1762,14 +1785,15 @@ namespace WzComparerR2
 
         private void buttonItemSelectStringWz_Click(object sender, EventArgs e)
         {
-            Wz_File stringWzFile = advTree1.SelectedNode?.AsWzNode()?.GetNodeWzFile();
-            if (stringWzFile == null)
+            Wz_File stringWzFile = advTree1.SelectedNode?.AsWzNode()?.FindNodeByPath("String").GetNodeWzFile();
+            Wz_File itemWzFile = advTree1.SelectedNode?.AsWzNode()?.FindNodeByPath("Item").GetNodeWzFile();
+            if (stringWzFile == null || itemWzFile == null)
             {
-                MessageBoxEx.Show("String.wz를 선택하세요.", "오류");
+                MessageBoxEx.Show("Base.wz를 선택하세요.", "오류");
                 return;
             }
             QueryPerformance.Start();
-            bool r = stringLinker.Load(stringWzFile);
+            bool r = stringLinker.Load(stringWzFile, itemWzFile);
             QueryPerformance.End();
             if (r)
             {
@@ -2244,7 +2268,7 @@ namespace WzComparerR2
 
             if (!this.stringLinker.HasValues)
             {
-                this.stringLinker.Load(findStringWz());
+                this.stringLinker.Load(findStringWz(), findItemWz());
             }
 
             object obj = null;
@@ -2262,6 +2286,10 @@ namespace WzComparerR2
                     {
                         CharaSimLoader.LoadExclusiveEquips();
                     }
+                    if (CharaSimLoader.LoadedCommoditiesBySN.Count == 0)
+                    {
+                        CharaSimLoader.LoadCommodities();
+                    }
                     var gear = Gear.CreateFromNode(image.Node, PluginManager.FindWz);
                     obj = gear;
                     if (gear != null)
@@ -2270,8 +2298,20 @@ namespace WzComparerR2
                     }
                     break;
                 case Wz_Type.Item:
+                    if (CharaSimLoader.LoadedSetItems.Count == 0)
+                    {
+                        CharaSimLoader.LoadSetItems();
+                    }
+                    if (CharaSimLoader.LoadedExclusiveEquips.Count == 0)
+                    {
+                        CharaSimLoader.LoadExclusiveEquips();
+                    }
+                    if (CharaSimLoader.LoadedCommoditiesBySN.Count == 0)
+                    {
+                        CharaSimLoader.LoadCommodities();
+                    }
                     Wz_Node itemNode = selectedNode;
-                    if (Regex.IsMatch(itemNode.FullPathToFile, @"^Item\\(Cash|Consume|Etc|Install|Cash)\\\d{4}.img\\\d+$"))
+                    if (Regex.IsMatch(itemNode.FullPathToFile, @"^Item\\(Cash|Consume|Etc|Install|Cash)\\\d{4}.img\\\d+$") || Regex.IsMatch(itemNode.FullPathToFile, @"^Item\\Special\\0910.img\\\d+$"))
                     {
                         var item = Item.CreateFromNode(itemNode, PluginManager.FindWz);
                         obj = item;
@@ -2289,6 +2329,10 @@ namespace WzComparerR2
                         if (CharaSimLoader.LoadedExclusiveEquips.Count == 0)
                         {
                             CharaSimLoader.LoadExclusiveEquips();
+                        }
+                        if (CharaSimLoader.LoadedCommoditiesBySN.Count == 0)
+                        {
+                            CharaSimLoader.LoadCommodities();
                         }
                         if ((image = selectedNode.GetValue<Wz_Image>()) == null || !image.TryExtract())
                             return;
@@ -2342,6 +2386,10 @@ namespace WzComparerR2
                     {
                         CharaSimLoader.LoadExclusiveEquips();
                     }
+                    if (CharaSimLoader.LoadedCommoditiesBySN.Count == 0)
+                    {
+                        CharaSimLoader.LoadCommodities();
+                    }
                     var mob = Mob.CreateFromNode(image.Node, PluginManager.FindWz);
                     obj = mob;
                     if (mob != null)
@@ -2360,6 +2408,10 @@ namespace WzComparerR2
                     if (CharaSimLoader.LoadedExclusiveEquips.Count == 0)
                     {
                         CharaSimLoader.LoadExclusiveEquips();
+                    }
+                    if (CharaSimLoader.LoadedCommoditiesBySN.Count == 0)
+                    {
+                        CharaSimLoader.LoadCommodities();
                     }
                     var npc = Npc.CreateFromNode(image.Node, PluginManager.FindWz);
                     obj = npc;
@@ -2807,7 +2859,7 @@ namespace WzComparerR2
             if (dlg.ShowDialog() == DialogResult.OK)
             {
                 if (!this.stringLinker.HasValues)
-                    this.stringLinker.Load(findStringWz());
+                    this.stringLinker.Load(findStringWz(), findItemWz());
 
                 DBConnection conn = new DBConnection(this.stringLinker);
                 DataSet ds = conn.GenerateSkillTable();
@@ -2830,7 +2882,7 @@ namespace WzComparerR2
             if (dlg.ShowDialog() == DialogResult.OK)
             {
                 if (!this.stringLinker.HasValues)
-                    this.stringLinker.Load(findStringWz());
+                    this.stringLinker.Load(findStringWz(), findItemWz());
 
                 DBConnection conn = new DBConnection(this.stringLinker);
                 conn.ExportSkillOption(dlg.SelectedPath);

@@ -48,6 +48,7 @@ namespace WzComparerR2.CharaSimControl
         public TooltipRender LinkRecipeGearRender { get; set; }
         public TooltipRender LinkRecipeItemRender { get; set; }
         public TooltipRender SetItemRender { get; set; }
+        public TooltipRender CashPackageRender { get; set; }
 
         public override Bitmap Render()
         {
@@ -61,6 +62,14 @@ namespace WzComparerR2.CharaSimControl
             Bitmap recipeInfoBmp = null;
             Bitmap recipeItemBmp = null;
             Bitmap setItemBmp = null;
+
+            if (this.item.ItemID / 10000 == 910)
+            {
+                Wz_Node itemNode = PluginBase.PluginManager.FindWz(string.Format(@"Item\Special\{0:D4}.img\{1}", this.item.ItemID / 10000, this.item.ItemID));
+                Wz_Node cashPackageNode = PluginBase.PluginManager.FindWz(string.Format(@"Etc\CashPackage.img\{0}", this.item.ItemID));
+                CashPackage cashPackage = CashPackage.CreateFromNode(itemNode, cashPackageNode, PluginManager.FindWz);
+                return RenderCashPackage(cashPackage);
+            }
 
             //图纸相关
             int recipeID;
@@ -551,6 +560,21 @@ namespace WzComparerR2.CharaSimControl
             }
 
             renderer.TargetItem = setItem;
+            return renderer.Render();
+        }
+
+        private Bitmap RenderCashPackage(CashPackage cashPackage)
+        {
+            TooltipRender renderer = this.CashPackageRender;
+            if (renderer == null)
+            {
+                var defaultRenderer = new CashPackageTooltipRender();
+                defaultRenderer.StringLinker = this.StringLinker;
+                defaultRenderer.ShowObjectID = this.ShowObjectID;
+                renderer = defaultRenderer;
+            }
+
+            renderer.TargetItem = cashPackage;
             return renderer.Render();
         }
 
