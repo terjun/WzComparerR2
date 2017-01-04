@@ -973,6 +973,13 @@ namespace WzComparerR2.MapRender
                     }
                 }
 
+                for (int i = 0; i < mapData.Length; i += 4)
+                {
+                    byte temp = mapData[i];
+                    mapData[i] = mapData[i + 2];
+                    mapData[i + 2] = temp;
+                }
+
                 try
                 {
                     System.Drawing.Bitmap bitmap = new System.Drawing.Bitmap(
