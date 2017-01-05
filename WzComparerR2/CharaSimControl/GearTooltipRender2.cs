@@ -213,7 +213,7 @@ namespace WzComparerR2.CharaSimControl
                 string attrStr = null;
                 foreach (string attr in attrList)
                 {
-                    if (TextRenderer.MeasureText(g, attrStr + ", " + attr, GearGraphics.EquipDetailFont).Width > 255)
+                    if (TextRenderer.MeasureText(g, attrStr + ", " + attr, GearGraphics.EquipDetailFont).Width > 254)
                     {
                         TextRenderer.DrawText(g, attrStr, GearGraphics.EquipDetailFont, new Point(261, picH), ((SolidBrush)GearGraphics.OrangeBrush2).Color, TextFormatFlags.HorizontalCenter);
                         picH += 15;
