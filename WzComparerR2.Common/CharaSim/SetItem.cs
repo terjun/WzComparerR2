@@ -16,6 +16,7 @@ namespace WzComparerR2.CharaSim
         public int completeCount;
         public int currentCount;
         public SetItemIDList itemIDs;
+        public int setItemID;
         public string setItemName;
         public Dictionary<int, SetItemEffect> effects;
 
@@ -27,6 +28,8 @@ namespace WzComparerR2.CharaSim
             SetItem setItem = new SetItem();
 
             Dictionary<string, string> desc = new Dictionary<string, string>();
+
+            setItem.setItemID = Convert.ToInt32(setItemNode.Text);
 
             foreach (Wz_Node subNode in setItemNode.Nodes)
             {

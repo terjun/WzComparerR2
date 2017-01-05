@@ -66,129 +66,141 @@ namespace WzComparerR2.CharaSimControl
 
             format.Alignment = StringAlignment.Far;
 
-            foreach (var setItemPart in this.SetItem.itemIDs.Parts)
+            if (this.SetItem.setItemID > 0)
             {
-                string itemName = setItemPart.Value.RepresentName;
-                string typeName = setItemPart.Value.TypeName;
-
-                bool Cash = false;
-                BitmapOrigin IconRaw = new BitmapOrigin();
-
-                foreach (var itemID in setItemPart.Value.ItemIDs)
+                foreach (var setItemPart in this.SetItem.itemIDs.Parts)
                 {
-                    StringResult sr;
-                    if (StringLinker != null)
-                    {
-                        if (StringLinker.StringEqp.TryGetValue(itemID.Key, out sr))
-                        {
-                            string[] fullPath = sr.FullPath.Split('\\');
-                            Wz_Node itemNode = PluginBase.PluginManager.FindWz(string.Format(@"Character\{0}\{1:D8}.img", String.Join("\\", new List<string>(fullPath).GetRange(2, fullPath.Length - 3).ToArray()), itemID.Key));
-                            if (itemNode != null)
-                            {
-                                Gear gear = Gear.CreateFromNode(itemNode, PluginManager.FindWz);
-                                Cash = gear.Cash;
-                                IconRaw = gear.IconRaw;
-                            }
-                        }
-                        else if (StringLinker.StringItem.TryGetValue(itemID.Key, out sr))
-                        {
-                            Wz_Node itemNode = PluginBase.PluginManager.FindWz(string.Format(@"Item\Pet\{0:D7}.img", itemID.Key));
-                            if (itemNode != null)
-                            {
-                                Item item = Item.CreateFromNode(itemNode, PluginManager.FindWz);
-                                Cash = item.Cash;
-                                IconRaw = item.IconRaw;
-                            }
-                        }
-                    }
+                    string itemName = setItemPart.Value.RepresentName;
+                    string typeName = setItemPart.Value.TypeName;
 
-                    break;
-                }
+                    bool Cash = false;
+                    BitmapOrigin IconRaw = new BitmapOrigin();
 
-                if (string.IsNullOrEmpty(itemName))
-                {
                     foreach (var itemID in setItemPart.Value.ItemIDs)
                     {
-                        StringResult sr = null; ;
+                        StringResult sr;
                         if (StringLinker != null)
                         {
                             if (StringLinker.StringEqp.TryGetValue(itemID.Key, out sr))
                             {
-                                itemName = sr.Name;
+                                string[] fullPath = sr.FullPath.Split('\\');
+                                Wz_Node itemNode = PluginBase.PluginManager.FindWz(string.Format(@"Character\{0}\{1:D8}.img", String.Join("\\", new List<string>(fullPath).GetRange(2, fullPath.Length - 3).ToArray()), itemID.Key));
+                                if (itemNode != null)
+                                {
+                                    Gear gear = Gear.CreateFromNode(itemNode, PluginManager.FindWz);
+                                    Cash = gear.Cash;
+                                    IconRaw = gear.IconRaw;
+                                }
                             }
-                            else if (StringLinker.StringItem.TryGetValue(itemID.Key, out sr)) //兼容宠物
+                            else if (StringLinker.StringItem.TryGetValue(itemID.Key, out sr))
                             {
-                                itemName = sr.Name;
+                                Wz_Node itemNode = PluginBase.PluginManager.FindWz(string.Format(@"Item\Pet\{0:D7}.img", itemID.Key));
+                                if (itemNode != null)
+                                {
+                                    Item item = Item.CreateFromNode(itemNode, PluginManager.FindWz);
+                                    Cash = item.Cash;
+                                    IconRaw = item.IconRaw;
+                                }
                             }
-                        }
-                        if (sr == null)
-                        {
-                            itemName = "(null)";
                         }
 
                         break;
                     }
-                }
-                if (string.IsNullOrEmpty(typeName))
-                {
-                    foreach (var itemID in setItemPart.Value.ItemIDs)
+
+                    if (string.IsNullOrEmpty(itemName))
                     {
-                        StringResult sr = null; ;
-                        if (StringLinker != null)
+                        foreach (var itemID in setItemPart.Value.ItemIDs)
                         {
-                            if (StringLinker.StringEqp.TryGetValue(itemID.Key, out sr))
+                            StringResult sr = null; ;
+                            if (StringLinker != null)
                             {
-                                if (!Cash)
-                                    typeName = ItemStringHelper.GetSetItemGearTypeString(Gear.GetGearType(itemID.Key));
-                            }
-                            else if (StringLinker.StringItem.TryGetValue(itemID.Key, out sr)) //兼容宠物
-                            {
-                                if (itemID.Key / 10000 == 500)
+                                if (StringLinker.StringEqp.TryGetValue(itemID.Key, out sr))
                                 {
-                                    typeName = "펫";
+                                    itemName = sr.Name;
                                 }
-                                else
+                                else if (StringLinker.StringItem.TryGetValue(itemID.Key, out sr)) //兼容宠物
                                 {
-                                    typeName = "null";
+                                    itemName = sr.Name;
                                 }
                             }
-                        }
-                        if (sr == null)
-                        {
-                            typeName = null;
-                        }
+                            if (sr == null)
+                            {
+                                itemName = "(null)";
+                            }
 
-                        break;
+                            break;
+                        }
+                    }
+                    if (string.IsNullOrEmpty(typeName))
+                    {
+                        foreach (var itemID in setItemPart.Value.ItemIDs)
+                        {
+                            StringResult sr = null; ;
+                            if (StringLinker != null)
+                            {
+                                if (StringLinker.StringEqp.TryGetValue(itemID.Key, out sr))
+                                {
+                                    if (!Cash)
+                                        typeName = ItemStringHelper.GetSetItemGearTypeString(Gear.GetGearType(itemID.Key));
+                                }
+                                else if (StringLinker.StringItem.TryGetValue(itemID.Key, out sr)) //兼容宠物
+                                {
+                                    if (itemID.Key / 10000 == 500)
+                                    {
+                                        typeName = "펫";
+                                    }
+                                    else
+                                    {
+                                        typeName = "null";
+                                    }
+                                }
+                            }
+                            if (sr == null)
+                            {
+                                typeName = null;
+                            }
+
+                            break;
+                        }
+                    }
+
+                    itemName = itemName ?? string.Empty;
+                    typeName = typeName ?? "장비";
+
+                    if (!Regex.IsMatch(typeName, @"^(\(.*\)|（.*）)$"))
+                    {
+                        typeName = "(" + typeName + ")";
+                    }
+
+                    Brush brush = setItemPart.Value.Enabled ? Brushes.White : GearGraphics.GrayBrush2;
+                    if (!Cash)
+                    {
+                        TextRenderer.DrawText(g, itemName, GearGraphics.EquipDetailFont2, new Point(8, picHeight), ((SolidBrush)brush).Color);
+                        TextRenderer.DrawText(g, typeName, GearGraphics.EquipDetailFont2, new Point(254 - TextRenderer.MeasureText(g, typeName, GearGraphics.EquipDetailFont2).Width, picHeight), ((SolidBrush)brush).Color);
+                        picHeight += 18;
+                    }
+                    else
+                    {
+                        g.FillRectangle(GearGraphics.GearIconBackBrush2, 10, picHeight, 36, 36);
+                        g.DrawImage(Resource.Item_shadow, 10 + 2 + 3, picHeight + 2 + 32 - 6);
+                        if (IconRaw.Bitmap != null)
+                        {
+                            g.DrawImage(IconRaw.Bitmap, 10 + 2 - IconRaw.Origin.X, picHeight + 2 + 32 - IconRaw.Origin.Y);
+                        }
+                        g.DrawImage(Resource.CashItem_0, 10 + 2 + 20, picHeight + 2 + 32 - 12);
+                        TextRenderer.DrawText(g, itemName, GearGraphics.EquipDetailFont2, new Point(50, picHeight), ((SolidBrush)brush).Color);
+                        TextRenderer.DrawText(g, typeName, GearGraphics.EquipDetailFont2, new Point(254 - TextRenderer.MeasureText(g, typeName, GearGraphics.EquipDetailFont2).Width, picHeight), ((SolidBrush)brush).Color);
+                        picHeight += 40;
                     }
                 }
-
-                itemName = itemName ?? string.Empty;
-                typeName = typeName ?? "장비";
-
-                if (!Regex.IsMatch(typeName, @"^(\(.*\)|（.*）)$"))
+            }
+            else
+            {
+                for (int i = 0; i < this.SetItem.completeCount; ++i)
                 {
-                    typeName = "(" + typeName + ")";
-                }
-
-                Brush brush = setItemPart.Value.Enabled ? Brushes.White : GearGraphics.GrayBrush2;
-                if (!Cash)
-                {
-                    TextRenderer.DrawText(g, itemName, GearGraphics.EquipDetailFont2, new Point(8, picHeight), ((SolidBrush)brush).Color);
-                    TextRenderer.DrawText(g, typeName, GearGraphics.EquipDetailFont2, new Point(254 - TextRenderer.MeasureText(g, typeName, GearGraphics.EquipDetailFont2).Width, picHeight), ((SolidBrush)brush).Color);
+                    TextRenderer.DrawText(g, "(없음)", GearGraphics.EquipDetailFont2, new Point(8, picHeight), ((SolidBrush)GearGraphics.GrayBrush2).Color);
+                    TextRenderer.DrawText(g, "미착용", GearGraphics.EquipDetailFont2, new Point(254 - TextRenderer.MeasureText(g, "미착용", GearGraphics.EquipDetailFont2).Width, picHeight), ((SolidBrush)GearGraphics.GrayBrush2).Color);
                     picHeight += 18;
-                }
-                else
-                {
-                    g.FillRectangle(GearGraphics.GearIconBackBrush2, 10, picHeight, 36, 36);
-                    g.DrawImage(Resource.Item_shadow, 10 + 2 + 3, picHeight + 2 + 32 - 6);
-                    if (IconRaw.Bitmap != null)
-                    {
-                        g.DrawImage(IconRaw.Bitmap, 10 + 2 - IconRaw.Origin.X, picHeight + 2 + 32 - IconRaw.Origin.Y);
-                    }
-                    g.DrawImage(Resource.CashItem_0, 10 + 2 + 20, picHeight + 2 + 32 - 12);
-                    TextRenderer.DrawText(g, itemName, GearGraphics.EquipDetailFont2, new Point(50, picHeight), ((SolidBrush)brush).Color);
-                    TextRenderer.DrawText(g, typeName, GearGraphics.EquipDetailFont2, new Point(254 - TextRenderer.MeasureText(g, typeName, GearGraphics.EquipDetailFont2).Width, picHeight), ((SolidBrush)brush).Color);
-                    picHeight += 40;
                 }
             }
 
@@ -197,7 +209,10 @@ namespace WzComparerR2.CharaSimControl
             picHeight += 9;
             foreach (KeyValuePair<int, SetItemEffect> effect in this.SetItem.effects)
             {
-                TextRenderer.DrawText(g, effect.Key + "세트효과", GearGraphics.EquipDetailFont, new Point(8, picHeight), ((SolidBrush)GearGraphics.GreenBrush2).Color);
+                if (this.SetItem.setItemID > 0)
+                    TextRenderer.DrawText(g, effect.Key + "세트효과", GearGraphics.EquipDetailFont, new Point(8, picHeight), ((SolidBrush)GearGraphics.GreenBrush2).Color);
+                else
+                    TextRenderer.DrawText(g, "월드 내 중복 착용 효과(" + effect.Key + " / " + this.SetItem.completeCount + ")", GearGraphics.EquipDetailFont, new Point(8, picHeight), ((SolidBrush)GearGraphics.GreenBrush2).Color);
                 picHeight += 15;
                 Brush brush = effect.Value.Enabled ? Brushes.White : GearGraphics.GrayBrush2;
 
