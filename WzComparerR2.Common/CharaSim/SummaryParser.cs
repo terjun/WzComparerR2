@@ -30,7 +30,7 @@ namespace WzComparerR2.CharaSim
                     {
                         if ((H[end] >= 'a' && H[end] <= 'z') ||
                             (H[end] >= 'A' && H[end] <= 'Z') ||
-                            (H[end] >= '0' && H[end] <= '9') ||
+                            (end > idx + 1 && H[end] >= '0' && H[end] <= '9') ||
                             H[end] == '_')
                         {
                             len++;
