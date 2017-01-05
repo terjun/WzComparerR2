@@ -68,6 +68,8 @@ namespace WzComparerR2.CharaSimControl
 
             if (this.SetItem.setItemID > 0)
             {
+                List<string> partNames = new List<string>();
+
                 foreach (var setItemPart in this.SetItem.itemIDs.Parts)
                 {
                     string itemName = setItemPart.Value.RepresentName;
@@ -172,25 +174,29 @@ namespace WzComparerR2.CharaSimControl
                         typeName = "(" + typeName + ")";
                     }
 
-                    Brush brush = setItemPart.Value.Enabled ? Brushes.White : GearGraphics.GrayBrush2;
-                    if (!Cash)
+                    if (!partNames.Contains(itemName + typeName))
                     {
-                        TextRenderer.DrawText(g, itemName, GearGraphics.EquipDetailFont2, new Point(8, picHeight), ((SolidBrush)brush).Color);
-                        TextRenderer.DrawText(g, typeName, GearGraphics.EquipDetailFont2, new Point(254 - TextRenderer.MeasureText(g, typeName, GearGraphics.EquipDetailFont2).Width, picHeight), ((SolidBrush)brush).Color);
-                        picHeight += 18;
-                    }
-                    else
-                    {
-                        g.FillRectangle(GearGraphics.GearIconBackBrush2, 10, picHeight, 36, 36);
-                        g.DrawImage(Resource.Item_shadow, 10 + 2 + 3, picHeight + 2 + 32 - 6);
-                        if (IconRaw.Bitmap != null)
+                        partNames.Add(itemName + typeName);
+                        Brush brush = setItemPart.Value.Enabled ? Brushes.White : GearGraphics.GrayBrush2;
+                        if (!Cash)
                         {
-                            g.DrawImage(IconRaw.Bitmap, 10 + 2 - IconRaw.Origin.X, picHeight + 2 + 32 - IconRaw.Origin.Y);
+                            TextRenderer.DrawText(g, itemName, GearGraphics.EquipDetailFont2, new Point(8, picHeight), ((SolidBrush)brush).Color);
+                            TextRenderer.DrawText(g, typeName, GearGraphics.EquipDetailFont2, new Point(254 - TextRenderer.MeasureText(g, typeName, GearGraphics.EquipDetailFont2).Width, picHeight), ((SolidBrush)brush).Color);
+                            picHeight += 18;
                         }
-                        g.DrawImage(Resource.CashItem_0, 10 + 2 + 20, picHeight + 2 + 32 - 12);
-                        TextRenderer.DrawText(g, itemName, GearGraphics.EquipDetailFont2, new Point(50, picHeight), ((SolidBrush)brush).Color);
-                        TextRenderer.DrawText(g, typeName, GearGraphics.EquipDetailFont2, new Point(254 - TextRenderer.MeasureText(g, typeName, GearGraphics.EquipDetailFont2).Width, picHeight), ((SolidBrush)brush).Color);
-                        picHeight += 40;
+                        else
+                        {
+                            g.FillRectangle(GearGraphics.GearIconBackBrush2, 10, picHeight, 36, 36);
+                            g.DrawImage(Resource.Item_shadow, 10 + 2 + 3, picHeight + 2 + 32 - 6);
+                            if (IconRaw.Bitmap != null)
+                            {
+                                g.DrawImage(IconRaw.Bitmap, 10 + 2 - IconRaw.Origin.X, picHeight + 2 + 32 - IconRaw.Origin.Y);
+                            }
+                            g.DrawImage(Resource.CashItem_0, 10 + 2 + 20, picHeight + 2 + 32 - 12);
+                            TextRenderer.DrawText(g, itemName, GearGraphics.EquipDetailFont2, new Point(50, picHeight), ((SolidBrush)brush).Color);
+                            TextRenderer.DrawText(g, typeName, GearGraphics.EquipDetailFont2, new Point(254 - TextRenderer.MeasureText(g, typeName, GearGraphics.EquipDetailFont2).Width, picHeight), ((SolidBrush)brush).Color);
+                            picHeight += 40;
+                        }
                     }
                 }
             }
