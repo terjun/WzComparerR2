@@ -308,10 +308,7 @@ namespace WzComparerR2.CharaSimControl
                 hasPart2 = true;
             }
 
-            if (hasPart2)
-            {
-                picH += 1;
-            }
+            picH += 1;
 
             //绘制图标
             int iconY = picH;
@@ -339,11 +336,10 @@ namespace WzComparerR2.CharaSimControl
 
             if (item.Props.TryGetValue(ItemPropType.reqLevel, out value))
             {
-                g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.SystemDefault;
-                g.PixelOffsetMode = PixelOffsetMode.HighQuality;
-                g.DrawString("REQ LEV : " + value, GearGraphics.ItemReqLevelFont, Brushes.White, 100, picH);
+                picH += 4;
+                g.DrawImage(Resource.ToolTip_Equip_Can_reqLEV, 100, picH);
+                GearGraphics.DrawGearDetailNumber(g, 150, picH, value.ToString(), true);
                 picH += 15;
-                g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.SystemDefault;
             }
             else
             {
