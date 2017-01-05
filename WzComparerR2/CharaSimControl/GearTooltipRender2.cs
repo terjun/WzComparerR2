@@ -810,7 +810,10 @@ namespace WzComparerR2.CharaSimControl
                                 sr2 = new StringResult();
                                 sr2.Name = "(null)";
                             }
-                            itemNames.Add(sr2.Name);
+                            if (!itemNames.Contains(sr2.Name))
+                            {
+                                itemNames.Add(sr2.Name);
+                            }
                         }
 
                         char lastCharacter = itemNames.Last().Last();
