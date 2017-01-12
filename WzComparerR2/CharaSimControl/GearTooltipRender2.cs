@@ -316,12 +316,6 @@ namespace WzComparerR2.CharaSimControl
                         18 + 68 - 26,
                         picH + 15 + 68 - 26);
             }
-            if (Gear.TimeLimited)
-            {
-                g.DrawImage(GearGraphics.EnlargeBitmap(Resource.Item_timeLimit_0),
-                    18 + 2,
-                    picH + 15 + 2);
-            }
             //检查星岩
             bool hasSocket = Gear.GetBooleanValue(GearPropType.nActivatedSocket);
             if (hasSocket)
