@@ -489,7 +489,30 @@ namespace WzComparerR2.Comparer
             }
             else if ((sound = value.Value as Wz_Sound) != null)
             {
-                return string.Format("음악 {0}ms", sound.Ms);
+                if (OutputPng)
+                {
+                    char[] invalidChars = Path.GetInvalidFileNameChars();
+                    string colName = col == 0 ? "new" : (col == 1 ? "old" : col.ToString());
+                    string filePath = fullPath.Replace('\\', '.') + "_" + colName + ".mp3";
+
+                    for (int i = 0; i < invalidChars.Length; i++)
+                    {
+                        filePath = filePath.Replace(invalidChars[i].ToString(), null);
+                    }
+
+                    byte[] mp3 = sound.ExtractSound();
+                    if (mp3 != null)
+                    {
+                        FileStream fileStream = new FileStream(Path.Combine(outputDir, filePath), FileMode.Create, FileAccess.Write);
+                        fileStream.Write(mp3, 0, mp3.Length);
+                        fileStream.Close();
+                    }
+                    return string.Format("<audio controls src=\"{0}\" type=\"audio/mpeg\">음악 {1}ms\n</audio>", Path.Combine(new DirectoryInfo(outputDir).Name, filePath), sound.Ms);
+                }
+                else
+                {
+                    return string.Format("음악 {0}ms", sound.Ms);
+                }
             }
             else if (value.Value is Wz_Image)
             {

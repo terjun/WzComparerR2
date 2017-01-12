@@ -2321,7 +2321,7 @@
             this.chkOutputPng.Size = new System.Drawing.Size(107, 23);
             this.chkOutputPng.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
             this.chkOutputPng.TabIndex = 5;
-            this.chkOutputPng.Text = "PNG 파일 출력";
+            this.chkOutputPng.Text = "PNG, 음악 파일 출력";
             // 
             // cmbComparePng
             // 
