@@ -369,6 +369,10 @@ namespace WzComparerR2.CharaSimControl
             {
                 GearGraphics.DrawString(g, "\n#c사용 전 1회에 한해 타인과 교환할 수 있으며, 아이템 사용 후에는 교환이 제한됩니다.#", GearGraphics.ItemDetailFont, 100, right, ref picH, 16);
             }
+            if (item.Props.TryGetValue(ItemPropType.flatRate, out value) && value > 0)
+            {
+                GearGraphics.DrawString(g, "\n#c기간 정액제 아이템입니다.#", GearGraphics.ItemDetailFont, 100, right, ref picH, 16);
+            }
 
             string incline = null;
             ItemPropType[] inclineTypes = new ItemPropType[]{
