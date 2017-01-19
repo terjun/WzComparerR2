@@ -115,7 +115,7 @@ namespace WzComparerR2.CharaSim
                         }
                         else
                         {
-                            sb.Append(0);//默认值
+                            //sb.Append(0);//默认值
                         }
                         idx += len + 1;
                     }

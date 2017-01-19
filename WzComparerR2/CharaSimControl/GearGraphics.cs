@@ -531,7 +531,7 @@ namespace WzComparerR2.CharaSimControl
                             {
                                 flushRun();
                                 colorStack.Push(orangeColor ?? OrangeBrushColor);
-                                strPos++;
+                                //strPos++;
                             }
                             else//遇到# 换白刷子并flush
                             {

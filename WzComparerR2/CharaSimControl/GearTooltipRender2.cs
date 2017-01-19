@@ -374,6 +374,13 @@ namespace WzComparerR2.CharaSimControl
                 TextRenderer.DrawText(g, "성장 경험치 : " + (max ? "MAX" : "0%"), GearGraphics.EquipDetailFont, new Point(13, picH), ((SolidBrush)GearGraphics.OrangeBrush3).Color, TextFormatFlags.NoPadding);
                 picH += 15;
             }
+            else if (Gear.ItemID / 10000 == 171 && Gear.ItemID != 1712000)
+            {
+                TextRenderer.DrawText(g, "성장 레벨 : 1", GearGraphics.EquipDetailFont, new Point(13, picH), ((SolidBrush)GearGraphics.OrangeBrush3).Color, TextFormatFlags.NoPadding);
+                picH += 15;
+                TextRenderer.DrawText(g, "성장치 : 1 / 12 ( 8% )", GearGraphics.EquipDetailFont, new Point(13, picH), ((SolidBrush)GearGraphics.OrangeBrush3).Color, TextFormatFlags.NoPadding);
+                picH += 15;
+            }
 
             if (Gear.Props.TryGetValue(GearPropType.@sealed, out value))
             {
