@@ -72,7 +72,7 @@
             this.dockSite3 = new DevComponents.DotNetBar.DockSite();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.avatarContainer1 = new WzComparerR2.Avatar.UI.AvatarContainer();
-            this.buttonItem1 = new DevComponents.DotNetBar.ButtonItem();
+            this.btnExportImage = new DevComponents.DotNetBar.ButtonItem();
             this.dockSite2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.bar1)).BeginInit();
             this.bar1.SuspendLayout();
@@ -603,7 +603,7 @@
             this.btnCharac,
             this.btnReset,
             this.btnLock,
-            this.buttonItem1});
+            this.btnExportImage});
             this.bar3.Location = new System.Drawing.Point(0, 0);
             this.bar3.Name = "bar3";
             this.bar3.Size = new System.Drawing.Size(203, 26);
@@ -681,11 +681,12 @@
             this.avatarContainer1.TabIndex = 8;
             this.avatarContainer1.Text = "avatarContainer1";
             // 
-            // buttonItem1
+            // save button
             // 
-            this.buttonItem1.Name = "buttonItem1";
-            this.buttonItem1.Text = "buttonItem1";
-            this.buttonItem1.Click += new System.EventHandler(this.buttonItem1_Click_1);
+            this.btnExportImage.Name = "btnExportImage";
+            this.btnExportImage.Image = global::WzComparerR2.Avatar.Properties.Resources.save;
+            this.btnExportImage.Tooltip = "저장";
+            this.btnExportImage.Click += new System.EventHandler(this.btnExportImage_Click);
             // 
             // AvatarForm
             // 
@@ -761,6 +762,6 @@
         private DevComponents.DotNetBar.ButtonItem btnLock;
         private DevComponents.DotNetBar.ButtonItem btnMale;
         private DevComponents.DotNetBar.ButtonItem btnFemale;
-        private DevComponents.DotNetBar.ButtonItem buttonItem1;
+        private DevComponents.DotNetBar.ButtonItem btnExportImage;
     }
 }

@@ -1052,10 +1052,192 @@ namespace WzComparerR2.Avatar.UI
             }
         }
 
-        private void buttonItem1_Click_1(object sender, EventArgs e)
-        {
-            this.PluginEntry.btnSetting_Click(sender, e);
+        private void btnExportImage_Click(object sender, EventArgs e)
+        { 
+             ComboItem selectedItem;
 
+            //Action name
+            selectedItem = this.cmbActionBody.SelectedItem as ComboItem;
+            this.avatar.ActionName = selectedItem != null ? selectedItem.Text : null;
+                    //얼굴 표정 이름
+            selectedItem = this.cmbEmotion.SelectedItem as ComboItem;
+            this.avatar.EmotionName = selectedItem != null ? selectedItem.Text : null;
+                     //탈것 - 더미
+            this.avatar.TamingActionName = null;
+
+                     //프레임 상태들
+            selectedItem = this.cmbBodyFrame.SelectedItem as ComboItem;
+            int bodyFrame = selectedItem != null ? Convert.ToInt32(selectedItem.Text) : -1;
+            selectedItem = this.cmbEmotionFrame.SelectedItem as ComboItem;
+            int emoFrame = selectedItem != null ? Convert.ToInt32(selectedItem.Text) : -1;
+            //selectedItem = this.cmbTamingFrame.SelectedItem as ComboItem;
+
+                    //무기 형식?
+            selectedItem = this.cmbWeaponType.SelectedItem as ComboItem;
+            this.avatar.WeaponType = selectedItem != null ? Convert.ToInt32(selectedItem.Text) : 0;
+
+            selectedItem = this.cmbWeaponIdx.SelectedItem as ComboItem;
+            this.avatar.WeaponIndex = selectedItem != null ? Convert.ToInt32(selectedItem.Text) : 0;
+
+            if(this.avatar.ActionName == null)
+            {
+                MessageBoxEx.Show("캐릭터를 만들어 주세요.", "알림");
+                return;
+            }
+
+            // public void exportChara(bool animated,bool all,object sender, EventArgs e, AvatarCanvas avatar, int bodyFrame, int emoFrame)
+            this.exportChara(chkBodyPlay.Checked, chkTamingPlay.Checked, sender, e, avatar, bodyFrame, emoFrame);
+            //this.PluginEntry.btnSetting_Click(sender, e);
+
+        }
+        public void exportChara(bool animated, bool all, object sender, EventArgs e, AvatarCanvas avatar, int bodyFrame, int emoFrame)
+        {
+            //string defaultDir = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + "\\Pictures\\코디";
+            //Directory.CreateDirectory(defaultDir);
+
+            if (!all)
+            {
+                //open save dialog
+                SaveFileDialog sfd = new SaveFileDialog();
+                sfd.AddExtension = true;
+                sfd.AutoUpgradeEnabled = true;
+                //sfd.InitialDirectory = defaultDir;
+                sfd.FileName = avatar.ActionName + ".gif";
+                sfd.Filter = "GIF 파일|*.gif";
+                if (sfd.ShowDialog() == DialogResult.OK)
+                {
+                    exportChara_one(animated, avatar, bodyFrame, emoFrame, System.IO.Path.GetFullPath(sfd.FileName));
+                }
+            }
+            else
+            {
+                // Code Type A
+                /*
+                VistaFolderBrowserDialog fbd = new VistaFolderBrowserDialog();
+                fbd.ShowNewFolderButton = true;
+                fbd.SelectedPath = defaultDir;
+
+                if (fbd.ShowDialog() == true)
+                {
+                    exportChara_all(avatar, emoFrame, fbd.SelectedPath);
+                }
+                */
+
+                // Code Type B
+                FolderBrowserDialog fbd = new FolderBrowserDialog();
+                fbd.ShowNewFolderButton = true;
+                if(fbd.ShowDialog() == DialogResult.OK)
+                {
+                    exportChara_all(avatar, emoFrame, fbd.SelectedPath);
+                }
+            }
+        }
+        private void exportChara_all(AvatarCanvas avatar, int emoFrame, string dirPath)
+        {
+            // init default var
+            var faceFrames = avatar.GetFaceFrames(avatar.EmotionName);
+            ActionFrame emoF = faceFrames[(emoFrame <= -1 || emoFrame >= faceFrames.Length) ? 0 : emoFrame];
+
+            StringBuilder sb = new StringBuilder();
+            sb.Append(dirPath);
+            sb.Append("에 오류와 함께 저장되었습니다.");
+            sb.AppendLine();
+            bool error = false;
+
+            foreach (var action in avatar.Actions)
+            {
+                Gif gif = new Gif();
+                try
+                {
+                    var actionFrames = avatar.GetActionFrames(action.Name);
+                    foreach (var frame in actionFrames)
+                    {
+                        // check delay
+                        if (frame.Delay != 0)
+                        {
+                            var bone = avatar.CreateFrame(frame, emoF, null);
+                            var bmp = avatar.DrawFrame(bone, frame);
+
+                            Point pos = bmp.OpOrigin;
+                            pos.Offset(frame.Flip ? new Point(-frame.Move.X, frame.Move.Y) : frame.Move);
+                            GifFrame f = new GifFrame(bmp.Bitmap, new Point(-pos.X, -pos.Y), Math.Abs(frame.Delay));
+                            // add frame
+                            gif.Frames.Add(f);
+                        }
+                    }
+
+                    var gifFile = gif.EncodeGif(Color.Transparent);
+
+                    gifFile.Save(dirPath + "\\" + action.Name.Replace('\\', '.') + ".gif");
+                    gifFile.Dispose();
+
+                }
+                catch (Exception e)
+                {
+                    error = true;
+                    sb.Append(action);
+                    sb.Append(" (");
+                    sb.Append(e.Message);
+                    sb.Append(")");
+                    sb.AppendLine();
+                }
+            }
+            if (error)
+            {
+                MessageBoxEx.Show(sb.ToString(), "알림");
+            }
+            else
+            {
+                // show finished
+                MessageBoxEx.Show(dirPath + " 디렉토리에 저장되었습니다.", "알림");
+            }
+        }
+        private void exportChara_one(bool animated, AvatarCanvas avatar, int bodyFrame, int emoFrame, string filePath)
+        {
+            // get char frames in action
+            var actionFrames = avatar.GetActionFrames(avatar.ActionName);
+            // get emo frames
+            var faceFrames = avatar.GetFaceFrames(avatar.EmotionName);
+            // check ani disabled and valid
+            animated = (bodyFrame <= -1 || bodyFrame >= actionFrames.Length) || animated;
+            ActionFrame emoF = faceFrames[(emoFrame <= -1 || emoFrame >= faceFrames.Length) ? 0 : emoFrame];
+            // init gif
+            Gif gif = new Gif();
+            if (animated)
+            {
+                // loop
+                foreach (var frame in actionFrames)
+                {
+                    // check delay
+                    if (frame.Delay != 0)
+                    {
+                        var bone = avatar.CreateFrame(frame, emoF, null);
+                        var bmp = avatar.DrawFrame(bone, frame);
+
+                        Point pos = bmp.OpOrigin;
+                        pos.Offset(frame.Flip ? new Point(-frame.Move.X, frame.Move.Y) : frame.Move);
+                        GifFrame f = new GifFrame(bmp.Bitmap, new Point(-pos.X, -pos.Y), Math.Abs(frame.Delay));
+                        // add frame
+                        gif.Frames.Add(f);
+                    }
+                }
+            }
+            else
+            {
+                var frame = actionFrames[bodyFrame];
+                var bone = avatar.CreateFrame(frame, emoF, null);
+                var bmp = avatar.DrawFrame(bone, frame);
+
+                Point pos = bmp.OpOrigin;
+                pos.Offset(frame.Flip ? new Point(-frame.Move.X, frame.Move.Y) : frame.Move);
+                GifFrame f = new GifFrame(bmp.Bitmap, new Point(-pos.X, -pos.Y), Math.Abs(frame.Delay));
+                // add frame
+                gif.Frames.Add(f);
+            }
+            var gifFile = gif.EncodeGif(Color.Transparent);
+            gifFile.Save(filePath);
+            gifFile.Dispose();
+            MessageBoxEx.Show(filePath + " 에 저장되었습니다.", "알림");
         }
     }
 }
