@@ -1055,53 +1055,56 @@ namespace WzComparerR2.Avatar.UI
                 this.NextFrameDelay = nextFrame;
             }
         }
+
         private void btnExportAll_Click(object sender, EventArgs e)
         {
-            exportChara(sender, e, true);
+            exportCharacter(sender, e, true);
         }
+
         private void btnExportImage_Click(object sender, EventArgs e)
         {
-            exportChara(sender, e, false);
+            exportCharacter(sender, e, false);
         }
-        private void exportChara(object sender, EventArgs e,bool all)
-        { 
+
+        private void exportCharacter(object sender, EventArgs e, bool all)
+        {
              ComboItem selectedItem;
 
             //Action name
             selectedItem = this.cmbActionBody.SelectedItem as ComboItem;
             this.avatar.ActionName = selectedItem != null ? selectedItem.Text : null;
-                    //얼굴 표정 이름
+            //얼굴 표정 이름
             selectedItem = this.cmbEmotion.SelectedItem as ComboItem;
             this.avatar.EmotionName = selectedItem != null ? selectedItem.Text : null;
-                     //탈것 - 더미
+            //탈것 - 더미
             this.avatar.TamingActionName = null;
 
-                     //프레임 상태들
+            //프레임 상태들
             selectedItem = this.cmbBodyFrame.SelectedItem as ComboItem;
             int bodyFrame = selectedItem != null ? Convert.ToInt32(selectedItem.Text) : -1;
             selectedItem = this.cmbEmotionFrame.SelectedItem as ComboItem;
             int emoFrame = selectedItem != null ? Convert.ToInt32(selectedItem.Text) : -1;
             //selectedItem = this.cmbTamingFrame.SelectedItem as ComboItem;
 
-                    //무기 형식?
+            //무기 형식?
             selectedItem = this.cmbWeaponType.SelectedItem as ComboItem;
             this.avatar.WeaponType = selectedItem != null ? Convert.ToInt32(selectedItem.Text) : 0;
 
             selectedItem = this.cmbWeaponIdx.SelectedItem as ComboItem;
             this.avatar.WeaponIndex = selectedItem != null ? Convert.ToInt32(selectedItem.Text) : 0;
 
-            if(this.avatar.ActionName == null)
+            if (this.avatar.ActionName == null)
             {
                 MessageBoxEx.Show("캐릭터를 만들어 주세요.", "알림");
                 return;
             }
 
-            // public void exportChara(bool animated,bool all,object sender, EventArgs e, AvatarCanvas avatar, int bodyFrame, int emoFrame)
-            this.exportChara(chkBodyPlay.Checked, all, sender, e, avatar, bodyFrame, emoFrame);
+            // public void exportCharacter(bool animated, bool all,object sender, EventArgs e, AvatarCanvas avatar, int bodyFrame, int emoFrame)
+            this.exportCharacter(chkBodyPlay.Checked, all, sender, e, avatar, bodyFrame, emoFrame);
             //this.PluginEntry.btnSetting_Click(sender, e);
 
         }
-        public void exportChara(bool animated, bool all, object sender, EventArgs e, AvatarCanvas avatar, int bodyFrame, int emoFrame)
+        public void exportCharacter(bool animated, bool all, object sender, EventArgs e, AvatarCanvas avatar, int bodyFrame, int emoFrame)
         {
             //string defaultDir = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + "\\Pictures";
             //Directory.CreateDirectory(defaultDir);
@@ -1112,32 +1115,33 @@ namespace WzComparerR2.Avatar.UI
                 SaveFileDialog sfd = new SaveFileDialog();
                 sfd.AddExtension = true;
                 sfd.AutoUpgradeEnabled = true;
-                if(lastPath != null && System.IO.Directory.Exists(lastPath))
+                if (lastPath != null && System.IO.Directory.Exists(lastPath))
                 {
                     sfd.InitialDirectory = lastPath;
                 }
                 sfd.FileName = avatar.ActionName + ".gif";
-                sfd.Filter = "GIF 파일|*.gif";
+                sfd.Filter = "GIF (*.GIF)|*.gif";
                 if (sfd.ShowDialog() == DialogResult.OK)
                 {
                     string path = System.IO.Path.GetFullPath(sfd.FileName);
                     lastPath = System.IO.Path.GetDirectoryName(path);
-                    exportChara_one(animated, avatar, bodyFrame, emoFrame, path);
+                    exportCharacter_one(animated, avatar, bodyFrame, emoFrame, path);
                 }
             }
             else
             {
-                if(workerExport != null && workerExport.IsBusy)
+                if (workerExport != null && workerExport.IsBusy)
                 {
                     MessageBox.Show("저장이 끝나지 않았습니다.");
                     return;
-                }else if(workerExport == null)
+                }
+                else if (workerExport == null)
                 {
                     workerExport = new BackgroundWorker();
                     workerExport.WorkerReportsProgress = true;
-                    workerExport.DoWork += new DoWorkEventHandler(exportChara_all_worker);
-                    workerExport.ProgressChanged += new ProgressChangedEventHandler(exportChara_all_progress);
-                    workerExport.RunWorkerCompleted += new RunWorkerCompletedEventHandler(exportChara_all_completed);
+                    workerExport.DoWork += new DoWorkEventHandler(exportCharacter_all_worker);
+                    workerExport.ProgressChanged += new ProgressChangedEventHandler(exportCharacter_all_progress);
+                    workerExport.RunWorkerCompleted += new RunWorkerCompletedEventHandler(exportCharacter_all_completed);
                 }
                 bool chosen = false;
                 // Code Type A
@@ -1170,50 +1174,56 @@ namespace WzComparerR2.Avatar.UI
                     dialogProgress.Show(this);
                     this.Enabled = false;
                     workerExport.RunWorkerAsync(einfo);
-                    //exportChara_all(avatar, emoFrame, fbd.SelectedPath);
+                    //exportCharacter_all(avatar, emoFrame, fbd.SelectedPath);
                 }
             }
         }
-        private void exportChara_all_worker(object sender, DoWorkEventArgs e)
+
+        private void exportCharacter_all_worker(object sender, DoWorkEventArgs e)
         {
             ExportInfo i = e.Argument as ExportInfo;
-            if(i != null)
+            if (i != null)
             {
-                string r = exportChara_all(i,true);
+                string r = exportCharacter_all(i,true);
                 e.Result = r;
-            }else
+            }
+            else
             {
                 throw new Exception("Error.");
             }
         }
-        private void exportChara_all_progress(object sender, ProgressChangedEventArgs e)
+
+        private void exportCharacter_all_progress(object sender, ProgressChangedEventArgs e)
         {
-            if(dialogProgress != null)
+            if (dialogProgress != null)
             {
                 dialogProgress.setProgress(e.ProgressPercentage);
             }
         }
-        private void exportChara_all_completed(object sender, RunWorkerCompletedEventArgs e)
+
+        private void exportCharacter_all_completed(object sender, RunWorkerCompletedEventArgs e)
         {
             string result = e.Result as string;
-            if(dialogProgress != null)
+            if (dialogProgress != null)
             {
                 dialogProgress.Close();
                 this.Enabled = true;
             }
             MessageBoxEx.Show(result, "완료");
         }
+
         // UI Thread - mirror method
-        private void exportChara_all(AvatarCanvas avatar, int emoF, string dirPath)
+        private void exportCharacter_all(AvatarCanvas avatar, int emoF, string dirPath)
         {
             ExportInfo einfo = new ExportInfo(avatar);
             einfo.path = dirPath;
             einfo.emoFrame = emoF;
-            string r = exportChara_all(einfo,false);
+            string r = exportCharacter_all(einfo, false);
             MessageBoxEx.Show(r, "완료");
         }
+
         // worker method
-        private string exportChara_all(ExportInfo eInfo,bool noti)
+        private string exportCharacter_all(ExportInfo eInfo, bool noti)
         {
             AvatarCanvas avatar = eInfo.avatar;
             int emoFrame = eInfo.emoFrame;
@@ -1290,7 +1300,8 @@ namespace WzComparerR2.Avatar.UI
                 return dirPath + " 디렉토리에 저장되었습니다.";
             }
         }
-        private void exportChara_one(bool animated, AvatarCanvas avatar, int bodyFrame, int emoFrame, string filePath)
+
+        private void exportCharacter_one(bool animated, AvatarCanvas avatar, int bodyFrame, int emoFrame, string filePath)
         {
             // get char frames in action
             var actionFrames = avatar.GetActionFrames(avatar.ActionName);
