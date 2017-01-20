@@ -93,6 +93,16 @@ namespace WzComparerR2.Avatar.Properties {
         /// <summary>
         ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
         /// </summary>
+        internal static System.Drawing.Bitmap saveall {
+            get {
+                object obj = ResourceManager.GetObject("saveall", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+        /// </summary>
         internal static System.Drawing.Bitmap script_code {
             get {
                 object obj = ResourceManager.GetObject("script_code", resourceCulture);
