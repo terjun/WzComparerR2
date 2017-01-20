@@ -48,6 +48,7 @@
   <ItemGroup>
     <Compile Include="Action.cs" />
     <Compile Include="ActionFrame.cs" />
+    <Compile Include="ExportInfo.cs" />
     <Compile Include="UI\AvatarCodeForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -83,6 +84,12 @@
     <Compile Include="UI\AvatarPartButtonItem.Designer.cs">
       <DependentUpon>AvatarPartButtonItem.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\ProgressForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\ProgressForm.Designer.cs">
+      <DependentUpon>ProgressForm.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="UI\AvatarCodeForm.resx">
@@ -97,6 +104,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\AvatarPartButtonItem.resx">
       <DependentUpon>AvatarPartButtonItem.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\ProgressForm.resx">
+      <DependentUpon>ProgressForm.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
@@ -127,6 +137,12 @@
       <Name>WzComparerR2.WzLib</Name>
       <Private>False</Private>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\save.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\saveall.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

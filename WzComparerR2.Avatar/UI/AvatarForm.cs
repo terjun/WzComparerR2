@@ -47,6 +47,10 @@ namespace WzComparerR2.Avatar.UI
         bool needUpdate;
         Animator animator;
 
+        BackgroundWorker workerExport;
+        ProgressForm dialogProgress;
+        string lastPath;
+
         /// <summary>
         /// wz1节点选中事件。
         /// </summary>
@@ -1051,11 +1055,287 @@ namespace WzComparerR2.Avatar.UI
                 this.NextFrameDelay = nextFrame;
             }
         }
-
-        private void buttonItem1_Click_1(object sender, EventArgs e)
+        private void btnExportAll_Click(object sender, EventArgs e)
         {
-            this.PluginEntry.btnSetting_Click(sender, e);
+            exportChara(sender, e, true);
+        }
+        private void btnExportImage_Click(object sender, EventArgs e)
+        {
+            exportChara(sender, e, false);
+        }
+        private void exportChara(object sender, EventArgs e,bool all)
+        { 
+             ComboItem selectedItem;
 
+            //Action name
+            selectedItem = this.cmbActionBody.SelectedItem as ComboItem;
+            this.avatar.ActionName = selectedItem != null ? selectedItem.Text : null;
+                    //얼굴 표정 이름
+            selectedItem = this.cmbEmotion.SelectedItem as ComboItem;
+            this.avatar.EmotionName = selectedItem != null ? selectedItem.Text : null;
+                     //탈것 - 더미
+            this.avatar.TamingActionName = null;
+
+                     //프레임 상태들
+            selectedItem = this.cmbBodyFrame.SelectedItem as ComboItem;
+            int bodyFrame = selectedItem != null ? Convert.ToInt32(selectedItem.Text) : -1;
+            selectedItem = this.cmbEmotionFrame.SelectedItem as ComboItem;
+            int emoFrame = selectedItem != null ? Convert.ToInt32(selectedItem.Text) : -1;
+            //selectedItem = this.cmbTamingFrame.SelectedItem as ComboItem;
+
+                    //무기 형식?
+            selectedItem = this.cmbWeaponType.SelectedItem as ComboItem;
+            this.avatar.WeaponType = selectedItem != null ? Convert.ToInt32(selectedItem.Text) : 0;
+
+            selectedItem = this.cmbWeaponIdx.SelectedItem as ComboItem;
+            this.avatar.WeaponIndex = selectedItem != null ? Convert.ToInt32(selectedItem.Text) : 0;
+
+            if(this.avatar.ActionName == null)
+            {
+                MessageBoxEx.Show("캐릭터를 만들어 주세요.", "알림");
+                return;
+            }
+
+            // public void exportChara(bool animated,bool all,object sender, EventArgs e, AvatarCanvas avatar, int bodyFrame, int emoFrame)
+            this.exportChara(chkBodyPlay.Checked, all, sender, e, avatar, bodyFrame, emoFrame);
+            //this.PluginEntry.btnSetting_Click(sender, e);
+
+        }
+        public void exportChara(bool animated, bool all, object sender, EventArgs e, AvatarCanvas avatar, int bodyFrame, int emoFrame)
+        {
+            //string defaultDir = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + "\\Pictures";
+            //Directory.CreateDirectory(defaultDir);
+
+            if (!all)
+            {
+                //open save dialog
+                SaveFileDialog sfd = new SaveFileDialog();
+                sfd.AddExtension = true;
+                sfd.AutoUpgradeEnabled = true;
+                if(lastPath != null && System.IO.Directory.Exists(lastPath))
+                {
+                    sfd.InitialDirectory = lastPath;
+                }
+                sfd.FileName = avatar.ActionName + ".gif";
+                sfd.Filter = "GIF 파일|*.gif";
+                if (sfd.ShowDialog() == DialogResult.OK)
+                {
+                    string path = System.IO.Path.GetFullPath(sfd.FileName);
+                    lastPath = System.IO.Path.GetDirectoryName(path);
+                    exportChara_one(animated, avatar, bodyFrame, emoFrame, path);
+                }
+            }
+            else
+            {
+                if(workerExport != null && workerExport.IsBusy)
+                {
+                    MessageBox.Show("저장이 끝나지 않았습니다.");
+                    return;
+                }else if(workerExport == null)
+                {
+                    workerExport = new BackgroundWorker();
+                    workerExport.WorkerReportsProgress = true;
+                    workerExport.DoWork += new DoWorkEventHandler(exportChara_all_worker);
+                    workerExport.ProgressChanged += new ProgressChangedEventHandler(exportChara_all_progress);
+                    workerExport.RunWorkerCompleted += new RunWorkerCompletedEventHandler(exportChara_all_completed);
+                }
+                bool chosen = false;
+                // Code Type A
+                // VistaFolderBrowserDialog fbd = new VistaFolderBrowserDialog();
+                // Code Type B
+                FolderBrowserDialog fbd = new FolderBrowserDialog();
+
+                fbd.ShowNewFolderButton = true;
+                if (lastPath != null && System.IO.Directory.Exists(lastPath))
+                {
+                    fbd.SelectedPath = lastPath;
+                }
+                // Code Type A
+                // chosen = fbd.ShowDialog();
+                // Code Type B
+                chosen = fbd.ShowDialog() == DialogResult.OK;
+
+                if (chosen)
+                {
+                    dialogProgress = new ProgressForm();
+                    dialogProgress.setMax(avatar.Actions.Count);
+
+                    ExportInfo einfo = new ExportInfo(avatar);
+                    einfo.path = System.IO.Path.GetFullPath(fbd.SelectedPath);
+                    einfo.emoFrame = emoFrame;
+
+                    lastPath = einfo.path;
+
+                    dialogProgress.StartPosition = FormStartPosition.CenterParent;
+                    dialogProgress.Show(this);
+                    this.Enabled = false;
+                    workerExport.RunWorkerAsync(einfo);
+                    //exportChara_all(avatar, emoFrame, fbd.SelectedPath);
+                }
+            }
+        }
+        private void exportChara_all_worker(object sender, DoWorkEventArgs e)
+        {
+            ExportInfo i = e.Argument as ExportInfo;
+            if(i != null)
+            {
+                string r = exportChara_all(i,true);
+                e.Result = r;
+            }else
+            {
+                throw new Exception("Error.");
+            }
+        }
+        private void exportChara_all_progress(object sender, ProgressChangedEventArgs e)
+        {
+            if(dialogProgress != null)
+            {
+                dialogProgress.setProgress(e.ProgressPercentage);
+            }
+        }
+        private void exportChara_all_completed(object sender, RunWorkerCompletedEventArgs e)
+        {
+            string result = e.Result as string;
+            if(dialogProgress != null)
+            {
+                dialogProgress.Close();
+                this.Enabled = true;
+            }
+            MessageBoxEx.Show(result, "완료");
+        }
+        // UI Thread - mirror method
+        private void exportChara_all(AvatarCanvas avatar, int emoF, string dirPath)
+        {
+            ExportInfo einfo = new ExportInfo(avatar);
+            einfo.path = dirPath;
+            einfo.emoFrame = emoF;
+            string r = exportChara_all(einfo,false);
+            MessageBoxEx.Show(r, "완료");
+        }
+        // worker method
+        private string exportChara_all(ExportInfo eInfo,bool noti)
+        {
+            AvatarCanvas avatar = eInfo.avatar;
+            int emoFrame = eInfo.emoFrame;
+            string dirPath = eInfo.path;
+            // AvatarCanvas avatar, int emoFrame, string dirPath
+           
+            // init default var
+            var faceFrames = avatar.GetFaceFrames(avatar.EmotionName);
+            ActionFrame emoF = faceFrames[(emoFrame <= -1 || emoFrame >= faceFrames.Length) ? 0 : emoFrame];
+
+            StringBuilder sb = new StringBuilder();
+            sb.Append(dirPath);
+            sb.Append("에 오류와 함께 저장되었습니다.");
+            sb.AppendLine();
+            bool error = false;
+
+            int loop = 0;
+
+            foreach (var action in avatar.Actions)
+            {
+                Gif gif = new Gif();
+                try
+                {
+                    var actionFrames = avatar.GetActionFrames(action.Name);
+                    foreach (var frame in actionFrames)
+                    {
+                        // check delay
+                        if (frame.Delay != 0)
+                        {
+                            var bone = avatar.CreateFrame(frame, emoF, null);
+                            var bmp = avatar.DrawFrame(bone, frame);
+
+                            Point pos = bmp.OpOrigin;
+                            pos.Offset(frame.Flip ? new Point(-frame.Move.X, frame.Move.Y) : frame.Move);
+                            GifFrame f = new GifFrame(bmp.Bitmap, new Point(-pos.X, -pos.Y), Math.Abs(frame.Delay));
+                            // add frame
+                            gif.Frames.Add(f);
+                        }
+                    }
+
+                    var gifFile = gif.EncodeGif(Color.Transparent);
+                    StringBuilder path = new StringBuilder();
+                    path.Append(dirPath).Append("\\").Append(action.Name.Replace('\\', '.')).Append(".gif");
+                    String _path = path.ToString();
+                    if (System.IO.Directory.Exists(_path))
+                    {
+                        System.IO.Directory.Delete(_path);
+                    }
+                    gifFile.Save(_path);
+                    gifFile.Dispose();
+                    loop += 1;
+                    if (noti)
+                    {
+                        workerExport.ReportProgress(loop);
+                    }
+                }
+                catch (Exception e)
+                {
+                    error = true;
+                    sb.Append(action);
+                    sb.Append(" (");
+                    sb.Append(e.Message);
+                    sb.Append(")");
+                    sb.AppendLine();
+                }
+            }
+            if (error)
+            {
+                return sb.ToString();
+            }
+            else
+            {
+                // show finished
+                return dirPath + " 디렉토리에 저장되었습니다.";
+            }
+        }
+        private void exportChara_one(bool animated, AvatarCanvas avatar, int bodyFrame, int emoFrame, string filePath)
+        {
+            // get char frames in action
+            var actionFrames = avatar.GetActionFrames(avatar.ActionName);
+            // get emo frames
+            var faceFrames = avatar.GetFaceFrames(avatar.EmotionName);
+            // check ani disabled and valid
+            animated = (bodyFrame <= -1 || bodyFrame >= actionFrames.Length) || animated;
+            ActionFrame emoF = faceFrames[(emoFrame <= -1 || emoFrame >= faceFrames.Length) ? 0 : emoFrame];
+            // init gif
+            Gif gif = new Gif();
+            if (animated)
+            {
+                // loop
+                foreach (var frame in actionFrames)
+                {
+                    // check delay
+                    if (frame.Delay != 0)
+                    {
+                        var bone = avatar.CreateFrame(frame, emoF, null);
+                        var bmp = avatar.DrawFrame(bone, frame);
+
+                        Point pos = bmp.OpOrigin;
+                        pos.Offset(frame.Flip ? new Point(-frame.Move.X, frame.Move.Y) : frame.Move);
+                        GifFrame f = new GifFrame(bmp.Bitmap, new Point(-pos.X, -pos.Y), Math.Abs(frame.Delay));
+                        // add frame
+                        gif.Frames.Add(f);
+                    }
+                }
+            }
+            else
+            {
+                var frame = actionFrames[bodyFrame];
+                var bone = avatar.CreateFrame(frame, emoF, null);
+                var bmp = avatar.DrawFrame(bone, frame);
+
+                Point pos = bmp.OpOrigin;
+                pos.Offset(frame.Flip ? new Point(-frame.Move.X, frame.Move.Y) : frame.Move);
+                GifFrame f = new GifFrame(bmp.Bitmap, new Point(-pos.X, -pos.Y), Math.Abs(frame.Delay));
+                // add frame
+                gif.Frames.Add(f);
+            }
+            var gifFile = gif.EncodeGif(Color.Transparent);
+            gifFile.Save(filePath);
+            gifFile.Dispose();
+            MessageBoxEx.Show(filePath + " 에 저장되었습니다.", "알림");
         }
     }
 }
