@@ -159,7 +159,7 @@ namespace WzComparerR2.CharaSimControl
             Graphics g = Graphics.FromImage(bitmap);
             g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAliasGridFit;
             StringFormat format = (StringFormat)StringFormat.GenericTypographic.Clone();
-            int value;
+            int value, value2;
 
             picH = 13;
             DrawStar2(g, ref picH); //绘制星星
@@ -514,7 +514,7 @@ namespace WzComparerR2.CharaSimControl
             }
 
             bool hasTuc = Gear.HasTuc && Gear.Props.TryGetValue(GearPropType.tuc, out value);
-            if (hasTuc && (!Gear.Props.TryGetValue(GearPropType.exceptUpgrade, out value) || value == 0))
+            if (hasTuc && (!Gear.Props.TryGetValue(GearPropType.exceptUpgrade, out value2) || value2 == 0))
             {
                 TextRenderer.DrawText(g, "업그레이드 가능 횟수 : " + value, GearGraphics.EquipDetailFont, new Point(13, picH), Color.White, TextFormatFlags.NoPadding);
                 picH += 15;
@@ -737,8 +737,7 @@ namespace WzComparerR2.CharaSimControl
                             case GearType.eyeAccessory: value = 40; break;
                             default: success = false; break;
                         }
-
-                        int value2;
+                        
                         if (Gear.Props.TryGetValue(GearPropType.cashForceCharmExp, out value2))
                         {
                             success = true;
