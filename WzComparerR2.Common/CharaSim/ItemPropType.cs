@@ -30,5 +30,6 @@ namespace WzComparerR2.CharaSim
         life,
         limitedLife,
         flatRate,
+        noMoveToLocker,
     }
 }
