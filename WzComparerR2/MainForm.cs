@@ -1751,7 +1751,7 @@ namespace WzComparerR2
                 {
                     if (exact)
                     {
-                        if (kv.Key.ToString() == key || kv.Value.Name == key)
+                        if (kv.Key.ToString() == key || kv.Value.Name == key || kv.Value.Desc == key)
                             yield return kv;
                     }
                     else
@@ -1760,7 +1760,7 @@ namespace WzComparerR2
                         bool r = true;
                         foreach (string str in match)
                         {
-                            if (!(id.Contains(str) || (!string.IsNullOrEmpty(kv.Value.Name) && kv.Value.Name.Contains(str))))
+                            if (!(id.Contains(str) || (!string.IsNullOrEmpty(kv.Value.Name) && kv.Value.Name.Contains(str)) || (!string.IsNullOrEmpty(kv.Value.Desc) && kv.Value.Desc.Contains(str))))
                             {
                                 r = false;
                                 break;
