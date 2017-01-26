@@ -468,6 +468,33 @@ namespace WzComparerR2.CharaSimControl
 
             private List<Run> ParseFormat(string format, Color? defaultColor = null, Color? orangeColor = null)
             {
+                byte[] bytes = Encoding.Default.GetBytes(format);
+                List<byte> newBytes = new List<byte>();
+                int bytePos = 0;
+                byte curByte, curByte2;
+                
+                while (bytePos < bytes.Length)
+                {
+                    curByte = bytes[bytePos++];
+                    if (curByte == '\\')
+                    {
+                        if (bytePos < bytes.Length)
+                        {
+                            curByte2 = bytes[bytePos++];
+                            if (curByte2 == 't' || curByte2 == 'r' || curByte2 == 'n')
+                            {
+                                newBytes.Add(curByte);
+                                newBytes.Add(curByte2);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        newBytes.Add(curByte);
+                    }
+                }
+                format = Encoding.Default.GetString(newBytes.ToArray());
+
                 List<Run> runs = new List<Run>();
 
                 Stack<Color> colorStack = new Stack<Color>();
@@ -686,7 +713,8 @@ namespace WzComparerR2.CharaSimControl
                             layout = regions[i].GetBounds(g);
                         runs[i].X = (int)Math.Round(layout.Left);
                         runs[i].Width = (int)Math.Round(layout.Width);
-                        regions[i].Dispose();
+                        if (i < regions.Length)
+                            regions[i].Dispose();
                     }
                 }
             }
@@ -708,7 +736,7 @@ namespace WzComparerR2.CharaSimControl
                     {
                         var rect = new RectangleF();
                         if (this.UseGDIRenderer)
-                            rect = new RectangleF(new Point(0, 0), TR.MeasureText(g, "" + word[i1], font, Size.Round(infinityRect.Size), TextFormatFlags.NoPadding | TextFormatFlags.NoPrefix));
+                            rect = new RectangleF(new Point(0, 0), TR.MeasureText(g, "" + word[i + i1], font, Size.Round(infinityRect.Size), TextFormatFlags.NoPadding | TextFormatFlags.NoPrefix));
                         else
                             rect = regions[i1].GetBounds(g);
                         rects[i + i1] = new Rectangle(

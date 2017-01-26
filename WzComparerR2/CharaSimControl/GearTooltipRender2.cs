@@ -737,7 +737,7 @@ namespace WzComparerR2.CharaSimControl
                             case GearType.eyeAccessory: value = 40; break;
                             default: success = false; break;
                         }
-                        
+
                         if (Gear.Props.TryGetValue(GearPropType.cashForceCharmExp, out value2))
                         {
                             success = true;
@@ -751,14 +751,21 @@ namespace WzComparerR2.CharaSimControl
                     }
                 }
 
+                desc.Add("");
+
                 if (!string.IsNullOrEmpty(incline))
                 {
-                    desc.Add("\n #c장착 시 1회에 한해 " + incline.Substring(2) + "의 경험치를 얻으실 수 있습니다.#");
+                    desc.Add(" #c장착 시 1회에 한해 " + incline.Substring(2) + "의 경험치를 얻으실 수 있습니다.#");
                 }
 
-                if (Gear.Cash)
+                if (Gear.Cash && (!Gear.Props.TryGetValue(GearPropType.noMoveToLocker, out value) || value == 0))
                 {
                     desc.Add(" #c사용 전 1회에 한해 타인과 교환할 수 있으며, 아이템 사용 후에는 교환이 제한됩니다.#");
+                }
+
+                if (desc.Last() == "")
+                {
+                    desc.RemoveAt(desc.Count - 1);
                 }
             }
 

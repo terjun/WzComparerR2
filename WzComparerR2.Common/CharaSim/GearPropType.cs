@@ -164,6 +164,7 @@ namespace WzComparerR2.CharaSim
         jokerToSetItem,
         medalTag,
         exceptUpgrade,
+        noMoveToLocker,
         ringOptionSkill,
         ringOptionSkillLv
     }
