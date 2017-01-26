@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 
 namespace WzComparerR2.Avatar
 {
-    class ExportInfo {
+    class ExportInfo
+    {
         public ExportInfo(AvatarCanvas _avatar)
         {
             this.avatar = _avatar;

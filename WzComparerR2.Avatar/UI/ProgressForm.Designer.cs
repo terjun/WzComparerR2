@@ -47,7 +47,7 @@
             this.pText.Name = "pText";
             this.pText.Size = new System.Drawing.Size(69, 12);
             this.pText.TabIndex = 1;
-            this.pText.Text = "강원기 사퇴";
+            this.pText.Text = "";
             // 
             // ProgressForm
             // 

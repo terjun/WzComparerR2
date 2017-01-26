@@ -280,7 +280,7 @@ namespace WzComparerR2.Avatar
 
             foreach (var part in new [] {"prepare", "keydown", "keydownend"})
             {
-                var effects = new List<Tuple<Gif,int>>();
+                var effects = new List<Tuple<Gif, int>>();
 
                 for (int i = -1; ; i++)
                 {
@@ -306,11 +306,11 @@ namespace WzComparerR2.Avatar
 
                         int fDelay = 0;
 
-                        for(int i = 0, i0 = part == "keydown" ? keydownCount : 1; i < i0; i++)
+                        for (int i = 0, i0 = part == "keydown" ? keydownCount : 1; i < i0; i++)
                         {
                             effGif.Item1.Frames.ForEach(af => layer.AddFrame((GifFrame)af));
-                            layers.Add(new Tuple<GifLayer, int>(layer,effGif.Item2));
-                            fDelay+= effGif.Item1.Frames.Select(f => f.Delay).Sum();
+                            layers.Add(new Tuple<GifLayer, int>(layer, effGif.Item2));
+                            fDelay += effGif.Item1.Frames.Select(f => f.Delay).Sum();
                         }
 
                         effDelay = Math.Max(fDelay, effDelay);

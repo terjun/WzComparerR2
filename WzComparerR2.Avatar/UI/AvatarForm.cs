@@ -1099,11 +1099,12 @@ namespace WzComparerR2.Avatar.UI
                 return;
             }
 
-            // public void exportCharacter(bool animated, bool all,object sender, EventArgs e, AvatarCanvas avatar, int bodyFrame, int emoFrame)
+            // public void exportCharacter(bool animated, bool all, object sender, EventArgs e, AvatarCanvas avatar, int bodyFrame, int emoFrame)
             this.exportCharacter(chkBodyPlay.Checked, all, sender, e, avatar, bodyFrame, emoFrame);
             //this.PluginEntry.btnSetting_Click(sender, e);
 
         }
+
         public void exportCharacter(bool animated, bool all, object sender, EventArgs e, AvatarCanvas avatar, int bodyFrame, int emoFrame)
         {
             //string defaultDir = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + "\\Pictures";
@@ -1184,7 +1185,7 @@ namespace WzComparerR2.Avatar.UI
             ExportInfo i = e.Argument as ExportInfo;
             if (i != null)
             {
-                string r = exportCharacter_all(i,true);
+                string r = exportCharacter_all(i, true);
                 e.Result = r;
             }
             else
