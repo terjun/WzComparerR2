@@ -1629,7 +1629,7 @@ namespace WzComparerR2
                 else
                 {
                     if (ignoreCase ? node.Cells[cellIndex].Text.IndexOf(searchTextArray[i], StringComparison.CurrentCultureIgnoreCase) < 0 :
-                        !node.Text.Contains(searchTextArray[i]))
+                        !node.Cells[cellIndex].Text.Contains(searchTextArray[i]))
                         return false;
                 }
 
@@ -1703,7 +1703,7 @@ namespace WzComparerR2
             }
             listViewExString.BeginUpdate();
             listViewExString.Items.Clear();
-            IEnumerable<KeyValuePair<int, StringResult>> results = searchStringLinker(dicts, textBoxItemSearchString.Text, checkBoxItemExact2.Checked);
+            IEnumerable<KeyValuePair<int, StringResult>> results = searchStringLinker(dicts, textBoxItemSearchString.Text, checkBoxItemExact2.Checked, !checkBoxItemExact2.Checked);
             foreach (KeyValuePair<int, StringResult> kv in results)
             {
                 string[] item = new string[] { kv.Key.ToString(), kv.Value.Name, kv.Value.Desc, kv.Value.FullPath };
@@ -1742,7 +1742,7 @@ namespace WzComparerR2
             return null;
         }
 
-        private IEnumerable<KeyValuePair<int, StringResult>> searchStringLinker(IEnumerable<Dictionary<int, StringResult>> dicts, string key, bool exact)
+        private IEnumerable<KeyValuePair<int, StringResult>> searchStringLinker(IEnumerable<Dictionary<int, StringResult>> dicts, string key, bool exact, bool ignoreCase)
         {
             string[] match = key.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
             foreach (Dictionary<int, StringResult> dict in dicts)
@@ -1751,7 +1751,7 @@ namespace WzComparerR2
                 {
                     if (exact)
                     {
-                        if (kv.Key.ToString() == key || kv.Value.Name == key || kv.Value.Desc == key)
+                        if (string.Compare(kv.Key.ToString(), key, ignoreCase) == 0 || string.Compare(kv.Value.Name, key, ignoreCase) == 0 || string.Compare(kv.Value.Desc, key, ignoreCase) == 0)
                             yield return kv;
                     }
                     else
@@ -1760,7 +1760,8 @@ namespace WzComparerR2
                         bool r = true;
                         foreach (string str in match)
                         {
-                            if (!(id.Contains(str) || (!string.IsNullOrEmpty(kv.Value.Name) && kv.Value.Name.Contains(str)) || (!string.IsNullOrEmpty(kv.Value.Desc) && kv.Value.Desc.Contains(str))))
+                            if (ignoreCase ? !(id.IndexOf(str, StringComparison.CurrentCultureIgnoreCase) >= 0 || (!string.IsNullOrEmpty(kv.Value.Name) && kv.Value.Name.IndexOf(str, StringComparison.CurrentCultureIgnoreCase) >= 0) || (!string.IsNullOrEmpty(kv.Value.Desc) && kv.Value.Desc.IndexOf(str, StringComparison.CurrentCultureIgnoreCase) >= 0)) :
+                                !(id.Contains(str) || (!string.IsNullOrEmpty(kv.Value.Name) && kv.Value.Name.Contains(str)) || (!string.IsNullOrEmpty(kv.Value.Desc) && kv.Value.Desc.Contains(str))))
                             {
                                 r = false;
                                 break;
