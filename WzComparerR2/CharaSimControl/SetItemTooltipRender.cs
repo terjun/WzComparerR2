@@ -130,6 +130,12 @@ namespace WzComparerR2.CharaSimControl
                                 itemName = "(null)";
                             }
 
+                            switch (Gear.GetGender(itemID.Key))
+                            {
+                                case 0: itemName += " (남)"; break;
+                                case 1: itemName += " (여)"; break;
+                            }
+
                             break;
                         }
                     }
