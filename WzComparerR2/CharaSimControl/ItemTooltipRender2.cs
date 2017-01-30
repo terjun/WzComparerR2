@@ -619,7 +619,7 @@ namespace WzComparerR2.CharaSimControl
             //测试宽度
             var font = GearGraphics.ItemDetailFont;
             var fmt = StringFormat.GenericTypographic;
-            int width = string.IsNullOrEmpty(nickName) ? 0 : TextRenderer.MeasureText(g, nickName, font).Width;
+            int width = string.IsNullOrEmpty(nickName) ? 0 : TextRenderer.MeasureText(g, nickName, font, new Size(int.MaxValue, int.MaxValue), TextFormatFlags.NoPadding).Width;
             int left = picW / 2 - width / 2;
             int right = left + width;
 
