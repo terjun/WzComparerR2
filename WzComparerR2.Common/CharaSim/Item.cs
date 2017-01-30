@@ -105,6 +105,23 @@ namespace WzComparerR2.CharaSim
                             item.EndUseDate = Convert.ToString(subNode.Value);
                             break;
 
+                        case "exp":
+                            foreach (Wz_Node subNode2 in subNode.Nodes)
+                            {
+                                ItemPropType type2;
+                                if (Enum.TryParse("exp_" + subNode2.Text, out type2))
+                                {
+                                    try
+                                    {
+                                        item.Props.Add(type2, Convert.ToInt32(subNode2.Value));
+                                    }
+                                    finally
+                                    {
+                                    }
+                                }
+                            }
+                            break;
+
                         default:
                             ItemPropType type;
                             if (Enum.TryParse(subNode.Text, out type))
