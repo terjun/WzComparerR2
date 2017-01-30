@@ -15,6 +15,7 @@ namespace WzComparerR2.CharaSim
         }
 
         public int Level { get; set; }
+        public string EndUseDate { get; set; }
 
         public Dictionary<ItemPropType, int> Props { get; private set; }
         public Dictionary<ItemSpecType, int> Specs { get; private set; }
@@ -98,6 +99,10 @@ namespace WzComparerR2.CharaSim
 
                         case "lv":
                             item.Level = Convert.ToInt32(subNode.Value);
+                            break;
+
+                        case "endUseDate":
+                            item.EndUseDate = Convert.ToString(subNode.Value);
                             break;
 
                         default:

@@ -291,6 +291,12 @@ namespace WzComparerR2.CharaSimControl
                 TextRenderer.DrawText(g, expireStr, GearGraphics.ItemDetailFont, new Point(tooltip.Width, picH), Color.White, TextFormatFlags.HorizontalCenter);
                 picH += 16;
             }
+            else if (item.EndUseDate != null)
+            {
+                string expireStr = string.Format("{0}년 {1}월 {2}일 {3:D2}시 {4:D2}분까지 사용가능", Convert.ToInt32(item.EndUseDate.Substring(0, 4)), Convert.ToInt32(item.EndUseDate.Substring(4, 2)), Convert.ToInt32(item.EndUseDate.Substring(6, 2)), Convert.ToInt32(item.EndUseDate.Substring(8, 2)), Convert.ToInt32(item.EndUseDate.Substring(10, 2)));
+                TextRenderer.DrawText(g, expireStr, GearGraphics.ItemDetailFont, new Point(tooltip.Width, picH), Color.White, TextFormatFlags.HorizontalCenter);
+                picH += 16;
+            }
             if (item.Props.TryGetValue(ItemPropType.limitedLife, out value) && value != 0)
             {
                 string expireStr = string.Format("마법의 시간: {0}시간 {1}분", value / 3600, (value % 3600) / 60);
