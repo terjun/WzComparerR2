@@ -276,12 +276,14 @@ namespace WzComparerR2.CharaSimControl
             TextRenderer.DrawText(g, sr.Name.Replace(Environment.NewLine, ""), GearGraphics.ItemNameFont2, new Point(tooltip.Width, picH), Color.White, TextFormatFlags.HorizontalCenter | TextFormatFlags.NoPrefix);
             picH += 21;
 
+            bool hasInfo = false;
             //额外特性
             string attr = GetItemAttributeString();
             if (!string.IsNullOrEmpty(attr))
             {
                 TextRenderer.DrawText(g, attr, GearGraphics.ItemDetailFont, new Point(tooltip.Width, picH), ((SolidBrush)GearGraphics.GearNameBrushC).Color, TextFormatFlags.HorizontalCenter);
                 picH += 16;
+                hasInfo = true;
             }
 
             if (item.TimeLimited)
@@ -290,18 +292,21 @@ namespace WzComparerR2.CharaSimControl
                 string expireStr = time.ToString("yyyy년 M월 d일 HH시 mm분까지 사용가능");
                 TextRenderer.DrawText(g, expireStr, GearGraphics.ItemDetailFont, new Point(tooltip.Width, picH), Color.White, TextFormatFlags.HorizontalCenter);
                 picH += 16;
+                hasInfo = true;
             }
             else if (item.EndUseDate != null)
             {
                 string expireStr = string.Format("{0}년 {1}월 {2}일 {3:D2}시 {4:D2}분까지 사용가능", Convert.ToInt32(item.EndUseDate.Substring(0, 4)), Convert.ToInt32(item.EndUseDate.Substring(4, 2)), Convert.ToInt32(item.EndUseDate.Substring(6, 2)), Convert.ToInt32(item.EndUseDate.Substring(8, 2)), Convert.ToInt32(item.EndUseDate.Substring(10, 2)));
                 TextRenderer.DrawText(g, expireStr, GearGraphics.ItemDetailFont, new Point(tooltip.Width, picH), Color.White, TextFormatFlags.HorizontalCenter);
                 picH += 16;
+                hasInfo = true;
             }
             if (item.Props.TryGetValue(ItemPropType.limitedLife, out value) && value != 0)
             {
                 string expireStr = string.Format("마법의 시간: {0}시간 {1}분", value / 3600, (value % 3600) / 60);
                 TextRenderer.DrawText(g, expireStr, GearGraphics.ItemDetailFont, new Point(tooltip.Width, picH), Color.White, TextFormatFlags.HorizontalCenter);
                 picH += 16;
+                hasInfo = true;
             }
             else if (item.Props.TryGetValue(ItemPropType.life, out value) && value != 0)
             {
@@ -309,6 +314,12 @@ namespace WzComparerR2.CharaSimControl
                 string expireStr = time.ToString("마법의 시간: yyyy년 M월 d일 HH시까지");
                 TextRenderer.DrawText(g, expireStr, GearGraphics.ItemDetailFont, new Point(tooltip.Width, picH), Color.White, TextFormatFlags.HorizontalCenter);
                 picH += 16;
+                hasInfo = true;
+            }
+
+            if (hasInfo)
+            {
+                picH += 4;
             }
 
             //绘制图标
