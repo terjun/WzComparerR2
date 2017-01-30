@@ -119,6 +119,12 @@ namespace WzComparerR2.CharaSimControl
                                 if (StringLinker.StringEqp.TryGetValue(itemID.Key, out sr))
                                 {
                                     itemName = sr.Name;
+
+                                    switch (Gear.GetGender(itemID.Key))
+                                    {
+                                        case 0: itemName += " (남)"; break;
+                                        case 1: itemName += " (여)"; break;
+                                    }
                                 }
                                 else if (StringLinker.StringItem.TryGetValue(itemID.Key, out sr)) //兼容宠物
                                 {
@@ -128,12 +134,6 @@ namespace WzComparerR2.CharaSimControl
                             if (sr == null)
                             {
                                 itemName = "(null)";
-                            }
-
-                            switch (Gear.GetGender(itemID.Key))
-                            {
-                                case 0: itemName += " (남)"; break;
-                                case 1: itemName += " (여)"; break;
                             }
 
                             break;
