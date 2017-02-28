@@ -342,14 +342,14 @@ namespace WzComparerR2.CharaSim
                     switch (subNode.Text)
                     {
                         case "icon":
-                            if (subNode.Value is Wz_Png)
+                            if (subNode.Value is Wz_Png || subNode.Value is Wz_Uol)
                             {
                                 gear.Icon = BitmapOrigin.CreateFromNode(subNode, findNode);
                             }
                             break;
 
                         case "iconRaw":
-                            if (subNode.Value is Wz_Png)
+                            if (subNode.Value is Wz_Png || subNode.Value is Wz_Uol)
                             {
                                 gear.IconRaw = BitmapOrigin.CreateFromNode(subNode, findNode);
                             }
