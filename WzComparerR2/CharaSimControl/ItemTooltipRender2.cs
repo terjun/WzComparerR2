@@ -143,6 +143,57 @@ namespace WzComparerR2.CharaSimControl
                 }
             }
 
+            int dressUpgrade;
+            if (this.item.Props.TryGetValue(ItemPropType.dressUpgrade, out dressUpgrade))
+            {
+                int itemID = dressUpgrade;
+                int itemIDClass = itemID / 1000000;
+                if (itemIDClass == 1) //通过ID寻找装备
+                {
+                    Wz_Node charaWz = PluginManager.FindWz(Wz_Type.Character);
+                    if (charaWz != null)
+                    {
+                        string imgName = itemID.ToString("d8") + ".img";
+                        foreach (Wz_Node node0 in charaWz.Nodes)
+                        {
+                            Wz_Node imgNode = node0.FindNodeByPath(imgName, true);
+                            if (imgNode != null)
+                            {
+                                Gear gear = Gear.CreateFromNode(imgNode, path => PluginManager.FindWz(path));
+                                if (gear != null)
+                                {
+                                    recipeItemBmp = RenderLinkRecipeGear(gear);
+                                }
+
+                                break;
+                            }
+                        }
+                    }
+                }
+                else if (itemIDClass >= 2 && itemIDClass <= 5) //通过ID寻找道具
+                {
+                    Wz_Node itemWz = PluginManager.FindWz(Wz_Type.Item);
+                    if (itemWz != null)
+                    {
+                        string imgClass = (itemID / 10000).ToString("d4") + ".img\\" + itemID.ToString("d8");
+                        foreach (Wz_Node node0 in itemWz.Nodes)
+                        {
+                            Wz_Node imgNode = node0.FindNodeByPath(imgClass, true);
+                            if (imgNode != null)
+                            {
+                                Item item = Item.CreateFromNode(imgNode, PluginManager.FindWz);
+                                if (item != null)
+                                {
+                                    recipeItemBmp = RenderLinkRecipeItem(item);
+                                }
+
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+
             int setID;
             if (this.item.Props.TryGetValue(ItemPropType.setItemID, out setID))
             {
@@ -301,14 +352,14 @@ namespace WzComparerR2.CharaSimControl
                 picH += 16;
                 hasInfo = true;
             }
-            if (item.Props.TryGetValue(ItemPropType.limitedLife, out value) && value != 0)
+            if (item.ItemID / 10000 == 500 && item.Props.TryGetValue(ItemPropType.limitedLife, out value) && value != 0)
             {
                 string expireStr = string.Format("마법의 시간: {0}시간 {1}분", value / 3600, (value % 3600) / 60);
                 TextRenderer.DrawText(g, expireStr, GearGraphics.ItemDetailFont, new Point(tooltip.Width, picH), Color.White, TextFormatFlags.HorizontalCenter);
                 picH += 16;
                 hasInfo = true;
             }
-            else if (item.Props.TryGetValue(ItemPropType.life, out value) && value != 0)
+            else if (item.ItemID / 10000 == 500 && item.Props.TryGetValue(ItemPropType.life, out value) && value != 0)
             {
                 DateTime time = DateTime.Now.AddDays(value);
                 string expireStr = time.ToString("마법의 시간: yyyy년 M월 d일 HH시까지");
@@ -392,7 +443,7 @@ namespace WzComparerR2.CharaSimControl
                 {
                     GearGraphics.DrawString(g, "\n#c캐시 보관함으로 이동시킬 수 없는 아이템입니다.#", GearGraphics.ItemDetailFont, 100, right, ref picH, 16);
                 }
-                else
+                else if (item.ItemID / 10000 != 501 && item.ItemID / 10000 != 502 && item.ItemID / 10000 != 516)
                 {
                     GearGraphics.DrawString(g, "\n#c사용 전 1회에 한해 타인과 교환할 수 있으며, 아이템 사용 후에는 교환이 제한됩니다.#", GearGraphics.ItemDetailFont, 100, right, ref picH, 16);
                 }
@@ -557,6 +608,10 @@ namespace WzComparerR2.CharaSimControl
             if (item.Props.TryGetValue(ItemPropType.tradeBlock, out value) && value != 0)
             {
                 tags.Add(ItemStringHelper.GetItemPropString(ItemPropType.tradeBlock, value));
+            }
+            else if (item.ItemID / 10000 == 501 || item.ItemID / 10000 == 502 || item.ItemID / 10000 == 516)
+            {
+                tags.Add(ItemStringHelper.GetItemPropString(ItemPropType.tradeBlock, 1));
             }
             if (item.Props.TryGetValue(ItemPropType.accountSharable, out value) && value != 0)
             {

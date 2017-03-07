@@ -33,5 +33,6 @@ namespace WzComparerR2.CharaSim
         noMoveToLocker,
         exp_minLev,
         exp_maxLev,
+        dressUpgrade,
     }
 }
