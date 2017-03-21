@@ -722,9 +722,7 @@ namespace WzComparerR2.CharaSimControl
                         success = true;
                         switch (Gear.type)
                         {
-                            case GearType.cashWeapon:
-                            case GearType.shield:
-                            case GearType.katara: value = 60; break;
+                            case GearType.cashWeapon: value = 60; break;
                             case GearType.cap: value = 50; break;
                             case GearType.cape: value = 30; break;
                             case GearType.longcoat: value = 60; break;
