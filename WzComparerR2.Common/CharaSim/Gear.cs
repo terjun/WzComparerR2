@@ -596,7 +596,14 @@ namespace WzComparerR2.CharaSim
             //读取默认gearGrade
             if (gear.Props.TryGetValue(GearPropType.fixedGrade, out value))
             {
-                gear.Grade = (GearGrade)(value - 1);
+                // gear.Grade = (GearGrade)(value - 1);
+                switch (value)
+                {
+                    case 2: gear.Grade = GearGrade.B; break;
+                    case 3: gear.Grade = GearGrade.A; break;
+                    case 5: gear.Grade = GearGrade.S; break;
+                    default: gear.Grade = (GearGrade)(value - 1); break;
+                }
             }
 
             //添加默认装备要求

@@ -164,6 +164,7 @@ namespace WzComparerR2.CharaSim
         /// ESP限制器
         /// </summary>
         espLimiter = 126,
+        chain2 = 127,
         /// <summary>
         /// 单手剑 130
         /// </summary>
@@ -312,6 +313,7 @@ namespace WzComparerR2.CharaSim
         /// 棋子 135320
         /// </summary>
         chess = 135320,
+        transmitter = 135330,
         /// <summary>
         /// 装弹 135340
         /// </summary>

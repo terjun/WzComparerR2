@@ -127,7 +127,7 @@ namespace WzComparerR2.CharaSim
                 case GearPropType.blockGoldHammer: return value == 0 ? null : "황금망치 사용 불가";
                 case GearPropType.superiorEqp: return value == 0 ? null : "아이템 강화 성공시 더욱 높은 효과를 받을 수 있습니다.";
                 case GearPropType.nActivatedSocket: return value == 0 ? null : "#c可以镶嵌星岩#";
-                case GearPropType.jokerToSetItem: return value == 0 ? null : "#c어떠한 셋트 아이템에도 포함되는 럭키 아이템!#";
+                case GearPropType.jokerToSetItem: return value == 0 ? null : "#c3개 이상 착용하고 있는 모든 세트 아이템에 포함되는 럭키 아이템!#";
 
                 case GearPropType.incMHP_incMMP: return "최대 HP / 최대 MP : " + sign + value;
                 case GearPropType.incMHPr_incMMPr: return "최대 HP / 최대 MP : " + sign + value + "%";
@@ -272,6 +272,7 @@ namespace WzComparerR2.CharaSim
                 case GearType.powerSource: return "파워소스";
                 case GearType.foxPearl: return "여우 구슬";
                 case GearType.chess: return "체스피스";
+                case GearType.transmitter: return "트랜스미터";
 
                 case GearType.energySword: return "에너지소드";
                 case GearType.desperado: return "데스페라도";
@@ -280,6 +281,7 @@ namespace WzComparerR2.CharaSim
                 case GearType.boxingClaw: return "拳爪";
                 case GearType.katana2: return "小太刀";
                 case GearType.espLimiter: return "ESP 리미터";
+                case GearType.chain2: return "체인";
 
                 case GearType.GauntletBuster: return "건틀렛 리볼버";
                 case GearType.ExplosivePill: return "장약";
@@ -381,6 +383,9 @@ namespace WzComparerR2.CharaSim
 
                 case GearType.GauntletBuster:
                 case GearType.ExplosivePill: return "블래스터 착용 가능";
+
+                case GearType.chain2:
+                case GearType.transmitter: return "카데나 착용 가능";
 
                 default: return null;
             }
