@@ -174,7 +174,7 @@ namespace WzComparerR2.CharaSimControl
                 }
                 if (limit != null && limit.Length > 0)
                 {
-                    TextRenderer.DrawText(g, "< " + limit + " 한정판매 >", GearGraphics.ItemDetailFont2, new Point(cashBitmap.Width, picH), ((SolidBrush)GearGraphics.OrangeBrush).Color, TextFormatFlags.HorizontalCenter);
+                    TextRenderer.DrawText(g, "< " + limit + " 한정판매 >", GearGraphics.ItemDetailFont2, new Point(cashBitmap.Width, picH), ((SolidBrush)GearGraphics.GearNameBrushC).Color, TextFormatFlags.HorizontalCenter);
                     picH += 12;
                 }
             }
