@@ -152,7 +152,6 @@ namespace WzComparerR2.CharaSim
         accountShareTag,
         noPotential,
         fixedPotential,
-        blockGoldHammer,
         timeLimited,
         specialGrade,
         fixedGrade,
@@ -163,9 +162,11 @@ namespace WzComparerR2.CharaSim
         nActivatedSocket,
         jokerToSetItem,
         medalTag,
+        ringOptionSkill,
+        ringOptionSkillLv,
+        abilityTimeLimited,
+        blockGoldHammer,
         exceptUpgrade,
         noMoveToLocker,
-        ringOptionSkill,
-        ringOptionSkillLv
     }
 }

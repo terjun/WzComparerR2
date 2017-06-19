@@ -248,6 +248,13 @@ namespace WzComparerR2.Comparer
                     string.Join("<br/>", fileOld.Select(wzf => wzf.Header.WzVersion.ToString()).ToArray())
                     );
                 sw.WriteLine("<tr><td>현재시간</td><td colspan='3'>{0:yyyy-MM-dd HH:mm:ss.fff}</td></tr>", DateTime.Now);
+                sw.WriteLine("<tr><td>옵션</td><td colspan='3'>{0}</td></tr>", string.Join("<br/>", new[] {
+                    this.OutputPng ? "-OutputPng" : null,
+                    this.OutputAddedImg ? "-OutputAddedImg" : null,
+                    this.OutputRemovedImg ? "-OutputRemovedImg" : null,
+                    "-PngComparison " + this.Comparer.PngComparison,
+                    this.Comparer.ResolvePngLink ? "-ResolvePngLink" : null,
+                }.Where(p => p != null)));
                 sw.WriteLine("</table>");
                 sw.WriteLine("</p>");
 
@@ -303,7 +310,6 @@ namespace WzComparerR2.Comparer
                     sw.WriteLine("<tr><th><a name=\"m_{0}\">{1}:{2}</a></th></tr>", i, diffStr[i], count[i]);
                     sw.Write(sb[i].ToString());
                     sw.WriteLine("</table>");
-                    sw.WriteLine("<br />");
                     sb[i] = null;
                     count[i] = 0;
                 }
@@ -432,11 +438,13 @@ namespace WzComparerR2.Comparer
             }
             StateDetail = "문서 출력중";
             sw.WriteLine("<table class=\"img\">");
-            sw.WriteLine("<tr><th colspan=\"3\"><a name=\"{1}\">{0}</a> 변경:{2} 추가:{3} 제거:{4}</th></tr>", imgName, anchorName, count[0], count[1], count[2]);
+            bool noChange = diffList.Count <= 0;
+            sw.WriteLine("<table class=\"img{0}\">", noChange ? " noChange" : "");
+            sw.WriteLine("<tr><th colspan=\"3\"><a name=\"{1}\">{0}</a> 변경:{2} 추가:{3} 제거:{4}</th></tr>",
+                imgName, anchorName, count[0], count[1], count[2]);
             sw.WriteLine(sb.ToString());
             sw.WriteLine("<tr><td colspan=\"3\"><a href=\"#{1}\">{0}</a></td></tr>", "돌아가기", menuAnchorName);
             sw.WriteLine("</table>");
-            sw.WriteLine("<br />");
             imgNew.Unextract();
             imgOld.Unextract();
             sb = null;
@@ -488,7 +496,6 @@ namespace WzComparerR2.Comparer
             fnOutput(img.Node);
             sw.WriteLine("<tr><td colspan=\"2\"><a href=\"#{1}\">{0}</a></td></tr>", "돌아가기", menuAnchorName);
             sw.WriteLine("</table>");
-            sw.WriteLine("<br />");
             img.Unextract();
         }
 
@@ -588,6 +595,7 @@ namespace WzComparerR2.Comparer
             sw.WriteLine("body { font-size:12px; }");
             sw.WriteLine("p.wzf { }");
             sw.WriteLine("table, tr, th, td { border:1px solid #ff8000; border-collapse:collapse; }");
+            sw.WriteLine("table { margin-bottom:16px; }");
             sw.WriteLine("th { text-align:left; }");
             sw.WriteLine("table.lst0 { }");
             sw.WriteLine("table.lst1 { }");
@@ -596,6 +604,7 @@ namespace WzComparerR2.Comparer
             sw.WriteLine("table.img tr.r0 { background-color:#fff4c4; }");
             sw.WriteLine("table.img tr.r1 { background-color:#ebf2f8; }");
             sw.WriteLine("table.img tr.r2 { background-color:#ffffff; }");
+            sw.WriteLine("table.img.noChange { display:none; }");
             sw.Flush();
             sw.Close();
         }

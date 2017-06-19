@@ -45,6 +45,11 @@ namespace WzComparerR2.CharaSim
         public Dictionary<GearPropType, float> VariableStat { get; private set; }
         public Dictionary<GearPropType, int> AbilityTimeLimited { get; private set; }
 
+        /// <summary>
+        /// 获取或设置装备的标准属性。
+        /// </summary>
+        public Dictionary<GearPropType, int> StandardProps { get; private set; }
+
 
         public bool Epic
         {
@@ -108,7 +113,7 @@ namespace WzComparerR2.CharaSim
             return data[this.GetBooleanValue(GearPropType.superiorEqp) ? 2 : 1];
         }
 
-        private static int[][] starData = new int[][] {
+        private static readonly int[][] starData = new int[][] {
             new[]{ 0, 5, 3 }, 
             new[]{ 95, 8, 5 }, 
             new[]{ 110, 10, 8 }, 
@@ -128,6 +133,30 @@ namespace WzComparerR2.CharaSim
             gear.Options = (Potential[])this.Options.Clone();
             gear.Additions = new List<Addition>(this.Additions);
             return gear;
+        }
+
+        public void MakeTimeLimitedPropAvailable()
+        {
+            if (AbilityTimeLimited.Count > 0)
+            {
+                foreach(var kv in AbilityTimeLimited)
+                {
+                    this.Props[kv.Key] = kv.Value;
+                }
+                this.Props[GearPropType.abilityTimeLimited] = 1;
+            }
+        }
+
+        public void RestoreStandardProperties()
+        {
+            if (this.StandardProps != null)
+            {
+                this.Props.Clear();
+                foreach (var kv in AbilityTimeLimited)
+                {
+                    this.Props[kv.Key] = kv.Value;
+                }
+            }
         }
 
         public static bool IsWeapon(GearType type)
@@ -282,6 +311,14 @@ namespace WzComparerR2.CharaSim
 
                     default:
                         return (GearType)(code / 100 * 10);
+                }
+            }
+            if (code / 10000 == 119)
+            {
+                switch(code / 100)
+                {
+                    case 11902:
+                        return (GearType)(code / 10);
                 }
             }
             return (GearType)(code / 10000);
@@ -513,7 +550,7 @@ namespace WzComparerR2.CharaSim
                             }
                             break;
 
-                        case "abilityTimeLimited": //升级奖励属性
+                        case "abilityTimeLimited": //限时属性
                             foreach (Wz_Node statNode in subNode.Nodes)
                             {
                                 GearPropType type;
@@ -627,6 +664,12 @@ namespace WzComparerR2.CharaSim
                     gear.Props.Add(GearPropType.incMDF, value);
                 }
             }
+
+            //备份标准属性
+            gear.StandardProps = new Dictionary<GearPropType, int>(gear.Props);
+
+            //追加限时属性
+            gear.MakeTimeLimitedPropAvailable();
 
             return gear;
         }

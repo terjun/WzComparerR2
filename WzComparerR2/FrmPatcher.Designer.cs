@@ -80,6 +80,7 @@
             this.labelX5 = new DevComponents.DotNetBar.LabelX();
             this.labelX3 = new DevComponents.DotNetBar.LabelX();
             this.superTooltip1 = new DevComponents.DotNetBar.SuperTooltip();
+            this.chkResolvePngLink = new DevComponents.DotNetBar.Controls.CheckBoxX();
             ((System.ComponentModel.ISupportInitialize)(this.integerInput1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.integerInput2)).BeginInit();
             this.expandablePanel1.SuspendLayout();
@@ -338,6 +339,7 @@
             // 
             this.expandablePanel2.CanvasColor = System.Drawing.SystemColors.Control;
             this.expandablePanel2.ColorSchemeStyle = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
+            this.expandablePanel2.Controls.Add(this.chkResolvePngLink);
             this.expandablePanel2.Controls.Add(this.chkOutputRemovedImg);
             this.expandablePanel2.Controls.Add(this.chkOutputAddedImg);
             this.expandablePanel2.Controls.Add(this.cmbComparePng);
@@ -866,6 +868,22 @@
             // 
             this.superTooltip1.DefaultTooltipSettings = new DevComponents.DotNetBar.SuperTooltipInfo("", "", "", null, null, DevComponents.DotNetBar.eTooltipColor.Gray);
             // 
+            // chkResolvePngLink
+            // 
+            this.chkResolvePngLink.AutoSize = true;
+            this.chkResolvePngLink.BackColor = System.Drawing.Color.Transparent;
+            // 
+            // 
+            // 
+            this.chkResolvePngLink.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.chkResolvePngLink.Location = new System.Drawing.Point(290, 111);
+            this.chkResolvePngLink.Name = "chkResolvePngLink";
+            this.chkResolvePngLink.Size = new System.Drawing.Size(95, 16);
+            this.chkResolvePngLink.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
+            this.superTooltip1.SetSuperTooltip(this.chkResolvePngLink, new DevComponents.DotNetBar.SuperTooltipInfo("PNG 링크 문제 해결", "", "링크된 PNG와 비교하여 같을 경우 출력하지 않습니다.", null, null, DevComponents.DotNetBar.eTooltipColor.System, true, false, new System.Drawing.Size(180, 72)));
+            this.chkResolvePngLink.TabIndex = 18;
+            this.chkResolvePngLink.Text = "PNG 링크 문제 해결";
+            // 
             // FrmPatcher
             // 
             this.ClientSize = new System.Drawing.Size(384, 361);
@@ -949,5 +967,6 @@
         private DevComponents.DotNetBar.Controls.CheckBoxX chkOutputRemovedImg;
         private DevComponents.DotNetBar.Controls.CheckBoxX chkOutputAddedImg;
         private DevComponents.DotNetBar.ButtonX buttonXCreate;
+        private DevComponents.DotNetBar.Controls.CheckBoxX chkResolvePngLink;
     }
 }

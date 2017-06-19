@@ -186,8 +186,8 @@ namespace WzComparerR2.CharaSimControl
                         Brush brush = setItemPart.Value.Enabled ? Brushes.White : GearGraphics.GrayBrush2;
                         if (!Cash)
                         {
-                            TextRenderer.DrawText(g, itemName, GearGraphics.EquipDetailFont2, new Point(8, picHeight), ((SolidBrush)brush).Color, TextFormatFlags.NoPadding);
-                            TextRenderer.DrawText(g, typeName, GearGraphics.EquipDetailFont2, new Point(254 - TextRenderer.MeasureText(g, typeName, GearGraphics.EquipDetailFont2).Width, picHeight), ((SolidBrush)brush).Color, TextFormatFlags.NoPadding);
+                            TextRenderer.DrawText(g, itemName, GearGraphics.EquipDetailFont2, new Point(10, picHeight), ((SolidBrush)brush).Color, TextFormatFlags.NoPadding);
+                            TextRenderer.DrawText(g, typeName, GearGraphics.EquipDetailFont2, new Point(252 - TextRenderer.MeasureText(g, typeName, GearGraphics.EquipDetailFont2).Width, picHeight), ((SolidBrush)brush).Color, TextFormatFlags.NoPadding);
                             picHeight += 18;
                         }
                         else
@@ -200,7 +200,7 @@ namespace WzComparerR2.CharaSimControl
                             }
                             g.DrawImage(Resource.CashItem_0, 10 + 2 + 20, picHeight + 2 + 32 - 12);
                             TextRenderer.DrawText(g, itemName, GearGraphics.EquipDetailFont2, new Point(50, picHeight), ((SolidBrush)brush).Color, TextFormatFlags.NoPadding);
-                            TextRenderer.DrawText(g, typeName, GearGraphics.EquipDetailFont2, new Point(254 - TextRenderer.MeasureText(g, typeName, GearGraphics.EquipDetailFont2, new Size(int.MaxValue, int.MaxValue), TextFormatFlags.NoPadding).Width, picHeight), ((SolidBrush)brush).Color, TextFormatFlags.NoPadding);
+                            TextRenderer.DrawText(g, typeName, GearGraphics.EquipDetailFont2, new Point(252 - TextRenderer.MeasureText(g, typeName, GearGraphics.EquipDetailFont2, new Size(int.MaxValue, int.MaxValue), TextFormatFlags.NoPadding).Width, picHeight), ((SolidBrush)brush).Color, TextFormatFlags.NoPadding);
                             picHeight += 40;
                         }
                     }
@@ -210,23 +210,24 @@ namespace WzComparerR2.CharaSimControl
             {
                 for (int i = 0; i < this.SetItem.completeCount; ++i)
                 {
-                    TextRenderer.DrawText(g, "(없음)", GearGraphics.EquipDetailFont2, new Point(8, picHeight), ((SolidBrush)GearGraphics.GrayBrush2).Color, TextFormatFlags.NoPadding);
-                    TextRenderer.DrawText(g, "미착용", GearGraphics.EquipDetailFont2, new Point(254 - TextRenderer.MeasureText(g, "미착용", GearGraphics.EquipDetailFont2, new Size(int.MaxValue, int.MaxValue), TextFormatFlags.NoPadding).Width, picHeight), ((SolidBrush)GearGraphics.GrayBrush2).Color, TextFormatFlags.NoPadding);
+                    TextRenderer.DrawText(g, "(없음)", GearGraphics.EquipDetailFont2, new Point(10, picHeight), ((SolidBrush)GearGraphics.GrayBrush2).Color, TextFormatFlags.NoPadding);
+                    TextRenderer.DrawText(g, "미착용", GearGraphics.EquipDetailFont2, new Point(252 - TextRenderer.MeasureText(g, "미착용", GearGraphics.EquipDetailFont2, new Size(int.MaxValue, int.MaxValue), TextFormatFlags.NoPadding).Width, picHeight), ((SolidBrush)GearGraphics.GrayBrush2).Color, TextFormatFlags.NoPadding);
                     picHeight += 18;
                 }
             }
 
             picHeight += 5;
-            g.DrawLine(Pens.White, 6, picHeight, 254, picHeight);//分割线
+            g.DrawLine(Pens.White, 6, picHeight, 252, picHeight);//分割线
             picHeight += 9;
             foreach (KeyValuePair<int, SetItemEffect> effect in this.SetItem.effects)
             {
                 if (this.SetItem.setItemID > 0)
-                    TextRenderer.DrawText(g, effect.Key + "세트효과", GearGraphics.EquipDetailFont, new Point(8, picHeight), ((SolidBrush)GearGraphics.GreenBrush2).Color, TextFormatFlags.NoPadding);
+                    TextRenderer.DrawText(g, effect.Key + "세트효과", GearGraphics.EquipDetailFont, new Point(10, picHeight), ((SolidBrush)GearGraphics.GreenBrush2).Color, TextFormatFlags.NoPadding);
                 else
-                    TextRenderer.DrawText(g, "월드 내 중복 착용 효과(" + effect.Key + " / " + this.SetItem.completeCount + ")", GearGraphics.EquipDetailFont, new Point(8, picHeight), ((SolidBrush)GearGraphics.GreenBrush2).Color, TextFormatFlags.NoPadding);
+                    TextRenderer.DrawText(g, "월드 내 중복 착용 효과(" + effect.Key + " / " + this.SetItem.completeCount + ")", GearGraphics.EquipDetailFont, new Point(10, picHeight), ((SolidBrush)GearGraphics.GreenBrush2).Color, TextFormatFlags.NoPadding);
                 picHeight += 15;
-                Brush brush = effect.Value.Enabled ? Brushes.White : GearGraphics.GrayBrush2;
+                //Brush brush = effect.Value.Enabled ? Brushes.White : GearGraphics.GrayBrush2;
+                var color = effect.Value.Enabled ? Color.White : GearGraphics.GrayColor2;
 
                 //T116 合并套装
                 var props = IsCombineProperties ? CombineProperties(effect.Value.PropsV5) : effect.Value.PropsV5;
@@ -237,8 +238,7 @@ namespace WzComparerR2.CharaSimControl
                         List<Potential> ops = (List<Potential>)prop.Value;
                         foreach (Potential p in ops)
                         {
-                            TextRenderer.DrawText(g, p.ConvertSummary(), GearGraphics.EquipDetailFont2, new Point(8, picHeight), ((SolidBrush)brush).Color, TextFormatFlags.NoPadding);
-                            picHeight += 15;
+                            GearGraphics.DrawPlainText(g, p.ConvertSummary(), GearGraphics.EquipDetailFont2, color, 10, 244, ref picHeight, 15);
                         }
                     }
                     else if (prop.Key == GearPropType.OptionToMob)
@@ -246,8 +246,7 @@ namespace WzComparerR2.CharaSimControl
                         List<SetItemOptionToMob> ops = (List<SetItemOptionToMob>)prop.Value;
                         foreach (SetItemOptionToMob p in ops)
                         {
-                            TextRenderer.DrawText(g, p.ConvertSummary(), GearGraphics.EquipDetailFont2, new Point(8, picHeight), ((SolidBrush)brush).Color, TextFormatFlags.NoPadding);
-                            picHeight += 15;
+                            GearGraphics.DrawPlainText(g, p.ConvertSummary(), GearGraphics.EquipDetailFont2, color, 10, 244, ref picHeight, 15);
                         }
                     }
                     else if (prop.Key == GearPropType.activeSkill)
@@ -262,18 +261,13 @@ namespace WzComparerR2.CharaSimControl
                                 sr.Name = p.SkillID.ToString();
                             }
                             string summary = "<" + sr.Name.Replace(Environment.NewLine, "") + "> 스킬 사용 가능";
-                            TextRenderer.DrawText(g, summary, GearGraphics.EquipDetailFont2, new Point(8, picHeight), ((SolidBrush)brush).Color, TextFormatFlags.NoPadding);
-                            picHeight += 15;
+                            GearGraphics.DrawPlainText(g, summary, GearGraphics.EquipDetailFont2, color, 10, 244, ref picHeight, 15);
                         }
                     }
                     else
                     {
-                        if (ItemStringHelper.GetGearPropString(prop.Key, Convert.ToInt32(prop.Value)) != null)
-                        {
-                            TextRenderer.DrawText(g, ItemStringHelper.GetGearPropString(prop.Key, Convert.ToInt32(prop.Value)),
-                            GearGraphics.SetItemPropFont, new Point(8, picHeight), ((SolidBrush)brush).Color, TextFormatFlags.NoPadding);
-                            picHeight += 15;
-                        }
+                        var summary = ItemStringHelper.GetGearPropString(prop.Key, Convert.ToInt32(prop.Value));
+                        GearGraphics.DrawPlainText(g, summary, GearGraphics.EquipDetailFont2, color, 10, 244, ref picHeight, 15);
                     }
                 }
             }

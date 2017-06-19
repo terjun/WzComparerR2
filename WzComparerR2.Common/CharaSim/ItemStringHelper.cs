@@ -124,10 +124,11 @@ namespace WzComparerR2.CharaSim
                     }
                 case GearPropType.noPotential: return value == 0 ? null : "잠재능력 설정 불가";
                 case GearPropType.fixedPotential: return value == 0 ? null : "잠재능력 재설정 불가";
-                case GearPropType.blockGoldHammer: return value == 0 ? null : "황금망치 사용 불가";
                 case GearPropType.superiorEqp: return value == 0 ? null : "아이템 강화 성공시 더욱 높은 효과를 받을 수 있습니다.";
                 case GearPropType.nActivatedSocket: return value == 0 ? null : "#c可以镶嵌星岩#";
                 case GearPropType.jokerToSetItem: return value == 0 ? null : "#c3개 이상 착용하고 있는 모든 세트 아이템에 포함되는 럭키 아이템!#";
+                case GearPropType.abilityTimeLimited: return value == 0 ? null : "기간 한정 능력치";
+                case GearPropType.blockGoldHammer: return value == 0 ? null : "황금망치 사용 불가";
 
                 case GearPropType.incMHP_incMMP: return "최대 HP / 최대 MP : " + sign + value;
                 case GearPropType.incMHPr_incMMPr: return "최대 HP / 최대 MP : " + sign + value + "%";
@@ -139,6 +140,40 @@ namespace WzComparerR2.CharaSim
                 case GearPropType.incARC: return "ARC : " + sign + value;
                 default: return null;
             }
+        }
+
+
+        public static string GetGearPropDiffString(GearPropType propType, int value, int standardValue)
+        {
+            var propStr = GetGearPropString(propType, value);
+            if (value > standardValue)
+            {
+                string subfix = null;
+                switch (propType)
+                {
+                    case GearPropType.incSTR:
+                    case GearPropType.incDEX:
+                    case GearPropType.incINT:
+                    case GearPropType.incLUK:
+                    case GearPropType.incMHP:
+                    case GearPropType.incMMP:
+                    case GearPropType.incMDF:
+                    case GearPropType.incARC:
+                    case GearPropType.incPAD:
+                    case GearPropType.incMAD:
+                    case GearPropType.incPDD:
+                    case GearPropType.incMDD:
+                        subfix = $"({standardValue} #$+{value - standardValue}#)"; break;
+
+                    case GearPropType.bdR:
+                    case GearPropType.incBDR:
+                    case GearPropType.imdR:
+                    case GearPropType.incIMDR:
+                        subfix = $"({standardValue}% #$+{value - standardValue}%#)"; break;
+                }
+                propStr = "#$" + propStr + "# " + subfix;
+            }
+            return propStr;
         }
 
         /// <summary>
@@ -269,9 +304,10 @@ namespace WzComparerR2.CharaSim
                 case GearType.battlemageBall: return "마법구슬";
                 case GearType.wildHunterArrowHead: return "화살촉";
                 case GearType.cygnusGem: return "보석";
-                case GearType.powerSource: return "파워소스";
+                case GearType.controller: return "컨트롤러";
                 case GearType.foxPearl: return "여우 구슬";
                 case GearType.chess: return "체스피스";
+                case GearType.powerSource: return "파워소스";
                 case GearType.transmitter: return "트랜스미터";
 
                 case GearType.energySword: return "에너지소드";
@@ -285,6 +321,7 @@ namespace WzComparerR2.CharaSim
 
                 case GearType.GauntletBuster: return "건틀렛 리볼버";
                 case GearType.ExplosivePill: return "장약";
+
                 default: return null;
             }
         }
@@ -363,6 +400,7 @@ namespace WzComparerR2.CharaSim
                 case GearType.battlemageBall: return "배틀메이지 직업군 착용 가능";
                 case GearType.wildHunterArrowHead: return "와일드헌터 직업군 착용 가능";
                 case GearType.cygnusGem: return "시그너스 기사단 착용 가능";
+                case GearType.controller:
                 case GearType.powerSource:
                 case GearType.energySword: return "제논 착용 가능";
                 case GearType.desperado: return "데몬 어벤져 착용 가능";
