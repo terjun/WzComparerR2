@@ -625,95 +625,171 @@ namespace WzComparerR2.CharaSim
             return 0;
         }
 
-        private static int[] _exptnl = new int[]
+        private static long[] _exptnl = new long[]
         {
             15,34,57,92,
             135,372,560,840,
-            1242,19136,479143,10063200
+            1242,2207026470
         };
 
-        public static int ExpToNextLevel(int level)
+        public static long ExpToNextLevel(int level)
         {
-            int exp;
-            if (level < 1 || level > 200)
+            long exp;
+            if (level < 1 || level > 250)
                 return -1;
             if (level < 10)
                 return _exptnl[level - 1];
             if (level >= 10 && level <= 14)
-                return _exptnl[8];
+                return ExpToNextLevel(9);
             if (level >= 15 && level <= 29)
             {
-                exp = _exptnl[8]; //level 10
+                exp = ExpToNextLevel(14);
                 while (level > 14)
                 {
-                    exp = (int)Math.Round(exp * 1.2, MidpointRounding.AwayFromZero);
+                    exp = (long)(exp * 1.2);
                     level -= 1;
                 }
                 return exp;
             }
             if (level >= 30 && level <= 34)
-            {
-                return _exptnl[9];//level 30
-            }
+                return ExpToNextLevel(29);
             if (level >= 35 && level <= 39)
             {
                 exp = ExpToNextLevel(34);
                 while (level > 34)
                 {
-                    exp = (int)Math.Round(exp * 1.2, MidpointRounding.AwayFromZero);
+                    exp = (long)(exp * 1.2);
                     level -= 1;
                 }
                 return exp;
             }
-            if (level >= 40 && level <= 69)
+            if (level >= 40 && level <= 59)
             {
                 exp = ExpToNextLevel(39);
                 while (level > 39)
                 {
-                    exp = (int)Math.Round(exp * 1.08, MidpointRounding.AwayFromZero);
+                    exp = (long)(exp * 1.08);
                     level -= 1;
                 }
                 return exp;
             }
-            if (level >= 70 && level <= 74)
+            if (level >= 60 && level <= 64)
+                return ExpToNextLevel(59);
+            if (level >= 65 && level <= 74)
             {
-                return _exptnl[10];//level 70
+                exp = ExpToNextLevel(64);
+                while (level > 64)
+                {
+                    exp = (long)(exp * 1.075);
+                    level -= 1;
+                }
+                return exp;
             }
-            if (level >= 75 && level <= 119)
+            if (level >= 75 && level <= 89)
             {
                 exp = ExpToNextLevel(74);
                 while (level > 74)
                 {
-                    exp = (int)Math.Round(exp * 1.07, MidpointRounding.AwayFromZero);
+                    exp = (long)(exp * 1.07);
                     level -= 1;
                 }
                 return exp;
             }
-            if (level >= 120 && level <= 124)
+            if (level >= 90 && level <= 99)
             {
-                return _exptnl[11];//level 120
-            }
-            if (level >= 125 && level <= 159)
-            {
-                exp = _exptnl[11];
-                while (level > 124)
+                exp = ExpToNextLevel(89);
+                while (level > 89)
                 {
-                    exp = (int)Math.Round(exp * 1.07, MidpointRounding.AwayFromZero);
+                    exp = (long)(exp * 1.065);
                     level -= 1;
                 }
                 return exp;
             }
-            if (level >= 160 && level <= 199)
+            if (level >= 100 && level <= 104)
+                return ExpToNextLevel(99);
+            if (level >= 105 && level <= 139)
             {
-                exp = ExpToNextLevel(159);
-                while (level > 159)
+                exp = ExpToNextLevel(104);
+                while (level > 104)
                 {
-                    exp = (int)Math.Round(exp * 1.06, MidpointRounding.AwayFromZero);
+                    exp = (long)(exp * 1.065);
                     level -= 1;
                 }
                 return exp;
             }
-            return -1;
+            if (level >= 140 && level <= 179)
+            {
+                exp = ExpToNextLevel(139);
+                while (level > 139)
+                {
+                    exp = (long)(exp * 1.0625);
+                    level -= 1;
+                }
+                return exp;
+            }
+            if (level >= 180 && level <= 199)
+            {
+                exp = ExpToNextLevel(179);
+                while (level > 179)
+                {
+                    exp = (long)(exp * 1.06);
+                    level -= 1;
+                }
+                return exp;
+            }
+            if (level == 200)
+                return _exptnl[9];
+            if (level >= 201 && level <= 209)
+            {
+                exp = ExpToNextLevel(200);
+                while (level > 200)
+                {
+                    exp = (long)(exp * 1.2);
+                    level -= 1;
+                }
+                return exp;
+            }
+            if (level >= 210 && level <= 219)
+            {
+                exp = ExpToNextLevel(209) * 2;
+                while (level > 209)
+                {
+                    exp = (long)(exp * 1.06);
+                    level -= 1;
+                }
+                return exp;
+            }
+            if (level >= 220 && level <= 229)
+            {
+                exp = ExpToNextLevel(219) * 2;
+                while (level > 219)
+                {
+                    exp = (long)(exp * 1.04);
+                    level -= 1;
+                }
+                return exp;
+            }
+            if (level >= 230 && level <= 239)
+            {
+                exp = ExpToNextLevel(229) * 2;
+                while (level > 229)
+                {
+                    exp = (long)(exp * 1.02);
+                    level -= 1;
+                }
+                return exp;
+            }
+            if (level >= 240 && level <= 249)
+            {
+                exp = ExpToNextLevel(239) * 2;
+                while (level > 239)
+                {
+                    exp = (long)(exp * 1.01);
+                    level -= 1;
+                }
+                return exp;
+            }
+            return 0;
         }
     }
 }

@@ -32,7 +32,7 @@ namespace WzComparerR2.CharaSim
         private int level;
         private int hp;
         private int mp;
-        private int exp;
+        private long exp;
         private int ap;
         private int pop;
 
@@ -117,7 +117,7 @@ namespace WzComparerR2.CharaSim
         /// <summary>
         /// 获取或设置角色的当前经验值。
         /// </summary>
-        public int Exp
+        public long Exp
         {
             get { exp = (Exptnl == -1) ? -1 : Math.Max(0, Math.Min(Exptnl - 1, exp)); return exp; }
             set { value = (Exptnl == -1) ? -1 : Math.Max(0, Math.Min(Exptnl - 1, value)); exp = value; }
@@ -126,7 +126,7 @@ namespace WzComparerR2.CharaSim
         /// <summary>
         /// 获取角色当前升级经验值。
         /// </summary>
-        public int Exptnl
+        public long Exptnl
         {
             get { return Character.ExpToNextLevel(this.level); }
         }
