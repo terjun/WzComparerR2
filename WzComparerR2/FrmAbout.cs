@@ -49,6 +49,12 @@ namespace WzComparerR2
             this.advTree1.Nodes.Add(new Node(string.Format("KMS <font color=\"#808080\">v1.7.0</font>")));
             this.advTree1.Nodes.Add(new Node(string.Format("[KMS] 각종 기능 추가, 최종 번역 <font color=\"#808080\">박현민</font>")));
             this.advTree1.Nodes.Add(new Node(string.Format("[KMS] 문자열 번역 <font color=\"#808080\">슈린냥</font>")));
+            this.advTree1.Nodes.Add(new Node(string.Format("[KMS] 문자열 오류 제보 <font color=\"#808080\">인소야닷컴 실버</font>")));
+            this.advTree1.Nodes.Add(new Node(string.Format("[KMS] 문자열 오류 제보 <font color=\"#808080\">jusir_@naver.com</font>")));
+            this.advTree1.Nodes.Add(new Node(string.Format("[KMS] 장비 툴팁 오류 제보 <font color=\"#808080\">@Sunaries</font>")));
+            this.advTree1.Nodes.Add(new Node(string.Format("[KMS] 중복 착용 불가 문자열 오류 제보 <font color=\"#808080\">인소야닷컴 진류</font>")));
+            this.advTree1.Nodes.Add(new Node(string.Format("[KMS] 아바타 저장 기능 추가 <font color=\"#808080\">@craftingmod</font>")));
+            this.advTree1.Nodes.Add(new Node(string.Format("[KMS] 아바타 불러오기 오류 제보 <font color=\"#808080\">인소야닷컴 일감</font>")));
 
             if (PluginBase.PluginManager.LoadedPlugins.Count > 0)
             {
