@@ -308,7 +308,7 @@ namespace WzComparerR2.CharaSim
                 case GearType.foxPearl: return "여우 구슬";
                 case GearType.chess: return "체스피스";
                 case GearType.powerSource: return "파워소스";
-                case GearType.transmitter: return "트랜스미터";
+                case GearType.transmitter: return "무기 전송장치";
 
                 case GearType.energySword: return "에너지소드";
                 case GearType.desperado: return "데스페라도";
