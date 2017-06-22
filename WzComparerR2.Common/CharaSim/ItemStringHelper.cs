@@ -422,8 +422,7 @@ namespace WzComparerR2.CharaSim
                 case GearType.GauntletBuster:
                 case GearType.ExplosivePill: return "블래스터 착용 가능";
 
-                case GearType.chain2:
-                case GearType.transmitter: return "카데나 착용 가능";
+                case GearType.transmitter: return "카데나 직업군 착용 가능";
 
                 default: return null;
             }

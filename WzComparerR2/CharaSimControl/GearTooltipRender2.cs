@@ -185,7 +185,7 @@ namespace WzComparerR2.CharaSimControl
 
             format.Alignment = StringAlignment.Center;
             TextRenderer.DrawText(g, gearName, GearGraphics.ItemNameFont2,
-                new Point(261, picH), ((SolidBrush)GearGraphics.GetGearNameBrush(Gear.diff, Gear.ScrollUp > 0, Gear.ItemID / 10000 == 180)).Color, TextFormatFlags.HorizontalCenter | TextFormatFlags.NoPrefix);
+                new Point(261, picH), Gear.Cash ? ((SolidBrush)GearGraphics.GearNameBrushB).Color : ((SolidBrush)GearGraphics.GetGearNameBrush(Gear.diff, Gear.ScrollUp > 0, Gear.ItemID / 10000 == 180)).Color, TextFormatFlags.HorizontalCenter | TextFormatFlags.NoPrefix);
             picH += 23;
 
             //装备rank
@@ -255,7 +255,7 @@ namespace WzComparerR2.CharaSimControl
                 DateTime time = DateTime.Now.AddDays(7d);
                 string expireStr;
                 if (!Gear.Cash) expireStr = time.ToString("yyyy년 M월 d일 HH시 mm분까지 효과 지속");
-                else expireStr = time.ToString("yyyy년 M월 d일 HH시 mm분까지 사용가능");
+                else expireStr = time.ToString("yyyy년 M월 d일 HH시까지 사용가능");
                 TextRenderer.DrawText(g, expireStr, GearGraphics.EquipDetailFont, new Point(261, picH), Color.White, TextFormatFlags.HorizontalCenter);
                 picH += 15;
             }
@@ -1066,6 +1066,7 @@ namespace WzComparerR2.CharaSimControl
             if (Gear.Props.TryGetValue(GearPropType.abilityTimeLimited, out value) && value != 0)
             {
                 tags.Add(ItemStringHelper.GetGearPropString(GearPropType.abilityTimeLimited, value));
+                tags.Add(ItemStringHelper.GetGearPropString(GearPropType.notExtend, value));
             }
             if (Gear.Props.TryGetValue(GearPropType.equipTradeBlock, out value) && value != 0)
             {
@@ -1100,7 +1101,7 @@ namespace WzComparerR2.CharaSimControl
             {
                 tags.Add(ItemStringHelper.GetGearPropString(GearPropType.noPotential, value));
             }
-            if (Gear.Props.TryGetValue(GearPropType.fixedPotential, out value) && value != 0)
+            if ((Gear.Props.TryGetValue(GearPropType.fixedPotential, out value) && value != 0) || (Gear.Props.TryGetValue(GearPropType.fixedGrade, out value) && value != 0))
             {
                 tags.Add(ItemStringHelper.GetGearPropString(GearPropType.fixedPotential, value));
             }

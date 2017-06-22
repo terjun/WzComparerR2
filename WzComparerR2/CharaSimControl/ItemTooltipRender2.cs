@@ -340,7 +340,9 @@ namespace WzComparerR2.CharaSimControl
             if (item.TimeLimited)
             {
                 DateTime time = DateTime.Now.AddDays(7d);
-                string expireStr = time.ToString("yyyy년 M월 d일 HH시 mm분까지 사용가능");
+                string expireStr;
+                if (!item.Cash) expireStr = time.ToString("yyyy년 M월 d일 HH시 mm분까지 사용가능");
+                else expireStr = time.ToString("yyyy년 M월 d일 HH시까지 사용가능");
                 TextRenderer.DrawText(g, expireStr, GearGraphics.ItemDetailFont, new Point(tooltip.Width, picH), Color.White, TextFormatFlags.HorizontalCenter);
                 picH += 16;
                 hasInfo = true;
