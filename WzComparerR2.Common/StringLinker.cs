@@ -110,7 +110,7 @@ namespace WzComparerR2.Common
                                 if (Int32.TryParse(tree.Text, out id))
                                 {
                                     StringResult strResult = new StringResult();
-                                    strResult.Name = string.Format("{0}：{1}",
+                                    strResult.Name = string.Format("{0} : {1}",
                                         GetDefaultString(tree, "streetName"),
                                         GetDefaultString(tree, "mapName"));
                                     strResult.Desc = GetDefaultString(tree, "mapDesc");
