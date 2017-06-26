@@ -7,6 +7,7 @@ using WzComparerR2.PluginBase;
 using DevComponents.DotNetBar;
 using System.Threading;
 using System.Windows.Forms;
+using Game = Microsoft.Xna.Framework.Game;
 
 namespace WzComparerR2.MapRender
 {
@@ -20,6 +21,12 @@ namespace WzComparerR2.MapRender
 
         private RibbonBar bar;
         private ButtonItem btnItemMapRender;
+        private FrmMapRender mapRenderGame1;
+
+        private RibbonBar bar2;
+        private ButtonItem btnItemMapRenderV2;
+        private FrmMapRender2 mapRenderGame2;
+
 
         protected override void OnLoad()
         {
@@ -27,6 +34,11 @@ namespace WzComparerR2.MapRender
             btnItemMapRender = new ButtonItem("", "맵 미리보기");
             btnItemMapRender.Click += btnItem_Click;
             bar.Items.Add(btnItemMapRender);
+
+            this.bar2 = Context.AddRibbonBar("Modules", "MapRender2");
+            btnItemMapRenderV2 = new ButtonItem("", "맵 미리보기 V2");
+            btnItemMapRenderV2.Click += btnItem_Click;
+            bar2.Items.Add(btnItemMapRenderV2);
         }
 
         void btnItem_Click(object sender, EventArgs e)
@@ -42,7 +54,7 @@ namespace WzComparerR2.MapRender
                 {
                     if (wzFile == null || wzFile.Type != Wz_Type.Map)
                     {
-                        if (MessageBoxEx.Show("Map.wz의 맵 img를 선택하지 않으셨습니다. 계속 진행하시겠습니까?", "경고", MessageBoxButtons.OKCancel ) != DialogResult.OK)
+                        if (MessageBoxEx.Show("Map.wz의 맵 img를 선택하지 않으셨습니다. 계속 진행하시겠습니까?", "경고", MessageBoxButtons.OKCancel) != DialogResult.OK)
                         {
                             goto exit;
                         }
@@ -62,10 +74,44 @@ namespace WzComparerR2.MapRender
                         try
                         {
 #endif
-                        FrmMapRender frm = new MapRender.FrmMapRender(img);
-                        frm.StringLinker = sl;
-                        frm.Run();
-
+                        if (sender == btnItemMapRender)
+                        {
+                            if (this.mapRenderGame1 != null)
+                            {
+                                return;
+                            }
+                            this.mapRenderGame1 = new FrmMapRender(img) { StringLinker = sl };
+                            try
+                            {
+                                using (this.mapRenderGame1)
+                                {
+                                    this.mapRenderGame1.Run();
+                                }
+                            }
+                            finally
+                            {
+                                this.mapRenderGame1 = null;
+                            }
+                        }
+                        else
+                        {
+                            if (this.mapRenderGame2 != null)
+                            {
+                                return;
+                            }
+                            this.mapRenderGame2 = new FrmMapRender2(img) { StringLinker = sl };
+                            try
+                            {
+                                using (this.mapRenderGame2)
+                                {
+                                    this.mapRenderGame2.Run();
+                                }
+                            }
+                            finally
+                            {
+                                this.mapRenderGame2 = null;
+                            }
+                        }
 #if !DEBUG
                         }
                         catch (Exception ex)
@@ -75,6 +121,7 @@ namespace WzComparerR2.MapRender
 #endif
                     });
                     thread.SetApartmentState(ApartmentState.STA);
+                    thread.IsBackground = true;
                     thread.Start();
                     goto exit;
                 }
@@ -82,7 +129,7 @@ namespace WzComparerR2.MapRender
 
             MessageBoxEx.Show("Map.wz에서 맵 img를 선택하세요.", "오류");
 
-        exit:
+            exit:
             btnItemMapRender.Enabled = true;
         }
 
