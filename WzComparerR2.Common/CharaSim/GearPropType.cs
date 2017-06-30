@@ -168,5 +168,6 @@ namespace WzComparerR2.CharaSim
         blockGoldHammer,
         exceptUpgrade,
         noMoveToLocker,
+        onlyUpgrade,
     }
 }

@@ -557,7 +557,7 @@ namespace WzComparerR2.CharaSimControl
             picH += 8;
 
             //绘制浮动属性
-            if ((Gear.VariableStat != null && Gear.VariableStat.Count > 0) || hasReduce)
+            if ((Gear.VariableStat != null && Gear.VariableStat.Count > 0))
             {
                 if (hasPart2) //分割线...
                 {
@@ -566,35 +566,32 @@ namespace WzComparerR2.CharaSimControl
                     picH += 8;
                 }
 
-                if (Gear.VariableStat != null && Gear.VariableStat.Count > 0)
+                int reqLvl;
+                Gear.Props.TryGetValue(GearPropType.reqLevel, out reqLvl);
+                TextRenderer.DrawText(g, "캐릭터 레벨 별 능력치 추가 (" + reqLvl + "Lv 까지)", GearGraphics.EquipDetailFont, new Point(261, picH), ((SolidBrush)GearGraphics.OrangeBrush3).Color, TextFormatFlags.HorizontalCenter);
+                picH += 20;
+
+                int reduceLvl;
+                Gear.Props.TryGetValue(GearPropType.reduceReq, out reduceLvl);
+
+                int curLevel = charStat == null ? reqLvl : Math.Min(charStat.Level, reqLvl);
+
+                foreach (var kv in Gear.VariableStat)
                 {
-                    int reqLvl;
-                    Gear.Props.TryGetValue(GearPropType.reqLevel, out reqLvl);
-                    TextRenderer.DrawText(g, "캐릭터 레벨 별 능력치 추가 (" + reqLvl + "Lv 까지)", GearGraphics.EquipDetailFont, new Point(261, picH), ((SolidBrush)GearGraphics.OrangeBrush3).Color, TextFormatFlags.HorizontalCenter);
+                    int dLevel = curLevel - reqLvl + reduceLvl;
+                    //int addVal = (int)Math.Floor(kv.Value * dLevel);
+                    //这里有一个计算上的错误 换方式执行
+                    int addVal = (int)Math.Floor(new decimal(kv.Value) * dLevel);
+                    string text = ItemStringHelper.GetGearPropString(kv.Key, addVal, 1);
+                    text += string.Format(" ({0:f1} x {1})", kv.Value, dLevel);
+                    TextRenderer.DrawText(g, text, GearGraphics.EquipDetailFont, new Point(12, picH), ((SolidBrush)GearGraphics.OrangeBrush3).Color, TextFormatFlags.NoPadding);
                     picH += 20;
+                }
 
-                    int reduceLvl;
-                    Gear.Props.TryGetValue(GearPropType.reduceReq, out reduceLvl);
-
-                    int curLevel = charStat == null ? reqLvl : Math.Min(charStat.Level, reqLvl);
-
-                    foreach (var kv in Gear.VariableStat)
-                    {
-                        int dLevel = curLevel - reqLvl + reduceLvl;
-                        //int addVal = (int)Math.Floor(kv.Value * dLevel);
-                        //这里有一个计算上的错误 换方式执行
-                        int addVal = (int)Math.Floor(new decimal(kv.Value) * dLevel);
-                        string text = ItemStringHelper.GetGearPropString(kv.Key, addVal, 1);
-                        text += string.Format(" ({0:f1} x {1})", kv.Value, dLevel);
-                        TextRenderer.DrawText(g, text, GearGraphics.EquipDetailFont, new Point(12, picH), ((SolidBrush)GearGraphics.OrangeBrush3).Color, TextFormatFlags.NoPadding);
-                        picH += 20;
-                    }
-
-                    if (hasReduce)
-                    {
-                        TextRenderer.DrawText(g, "업그레이드 및 강화 시, " + reqLvl + "Lv 무기로 취급", GearGraphics.EquipDetailFont, new Point(12, picH), ((SolidBrush)GearGraphics.GrayBrush2).Color, TextFormatFlags.NoPadding);
-                        picH += 16;
-                    }
+                if (hasReduce)
+                {
+                    TextRenderer.DrawText(g, "업그레이드 및 강화 시, " + reqLvl + "Lv 무기로 취급", GearGraphics.EquipDetailFont, new Point(12, picH), ((SolidBrush)GearGraphics.GrayBrush2).Color, TextFormatFlags.NoPadding);
+                    picH += 16;
                 }
             }
 

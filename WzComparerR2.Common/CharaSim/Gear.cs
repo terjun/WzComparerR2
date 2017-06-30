@@ -90,6 +90,10 @@ namespace WzComparerR2.CharaSim
             {
                 return 0;
             }
+            if (this.GetBooleanValue(GearPropType.onlyUpgrade))
+            {
+                return 0;
+            }
 
             int reqLevel;
             this.Props.TryGetValue(GearPropType.reqLevel, out reqLevel);
@@ -141,7 +145,7 @@ namespace WzComparerR2.CharaSim
             {
                 foreach(var kv in AbilityTimeLimited)
                 {
-                    this.Props[kv.Key] = kv.Value;
+                    this.Props[kv.Key] = this.Props[kv.Key] + kv.Value;
                 }
                 this.Props[GearPropType.abilityTimeLimited] = 1;
             }
@@ -597,6 +601,10 @@ namespace WzComparerR2.CharaSim
                                     }
                                 }
                             }
+                            break;
+
+                        case "onlyUpgrade":
+                            gear.Props.Add(GearPropType.onlyUpgrade, 1);
                             break;
 
                         default:
