@@ -395,7 +395,7 @@ namespace WzComparerR2.CharaSimControl
             g.DrawImage(Resource.UIToolTip_img_Item_ItemIcon_cover, iconX + 4, picH + 4); //绘制左上角cover
 
             value = 0;
-            if (item.Props.TryGetValue(ItemPropType.reqLevel, out value) || item.ItemID / 10000 == 301)
+            if (item.Props.TryGetValue(ItemPropType.reqLevel, out value) || item.ItemID / 10000 == 301 || item.ItemID / 1000 == 5204)
             {
                 picH += 4;
                 g.DrawImage(Resource.ToolTip_Equip_Can_reqLEV, 100, picH);
