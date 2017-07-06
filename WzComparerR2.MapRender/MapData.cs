@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using WzComparerR2.WzLib;
+using WzComparerR2.Common;
 using WzComparerR2.MapRender.Patches2;
 using WzComparerR2.PluginBase;
 using Microsoft.Xna.Framework;
@@ -19,6 +20,7 @@ namespace WzComparerR2.MapRender
         {
             this.Scene = new MapScene();
             this.MiniMap = new MiniMap();
+            this.Tooltips = new List<TooltipItem>();
         }
 
         #region 基本信息
@@ -40,6 +42,7 @@ namespace WzComparerR2.MapRender
         #endregion
 
         public MapScene Scene { get; private set; }
+        public IList<TooltipItem> Tooltips { get; private set; }
 
         public void Load(Wz_Node mapImgNode, ResourceLoader resLoader)
         {
@@ -117,6 +120,10 @@ namespace WzComparerR2.MapRender
             {
                 LoadSkyWhale(node);
             }
+            if ((node = mapImgNode.Nodes["ToolTip"]) != null)
+            {
+                LoadTooltip(node);
+            }
 
             //计算地图大小
             CalcMapSize();
@@ -163,7 +170,8 @@ namespace WzComparerR2.MapRender
                    centerY = miniMapNode.FindNodeByPath("centerY"),
                    mag = miniMapNode.FindNodeByPath("mag");
 
-            Wz_Png _canvas = canvas.GetValueEx<Wz_Png>(null);
+            canvas = canvas.GetLinkedSourceNode(PluginManager.FindWz);
+
             if (canvas != null)
             {
                 this.MiniMap.Canvas = resLoader.Load<Texture2D>(canvas);
@@ -263,11 +271,34 @@ namespace WzComparerR2.MapRender
 
         private void LoadPortal(Wz_Node portalNode)
         {
-            foreach(var node in portalNode.Nodes)
+            var portalTooltipNode = PluginManager.FindWz("String/ToolTipHelp.img/PortalTooltip/" + this.ID);
+
+            foreach (var node in portalNode.Nodes)
             {
                 var item = PortalItem.LoadFromNode(node);
                 item.Name = $"portal_{node.Text}";
                 item.Index = int.Parse(node.Text);
+
+                //加载tooltip
+                if (portalTooltipNode != null && !string.IsNullOrEmpty(item.PName))
+                {
+                    var tooltipNode = portalTooltipNode.Nodes[item.PName];
+                    if (tooltipNode != null)
+                    {
+                        var tooltip = new PortalItem.ItemTooltip();
+
+                        if (tooltipNode.Nodes.Count > 0)
+                        {
+                            tooltip.Title = tooltipNode.Nodes["Title"].GetValueEx<string>(null);
+                        }
+                        else
+                        {
+                            tooltip.Title = tooltipNode.GetValue<String>();
+                        }
+
+                        item.Tooltip = tooltip;
+                    }
+                }
 
                 Scene.Fly.Portal.Slots.Add(item);
             }
@@ -312,6 +343,51 @@ namespace WzComparerR2.MapRender
             }
         }
 
+        private void LoadTooltip(Wz_Node tooltipNode)
+        {
+            Func<Wz_Node, Rectangle> getRect = (node) =>
+            {
+                int x1 = node.Nodes["x1"].GetValueEx<int>(0);
+                int x2 = node.Nodes["x2"].GetValueEx<int>(0);
+                int y1 = node.Nodes["y1"].GetValueEx<int>(0);
+                int y2 = node.Nodes["y2"].GetValueEx<int>(0);
+                return new Rectangle(x1, y1, x2 - x1, y2 - y1);
+            };
+
+            var tooltipDescNode = PluginManager.FindWz("String/ToolTipHelp.img/Mapobject/" + this.ID);
+
+            for (int i = 0; ; i++)
+            {
+                var rectNode = tooltipNode.Nodes[i.ToString()];
+                var charNode = tooltipNode.Nodes[i + "char"];
+                if (rectNode != null)
+                {
+                    var item = new TooltipItem();
+                    item.Name = i.ToString();
+                    item.Index = i;
+                    item.Rect = getRect(rectNode);
+                    if (charNode != null)
+                    {
+                        item.CharRect = getRect(charNode);
+                    }
+
+                    var descNode = tooltipDescNode?.Nodes[i.ToString()];
+                    if (descNode != null)
+                    {
+                        item.Title = descNode.Nodes["Title"].GetValueEx<string>(null);
+                        item.Desc = descNode.Nodes["Desc"].GetValueEx<string>(null);
+                        item.ItemEU = descNode.Nodes["ItemEU"].GetValueEx<string>(null);
+                    }
+
+                    this.Tooltips.Add(item);
+                }
+                else
+                {
+                    break;
+                }
+            }
+        }
+
         private void CalcMapSize()
         {
             if (!this.VRect.IsEmpty)
@@ -320,39 +396,51 @@ namespace WzComparerR2.MapRender
             }
 
             var rect = Rectangle.Empty;
-            
+
+            int xMAX = int.MinValue;
             foreach(LayerNode layer in this.Scene.Layers.Nodes)
             {
                 foreach (ContainerNode<FootholdItem> item in layer.Foothold.Nodes)
                 {
                     var fh = item.Item;
-                    var fhRect = new Rectangle(fh.X1, fh.Y1, fh.X2 - fh.X1, fh.Y2 - fh.Y1);
+                    var fhRect = new Rectangle(
+                        Math.Min(fh.X1, fh.X2),
+                        Math.Min(fh.Y1, fh.Y2),
+                        Math.Abs(fh.X2 - fh.X1),
+                        Math.Abs(fh.Y2 - fh.Y1));
+                    xMAX = Math.Max(fhRect.Right, xMAX);
+                    var oldrec = rect;
                     if (rect.IsEmpty)
                     {
                         rect = fhRect;
                     }
                     else
                     {
-                        Rectangle.Union(ref rect, ref fhRect, out rect);
+                        Rectangle newRect;
+                        Rectangle.Union(ref rect, ref fhRect, out newRect);
+                        rect = newRect;
                     }
                 }
             }
 
+            rect.Y -= 250;
+            rect.Height += 450;
+
             foreach (LadderRopeItem item in this.Scene.Fly.LadderRope.Slots)
             {
-                var lrRect = new Rectangle(item.X, item.Y1, 1, item.Y2 - item.Y1);
+                var lrRect = new Rectangle(item.X, Math.Min(item.Y1, item.Y2), 1, Math.Abs(item.Y2 - item.Y1));
                 if (rect.IsEmpty)
                 {
                     rect = lrRect;
                 }
                 else
                 {
-                    Rectangle.Union(ref rect, ref lrRect, out rect);
+                    Rectangle newRect;
+                    Rectangle.Union(ref rect, ref lrRect, out newRect);
+                    rect = newRect;
                 }
             }
 
-            rect.Y -= 300;
-            rect.Height += 600;
             this.VRect = rect;
         }
 

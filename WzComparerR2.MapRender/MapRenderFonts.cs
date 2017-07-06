@@ -14,7 +14,7 @@ namespace WzComparerR2.MapRender
             this.fonts = new Dictionary<string, XnaFont>();
             this.graphicsDevice = graphicsDevice;
             fonts["default"] = new XnaFont(graphicsDevice, "돋움", 12f);
-            fonts["npcName"] = new XnaFont(graphicsDevice, "돋움", 12f);
+            fonts["npcName"] = fonts["default"];
             fonts["npcDesc"] = new XnaFont(graphicsDevice, "돋움", 13f);
             fonts["mobName"] = fonts["default"];
             fonts["mobLevel"] = new XnaFont(graphicsDevice, "돋움", 9f);
