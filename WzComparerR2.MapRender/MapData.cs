@@ -543,6 +543,14 @@ namespace WzComparerR2.MapRender
         private void PreloadResource(ResourceLoader resLoader, LifeItem life)
         {
             string path;
+            if (life.Hide)
+            {
+                life.View = new LifeItem.ItemView()
+                {
+                    Animator = null
+                };
+                return;
+            }
             switch (life.Type)
             {
                 case LifeItem.LifeType.Mob:
@@ -740,6 +748,30 @@ namespace WzComparerR2.MapRender
                     }
                 }
             }
+            long now = Int64.Parse(DateTime.Now.ToString("yyyyMMddHHmm"));
+            foreach (var conditionNode in node.Nodes)
+            {
+                var condName = conditionNode.Text;
+                if (condName.StartsWith("condition"))
+                {
+                    if (conditionNode.Nodes["dateStart"].GetValueEx<long>(0) <= now && now <= conditionNode.Nodes["dateEnd"].GetValueEx<long>(0))
+                    {
+                        aniData.Clear();
+                        foreach (var conditionedActionNode in conditionNode.Nodes)
+                        {
+                            var conditionedActName = conditionedActionNode.Text;
+                            if (conditionedActName != "dateStart" && conditionedActName != "dateEnd")
+                            {
+                                var ani = resLoader.LoadAnimationData(conditionedActionNode) as RepeatableFrameAnimationData;
+                                if (ani != null)
+                                {
+                                    aniData.Add(condName + "/" + conditionedActName, ani);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
             if (aniData.Count > 0)
             {
                 return new StateMachineAnimator(aniData);
@@ -792,7 +824,7 @@ namespace WzComparerR2.MapRender
         {
             Random r = new Random();
             var actions = new[] { "stand", "say", "mouse", "move", "hand", "laugh", "eye" };
-            var availActions = ani.Data.States.Where(act => actions.Contains(act)).ToArray();
+            var availActions = ani.Data.States.Where(act => actions.Where(acts => act.Contains(acts)).Count() > 0).ToArray();
             if (availActions.Length > 0)
             {
                 ani.AnimationEnd += (o, e) =>
