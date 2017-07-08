@@ -49,7 +49,7 @@ namespace WzComparerR2.MapRender.UI
             var content = Draw(gameTime, env, item);
             if (content.blocks != null)
             {
-                var pos = new Vector2(centerPosition.X - content.size.X / 2, centerPosition.Y - content.size.Y / 2);
+                var pos = new Vector2(centerPosition.X - (int)(content.size.X / 2), centerPosition.Y - (int)(content.size.Y / 2));
                 DrawContent(env, content, pos, false);
             }
         }
