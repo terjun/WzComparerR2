@@ -5,6 +5,7 @@ using System.Text;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Windows.Forms;
+using System.Text.RegularExpressions;
 using Resource = CharaSimResource.Resource;
 using WzComparerR2.PluginBase;
 using WzComparerR2.WzLib;
@@ -332,7 +333,7 @@ namespace WzComparerR2.CharaSimControl
             string attr = GetItemAttributeString();
             if (!string.IsNullOrEmpty(attr))
             {
-                TextRenderer.DrawText(g, attr, GearGraphics.ItemDetailFont, new Point(tooltip.Width, picH), ((SolidBrush)GearGraphics.GearNameBrushC).Color, TextFormatFlags.HorizontalCenter);
+                TextRenderer.DrawText(g, attr, GearGraphics.ItemDetailFont, new Point(tooltip.Width, picH), ((SolidBrush)GearGraphics.OrangeBrush4).Color, TextFormatFlags.HorizontalCenter);
                 picH += 16;
                 hasInfo = true;
             }
@@ -447,7 +448,7 @@ namespace WzComparerR2.CharaSimControl
                 {
                     GearGraphics.DrawString(g, "\n#c캐시 보관함으로 이동시킬 수 없는 아이템입니다.#", GearGraphics.ItemDetailFont, 100, right, ref picH, 16);
                 }
-                else if (item.ItemID / 10000 != 501 && item.ItemID / 10000 != 502 && item.ItemID / 10000 != 516)
+                else if ((!item.Props.TryGetValue(ItemPropType.tradeBlock, out value) || value == 0) && item.ItemID / 10000 != 501 && item.ItemID / 10000 != 502 && item.ItemID / 10000 != 516)
                 {
                     GearGraphics.DrawString(g, "\n#c사용 전 1회에 한해 타인과 교환할 수 있으며, 아이템 사용 후에는 교환이 제한됩니다.#", GearGraphics.ItemDetailFont, 100, right, ref picH, 16);
                 }
@@ -512,7 +513,7 @@ namespace WzComparerR2.CharaSimControl
                     g.DrawLine(Pens.White, 6, picH, tooltip.Width - 7, picH);
                     picH += 8;
 
-                    TextRenderer.DrawText(g, "총  경험치량 :" + totalExp, GearGraphics.ItemDetailFont2, new Point(10, picH), ((SolidBrush)GearGraphics.GearNameBrushC).Color, TextFormatFlags.NoPadding);
+                    TextRenderer.DrawText(g, "총  경험치량 :" + totalExp, GearGraphics.ItemDetailFont2, new Point(10, picH), ((SolidBrush)GearGraphics.OrangeBrush4).Color, TextFormatFlags.NoPadding);
                     picH += 16;
 
                     TextRenderer.DrawText(g, "잔여 경험치량:" + totalExp, GearGraphics.ItemDetailFont2, new Point(10, picH), Color.Red, TextFormatFlags.NoPadding);
@@ -520,7 +521,12 @@ namespace WzComparerR2.CharaSimControl
                 }
                 if (nickResNode != null)
                 {
-                    this.DrawNickTag(g, nickResNode, sr.Name, tooltip.Width, ref picH);
+                    string nickName = sr.Name;
+                    if (sr["nickWithQR"] != null)
+                    {
+                        nickName = new Regex(@"#qr\d*#").Replace(sr["nickWithQR"], sr["qrDefault"]);
+                    }
+                    this.DrawNickTag(g, nickResNode, nickName, tooltip.Width, ref picH);
                     picH += 4;
                 }
             }

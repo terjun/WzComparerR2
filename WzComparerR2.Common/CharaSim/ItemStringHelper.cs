@@ -69,6 +69,7 @@ namespace WzComparerR2.CharaSim
                 case GearPropType.incLUK: return "LUK : " + sign + value;
                 case GearPropType.incLUKr: return "LUK : " + sign + value + "%";
                 case GearPropType.incAllStat: return "올스탯: " + sign + value;
+                case GearPropType.statR: return "올스탯: " + sign + value + "%";
                 case GearPropType.incMHP: return "최대 HP : " + sign + value;
                 case GearPropType.incMHPr: return "최대 HP : " + sign + value + "%";
                 case GearPropType.incMMP: return "최대 MP : " + sign + value;
@@ -163,12 +164,17 @@ namespace WzComparerR2.CharaSim
                     case GearPropType.incMAD:
                     case GearPropType.incPDD:
                     case GearPropType.incMDD:
+                    case GearPropType.incSpeed:
+                    case GearPropType.incJump:
                         subfix = $"({standardValue} #$+{value - standardValue}#)"; break;
 
                     case GearPropType.bdR:
                     case GearPropType.incBDR:
                     case GearPropType.imdR:
                     case GearPropType.incIMDR:
+                    case GearPropType.damR:
+                    case GearPropType.incDAMr:
+                    case GearPropType.statR:
                         subfix = $"({standardValue}% #$+{value - standardValue}%#)"; break;
                 }
                 propStr = "#$" + propStr + "# " + subfix;

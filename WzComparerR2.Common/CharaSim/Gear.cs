@@ -24,7 +24,10 @@ namespace WzComparerR2.CharaSim
         public GearType type;
         public GearState State { get; set; }
 
-        public int diff;
+        public int diff
+        {
+            get { return Compare(this); }
+        }
 
         public Potential[] Options { get; private set; }
         public Potential[] AdditionalOptions { get; private set; }
@@ -229,13 +232,32 @@ namespace WzComparerR2.CharaSim
             foreach (KeyValuePair<GearPropType, int> prop in gear.Props)
             {
                 originGear.Props.TryGetValue(prop.Key, out tempValue);//在原装备中寻找属性 若没有找到 视为0
-                diff += (prop.Value - tempValue) / GetPropTypeWeight(prop.Key);
+                diff += (int)Math.Round((prop.Value - tempValue) / (double)GetPropTypeWeight(prop.Key));
             }
             foreach (KeyValuePair<GearPropType, int> prop in originGear.Props)
             {
                 if (!gear.Props.TryGetValue(prop.Key, out tempValue))//寻找装备原属性里新装备没有的
                 {
-                    diff -= prop.Value / GetPropTypeWeight(prop.Key);
+                    diff -= (int)Math.Round(prop.Value / (double)GetPropTypeWeight(prop.Key));
+                }
+            }
+            return diff;
+        }
+
+        public static int Compare(Gear gear)
+        {
+            int diff = 0;
+            int tempValue;
+            foreach (KeyValuePair<GearPropType, int> prop in gear.Props)
+            {
+                gear.StandardProps.TryGetValue(prop.Key, out tempValue);//在原装备中寻找属性 若没有找到 视为0
+                diff += (int)Math.Round((prop.Value - tempValue) / (double)GetPropTypeWeight(prop.Key));
+            }
+            foreach (KeyValuePair<GearPropType, int> prop in gear.StandardProps)
+            {
+                if (!gear.Props.TryGetValue(prop.Key, out tempValue))//寻找装备原属性里新装备没有的
+                {
+                    diff -= (int)Math.Round(prop.Value / (double)GetPropTypeWeight(prop.Key));
                 }
             }
             return diff;
@@ -247,13 +269,27 @@ namespace WzComparerR2.CharaSim
             {
                 switch (type)
                 {
+                    case GearPropType.incSTR:
+                    case GearPropType.incDEX:
+                    case GearPropType.incINT:
+                    case GearPropType.incLUK:
+                    case GearPropType.incPAD:
+                    case GearPropType.incMAD:
+                    case GearPropType.incSpeed:
+                    case GearPropType.incJump:
+                        return 1;
                     case GearPropType.incMHP:
                     case GearPropType.incMMP:
-                    case GearPropType.incACC:
-                    case GearPropType.incEVA:
+                        return 100;
+                    case GearPropType.incPDD_incMDD:
+                    case GearPropType.incPDD:
                         return 10;
+                    case GearPropType.incPAD_incMAD:
+                    case GearPropType.incAD:
+                        return 2;
+                    case GearPropType.incMHP_incMMP:
+                        return 200;
                 }
-                return 1;
             }
             return int.MaxValue;
         }
@@ -563,38 +599,6 @@ namespace WzComparerR2.CharaSim
                                     try
                                     {
                                         gear.AbilityTimeLimited.Add(type, Convert.ToInt32(statNode.Value));
-                                        int addDiff = Convert.ToInt32(statNode.Value);
-                                        switch (type)
-                                        {
-                                            case GearPropType.incSTR:
-                                            case GearPropType.incDEX:
-                                            case GearPropType.incINT:
-                                            case GearPropType.incLUK:
-                                            case GearPropType.incPAD:
-                                            case GearPropType.incMAD:
-                                            case GearPropType.incSpeed:
-                                            case GearPropType.incJump:
-                                                break;
-                                            case GearPropType.incMHP:
-                                            case GearPropType.incMMP:
-                                                addDiff = (addDiff + 49) / 100;
-                                                break;
-                                            case GearPropType.incPDD_incMDD:
-                                            case GearPropType.incPDD:
-                                                addDiff = (addDiff + 4) / 10;
-                                                break;
-                                            case GearPropType.incPAD_incMAD:
-                                            case GearPropType.incAD:
-                                                addDiff = addDiff * 2;
-                                                break;
-                                            case GearPropType.incMHP_incMMP:
-                                                addDiff = (addDiff + 49) / 100 * 2;
-                                                break;
-                                            default:
-                                                addDiff = 0;
-                                                break;
-                                        }
-                                        gear.diff += addDiff;
                                     }
                                     finally
                                     {

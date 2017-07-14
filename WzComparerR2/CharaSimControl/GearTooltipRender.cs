@@ -177,7 +177,7 @@ namespace WzComparerR2.CharaSimControl
                 string attrStr = GetGearAttributeString(i);
                 if (!string.IsNullOrEmpty(attrStr))
                 {
-                    g.DrawString(attrStr, GearGraphics.EquipDetailFont, GearGraphics.GearNameBrushC, 126, picHeight, format);
+                    g.DrawString(attrStr, GearGraphics.EquipDetailFont, GearGraphics.OrangeBrush4, 126, picHeight, format);
                     picHeight += 19;
                 }
             }
@@ -256,7 +256,7 @@ namespace WzComparerR2.CharaSimControl
                 (gear.Props.TryGetValue(GearPropType.reqSpecJob, out value) ? ItemStringHelper.GetExtraJobReqString(value) : null);
             if (!string.IsNullOrEmpty(extraReq))
             {
-                g.DrawString(extraReq, GearGraphics.EquipDetailFont, GearGraphics.GearNameBrushC, 124, picHeight, format);
+                g.DrawString(extraReq, GearGraphics.EquipDetailFont, GearGraphics.OrangeBrush4, 124, picHeight, format);
                 picHeight += 18;
             }
 

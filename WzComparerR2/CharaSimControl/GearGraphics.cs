@@ -98,6 +98,7 @@ namespace WzComparerR2.CharaSimControl
         /// 表示装备职业额外说明中使用的橙黄色画刷。
         /// </summary>
         public static readonly Brush OrangeBrush3 = new SolidBrush(Color.FromArgb(255, 204, 0));
+        public static readonly Brush OrangeBrush4 = new SolidBrush(Color.FromArgb(255, 136, 17));
         /// <summary>
         /// 表示装备属性额外说明中使用的绿色画刷。
         /// </summary>
@@ -130,7 +131,7 @@ namespace WzComparerR2.CharaSimControl
         /// <summary>
         /// 表示橙色品质的装备名字画刷，额外属性为0~5，并且已经附加卷轴。
         /// </summary>
-        public static readonly Brush GearNameBrushC = new SolidBrush(Color.FromArgb(255, 136, 17));
+        public static readonly Brush GearNameBrushC = new SolidBrush(Color.FromArgb(255, 170, 0));
         private static Color gearBlueColor = Color.FromArgb(102, 255, 255);
         /// <summary>
         /// 表示蓝色品质的装备名字画刷，额外属性为6~22。
@@ -141,7 +142,7 @@ namespace WzComparerR2.CharaSimControl
         /// 表示紫色品质的装备名字画刷，额外属性为23~39。
         /// </summary>
         public static readonly Brush GearNameBrushE = new SolidBrush(gearPurpleColor);
-        private static Color gearGoldColor = Color.FromArgb(255, 204, 0);
+        private static Color gearGoldColor = Color.FromArgb(255, 205, 0);
         /// <summary>
         /// 表示金色品质的装备名字画刷，额外属性为40~54。
         /// </summary>
@@ -154,8 +155,8 @@ namespace WzComparerR2.CharaSimControl
         /// <summary>
         /// 表示红色品质的装备名字画刷，额外属性为70以上。
         /// </summary>
-        public static readonly Brush GearNameBrushH = new SolidBrush(Color.FromArgb(255, 0, 119));
-        public static readonly Brush MasterLabelBrush = new SolidBrush(Color.FromArgb(0, 204, 255));
+        public static readonly Brush GearNameBrushH = new SolidBrush(Color.FromArgb(255, 0, 102));
+        public static readonly Brush BlueBrush = new SolidBrush(Color.FromArgb(0, 204, 255));
 
         public static readonly Color gearCyanColor = Color.FromArgb(102, 255, 255);
         /// <summary>

@@ -151,7 +151,7 @@ namespace WzComparerR2.CharaSimControl
                 if (commodityPackage.termEnd > 0)
                     term += string.Format(" {0}년{1}월{2}일", commodityPackage.termEnd / 1000000, (commodityPackage.termEnd / 10000) % 100, (commodityPackage.termEnd / 100) % 100);
                 term += " >";
-                TextRenderer.DrawText(g, term, GearGraphics.ItemDetailFont2, new Point(cashBitmap.Width, picH), ((SolidBrush)GearGraphics.GearNameBrushC).Color, TextFormatFlags.HorizontalCenter);
+                TextRenderer.DrawText(g, term, GearGraphics.ItemDetailFont2, new Point(cashBitmap.Width, picH), ((SolidBrush)GearGraphics.OrangeBrush4).Color, TextFormatFlags.HorizontalCenter);
                 picH += 12 * term.Split('\n').Length;
             }
             if (commodityPackage.Limit > 0)
@@ -174,7 +174,7 @@ namespace WzComparerR2.CharaSimControl
                 }
                 if (limit != null && limit.Length > 0)
                 {
-                    TextRenderer.DrawText(g, "< " + limit + " 한정판매 >", GearGraphics.ItemDetailFont2, new Point(cashBitmap.Width, picH), ((SolidBrush)GearGraphics.GearNameBrushC).Color, TextFormatFlags.HorizontalCenter);
+                    TextRenderer.DrawText(g, "< " + limit + " 한정판매 >", GearGraphics.ItemDetailFont2, new Point(cashBitmap.Width, picH), ((SolidBrush)GearGraphics.OrangeBrush4).Color, TextFormatFlags.HorizontalCenter);
                     picH += 12;
                 }
             }

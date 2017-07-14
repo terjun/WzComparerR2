@@ -233,12 +233,23 @@ namespace WzComparerR2.CharaSimControl
 
             if (Gear.Props.TryGetValue(GearPropType.royalSpecial, out value) && value > 0)
             {
-                TextRenderer.DrawText(g, "스페셜라벨", GearGraphics.EquipDetailFont, new Point(261, picH), ((SolidBrush)GearGraphics.GearNameBrushA).Color, TextFormatFlags.HorizontalCenter);
+                switch (value)
+                {
+                case 1:
+                    TextRenderer.DrawText(g, "스페셜라벨", GearGraphics.EquipDetailFont, new Point(261, picH), ((SolidBrush)GearGraphics.GearNameBrushA).Color, TextFormatFlags.HorizontalCenter);
+                    break;
+                case 2:
+                    TextRenderer.DrawText(g, "레드라벨", GearGraphics.EquipDetailFont, new Point(261, picH), ((SolidBrush)GearGraphics.GearNameBrushH).Color, TextFormatFlags.HorizontalCenter);
+                    break;
+                case 3:
+                    TextRenderer.DrawText(g, "블랙라벨", GearGraphics.EquipDetailFont, new Point(261, picH), ((SolidBrush)GearGraphics.GearNameBrushF).Color, TextFormatFlags.HorizontalCenter);
+                    break;
+                }
                 picH += 15;
             }
             else if (Gear.Props.TryGetValue(GearPropType.masterSpecial, out value) && value > 0)
             {
-                TextRenderer.DrawText(g, "마스터라벨", GearGraphics.EquipDetailFont, new Point(261, picH), ((SolidBrush)GearGraphics.MasterLabelBrush).Color, TextFormatFlags.HorizontalCenter);
+                TextRenderer.DrawText(g, "마스터라벨", GearGraphics.EquipDetailFont, new Point(261, picH), ((SolidBrush)GearGraphics.BlueBrush).Color, TextFormatFlags.HorizontalCenter);
                 picH += 15;
             }
 
@@ -254,8 +265,14 @@ namespace WzComparerR2.CharaSimControl
             {
                 DateTime time = DateTime.Now.AddDays(7d);
                 string expireStr;
-                if (!Gear.Cash) expireStr = time.ToString("yyyy년 M월 d일 HH시 mm분까지 효과 지속");
-                else expireStr = time.ToString("yyyy년 M월 d일 HH시까지 사용가능");
+                if (!Gear.Cash)
+                {
+                    expireStr = time.ToString("yyyy년 M월 d일 HH시 mm분까지 효과 지속");
+                }
+                else
+                {
+                    expireStr = time.ToString("yyyy년 M월 d일 HH시까지 사용가능");
+                }
                 TextRenderer.DrawText(g, expireStr, GearGraphics.EquipDetailFont, new Point(261, picH), Color.White, TextFormatFlags.HorizontalCenter);
                 picH += 15;
             }
@@ -304,17 +321,27 @@ namespace WzComparerR2.CharaSimControl
             if (Gear.Cash) //绘制cash标识
             {
                 if (Gear.Props.TryGetValue(GearPropType.royalSpecial, out value) && value > 0)
-                    g.DrawImage(GearGraphics.EnlargeBitmap(Resource.CashItem_label_0),
-                        18 + 68 - 26,
-                        picH + 15 + 68 - 26);
+                {
+                    Image label = Resource.ResourceManager.GetObject("CashItem_label_" + (value - 1)) as Image;
+                    if (label != null)
+                    {
+                        g.DrawImage(GearGraphics.EnlargeBitmap(new Bitmap(label)),
+                            18 + 68 - 26,
+                            picH + 15 + 68 - 26);
+                    }
+                }
                 else if (Gear.Props.TryGetValue(GearPropType.masterSpecial, out value) && value > 0)
+                {
                     g.DrawImage(GearGraphics.EnlargeBitmap(Resource.CashItem_label_3),
                         18 + 68 - 26,
                         picH + 15 + 68 - 26);
+                }
                 else
+                {
                     g.DrawImage(GearGraphics.EnlargeBitmap(Resource.CashItem_0),
                         18 + 68 - 26,
                         picH + 15 + 68 - 26);
+                }
             }
             //检查星岩
             bool hasSocket = Gear.GetBooleanValue(GearPropType.nActivatedSocket);
@@ -471,9 +498,12 @@ namespace WzComparerR2.CharaSimControl
 
                 //绘制属性变化
                 Gear.StandardProps.TryGetValue(type, out value); //standard value
-                var propStr = ItemStringHelper.GetGearPropDiffString(type, Gear.Props[type], value);
-                GearGraphics.DrawString(g, propStr, font, 13, 256, ref picH, 15);
-                hasPart2 = true;
+                if (value > 0 || Gear.Props[type] > 0)
+                {
+                    var propStr = ItemStringHelper.GetGearPropDiffString(type, Gear.Props[type], value);
+                    GearGraphics.DrawString(g, propStr, font, 13, 256, ref picH, 15);
+                    hasPart2 = true;
+                }
             }
 
             //戒指特殊潜能
@@ -521,14 +551,14 @@ namespace WzComparerR2.CharaSimControl
             //星星锤子
             if (hasTuc && Gear.Hammer > -1 && Gear.GetMaxStar() > 0)
             {
-                if (Gear.Hammer == 2)
+                if (Gear.Hammer >= 1)
                 {
-                    TextRenderer.DrawText(g, "黄金锤提炼完成", GearGraphics.EquipDetailFont, new Point(13, picH), Color.White, TextFormatFlags.NoPadding);
-                    picH += 16;
+                    TextRenderer.DrawText(g, "황금망치 제련 적용", GearGraphics.EquipDetailFont, new Point(13, picH), Color.White, TextFormatFlags.NoPadding);
+                    picH += 15;
                 }
                 if (Gear.Props.TryGetValue(GearPropType.superiorEqp, out value) && value > 0) //极真
                 {
-                    GearGraphics.DrawString(g, ItemStringHelper.GetGearPropString(GearPropType.superiorEqp, value), GearGraphics.EquipDetailFont, 13, 241, ref picH, 15, ((SolidBrush)GearGraphics.GreenBrush2).Color);
+                    GearGraphics.DrawString(g, ItemStringHelper.GetGearPropString(GearPropType.superiorEqp, value), GearGraphics.EquipDetailFont, 13, 244, ref picH, 15, ((SolidBrush)GearGraphics.GreenBrush2).Color);
                 }
 
                 if (!Gear.GetBooleanValue(GearPropType.exceptUpgrade))
@@ -613,15 +643,16 @@ namespace WzComparerR2.CharaSimControl
                     g.DrawImage(res["dotline"].Image, 0, picH);
                     picH += 8;
                 }
-                g.DrawImage(GetAdditionalOptionIcon(Gear.Grade), 9, picH - 1);
-                TextRenderer.DrawText(g, "잠재옵션", GearGraphics.EquipDetailFont, new Point(25, picH), ((SolidBrush)GearGraphics.GetPotentialTextBrush(Gear.Grade)).Color, TextFormatFlags.NoPadding);
+                g.DrawImage(GetAdditionalOptionIcon(Gear.Grade), 9, picH - 2);
+                TextRenderer.DrawText(g, "잠재옵션", GearGraphics.EquipDetailFont, new Point(27, picH), ((SolidBrush)GearGraphics.GetPotentialTextBrush(Gear.Grade)).Color, TextFormatFlags.NoPadding);
                 picH += 15;
                 foreach (Potential potential in Gear.Options)
                 {
                     if (potential != null)
                     {
-                        TextRenderer.DrawText(g, potential.ConvertSummary(), GearGraphics.EquipDetailFont2, new Point(13, picH), Color.White, TextFormatFlags.NoPadding);
-                        picH += 15;
+                        GearGraphics.DrawString(g, potential.ConvertSummary(), GearGraphics.EquipDetailFont2, 13, 244, ref picH, 15);
+                        //TextRenderer.DrawText(g, potential.ConvertSummary(), GearGraphics.EquipDetailFont2, new Point(13, picH), Color.White, TextFormatFlags.NoPadding);
+                        //picH += 15;
                     }
                 }
             }
@@ -652,19 +683,19 @@ namespace WzComparerR2.CharaSimControl
                     g.DrawImage(res["dotline"].Image, 0, picH);
                     picH += 8;
                 }
-                g.DrawImage(GetAdditionalOptionIcon(Gear.AdditionGrade), 9, picH - 1);
-                TextRenderer.DrawText(g, "에디셔널 잠재옵션", GearGraphics.EquipDetailFont, new Point(25, picH), ((SolidBrush)GearGraphics.GetPotentialTextBrush(Gear.Grade)).Color, TextFormatFlags.NoPadding);
-                picH += 17;
+                g.DrawImage(GetAdditionalOptionIcon(Gear.AdditionGrade), 9, picH - 2);
+                TextRenderer.DrawText(g, "에디셔널 잠재옵션", GearGraphics.EquipDetailFont, new Point(27, picH), ((SolidBrush)GearGraphics.GetPotentialTextBrush(Gear.AdditionGrade)).Color, TextFormatFlags.NoPadding);
+                picH += 15;
 
                 foreach (Potential potential in Gear.AdditionalOptions)
                 {
                     if (potential != null)
                     {
-                        TextRenderer.DrawText(g, "+ " + potential.ConvertSummary(), GearGraphics.EquipDetailFont2, new Point(13, picH), Color.White, TextFormatFlags.NoPadding);
-                        picH += 15;
+                        GearGraphics.DrawString(g, "+ " + potential.ConvertSummary(), GearGraphics.EquipDetailFont2, 13, 244, ref picH, 15);
+                        //TextRenderer.DrawText(g, "+ " + potential.ConvertSummary(), GearGraphics.EquipDetailFont2, new Point(13, picH), Color.White, TextFormatFlags.NoPadding);
+                        //picH += 15;
                     }
                 }
-                picH += 5;
             }
 
             //绘制desc
@@ -822,7 +853,7 @@ namespace WzComparerR2.CharaSimControl
                         else
                             exclusiveEquip = "#c" + string.Join(", ", itemNames.ToArray()) + "은 중복 착용이 불가능합니다.#";
                     }
-                    GearGraphics.DrawString(g, exclusiveEquip, GearGraphics.EquipDetailFont2, 13, 243, ref picH, 15, null, ((SolidBrush)GearGraphics.OrangeBrush2).Color);
+                    GearGraphics.DrawString(g, exclusiveEquip, GearGraphics.EquipDetailFont2, 13, 244, ref picH, 15, orangeColor: ((SolidBrush)GearGraphics.OrangeBrush2).Color);
                     picH += 5;
                     break;
                 }
