@@ -545,10 +545,7 @@ namespace WzComparerR2.MapRender
             string path;
             if (life.Hide)
             {
-                life.View = new LifeItem.ItemView()
-                {
-                    Animator = null
-                };
+                life.View = new LifeItem.ItemView();
                 return;
             }
             switch (life.Type)
@@ -571,12 +568,8 @@ namespace WzComparerR2.MapRender
                         mobNode = PluginManager.FindWz(path);
                     }
 
-                    if (mobNode == null)
-                    {
-                        return;
-                    }
-
                     //加载动画
+                    if (mobNode != null)
                     {
                         var aniItem = this.CreateSMAnimator(mobNode, resLoader);
                         if (aniItem != null)
@@ -602,12 +595,8 @@ namespace WzComparerR2.MapRender
                         npcNode = PluginManager.FindWz(path);
                     }
 
-                    if (npcNode == null)
-                    {
-                        return;
-                    }
-
                     //加载动画
+                    if (npcNode != null)
                     {
                         var aniItem = this.CreateSMAnimator(npcNode, resLoader);
                         if (aniItem != null)
@@ -620,6 +609,11 @@ namespace WzComparerR2.MapRender
                         }
                     }
                     break;
+            }
+
+            if (life.View == null) //空动画
+            {
+                life.View = new LifeItem.ItemView();
             }
         }
 
