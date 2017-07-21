@@ -175,7 +175,7 @@ namespace WzComparerR2.CharaSimControl
                     itemName = itemName ?? string.Empty;
                     typeName = typeName ?? "장비";
 
-                    if (!Regex.IsMatch(typeName, @"^(\(.*\)|（.*）)$"))
+                    if (!Regex.IsMatch(typeName, @"^(\(.*\)|（.*）)$") && !Regex.IsMatch(typeName, @"^(\[.*\]|（.*）)$"))
                     {
                         typeName = "(" + typeName + ")";
                     }
@@ -238,7 +238,7 @@ namespace WzComparerR2.CharaSimControl
                         List<Potential> ops = (List<Potential>)prop.Value;
                         foreach (Potential p in ops)
                         {
-                            GearGraphics.DrawPlainText(g, p.ConvertSummary(), GearGraphics.EquipDetailFont2, color, 10, 244, ref picHeight, 15);
+                            GearGraphics.DrawString(g, p.ConvertSummary(), GearGraphics.EquipDetailFont2, 10, 244, ref picHeight, 15, color);
                         }
                     }
                     else if (prop.Key == GearPropType.OptionToMob)
@@ -246,7 +246,7 @@ namespace WzComparerR2.CharaSimControl
                         List<SetItemOptionToMob> ops = (List<SetItemOptionToMob>)prop.Value;
                         foreach (SetItemOptionToMob p in ops)
                         {
-                            GearGraphics.DrawPlainText(g, p.ConvertSummary(), GearGraphics.EquipDetailFont2, color, 10, 244, ref picHeight, 15);
+                            GearGraphics.DrawString(g, p.ConvertSummary(), GearGraphics.EquipDetailFont2, 10, 244, ref picHeight, 15, color);
                         }
                     }
                     else if (prop.Key == GearPropType.activeSkill)
@@ -261,13 +261,13 @@ namespace WzComparerR2.CharaSimControl
                                 sr.Name = p.SkillID.ToString();
                             }
                             string summary = "<" + sr.Name.Replace(Environment.NewLine, "") + "> 스킬 사용 가능";
-                            GearGraphics.DrawPlainText(g, summary, GearGraphics.EquipDetailFont2, color, 10, 244, ref picHeight, 15);
+                            GearGraphics.DrawString(g, summary, GearGraphics.EquipDetailFont2, 10, 244, ref picHeight, 15, color);
                         }
                     }
                     else
                     {
                         var summary = ItemStringHelper.GetGearPropString(prop.Key, Convert.ToInt32(prop.Value));
-                        GearGraphics.DrawPlainText(g, summary, GearGraphics.EquipDetailFont2, color, 10, 244, ref picHeight, 15);
+                        GearGraphics.DrawString(g, summary, GearGraphics.EquipDetailFont2, 10, 244, ref picHeight, 15, color);
                     }
                 }
             }

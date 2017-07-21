@@ -268,7 +268,7 @@ namespace WzComparerR2.CharaSim
                 case GearType.knuckle: return "너클";
                 case GearType.gun: return "총";
                 case GearType.android: return "안드로이드";
-                case GearType.machineHeart: return "기계심장";
+                case GearType.machineHeart: return "기계 심장";
                 case GearType.pickaxe: return "채광 도구";
                 case GearType.shovel: return "약초채집 도구";
                 case GearType.pocket: return "포켓 아이템";
@@ -650,11 +650,16 @@ namespace WzComparerR2.CharaSim
 
 
                 case 6000: return "카이저";
+                case 6001: return "엔젤릭버스터";
+                case 6002: return "카데나";
                 case 6100: return "카이저(1차)";
                 case 6110: return "카이저(2차)";
                 case 6111: return "카이저(3차)";
                 case 6112: return "카이저(4차)";
-                case 6001: return "엔젤릭버스터";
+                case 6400: return "카데나(1차)";
+                case 6410: return "카데나(2차)";
+                case 6411: return "카데나(3차)";
+                case 6412: return "카데나(4차)";
                 case 6500: return "엔젤릭버스터(1차)";
                 case 6510: return "엔젤릭버스터(2차)";
                 case 6511: return "엔젤릭버스터(3차)";

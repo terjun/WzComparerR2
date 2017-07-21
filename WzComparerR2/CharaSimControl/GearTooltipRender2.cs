@@ -231,7 +231,7 @@ namespace WzComparerR2.CharaSimControl
                 }
             }
 
-            if (Gear.Props.TryGetValue(GearPropType.royalSpecial, out value) && value > 0)
+            if (Gear.Props.TryGetValue(GearPropType.royalSpecial, out value) && value != 0)
             {
                 switch (value)
                 {
@@ -807,7 +807,7 @@ namespace WzComparerR2.CharaSimControl
                 }
                 if (!string.IsNullOrEmpty(sr.Desc))
                 {
-                    GearGraphics.DrawString(g, sr.Desc.Replace("#"," #"), GearGraphics.EquipDetailFont2, 13, 243, ref picH, 15, null, ((SolidBrush)GearGraphics.OrangeBrush2).Color);
+                    GearGraphics.DrawString(g, sr.Desc.Replace("#", " #"), GearGraphics.EquipDetailFont2, 13, 243, ref picH, 15, null, ((SolidBrush)GearGraphics.OrangeBrush2).Color);
                 }
                 foreach (string str in desc)
                 {
@@ -1121,6 +1121,10 @@ namespace WzComparerR2.CharaSimControl
                     tags.Add(ItemStringHelper.GetGearPropString(GearPropType.accountSharable, value));
                 }
             }
+            if (Gear.Props.TryGetValue(GearPropType.onlyEquip, out value) && value != 0)
+            {
+                tags.Add(ItemStringHelper.GetGearPropString(GearPropType.onlyEquip, value));
+            }
             if (Gear.Props.TryGetValue(GearPropType.blockGoldHammer, out value) && value != 0)
             {
                 tags.Add(ItemStringHelper.GetGearPropString(GearPropType.blockGoldHammer, value));
@@ -1132,10 +1136,6 @@ namespace WzComparerR2.CharaSimControl
             if ((Gear.Props.TryGetValue(GearPropType.fixedPotential, out value) && value != 0) || (Gear.Props.TryGetValue(GearPropType.fixedGrade, out value) && value != 0))
             {
                 tags.Add(ItemStringHelper.GetGearPropString(GearPropType.fixedPotential, value));
-            }
-            if (Gear.Props.TryGetValue(GearPropType.onlyEquip, out value) && value != 0)
-            {
-                tags.Add(ItemStringHelper.GetGearPropString(GearPropType.onlyEquip, value));
             }
             if (Gear.Props.TryGetValue(GearPropType.notExtend, out value) && value != 0)
             {
