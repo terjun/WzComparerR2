@@ -231,7 +231,7 @@ namespace WzComparerR2.MapRender.UI
 
             if (!string.IsNullOrEmpty(item.Title))
             {
-                blocks.Add(PrepareTextLine(env.Fonts.TooltipTitleFont, item.Title, ref current, Color.White, ref size.X));
+                blocks.Add(PrepareTextLine(env.Fonts.TooltipContentFont, item.Title, ref current, Color.White, ref size.X));
             }
             if (!string.IsNullOrEmpty(item.Desc))
             {
@@ -262,7 +262,7 @@ namespace WzComparerR2.MapRender.UI
                 string desc = sr?["mapDesc"];
                 if (!string.IsNullOrEmpty(desc))
                 {
-                    blocks.Add(PrepareTextLine(env.Fonts.TooltipContentFont, desc, ref current, Color.White, ref size.X));
+                    blocks.Add(PrepareTextLine(env.Fonts.TooltipContentFont, desc.Replace("\\n", "\n"), ref current, Color.White, ref size.X));
                 }
                 
             }
