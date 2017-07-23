@@ -238,7 +238,7 @@ namespace WzComparerR2.CharaSimControl
                         List<Potential> ops = (List<Potential>)prop.Value;
                         foreach (Potential p in ops)
                         {
-                            GearGraphics.DrawString(g, p.ConvertSummary(), GearGraphics.EquipDetailFont2, 10, 244, ref picHeight, 15, color);
+                            GearGraphics.DrawPlainText(g, p.ConvertSummary(), GearGraphics.EquipDetailFont2, color, 10, 244, ref picHeight, 15);
                         }
                     }
                     else if (prop.Key == GearPropType.OptionToMob)
@@ -246,7 +246,7 @@ namespace WzComparerR2.CharaSimControl
                         List<SetItemOptionToMob> ops = (List<SetItemOptionToMob>)prop.Value;
                         foreach (SetItemOptionToMob p in ops)
                         {
-                            GearGraphics.DrawString(g, p.ConvertSummary(), GearGraphics.EquipDetailFont2, 10, 244, ref picHeight, 15, color);
+                            GearGraphics.DrawPlainText(g, p.ConvertSummary(), GearGraphics.EquipDetailFont2, color, 10, 244, ref picHeight, 15);
                         }
                     }
                     else if (prop.Key == GearPropType.activeSkill)
@@ -261,13 +261,13 @@ namespace WzComparerR2.CharaSimControl
                                 sr.Name = p.SkillID.ToString();
                             }
                             string summary = "<" + sr.Name.Replace(Environment.NewLine, "") + "> 스킬 사용 가능";
-                            GearGraphics.DrawString(g, summary, GearGraphics.EquipDetailFont2, 10, 244, ref picHeight, 15, color);
+                            GearGraphics.DrawPlainText(g, summary, GearGraphics.EquipDetailFont2, color, 10, 244, ref picHeight, 15);
                         }
                     }
                     else
                     {
                         var summary = ItemStringHelper.GetGearPropString(prop.Key, Convert.ToInt32(prop.Value));
-                        GearGraphics.DrawString(g, summary, GearGraphics.EquipDetailFont2, 10, 244, ref picHeight, 15, color);
+                        GearGraphics.DrawPlainText(g, summary, GearGraphics.EquipDetailFont2, color, 10, 244, ref picHeight, 15);
                     }
                 }
             }

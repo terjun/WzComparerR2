@@ -230,7 +230,7 @@ namespace WzComparerR2.CharaSimControl
         /// <param Name="x">起始的x坐标。</param>
         /// <param Name="X1">每行终止的x坐标。</param>
         /// <param Name="y">起始行的y坐标。</param>
-        public static void DrawString(Graphics g, string s, Font font, int x, int x1, ref int y, int height, Color? defaultColor = null, Color? orangeColor = null)
+        public static void DrawString(Graphics g, string s, Font font, int x, int x1, ref int y, int height, Color? orangeColor = null)
         {
             if (s == null)
                 return;
@@ -239,7 +239,7 @@ namespace WzComparerR2.CharaSimControl
             {
                 r.WordWrapEnabled = false;
                 r.UseGDIRenderer = true;
-                r.DrawString(g, s, font, x, x1, ref y, height, defaultColor, orangeColor);
+                r.DrawString(g, s, font, x, x1, ref y, height, orangeColor);
             }
         }
 
@@ -463,19 +463,12 @@ namespace WzComparerR2.CharaSimControl
             Color defaultColor;
             Color orangeColor;
 
-            public void DrawString(Graphics g, string s, Font font, int x, int x1, ref int y, int height, Color? defaultColor = null, Color? orangeColor = null)
+            public void DrawString(Graphics g, string s, Font font, int x, int x1, ref int y, int height, Color? orangeColor = null)
             {
                 //初始化环境
                 this.g = g;
                 this.drawX = x;
-                if (defaultColor != null)
-                {
-                    this.defaultColor = (Color)defaultColor;
-                }
-                else
-                {
-                    this.defaultColor = Color.White;
-                }
+                this.defaultColor = Color.White;
                 if (orangeColor != null)
                 {
                     this.orangeColor = (Color)orangeColor;

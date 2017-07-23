@@ -558,7 +558,7 @@ namespace WzComparerR2.CharaSimControl
                 }
                 if (Gear.Props.TryGetValue(GearPropType.superiorEqp, out value) && value > 0) //极真
                 {
-                    GearGraphics.DrawString(g, ItemStringHelper.GetGearPropString(GearPropType.superiorEqp, value), GearGraphics.EquipDetailFont, 13, 244, ref picH, 15, ((SolidBrush)GearGraphics.GreenBrush2).Color);
+                    GearGraphics.DrawPlainText(g, ItemStringHelper.GetGearPropString(GearPropType.superiorEqp, value), GearGraphics.EquipDetailFont, ((SolidBrush)GearGraphics.GreenBrush2).Color, 13, 244, ref picH, 15);
                 }
 
                 if (!Gear.GetBooleanValue(GearPropType.exceptUpgrade))
@@ -853,7 +853,7 @@ namespace WzComparerR2.CharaSimControl
                         else
                             exclusiveEquip = "#c" + string.Join(", ", itemNames.ToArray()) + "은 중복 착용이 불가능합니다.#";
                     }
-                    GearGraphics.DrawString(g, exclusiveEquip, GearGraphics.EquipDetailFont2, 13, 244, ref picH, 15, orangeColor: ((SolidBrush)GearGraphics.OrangeBrush2).Color);
+                    GearGraphics.DrawString(g, exclusiveEquip, GearGraphics.EquipDetailFont2, 13, 244, ref picH, 15, ((SolidBrush)GearGraphics.OrangeBrush2).Color);
                     picH += 5;
                     break;
                 }
