@@ -122,16 +122,22 @@ namespace WzComparerR2.CharaSim
                 case AdditionType.statinc:
                     sb = new StringBuilder();
                     {
+                        List<GearPropType> props = new List<GearPropType>();
                         foreach (var kv in Props)
                         {
                             try
                             {
                                 GearPropType propType = (GearPropType)Enum.Parse(typeof(GearPropType), kv.Key);
-                                sb.AppendLine(ItemStringHelper.GetGearPropString(propType, Convert.ToInt32(kv.Value)));
+                                props.Add(propType);
                             }
                             catch
                             {
                             }
+                        }
+                        props.Sort();
+                        foreach (GearPropType type in props)
+                        {
+                            sb.AppendLine(ItemStringHelper.GetGearPropString(type, Convert.ToInt32(Props[Enum.GetName(typeof(GearPropType), type)])));
                         }
                     }
                     if (sb.Length > 0)
