@@ -19,21 +19,24 @@ namespace WzComparerR2.MapRender
 
         }
 
+        #if MapRenderV1
         private RibbonBar bar;
         private ButtonItem btnItemMapRender;
         private FrmMapRender mapRenderGame1;
+        #endif
 
         private RibbonBar bar2;
         private ButtonItem btnItemMapRenderV2;
         private FrmMapRender2 mapRenderGame2;
 
-
         protected override void OnLoad()
         {
+            #if MapRenderV1
             this.bar = Context.AddRibbonBar("Modules", "MapRender");
             btnItemMapRender = new ButtonItem("", "맵 미리보기");
             btnItemMapRender.Click += btnItem_Click;
             bar.Items.Add(btnItemMapRender);
+            #endif
 
             this.bar2 = Context.AddRibbonBar("Modules", "MapRender2");
             btnItemMapRenderV2 = new ButtonItem("", "맵 미리보기 V2");
@@ -43,7 +46,6 @@ namespace WzComparerR2.MapRender
 
         void btnItem_Click(object sender, EventArgs e)
         {
-            btnItemMapRender.Enabled = false;
             Wz_Node node = Context.SelectedNode1;
             if (node != null)
             {
@@ -74,6 +76,7 @@ namespace WzComparerR2.MapRender
                         try
                         {
 #endif
+#if MapRenderV1
                         if (sender == btnItemMapRender)
                         {
                             if (this.mapRenderGame1 != null)
@@ -94,6 +97,7 @@ namespace WzComparerR2.MapRender
                             }
                         }
                         else
+#endif
                         {
                             if (this.mapRenderGame2 != null)
                             {
@@ -130,7 +134,7 @@ namespace WzComparerR2.MapRender
             MessageBoxEx.Show("Map.wz에서 맵 img를 선택하세요.", "오류");
 
             exit:
-            btnItemMapRender.Enabled = true;
+            return;
         }
 
     }

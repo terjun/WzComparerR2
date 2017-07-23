@@ -807,11 +807,11 @@ namespace WzComparerR2.CharaSimControl
                 }
                 if (!string.IsNullOrEmpty(sr.Desc))
                 {
-                    GearGraphics.DrawString(g, sr.Desc.Replace("#", " #"), GearGraphics.EquipDetailFont2, 13, 243, ref picH, 15, null, ((SolidBrush)GearGraphics.OrangeBrush2).Color);
+                    GearGraphics.DrawString(g, sr.Desc.Replace("#", " #"), GearGraphics.EquipDetailFont2, 13, 243, ref picH, 15, orangeColor: ((SolidBrush)GearGraphics.OrangeBrush2).Color);
                 }
                 foreach (string str in desc)
                 {
-                    GearGraphics.DrawString(g, str, GearGraphics.EquipDetailFont, 13, 243, ref picH, 15, null, ((SolidBrush)GearGraphics.OrangeBrush2).Color);
+                    GearGraphics.DrawString(g, str, GearGraphics.EquipDetailFont, 13, 243, ref picH, 15, orangeColor: ((SolidBrush)GearGraphics.OrangeBrush2).Color);
                 }
                 picH += 5;
             }
