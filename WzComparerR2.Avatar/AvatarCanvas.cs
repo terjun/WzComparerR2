@@ -842,7 +842,7 @@ namespace WzComparerR2.Avatar
                 if (face == null && bodyNode != null) //链接的body内规定
                 {
                     Wz_Node propNode = bodyNode.FindNodeByPath("face");
-                    if (propNode != null)
+                    if(propNode != null)
                     {
                         face = propNode.GetValue<int>(0) != 0;
                     }
