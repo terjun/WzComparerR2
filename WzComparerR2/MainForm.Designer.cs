@@ -1195,7 +1195,7 @@
             // buttonItemSelectStringWz
             // 
             this.buttonItemSelectStringWz.Name = "buttonItemSelectStringWz";
-            this.buttonItemSelectStringWz.Text = "&String.wz 선택";
+            this.buttonItemSelectStringWz.Text = "Ba&se.wz 선택";
             this.buttonItemSelectStringWz.Click += new System.EventHandler(this.buttonItemSelectStringWz_Click);
             // 
             // buttonItemClearStringWz
