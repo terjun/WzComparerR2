@@ -328,6 +328,9 @@ namespace WzComparerR2.CharaSim
                 case GearType.GauntletBuster: return "건틀렛 리볼버";
                 case GearType.ExplosivePill: return "장약";
 
+                case GearType.magicGauntlet: return "매직 건틀렛";
+                case GearType.magicWing: return "매직윙";
+
                 default: return null;
             }
         }
@@ -429,6 +432,9 @@ namespace WzComparerR2.CharaSim
                 case GearType.ExplosivePill: return "블래스터 착용 가능";
 
                 case GearType.transmitter: return "카데나 직업군 착용 가능";
+
+                case GearType.magicGauntlet:
+                case GearType.magicWing: return "일리움 착용 가능";
 
                 default: return null;
             }
@@ -682,6 +688,12 @@ namespace WzComparerR2.CharaSim
                 case 14210: return "키네시스(2차)";
                 case 14211: return "키네시스(3차)";
                 case 14212: return "키네시스(4차)";
+
+                case 15000: return "일리움";
+                case 15200: return "일리움(1차)";
+                case 15210: return "일리움(2차)";
+                case 15211: return "일리움(3차)";
+                case 15212: return "일리움(4차)";
             }
             return null;
         }

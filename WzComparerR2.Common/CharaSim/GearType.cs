@@ -166,6 +166,7 @@ namespace WzComparerR2.CharaSim
         /// </summary>
         espLimiter = 126,
         chain2 = 127,
+        magicGauntlet = 128,
         /// <summary>
         /// 单手剑 130
         /// </summary>
@@ -319,6 +320,7 @@ namespace WzComparerR2.CharaSim
         /// 装弹 135340
         /// </summary>
         ExplosivePill = 135340,
+        magicWing = 135350,
         /// <summary>
         /// 手杖
         /// </summary>
