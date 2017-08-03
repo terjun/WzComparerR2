@@ -16,6 +16,7 @@ namespace WzComparerR2.CharaSim
         public int completeCount;
         public int currentCount;
         public bool parts;
+        public bool expandToolTip;
         public SetItemIDList itemIDs;
         public int setItemID;
         public string setItemName;
@@ -44,6 +45,9 @@ namespace WzComparerR2.CharaSim
                         break;
                     case "parts":
                         setItem.parts = subNode.GetValue<int>() != 0;
+                        break;
+                    case "expandToolTip":
+                        setItem.expandToolTip = subNode.GetValue<int>() != 0;
                         break;
                     case "ItemID":
                         foreach (Wz_Node itemNode in subNode.Nodes)

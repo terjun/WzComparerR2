@@ -38,17 +38,54 @@ namespace WzComparerR2.CharaSimControl
 
             int picHeight;
             Bitmap originBmp = RenderSetItem(out picHeight);
-            Bitmap tooltip = new Bitmap(261, picHeight);
+            Bitmap effectTooltip = null;
+
+            if (this.SetItem.expandToolTip)
+            {
+                int picHeight2;
+                Bitmap effectBmp = RenderEffect(out picHeight2);
+
+                effectTooltip = new Bitmap(effectBmp.Width, picHeight2);
+                Graphics g2 = Graphics.FromImage(effectTooltip);
+
+                GearGraphics.DrawNewTooltipBack(g2, 0, 0, 261, picHeight2);
+                g2.DrawImage(effectBmp, 0, 0, new Rectangle(0, 0, 261, picHeight2), GraphicsUnit.Pixel);
+
+                if (effectBmp != null)
+                    effectBmp.Dispose();
+                g2.Dispose();
+            }
+
+            //计算布局
+            Size totalSize = new Size(originBmp.Width, picHeight);
+            Point effectOrigin = Point.Empty;
+
+            if (effectTooltip != null)
+            {
+                effectOrigin = new Point(totalSize.Width, 0);
+                totalSize.Width += effectTooltip.Width;
+                totalSize.Height = Math.Max(totalSize.Height, effectTooltip.Height);
+            }
+
+            Bitmap tooltip = new Bitmap(totalSize.Width, totalSize.Height);
             Graphics g = Graphics.FromImage(tooltip);
 
             //绘制背景区域
-            GearGraphics.DrawNewTooltipBack(g, 0, 0, tooltip.Width, tooltip.Height);
+            GearGraphics.DrawNewTooltipBack(g, 0, 0, originBmp.Width, picHeight);
 
             //复制图像
-            g.DrawImage(originBmp, 0, 0, new Rectangle(0, 0, tooltip.Width, picHeight), GraphicsUnit.Pixel);
+            g.DrawImage(originBmp, 0, 0, new Rectangle(0, 0, originBmp.Width, picHeight), GraphicsUnit.Pixel);
+
+            if (effectTooltip != null)
+            {
+                g.DrawImage(effectTooltip, effectOrigin.X, effectOrigin.Y,
+                    new Rectangle(Point.Empty, effectTooltip.Size), GraphicsUnit.Pixel);
+            }
 
             if (originBmp != null)
                 originBmp.Dispose();
+            if (effectTooltip != null)
+                effectTooltip.Dispose();
             g.Dispose();
             return tooltip;
         }
@@ -174,7 +211,7 @@ namespace WzComparerR2.CharaSimControl
                         if (!Cash)
                         {
                             TextRenderer.DrawText(g, itemName, GearGraphics.EquipDetailFont2, new Point(10, picHeight), ((SolidBrush)brush).Color, TextFormatFlags.NoPadding);
-                            TextRenderer.DrawText(g, typeName, GearGraphics.EquipDetailFont2, new Point(252 - TextRenderer.MeasureText(g, typeName, GearGraphics.EquipDetailFont2).Width, picHeight), ((SolidBrush)brush).Color, TextFormatFlags.NoPadding);
+                            TextRenderer.DrawText(g, typeName, GearGraphics.EquipDetailFont2, new Point(252 - TextRenderer.MeasureText(g, typeName, GearGraphics.EquipDetailFont2, new Size(int.MaxValue, int.MaxValue), TextFormatFlags.NoPadding).Width, picHeight), ((SolidBrush)brush).Color, TextFormatFlags.NoPadding);
                             picHeight += 18;
                         }
                         else
@@ -204,57 +241,60 @@ namespace WzComparerR2.CharaSimControl
             }
 
             picHeight += 5;
-            g.DrawLine(Pens.White, 6, picHeight, 252, picHeight);//分割线
-            picHeight += 9;
-            foreach (KeyValuePair<int, SetItemEffect> effect in this.SetItem.effects)
+            if (!SetItem.expandToolTip)
             {
-                if (this.SetItem.setItemID > 0)
-                    TextRenderer.DrawText(g, effect.Key + "세트효과", GearGraphics.EquipDetailFont, new Point(10, picHeight), ((SolidBrush)GearGraphics.GreenBrush2).Color, TextFormatFlags.NoPadding);
-                else
-                    TextRenderer.DrawText(g, "월드 내 중복 착용 효과(" + effect.Key + " / " + this.SetItem.completeCount + ")", GearGraphics.EquipDetailFont, new Point(10, picHeight), ((SolidBrush)GearGraphics.GreenBrush2).Color, TextFormatFlags.NoPadding);
-                picHeight += 15;
-                //Brush brush = effect.Value.Enabled ? Brushes.White : GearGraphics.GrayBrush2;
-                var color = effect.Value.Enabled ? Color.White : GearGraphics.GrayColor2;
-
-                //T116 合并套装
-                var props = IsCombineProperties ? CombineProperties(effect.Value.PropsV5) : effect.Value.PropsV5;
-                foreach (KeyValuePair<GearPropType, object> prop in props)
+                g.DrawLine(Pens.White, 6, picHeight, 252, picHeight);//分割线
+                picHeight += 9;
+                foreach (KeyValuePair<int, SetItemEffect> effect in this.SetItem.effects)
                 {
-                    if (prop.Key == GearPropType.Option)
+                    if (this.SetItem.setItemID > 0)
+                        TextRenderer.DrawText(g, effect.Key + "세트효과", GearGraphics.EquipDetailFont, new Point(10, picHeight), ((SolidBrush)GearGraphics.GreenBrush2).Color, TextFormatFlags.NoPadding);
+                    else
+                        TextRenderer.DrawText(g, "월드 내 중복 착용 효과(" + effect.Key + " / " + this.SetItem.completeCount + ")", GearGraphics.EquipDetailFont, new Point(10, picHeight), ((SolidBrush)GearGraphics.GreenBrush2).Color, TextFormatFlags.NoPadding);
+                    picHeight += 15;
+                    //Brush brush = effect.Value.Enabled ? Brushes.White : GearGraphics.GrayBrush2;
+                    var color = effect.Value.Enabled ? Color.White : GearGraphics.GrayColor2;
+
+                    //T116 合并套装
+                    var props = IsCombineProperties ? CombineProperties(effect.Value.PropsV5) : effect.Value.PropsV5;
+                    foreach (KeyValuePair<GearPropType, object> prop in props)
                     {
-                        List<Potential> ops = (List<Potential>)prop.Value;
-                        foreach (Potential p in ops)
+                        if (prop.Key == GearPropType.Option)
                         {
-                            GearGraphics.DrawPlainText(g, p.ConvertSummary(), GearGraphics.EquipDetailFont2, color, 10, 244, ref picHeight, 15);
-                        }
-                    }
-                    else if (prop.Key == GearPropType.OptionToMob)
-                    {
-                        List<SetItemOptionToMob> ops = (List<SetItemOptionToMob>)prop.Value;
-                        foreach (SetItemOptionToMob p in ops)
-                        {
-                            GearGraphics.DrawPlainText(g, p.ConvertSummary(), GearGraphics.EquipDetailFont2, color, 10, 244, ref picHeight, 15);
-                        }
-                    }
-                    else if (prop.Key == GearPropType.activeSkill)
-                    {
-                        List<SetItemActiveSkill> ops = (List<SetItemActiveSkill>)prop.Value;
-                        foreach (SetItemActiveSkill p in ops)
-                        {
-                            StringResult sr;
-                            if (StringLinker == null || !StringLinker.StringSkill.TryGetValue(p.SkillID, out sr))
+                            List<Potential> ops = (List<Potential>)prop.Value;
+                            foreach (Potential p in ops)
                             {
-                                sr = new StringResult();
-                                sr.Name = p.SkillID.ToString();
+                                GearGraphics.DrawPlainText(g, p.ConvertSummary(), GearGraphics.EquipDetailFont2, color, 10, 244, ref picHeight, 15);
                             }
-                            string summary = "<" + sr.Name.Replace(Environment.NewLine, "") + "> 스킬 사용 가능";
+                        }
+                        else if (prop.Key == GearPropType.OptionToMob)
+                        {
+                            List<SetItemOptionToMob> ops = (List<SetItemOptionToMob>)prop.Value;
+                            foreach (SetItemOptionToMob p in ops)
+                            {
+                                GearGraphics.DrawPlainText(g, p.ConvertSummary(), GearGraphics.EquipDetailFont2, color, 10, 244, ref picHeight, 15);
+                            }
+                        }
+                        else if (prop.Key == GearPropType.activeSkill)
+                        {
+                            List<SetItemActiveSkill> ops = (List<SetItemActiveSkill>)prop.Value;
+                            foreach (SetItemActiveSkill p in ops)
+                            {
+                                StringResult sr;
+                                if (StringLinker == null || !StringLinker.StringSkill.TryGetValue(p.SkillID, out sr))
+                                {
+                                    sr = new StringResult();
+                                    sr.Name = p.SkillID.ToString();
+                                }
+                                string summary = "<" + sr.Name.Replace(Environment.NewLine, "") + "> 스킬 사용 가능";
+                                GearGraphics.DrawPlainText(g, summary, GearGraphics.EquipDetailFont2, color, 10, 244, ref picHeight, 15);
+                            }
+                        }
+                        else
+                        {
+                            var summary = ItemStringHelper.GetGearPropString(prop.Key, Convert.ToInt32(prop.Value));
                             GearGraphics.DrawPlainText(g, summary, GearGraphics.EquipDetailFont2, color, 10, 244, ref picHeight, 15);
                         }
-                    }
-                    else
-                    {
-                        var summary = ItemStringHelper.GetGearPropString(prop.Key, Convert.ToInt32(prop.Value));
-                        GearGraphics.DrawPlainText(g, summary, GearGraphics.EquipDetailFont2, color, 10, 244, ref picHeight, 15);
                     }
                 }
             }
@@ -354,6 +394,72 @@ namespace WzComparerR2.CharaSimControl
                 }
             }
             return combinedProps;
+        }
+
+        private Bitmap RenderEffect(out int picHeight)
+        {
+            Bitmap renderBitmap = new Bitmap(261, DefaultPicHeight);
+            Graphics g = Graphics.FromImage(renderBitmap);
+
+            picHeight = 10;
+
+            foreach (KeyValuePair<int, SetItemEffect> effect in this.SetItem.effects)
+            {
+                if (this.SetItem.setItemID > 0)
+                    TextRenderer.DrawText(g, effect.Key + "세트효과", GearGraphics.EquipDetailFont, new Point(10, picHeight), ((SolidBrush)GearGraphics.GreenBrush2).Color, TextFormatFlags.NoPadding);
+                else
+                    TextRenderer.DrawText(g, "월드 내 중복 착용 효과(" + effect.Key + " / " + this.SetItem.completeCount + ")", GearGraphics.EquipDetailFont, new Point(10, picHeight), ((SolidBrush)GearGraphics.GreenBrush2).Color, TextFormatFlags.NoPadding);
+                picHeight += 15;
+                //Brush brush = effect.Value.Enabled ? Brushes.White : GearGraphics.GrayBrush2;
+                var color = effect.Value.Enabled ? Color.White : GearGraphics.GrayColor2;
+
+                //T116 合并套装
+                var props = IsCombineProperties ? CombineProperties(effect.Value.PropsV5) : effect.Value.PropsV5;
+                foreach (KeyValuePair<GearPropType, object> prop in props)
+                {
+                    if (prop.Key == GearPropType.Option)
+                    {
+                        List<Potential> ops = (List<Potential>)prop.Value;
+                        foreach (Potential p in ops)
+                        {
+                            GearGraphics.DrawPlainText(g, p.ConvertSummary(), GearGraphics.EquipDetailFont2, color, 10, 244, ref picHeight, 15);
+                        }
+                    }
+                    else if (prop.Key == GearPropType.OptionToMob)
+                    {
+                        List<SetItemOptionToMob> ops = (List<SetItemOptionToMob>)prop.Value;
+                        foreach (SetItemOptionToMob p in ops)
+                        {
+                            GearGraphics.DrawPlainText(g, p.ConvertSummary(), GearGraphics.EquipDetailFont2, color, 10, 244, ref picHeight, 15);
+                        }
+                    }
+                    else if (prop.Key == GearPropType.activeSkill)
+                    {
+                        List<SetItemActiveSkill> ops = (List<SetItemActiveSkill>)prop.Value;
+                        foreach (SetItemActiveSkill p in ops)
+                        {
+                            StringResult sr;
+                            if (StringLinker == null || !StringLinker.StringSkill.TryGetValue(p.SkillID, out sr))
+                            {
+                                sr = new StringResult();
+                                sr.Name = p.SkillID.ToString();
+                            }
+                            string summary = "<" + sr.Name.Replace(Environment.NewLine, "") + "> 스킬 사용 가능";
+                            GearGraphics.DrawPlainText(g, summary, GearGraphics.EquipDetailFont2, color, 10, 244, ref picHeight, 15);
+                        }
+                    }
+                    else
+                    {
+                        var summary = ItemStringHelper.GetGearPropString(prop.Key, Convert.ToInt32(prop.Value));
+                        GearGraphics.DrawPlainText(g, summary, GearGraphics.EquipDetailFont2, color, 10, 244, ref picHeight, 15);
+                    }
+                }
+            }
+
+            picHeight += 6;
+
+            g.Dispose();
+            return renderBitmap;
         }
     }
 }
