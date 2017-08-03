@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using WzComparerR2.WzLib;
 using WzComparerR2.Common;
+using WzComparerR2.Config;
 using WzComparerR2.PluginBase;
 using DevComponents.DotNetBar;
 using System.Threading;
@@ -42,6 +43,8 @@ namespace WzComparerR2.MapRender
             btnItemMapRenderV2 = new ButtonItem("", "맵 미리보기 V2");
             btnItemMapRenderV2.Click += btnItem_Click;
             bar2.Items.Add(btnItemMapRenderV2);
+
+            ConfigManager.RegisterAllSection();
         }
 
         void btnItem_Click(object sender, EventArgs e)
@@ -104,6 +107,7 @@ namespace WzComparerR2.MapRender
                                 return;
                             }
                             this.mapRenderGame2 = new FrmMapRender2(img) { StringLinker = sl };
+                            this.mapRenderGame2.Window.Title = "MapRender " + this.Version;
                             try
                             {
                                 using (this.mapRenderGame2)

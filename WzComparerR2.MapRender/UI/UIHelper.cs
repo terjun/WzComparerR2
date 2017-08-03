@@ -11,7 +11,9 @@ using EmptyKeys.UserInterface;
 using EmptyKeys.UserInterface.Controls;
 using EmptyKeys.UserInterface.Input;
 using EmptyKeys.UserInterface.Media;
+using EmptyKeys.UserInterface.Data;
 using Microsoft.Xna.Framework.Graphics;
+using System.Globalization;
 
 namespace WzComparerR2.MapRender.UI
 {
@@ -81,6 +83,20 @@ namespace WzComparerR2.MapRender.UI
             return hitMap;
         }
 
+        public static IValueConverter CreateConverter(Func<object, object> convertFunc)
+        {
+            return new CustomConverter(convertFunc);
+        }
+
+        public static IValueConverter CreateConverter<TIn, TOut>(Func<TIn, TOut> convertFunc)
+        {
+            var wrapFunc = new Func<object, object>(o =>
+            {
+                return (convertFunc != null && o is TIn) ? (object)convertFunc((TIn)o) : null;
+            });
+            return new CustomConverter(wrapFunc);
+        }
+
         class ClickEventHolder<T> : IDisposable
         {
             public ClickEventHolder(UIElement control)
@@ -130,6 +146,26 @@ namespace WzComparerR2.MapRender.UI
             void IDisposable.Dispose()
             {
                 this.Deregister();
+            }
+        }
+
+        class CustomConverter : IValueConverter
+        {
+            public CustomConverter(Func<object, object> convertFunc)
+            {
+                this.convertFunc = convertFunc;
+            }
+
+            private Func<object, object> convertFunc;
+
+            public object Convert(object value, Type target, object parameter, CultureInfo culture)
+            {
+                return convertFunc?.Invoke(value);
+            }
+
+            public object ConvertBack(object value, Type target, object parameter, CultureInfo culture)
+            {
+                return convertFunc?.Invoke(value);
             }
         }
     }

@@ -13,14 +13,22 @@ namespace WzComparerR2.MapRender
         {
             this.fonts = new Dictionary<string, XnaFont>();
             this.graphicsDevice = graphicsDevice;
-            fonts["default"] = new XnaFont(graphicsDevice, "돋움", 12f);
+
+            var config = MapRender.Config.MapRenderConfig.Default;
+            string defaultFontName;
+            switch (config.DefaultFontIndex)
+            {
+                default:
+                case 0: defaultFontName = "돋움"; break;
+                case 1: defaultFontName = "SimSun"; break;
+            }
+            fonts["default"] = new XnaFont(graphicsDevice, defaultFontName, 12f);
             fonts["npcName"] = fonts["default"];
-            fonts["npcDesc"] = new XnaFont(graphicsDevice, "돋움", 13f);
+            fonts["npcDesc"] = new XnaFont(graphicsDevice, defaultFontName, 13f);
             fonts["mobName"] = fonts["default"];
-            fonts["mobLevel"] = new XnaFont(graphicsDevice, "돋움", 9f);
-            fonts["mapName"] = new XnaFont(graphicsDevice, new Font("돋움", 12f, FontStyle.Bold, GraphicsUnit.Pixel));
-            fonts["tooltipTitle"] = new XnaFont(graphicsDevice, new Font("돋움", 14f, FontStyle.Bold, GraphicsUnit.Pixel));
-            fonts["tooltipContent"] = fonts["mobName"];
+            fonts["mobLevel"] = new XnaFont(graphicsDevice, "Tahoma", 9f);
+            fonts["tooltipTitle"] = new XnaFont(graphicsDevice, new Font(defaultFontName, 14f, FontStyle.Bold, GraphicsUnit.Pixel));
+            fonts["tooltipContent"] = fonts["default"];
         }
 
         Dictionary<string, XnaFont> fonts;
