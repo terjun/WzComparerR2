@@ -75,6 +75,11 @@ namespace WzComparerR2.CharaSimControl
                     string itemName = setItemPart.Value.RepresentName;
                     string typeName = setItemPart.Value.TypeName;
 
+                    if (string.IsNullOrEmpty(typeName) && SetItem.parts)
+                    {
+                        typeName = "장비";
+                    }
+
                     bool Cash = false;
                     BitmapOrigin IconRaw = new BitmapOrigin();
 
@@ -109,7 +114,7 @@ namespace WzComparerR2.CharaSimControl
                         break;
                     }
 
-                    if (string.IsNullOrEmpty(itemName))
+                    if (string.IsNullOrEmpty(itemName) || string.IsNullOrEmpty(typeName))
                     {
                         foreach (var itemID in setItemPart.Value.ItemIDs)
                         {
@@ -119,53 +124,35 @@ namespace WzComparerR2.CharaSimControl
                                 if (StringLinker.StringEqp.TryGetValue(itemID.Key, out sr))
                                 {
                                     itemName = sr.Name;
-
+                                    if (typeName == null)
+                                    {
+                                        typeName = ItemStringHelper.GetSetItemGearTypeString(Gear.GetGearType(itemID.Key));
+                                    }
                                     switch (Gear.GetGender(itemID.Key))
                                     {
-                                        case 0: itemName += " (남)"; break;
-                                        case 1: itemName += " (여)"; break;
+                                    case 0: itemName += " (남)"; break;
+                                    case 1: itemName += " (여)"; break;
                                     }
                                 }
                                 else if (StringLinker.StringItem.TryGetValue(itemID.Key, out sr)) //兼容宠物
                                 {
                                     itemName = sr.Name;
+                                    //if (typeName == null)
+                                    {
+                                        if (itemID.Key / 10000 == 500)
+                                        {
+                                            typeName = "펫";
+                                        }
+                                        else
+                                        {
+                                            typeName = "";
+                                        }
+                                    }
                                 }
                             }
                             if (sr == null)
                             {
                                 itemName = "(null)";
-                            }
-
-                            break;
-                        }
-                    }
-                    if (string.IsNullOrEmpty(typeName))
-                    {
-                        foreach (var itemID in setItemPart.Value.ItemIDs)
-                        {
-                            StringResult sr = null; ;
-                            if (StringLinker != null)
-                            {
-                                if (StringLinker.StringEqp.TryGetValue(itemID.Key, out sr))
-                                {
-                                    if (!Cash)
-                                        typeName = ItemStringHelper.GetSetItemGearTypeString(Gear.GetGearType(itemID.Key));
-                                }
-                                else if (StringLinker.StringItem.TryGetValue(itemID.Key, out sr)) //兼容宠物
-                                {
-                                    if (itemID.Key / 10000 == 500)
-                                    {
-                                        typeName = "펫";
-                                    }
-                                    else
-                                    {
-                                        typeName = "null";
-                                    }
-                                }
-                            }
-                            if (sr == null)
-                            {
-                                typeName = null;
                             }
 
                             break;
