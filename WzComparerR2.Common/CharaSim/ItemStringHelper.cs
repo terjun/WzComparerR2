@@ -240,8 +240,8 @@ namespace WzComparerR2.CharaSim
                 case GearType.ring: return "반지";
                 case GearType.shield: return "방패";
                 case GearType.shoes: return "신발";
-                case GearType.shiningRod: return "샤이닝로드";
-                case GearType.soulShooter: return "소울슈터";
+                case GearType.shiningRod: return "샤이닝 로드";
+                case GearType.soulShooter: return "소울 슈터";
                 case GearType.ohSword: return "한손검";
                 case GearType.ohAxe: return "한손도끼";
                 case GearType.ohBlunt: return "한손둔기";
@@ -266,7 +266,7 @@ namespace WzComparerR2.CharaSim
                 case GearType.crossbow: return "석궁";
                 case GearType.throwingGlove: return "아대";
                 case GearType.knuckle: return "너클";
-                case GearType.gun: return "총";
+                case GearType.gun: return "건";
                 case GearType.android: return "안드로이드";
                 case GearType.machineHeart: return "기계 심장";
                 case GearType.pickaxe: return "채광 도구";
@@ -303,8 +303,8 @@ namespace WzComparerR2.CharaSim
                 case GearType.nightLordPoutch: return "부적";
                 case GearType.viperWristband: return "리스트밴드";
                 case GearType.captainSight: return "조준기";
-                case GearType.connonGunPowder: 
-                case GearType.connonGunPowder2: return "화약통";
+                case GearType.cannonGunPowder: 
+                case GearType.cannonGunPowder2: return "화약통";
                 case GearType.aranPendulum: return "무게추";
                 case GearType.evanPaper: return "문서";
                 case GearType.battlemageBall: return "마법구슬";
@@ -402,8 +402,8 @@ namespace WzComparerR2.CharaSim
 
                 case GearType.viperWristband: return "바이퍼 직업군 착용 가능";
                 case GearType.captainSight: return "캡틴 직업군 착용 가능";
-                case GearType.connonGunPowder: 
-                case GearType.connonGunPowder2: return "캐논 슈터 직업군 착용 가능";
+                case GearType.cannonGunPowder: 
+                case GearType.cannonGunPowder2: return "캐논 슈터 직업군 착용 가능";
                 case GearType.aranPendulum: return "아란 직업군 착용 가능";
                 case GearType.evanPaper: return "에반 직업군 착용 가능";
                 case GearType.battlemageBall: return "배틀메이지 직업군 착용 가능";
