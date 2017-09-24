@@ -34,5 +34,6 @@ namespace WzComparerR2.CharaSim
         exp_minLev,
         exp_maxLev,
         dressUpgrade,
+        wonderGrade,
     }
 }

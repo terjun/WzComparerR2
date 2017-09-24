@@ -96,6 +96,7 @@ namespace WzComparerR2.CharaSimControl
                     }
 
                     bool Cash = false;
+                    int wonderGrade = 0;
                     BitmapOrigin IconRaw = new BitmapOrigin();
 
                     foreach (var itemID in setItemPart.Value.ItemIDs)
@@ -121,6 +122,7 @@ namespace WzComparerR2.CharaSimControl
                                 {
                                     Item item = Item.CreateFromNode(itemNode, PluginManager.FindWz);
                                     Cash = item.Cash;
+                                    item.Props.TryGetValue(ItemPropType.wonderGrade, out wonderGrade);
                                     IconRaw = item.IconRaw;
                                 }
                             }
@@ -200,7 +202,18 @@ namespace WzComparerR2.CharaSimControl
                             {
                                 g.DrawImage(IconRaw.Bitmap, 10 + 2 - IconRaw.Origin.X, picHeight + 2 + 32 - IconRaw.Origin.Y);
                             }
-                            g.DrawImage(Resource.CashItem_0, 10 + 2 + 20, picHeight + 2 + 32 - 12);
+                            if (wonderGrade > 0)
+                            {
+                                Image label = Resource.ResourceManager.GetObject("CashItem_label_" + (wonderGrade + 3)) as Bitmap;
+                                if (label != null)
+                                {
+                                    g.DrawImage(label, 10 + 2 + 20, picHeight + 2 + 32 - 12);
+                                }
+                            }
+                            else
+                            {
+                                g.DrawImage(Resource.CashItem_0, 10 + 2 + 20, picHeight + 2 + 32 - 12);
+                            }
                             TextRenderer.DrawText(g, itemName, GearGraphics.EquipDetailFont2, new Point(50, picHeight), ((SolidBrush)brush).Color, TextFormatFlags.NoPadding);
                             TextRenderer.DrawText(g, typeName, GearGraphics.EquipDetailFont2, new Point(252 - TextRenderer.MeasureText(g, typeName, GearGraphics.EquipDetailFont2, new Size(int.MaxValue, int.MaxValue), TextFormatFlags.NoPadding).Width, picHeight), ((SolidBrush)brush).Color, TextFormatFlags.NoPadding);
                             picHeight += 40;
