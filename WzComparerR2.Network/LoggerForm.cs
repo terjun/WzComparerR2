@@ -54,10 +54,10 @@ namespace WzComparerR2.Network
 
                     if (logLevel < LogLevel.None)
                     {
-                        this.AppendText($"[{logLevel}]", color);
+                        this.AppendText($"[{logLevel}] ", color);
                     }
                    
-                    this.AppendText($"[{DateTime.Now:HH:mm:ss}]", Color.Blue);
+                    this.AppendText($"[{DateTime.Now:HH:mm:ss}] ", Color.Blue);
                     if (args == null || args.Length <= 0)
                     {
                         this.AppendText(format, color);
