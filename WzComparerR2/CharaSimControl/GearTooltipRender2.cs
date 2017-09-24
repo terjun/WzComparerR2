@@ -501,8 +501,8 @@ namespace WzComparerR2.CharaSimControl
                 Gear.StandardProps.TryGetValue(type, out value); //standard value
                 if (value > 0 || Gear.Props[type] > 0)
                 {
-                    var propStr = ItemStringHelper.GetGearPropDiffString(type, Gear.Props[type], value);
-                    GearGraphics.DrawString(g, propStr, GearGraphics.ItemDetailFont, 13, 256, ref picH, 15);
+                    var propStr = ItemStringHelper.GetGearPropDiffString(type, Gear.Props[type], value, value2);
+                    GearGraphics.DrawString(g, propStr, GearGraphics.EquipDetailFont, 13, 244, ref picH, 15);
                     hasPart2 = true;
                 }
             }
