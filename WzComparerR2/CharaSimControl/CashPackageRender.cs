@@ -160,7 +160,7 @@ namespace WzComparerR2.CharaSimControl
                 switch (commodityPackage.Limit)
                 {
                     case 2:
-                        // 최초구매
+                        //최초구매
                         break;
                     case 3:
                         limit = "넥슨 ID";

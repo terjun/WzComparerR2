@@ -160,7 +160,7 @@ namespace WzComparerR2.CharaSimControl
                             Wz_Node imgNode = node0.FindNodeByPath(imgName, true);
                             if (imgNode != null)
                             {
-                                Gear gear = Gear.CreateFromNode(imgNode, path => PluginManager.FindWz(path));
+                                Gear gear = Gear.CreateFromNode(imgNode, path=>PluginManager.FindWz(path));
                                 if (gear != null)
                                 {
                                     recipeItemBmp = RenderLinkRecipeGear(gear);

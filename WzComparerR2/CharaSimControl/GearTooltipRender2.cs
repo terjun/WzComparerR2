@@ -209,12 +209,12 @@ namespace WzComparerR2.CharaSimControl
             var attrList = GetGearAttributeString();
             if (attrList.Count > 0)
             {
-                var font = GearGraphics.ItemDetailFont;
+                var font = GearGraphics.EquipDetailFont;
                 string attrStr = null;
                 for (int i = 0; i < attrList.Count; i++)
                 {
                     var newStr = (attrStr != null ? (attrStr + ", ") : null) + attrList[i];
-                    if (TextRenderer.MeasureText(g, newStr, GearGraphics.EquipDetailFont).Width > 261 - 7)
+                    if (TextRenderer.MeasureText(g, newStr, font).Width > 261 - 7)
                     {
                         TextRenderer.DrawText(g, attrStr, GearGraphics.EquipDetailFont, new Point(261, picH), ((SolidBrush)GearGraphics.OrangeBrush2).Color, TextFormatFlags.HorizontalCenter);
                         picH += 15;
