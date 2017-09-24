@@ -50,6 +50,7 @@ namespace WzComparerR2.CharaSimControl
         public bool ShowSpeed { get; set; }
         public bool ShowLevelOrSealed { get; set; }
         public bool ShowMedalTag { get; set; } = true;
+        public bool IsCombineProperties { get; set; } = true;
 
         public TooltipRender SetItemRender { get; set; }
 
@@ -489,10 +490,10 @@ namespace WzComparerR2.CharaSimControl
                     props.Add(p.Key);
             }
             props.Sort();
-            bool epic = Gear.Props.TryGetValue(GearPropType.epicItem, out value) && value > 0;
+            //bool epic = Gear.Props.TryGetValue(GearPropType.epicItem, out value) && value > 0;
             foreach (GearPropType type in props)
             {
-                var font = (epic && Gear.IsEpicPropType(type)) ? GearGraphics.EpicGearDetailFont : GearGraphics.EquipDetailFont;
+                //var font = (epic && Gear.IsEpicPropType(type)) ? GearGraphics.EpicGearDetailFont : GearGraphics.EquipDetailFont;
                 //g.DrawString(ItemStringHelper.GetGearPropString(type, Gear.Props[type]), font, Brushes.White, 11, picH);
                 //picH += 16;
 
@@ -501,7 +502,7 @@ namespace WzComparerR2.CharaSimControl
                 if (value > 0 || Gear.Props[type] > 0)
                 {
                     var propStr = ItemStringHelper.GetGearPropDiffString(type, Gear.Props[type], value);
-                    GearGraphics.DrawString(g, propStr, font, 13, 256, ref picH, 15);
+                    GearGraphics.DrawString(g, propStr, GearGraphics.ItemDetailFont, 13, 256, ref picH, 15);
                     hasPart2 = true;
                 }
             }
@@ -1036,7 +1037,8 @@ namespace WzComparerR2.CharaSimControl
 
                     TextRenderer.DrawText(g, "等级 " + info.Level + (i >= Gear.Seals.Count - 1 ? "(MAX)" : null), GearGraphics.EquipDetailFont, new Point(10, picHeight), ((SolidBrush)GearGraphics.GreenBrush2).Color, TextFormatFlags.NoPadding);
                     picHeight += 16;
-                    foreach (var kv in info.BonusProps)
+                    var props = this.IsCombineProperties ? Gear.CombineProperties(info.BonusProps) : info.BonusProps;
+                    foreach (var kv in props)
                     {
                         string propString = ItemStringHelper.GetGearPropString(kv.Key, kv.Value);
                         TextRenderer.DrawText(g, propString, GearGraphics.EquipDetailFont, new Point(10, picHeight), Color.White, TextFormatFlags.NoPadding);

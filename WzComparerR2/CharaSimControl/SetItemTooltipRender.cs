@@ -36,56 +36,34 @@ namespace WzComparerR2.CharaSimControl
                 return null;
             }
 
-            int picHeight;
-            Bitmap originBmp = RenderSetItem(out picHeight);
-            Bitmap effectTooltip = null;
+            int width = 261;
+            int picHeight1;
+            Bitmap originBmp = RenderSetItem(out picHeight1);
+            int picHeight2 = 0;
+            Bitmap effectBmp = null;
 
-            if (this.SetItem.expandToolTip)
+            if (this.SetItem.ExpandToolTip)
             {
-                int picHeight2;
-                Bitmap effectBmp = RenderEffect(out picHeight2);
-
-                effectTooltip = new Bitmap(effectBmp.Width, picHeight2);
-                Graphics g2 = Graphics.FromImage(effectTooltip);
-
-                GearGraphics.DrawNewTooltipBack(g2, 0, 0, 261, picHeight2);
-                g2.DrawImage(effectBmp, 0, 0, new Rectangle(0, 0, 261, picHeight2), GraphicsUnit.Pixel);
-
-                if (effectBmp != null)
-                    effectBmp.Dispose();
-                g2.Dispose();
+                effectBmp = RenderEffectPart(out picHeight2);
+                width += 261;
             }
 
-            //计算布局
-            Size totalSize = new Size(originBmp.Width, picHeight);
-            Point effectOrigin = Point.Empty;
-
-            if (effectTooltip != null)
-            {
-                effectOrigin = new Point(totalSize.Width, 0);
-                totalSize.Width += effectTooltip.Width;
-                totalSize.Height = Math.Max(totalSize.Height, effectTooltip.Height);
-            }
-
-            Bitmap tooltip = new Bitmap(totalSize.Width, totalSize.Height);
+            Bitmap tooltip = new Bitmap(width, Math.Max(picHeight1, picHeight2));
             Graphics g = Graphics.FromImage(tooltip);
 
-            //绘制背景区域
-            GearGraphics.DrawNewTooltipBack(g, 0, 0, originBmp.Width, picHeight);
-
-            //复制图像
-            g.DrawImage(originBmp, 0, 0, new Rectangle(0, 0, originBmp.Width, picHeight), GraphicsUnit.Pixel);
-
-            if (effectTooltip != null)
+            //绘制左侧
+            GearGraphics.DrawNewTooltipBack(g, 0, 0, originBmp.Width, picHeight1);
+            g.DrawImage(originBmp, 0, 0, new Rectangle(0, 0, originBmp.Width, picHeight1), GraphicsUnit.Pixel);
+            
+            //绘制右侧
+            if(effectBmp != null)
             {
-                g.DrawImage(effectTooltip, effectOrigin.X, effectOrigin.Y,
-                    new Rectangle(Point.Empty, effectTooltip.Size), GraphicsUnit.Pixel);
+                GearGraphics.DrawNewTooltipBack(g, originBmp.Width, 0, effectBmp.Width, picHeight2);
+                g.DrawImage(effectBmp, originBmp.Width, 0, new Rectangle(0, 0, effectBmp.Width, picHeight2), GraphicsUnit.Pixel);
             }
 
-            if (originBmp != null)
-                originBmp.Dispose();
-            if (effectTooltip != null)
-                effectTooltip.Dispose();
+            originBmp?.Dispose();
+            effectBmp?.Dispose();
             g.Dispose();
             return tooltip;
         }
@@ -112,7 +90,7 @@ namespace WzComparerR2.CharaSimControl
                     string itemName = setItemPart.Value.RepresentName;
                     string typeName = setItemPart.Value.TypeName;
 
-                    if (string.IsNullOrEmpty(typeName) && SetItem.parts)
+                    if (string.IsNullOrEmpty(typeName) && SetItem.Parts)
                     {
                         typeName = "장비";
                     }
@@ -240,169 +218,36 @@ namespace WzComparerR2.CharaSimControl
                 }
             }
 
-            picHeight += 5;
-            if (!SetItem.expandToolTip)
+            if (!this.SetItem.ExpandToolTip)
             {
-                g.DrawLine(Pens.White, 6, picHeight, 252, picHeight);//分割线
+                picHeight += 5;
+                g.DrawLine(Pens.White, 6, picHeight, 254, picHeight);//分割线
                 picHeight += 9;
-                foreach (KeyValuePair<int, SetItemEffect> effect in this.SetItem.effects)
-                {
-                    if (this.SetItem.setItemID > 0)
-                        TextRenderer.DrawText(g, effect.Key + "세트효과", GearGraphics.EquipDetailFont, new Point(10, picHeight), ((SolidBrush)GearGraphics.GreenBrush2).Color, TextFormatFlags.NoPadding);
-                    else
-                        TextRenderer.DrawText(g, "월드 내 중복 착용 효과(" + effect.Key + " / " + this.SetItem.completeCount + ")", GearGraphics.EquipDetailFont, new Point(10, picHeight), ((SolidBrush)GearGraphics.GreenBrush2).Color, TextFormatFlags.NoPadding);
-                    picHeight += 15;
-                    //Brush brush = effect.Value.Enabled ? Brushes.White : GearGraphics.GrayBrush2;
-                    var color = effect.Value.Enabled ? Color.White : GearGraphics.GrayColor2;
-
-                    //T116 合并套装
-                    var props = IsCombineProperties ? CombineProperties(effect.Value.PropsV5) : effect.Value.PropsV5;
-                    foreach (KeyValuePair<GearPropType, object> prop in props)
-                    {
-                        if (prop.Key == GearPropType.Option)
-                        {
-                            List<Potential> ops = (List<Potential>)prop.Value;
-                            foreach (Potential p in ops)
-                            {
-                                GearGraphics.DrawPlainText(g, p.ConvertSummary(), GearGraphics.EquipDetailFont2, color, 10, 244, ref picHeight, 15);
-                            }
-                        }
-                        else if (prop.Key == GearPropType.OptionToMob)
-                        {
-                            List<SetItemOptionToMob> ops = (List<SetItemOptionToMob>)prop.Value;
-                            foreach (SetItemOptionToMob p in ops)
-                            {
-                                GearGraphics.DrawPlainText(g, p.ConvertSummary(), GearGraphics.EquipDetailFont2, color, 10, 244, ref picHeight, 15);
-                            }
-                        }
-                        else if (prop.Key == GearPropType.activeSkill)
-                        {
-                            List<SetItemActiveSkill> ops = (List<SetItemActiveSkill>)prop.Value;
-                            foreach (SetItemActiveSkill p in ops)
-                            {
-                                StringResult sr;
-                                if (StringLinker == null || !StringLinker.StringSkill.TryGetValue(p.SkillID, out sr))
-                                {
-                                    sr = new StringResult();
-                                    sr.Name = p.SkillID.ToString();
-                                }
-                                string summary = "<" + sr.Name.Replace(Environment.NewLine, "") + "> 스킬 사용 가능";
-                                GearGraphics.DrawPlainText(g, summary, GearGraphics.EquipDetailFont2, color, 10, 244, ref picHeight, 15);
-                            }
-                        }
-                        else
-                        {
-                            var summary = ItemStringHelper.GetGearPropString(prop.Key, Convert.ToInt32(prop.Value));
-                            GearGraphics.DrawPlainText(g, summary, GearGraphics.EquipDetailFont2, color, 10, 244, ref picHeight, 15);
-                        }
-                    }
-                }
+                RenderEffect(g, ref picHeight);
             }
             picHeight += 11;
+
             format.Dispose();
             g.Dispose();
             return setBitmap;
         }
 
-        private IEnumerable<KeyValuePair<GearPropType, object>> CombineProperties(IEnumerable<KeyValuePair<GearPropType, object>> props)
+        private Bitmap RenderEffectPart(out int picHeight)
         {
-            var combinedProps = new SortedDictionary<GearPropType, object>();
-            var propCache = new SortedDictionary<GearPropType, object>();
-            foreach(var kv in props)
-            {
-                propCache.Add(kv.Key, kv.Value);
-            }
-
-            object obj;
-            foreach (var prop in propCache)
-            {
-                switch (prop.Key)
-                {
-                    case GearPropType.incMHP:
-                    case GearPropType.incMMP:
-                        if (combinedProps.ContainsKey(GearPropType.incMHP_incMMP))
-                        {
-                            break;
-                        }
-                        else if (propCache.TryGetValue(prop.Key == GearPropType.incMHP? GearPropType.incMMP : GearPropType.incMHP, out obj)
-                            && object.Equals(prop.Value, obj))
-                        {
-                            combinedProps.Add(GearPropType.incMHP_incMMP, prop.Value);
-                            break;
-                        }
-                        goto default;
-
-                    case GearPropType.incMHPr:
-                    case GearPropType.incMMPr:
-                        if (combinedProps.ContainsKey(GearPropType.incMHPr_incMMPr))
-                        {
-                            break;
-                        }
-                        else if (propCache.TryGetValue(prop.Key == GearPropType.incMHPr ? GearPropType.incMMPr : GearPropType.incMHPr, out obj)
-                            && object.Equals(prop.Value, obj))
-                        {
-                            combinedProps.Add(GearPropType.incMHPr_incMMPr, prop.Value);
-                            break;
-                        }
-                        goto default;
-
-                    case GearPropType.incPAD:
-                    case GearPropType.incMAD:
-                        if (combinedProps.ContainsKey(GearPropType.incPAD_incMAD))
-                        {
-                            break;
-                        }
-                        else if (propCache.TryGetValue(prop.Key == GearPropType.incPAD ? GearPropType.incMAD : GearPropType.incPAD, out obj)
-                            && object.Equals(prop.Value, obj))
-                        {
-                            combinedProps.Add(GearPropType.incPAD_incMAD, prop.Value);
-                            break;
-                        }
-                        goto default;
-
-                    case GearPropType.incPDD:
-                    case GearPropType.incMDD:
-                        if (combinedProps.ContainsKey(GearPropType.incPDD_incMDD))
-                        {
-                            break;
-                        }
-                        else if (propCache.TryGetValue(prop.Key == GearPropType.incPDD ? GearPropType.incMDD : GearPropType.incPDD, out obj)
-                            && object.Equals(prop.Value, obj))
-                        {
-                            combinedProps.Add(GearPropType.incPDD_incMDD, prop.Value);
-                            break;
-                        }
-                        goto default;
-
-                    case GearPropType.incACC:
-                    case GearPropType.incEVA:
-                        if (combinedProps.ContainsKey(GearPropType.incACC_incEVA))
-                        {
-                            break;
-                        }
-                        else if (propCache.TryGetValue(prop.Key == GearPropType.incACC ? GearPropType.incEVA : GearPropType.incACC, out obj)
-                            && object.Equals(prop.Value, obj))
-                        {
-                            combinedProps.Add(GearPropType.incACC_incEVA, prop.Value);
-                            break;
-                        }
-                        goto default;
-
-                    default:
-                        combinedProps.Add(prop.Key, prop.Value);
-                        break;
-                }
-            }
-            return combinedProps;
+            Bitmap effBitmap = new Bitmap(261, DefaultPicHeight);
+            Graphics g = Graphics.FromImage(effBitmap);
+            picHeight = 9;
+            RenderEffect(g, ref picHeight);
+            picHeight += 11;
+            g.Dispose();
+            return effBitmap;
         }
 
-        private Bitmap RenderEffect(out int picHeight)
+        /// <summary>
+        /// 绘制套装属性。
+        /// </summary>
+        private void RenderEffect(Graphics g, ref int picHeight)
         {
-            Bitmap renderBitmap = new Bitmap(261, DefaultPicHeight);
-            Graphics g = Graphics.FromImage(renderBitmap);
-
-            picHeight = 10;
-
             foreach (KeyValuePair<int, SetItemEffect> effect in this.SetItem.effects)
             {
                 if (this.SetItem.setItemID > 0)
@@ -414,7 +259,7 @@ namespace WzComparerR2.CharaSimControl
                 var color = effect.Value.Enabled ? Color.White : GearGraphics.GrayColor2;
 
                 //T116 合并套装
-                var props = IsCombineProperties ? CombineProperties(effect.Value.PropsV5) : effect.Value.PropsV5;
+                var props = IsCombineProperties ? Gear.CombineProperties(effect.Value.PropsV5) : effect.Value.PropsV5;
                 foreach (KeyValuePair<GearPropType, object> prop in props)
                 {
                     if (prop.Key == GearPropType.Option)
@@ -455,11 +300,6 @@ namespace WzComparerR2.CharaSimControl
                     }
                 }
             }
-
-            picHeight += 6;
-
-            g.Dispose();
-            return renderBitmap;
         }
     }
 }

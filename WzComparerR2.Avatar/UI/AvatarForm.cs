@@ -24,6 +24,10 @@ namespace WzComparerR2.Avatar.UI
             btnReset_Click(btnReset, EventArgs.Empty);
             FillWeaponIdx();
             FillEarSelection();
+
+#if !DEBUG
+            buttonItem1.Visible = false;
+#endif
         }
 
         public SuperTabControlPanel GetTabPanel()
@@ -184,7 +188,8 @@ namespace WzComparerR2.Avatar.UI
             {
                 this.avatar.LoadTamingActions();
                 FillTamingAction();
-                SelectBodyAction("sit");
+                SetTamingDefaultBodyAction();
+                SetTamingDefault();
             }
             else if (part == avatar.Weapon) //同步武器类型
             {
@@ -298,8 +303,8 @@ namespace WzComparerR2.Avatar.UI
                     }
 
                     var bone = avatar.CreateFrame(bodyFrame, emoFrame, tamingFrame);
-                    var bmp = avatar.DrawFrame(bone, f);
-                    avatarContainer1.AddCache(actionTag, bmp);
+                    var layers = avatar.CreateFrameLayers(bone);
+                    avatarContainer1.AddCache(actionTag, layers);
                 }
                 catch
                 {
@@ -352,6 +357,19 @@ namespace WzComparerR2.Avatar.UI
                 if (item != null && item.Text == actionName)
                 {
                     cmbActionBody.SelectedIndex = i;
+                    return;
+                }
+            }
+        }
+
+        private void SelectEmotion(string emotionName)
+        {
+            for (int i = 0; i < cmbEmotion.Items.Count; i++)
+            {
+                ComboItem item = cmbEmotion.Items[i] as ComboItem;
+                if (item != null && item.Text == emotionName)
+                {
+                    cmbEmotion.SelectedIndex = i;
                     return;
                 }
             }
@@ -412,6 +430,45 @@ namespace WzComparerR2.Avatar.UI
         {
             List<int> weaponTypes = avatar.GetCashWeaponTypes();
             FillComboItems(cmbWeaponType, weaponTypes.ConvertAll(i => i.ToString()));
+        }
+
+        private void SetTamingDefaultBodyAction()
+        {
+            string actionName;
+            var tamingAction = (this.cmbActionTaming.SelectedItem as ComboItem)?.Text;
+            switch (tamingAction)
+            {
+                case "ladder":
+                case "rope":
+                    actionName = tamingAction;
+                    break;
+                default:
+                    actionName = "sit";
+                    break;
+            }
+            SelectBodyAction(actionName);
+        }
+
+        private void SetTamingDefault()
+        {
+            if (this.avatar.Taming != null)
+            {
+                var tamingAction =  (this.cmbActionTaming.SelectedItem as ComboItem)?.Text;
+                if (tamingAction != null)
+                {
+                    string forceAction = this.avatar.Taming.Node.FindNodeByPath($@"characterAction\{tamingAction}").GetValueEx<string>(null);
+                    if (forceAction != null)
+                    {
+                        this.SelectBodyAction(forceAction);
+                    }
+
+                    string forceEmotion = this.avatar.Taming.Node.FindNodeByPath($@"characterEmotion\{tamingAction}").GetValueEx<string>(null);
+                    if (forceEmotion != null)
+                    {
+                        this.SelectEmotion(forceEmotion);
+                    }
+                }
+            }
         }
 
         /// <summary>
@@ -633,6 +690,8 @@ namespace WzComparerR2.Avatar.UI
         {
             this.SuspendUpdateDisplay();
             FillTamingActionFrame();
+            SetTamingDefaultBodyAction();
+            SetTamingDefault();
             this.ResumeUpdateDisplay();
             UpdateDisplay();
         }
@@ -1067,7 +1126,6 @@ namespace WzComparerR2.Avatar.UI
         private void buttonItem1_Click_1(object sender, EventArgs e)
         {
             this.PluginEntry.btnSetting_Click(sender, e);
-
         }
 
         private void btnExportAll_Click(object sender, EventArgs e)
@@ -1269,7 +1327,7 @@ namespace WzComparerR2.Avatar.UI
                         if (frame.Delay != 0)
                         {
                             var bone = avatar.CreateFrame(frame, emoF, null);
-                            var bmp = avatar.DrawFrame(bone, frame);
+                            var bmp = avatar.DrawFrame(bone);
 
                             Point pos = bmp.OpOrigin;
                             pos.Offset(frame.Flip ? new Point(-frame.Move.X, frame.Move.Y) : frame.Move);
@@ -1336,7 +1394,7 @@ namespace WzComparerR2.Avatar.UI
                     if (frame.Delay != 0)
                     {
                         var bone = avatar.CreateFrame(frame, emoF, null);
-                        var bmp = avatar.DrawFrame(bone, frame);
+                        var bmp = avatar.DrawFrame(bone);
 
                         Point pos = bmp.OpOrigin;
                         pos.Offset(frame.Flip ? new Point(-frame.Move.X, frame.Move.Y) : frame.Move);
@@ -1350,7 +1408,7 @@ namespace WzComparerR2.Avatar.UI
             {
                 var frame = actionFrames[bodyFrame];
                 var bone = avatar.CreateFrame(frame, emoF, null);
-                var bmp = avatar.DrawFrame(bone, frame);
+                var bmp = avatar.DrawFrame(bone);
 
                 Point pos = bmp.OpOrigin;
                 pos.Offset(frame.Flip ? new Point(-frame.Move.X, frame.Move.Y) : frame.Move);
