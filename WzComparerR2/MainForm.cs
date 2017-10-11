@@ -391,7 +391,7 @@ namespace WzComparerR2
                         string pngFileName = pictureBoxEx1.PictureName + ".png";
                         if (config.AutoSaveEnabled)
                         {
-                            pngFileName = Path.Combine(config.AutoSavePictureFolder, pngFileName);
+                            pngFileName = Path.Combine(config.AutoSavePictureFolder, string.Join("_", pngFileName.Split(Path.GetInvalidFileNameChars())));
                         }
                         else
                         {
@@ -420,7 +420,7 @@ namespace WzComparerR2
                     + ".gif";
             if (config.AutoSaveEnabled)
             {
-                gifFileName = Path.Combine(config.AutoSavePictureFolder, gifFileName);
+                gifFileName = Path.Combine(config.AutoSavePictureFolder, string.Join("_", gifFileName.Split(Path.GetInvalidFileNameChars())));
             }
             else
             {
