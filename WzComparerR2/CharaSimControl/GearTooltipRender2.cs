@@ -232,7 +232,7 @@ namespace WzComparerR2.CharaSimControl
                 }
             }
 
-            if (Gear.Props.TryGetValue(GearPropType.royalSpecial, out value) && value != 0)
+            if (Gear.Props.TryGetValue(GearPropType.royalSpecial, out value) && value > 0)
             {
                 switch (value)
                 {
@@ -764,6 +764,11 @@ namespace WzComparerR2.CharaSimControl
                     }
                 }
 
+                if (!string.IsNullOrEmpty(Gear.EpicHs))
+                {
+                    desc.Add(sr[Gear.EpicHs].Replace("#", " #"));
+                }
+
                 desc.Add("");
 
                 if (!string.IsNullOrEmpty(incline))
@@ -849,7 +854,7 @@ namespace WzComparerR2.CharaSimControl
                         }
 
                         char lastCharacter = itemNames.Last().Last();
-                        if (lastCharacter >= 44032 && lastCharacter <= 55203 && (lastCharacter - 44032) % 28 == 0)
+                        if (lastCharacter >= '가' && lastCharacter <= '힣' && (lastCharacter - '가') % 28 == 0)
                             exclusiveEquip = "#c" + string.Join(", ", itemNames.ToArray()) + "는 중복 착용이 불가능합니다.#";
                         else
                             exclusiveEquip = "#c" + string.Join(", ", itemNames.ToArray()) + "은 중복 착용이 불가능합니다.#";

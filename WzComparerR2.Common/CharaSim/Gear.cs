@@ -38,6 +38,7 @@ namespace WzComparerR2.CharaSim
         public int Hammer { get; set; }
         public bool HasTuc { get; internal set; }
         public bool CanPotential { get; internal set; }
+        public string EpicHs { get; internal set; }
 
         public bool FixLevel { get; internal set; }
         public List<GearLevelInfo> Levels { get; internal set; }
@@ -707,7 +708,15 @@ namespace WzComparerR2.CharaSim
                             break;
 
                         case "onlyUpgrade":
-                            gear.Props.Add(GearPropType.onlyUpgrade, 1);
+                            gear.Props.Add(GearPropType.onlyUpgrade, Convert.ToInt32(subNode.Value));
+                            break;
+
+                        case "epic":
+                            Wz_Node hsNode = subNode.Nodes["hs"];
+                            if (hsNode != null)
+                            {
+                                gear.EpicHs = hsNode.GetValue<string>();
+                            }
                             break;
 
                         default:

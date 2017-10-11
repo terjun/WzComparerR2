@@ -108,6 +108,7 @@ namespace WzComparerR2.CharaSimControl
                                     if (imgNode != null)
                                     {
                                         Gear gear = Gear.CreateFromNode(imgNode, path=>PluginManager.FindWz(path));
+                                        gear.Props[GearPropType.timeLimited] = 0;
                                         if (gear != null)
                                         {
                                             recipeItemBmp = RenderLinkRecipeGear(gear);
@@ -130,6 +131,7 @@ namespace WzComparerR2.CharaSimControl
                                     if (imgNode != null)
                                     {
                                         Item item = Item.CreateFromNode(imgNode, PluginManager.FindWz);
+                                        item.Props[ItemPropType.timeLimited] = 0;
                                         if (item != null)
                                         {
                                             recipeItemBmp = RenderLinkRecipeItem(item);

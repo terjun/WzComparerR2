@@ -113,7 +113,7 @@ namespace WzComparerR2.CharaSim
                 case GearPropType.tradeAvailable:
                     switch (value)
                     {
-                        case 1: return "#c카르마의 가위를 사용하면 1회 교환이 가능하게 할 수 있습니다.#";
+                        case 1: return "#c카르마의 가위 또는 실버 카르마의 가위를 사용하면 1회 교환이 가능하게 할 수 있습니다.#";
                         case 2: return "#c플래티넘 카르마의 가위를 사용하면 1회 교환이 가능하게 할 수 있습니다.#";
                         default: return null;
                     }
