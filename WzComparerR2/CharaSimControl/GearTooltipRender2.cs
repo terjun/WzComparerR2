@@ -454,8 +454,8 @@ namespace WzComparerR2.CharaSimControl
                 picH += 15;
                 hasPart2 = true;
             }
-            
-            if (!Gear.Props.TryGetValue(GearPropType.attackSpeed, out value) 
+
+            if (!Gear.Props.TryGetValue(GearPropType.attackSpeed, out value)
                 && (Gear.IsWeapon(Gear.type) || Gear.type == GearType.katara)) //找不到攻速的武器
             {
                 value = 6; //给予默认速度
@@ -501,7 +501,7 @@ namespace WzComparerR2.CharaSimControl
                 Gear.StandardProps.TryGetValue(type, out value); //standard value
                 if (value > 0 || Gear.Props[type] > 0)
                 {
-                    var propStr = ItemStringHelper.GetGearPropDiffString(type, Gear.Props[type], value, value2);
+                    var propStr = ItemStringHelper.GetGearPropDiffString(type, Gear.Props[type], value);
                     GearGraphics.DrawString(g, propStr, GearGraphics.EquipDetailFont, 13, 244, ref picH, 15);
                     hasPart2 = true;
                 }
@@ -541,13 +541,6 @@ namespace WzComparerR2.CharaSimControl
                 picH += 15;
                 hasPart2 = true;
             }
-            
-            if (Gear.Props.TryGetValue(GearPropType.limitBreak, out value) && value > 0) //突破上限
-            {
-                TextRenderer.DrawText(g, ItemStringHelper.GetGearPropString(GearPropType.limitBreak, value), GearGraphics.EquipDetailFont, new Point(13, picH), ((SolidBrush)GearGraphics.GreenBrush2).Color, TextFormatFlags.NoPadding);
-                picH += 15;
-                hasPart2 = true;
-            }
 
             //星星锤子
             if (hasTuc && Gear.Hammer > -1 && Gear.GetMaxStar() > 0)
@@ -577,15 +570,26 @@ namespace WzComparerR2.CharaSimControl
                         picH += 15;
                     }
                 }
-                /*picH += 2;
+            }
+
+            if (Gear.Props.TryGetValue(GearPropType.limitBreak, out value) && value > 0) //突破上限
+            {
+                TextRenderer.DrawText(g, ItemStringHelper.GetGearPropString(GearPropType.limitBreak, value), GearGraphics.EquipDetailFont, new Point(13, picH), ((SolidBrush)GearGraphics.GreenBrush2).Color, TextFormatFlags.NoPadding);
+                picH += 15;
+                hasPart2 = true;
+            }
+
+            /*if (hasTuc && Gear.Hammer > -1)
+            {
+                picH += 2;
                 TextRenderer.DrawText(g, "金锤子已提高的强化次数", GearGraphics.EquipDetailFont, new Point(13, picH), ((SolidBrush)GearGraphics.GoldHammerBrush).Color, TextFormatFlags.NoPadding);
                 g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
                 TextRenderer.DrawText(g, ": " + Gear.Hammer.ToString() + (Gear.Hammer == 2 ? "(MAX)" : null), GearGraphics.TahomaFont, new Point(145, picH - 2), ((SolidBrush)GearGraphics.GoldHammerBrush).Color, TextFormatFlags.NoPadding);
                 g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.SystemDefault;
-                picH += 15;*/
+                picH += 15;
                 hasPart2 = true;
-            }
-            picH += 8;
+            }*/
+            picH += 5;
 
             //绘制浮动属性
             if ((Gear.VariableStat != null && Gear.VariableStat.Count > 0))
@@ -701,7 +705,7 @@ namespace WzComparerR2.CharaSimControl
 
             //绘制desc
             List<string> desc = new List<string>();
-            GearPropType[] descTypes = new GearPropType[]{ 
+            GearPropType[] descTypes = new GearPropType[]{
                 GearPropType.tradeAvailable,
                 GearPropType.accountShareTag,
                 GearPropType.jokerToSetItem };
