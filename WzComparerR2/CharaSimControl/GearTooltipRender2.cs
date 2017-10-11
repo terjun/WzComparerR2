@@ -768,7 +768,7 @@ namespace WzComparerR2.CharaSimControl
                     }
                 }
 
-                if (!string.IsNullOrEmpty(Gear.EpicHs))
+                if (!string.IsNullOrEmpty(Gear.EpicHs) && sr[Gear.EpicHs] != null)
                 {
                     desc.Add(sr[Gear.EpicHs].Replace("#", " #"));
                 }
