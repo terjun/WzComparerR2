@@ -81,6 +81,12 @@ namespace WzComparerR2
             charaSimCtrl.StringLinker = this.stringLinker;
             charaSimCtrl.Character = new Character();
             charaSimCtrl.Character.Name = "WzComparerR2";
+            charaSimCtrl.UIItem.Visible = false;
+            charaSimCtrl.UIItem.VisibleChanged += new EventHandler(afrm_VisibleChanged);
+            charaSimCtrl.UIStat.Visible = false;
+            charaSimCtrl.UIStat.VisibleChanged += new EventHandler(afrm_VisibleChanged);
+            charaSimCtrl.UIEquip.Visible = false;
+            charaSimCtrl.UIEquip.VisibleChanged += new EventHandler(afrm_VisibleChanged);
 
             string[] images = new string[] { "dir", "mp3", "num", "png", "str", "uol", "vector", "img" };
             foreach (string img in images)
@@ -398,7 +404,7 @@ namespace WzComparerR2
                         string pngFileName = pictureBoxEx1.PictureName + ".png";
                         if (config.AutoSaveEnabled)
                         {
-                            pngFileName = Path.Combine(config.AutoSavePictureFolder, string.Join("_", pngFileName.Split(Path.GetInvalidFileNameChars())));
+                            pngFileName = Path.Combine(config.AutoSavePictureFolder, string.Join("_", pngFileName.Split(Path.GetInvalidFileNameChars(), StringSplitOptions.None)));
                         }
                         else
                         {
@@ -427,7 +433,7 @@ namespace WzComparerR2
                     + ".gif";
             if (config.AutoSaveEnabled)
             {
-                gifFileName = Path.Combine(config.AutoSavePictureFolder, string.Join("_", gifFileName.Split(Path.GetInvalidFileNameChars())));
+                gifFileName = Path.Combine(config.AutoSavePictureFolder, string.Join("_", gifFileName.Split(Path.GetInvalidFileNameChars(), StringSplitOptions.None)));
             }
             else
             {
@@ -2565,7 +2571,7 @@ namespace WzComparerR2
             success = this.charaSimCtrl.UIItem.AddItem(this.tooltipQuickView.TargetItem as ItemBase);
             if (!success)
             {
-                labelItemStatus.Text = "선택된 파일이 없거나 더 이상 넣을 수 없습니다.";
+                labelItemStatus.Text = "선택된 아이템이 없거나 더 이상 넣을 수 없습니다.";
             }
         }
 
@@ -2617,6 +2623,22 @@ namespace WzComparerR2
                         break;
                 }
                 frm.Refresh();
+            }
+        }
+
+        private void afrm_VisibleChanged(object sender, EventArgs e)
+        {
+            if (sender is AfrmItem)
+            {
+                buttonItemCharItem.Checked = ((AfrmItem)sender).Visible;
+            }
+            else if (sender is AfrmStat)
+            {
+                buttonItemCharaStat.Checked = ((AfrmStat)sender).Visible;
+            }
+            else if (sender is AfrmEquip)
+            {
+                buttonItemCharaEquip.Checked = ((AfrmEquip)sender).Visible;
             }
         }
 
