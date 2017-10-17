@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Runtime.InteropServices;
 using System.Xml;
 
 namespace WzComparerR2.WzLib
@@ -293,13 +294,17 @@ namespace WzComparerR2.WzLib
         {
             if (other != null)
             {
-                return string.Compare(this.Text, other.Text, StringComparison.InvariantCulture);
+                //return string.Compare(this.Text, other.Text, StringComparison.InvariantCulture);
+                return StrCmpLogicalW(this.Text, other.Text);
             }
             else
             {
                 return 1;
             }
         }
+
+        [DllImport("shlwapi.dll", CharSet = CharSet.Unicode)]
+        static extern int StrCmpLogicalW(string psz1, string psz2);
     }
 
     public static class Wz_NodeExtension
