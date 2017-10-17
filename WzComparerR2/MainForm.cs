@@ -352,6 +352,13 @@ namespace WzComparerR2
                     aniItem.SelectedAnimationName = aniName;
                     this.cmbItemAniNames.Tooltip = aniName;
                 }
+                var aniItem2 = this.pictureBoxEx1.Items[0] as Animation.MultiFrameAnimator;
+                if (aniItem2 != null)
+                {
+                    string aniName = this.cmbItemAniNames.SelectedItem as string;
+                    aniItem2.SelectedAnimationName = aniName;
+                    this.cmbItemAniNames.Tooltip = aniName;
+                }
             }
         }
 
@@ -520,6 +527,20 @@ namespace WzComparerR2
                     this.pictureBoxEx1.ShowAnimation(frameData);
                     this.cmbItemAniNames.Items.Clear();
                     this.cmbItemSkins.Visible = false;
+                }
+                else
+                {
+                    var frameData2 = this.pictureBoxEx1.LoadFrameAnimation2(node);
+
+                    if (frameData2 != null)
+                    {
+                        this.pictureBoxEx1.ShowAnimation(frameData2);
+                        var aniItem = this.pictureBoxEx1.Items[0] as Animation.MultiFrameAnimator;
+
+                        this.cmbItemAniNames.Items.Clear();
+                        this.cmbItemAniNames.Items.AddRange(aniItem.Animations.ToArray());
+                        this.cmbItemAniNames.SelectedIndex = 0;
+                    }
                 }
             }
             this.pictureBoxEx1.PictureName = aniName;

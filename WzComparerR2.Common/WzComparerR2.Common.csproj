@@ -83,6 +83,8 @@
     <Compile Include="Animation\SpineAnimator.cs" />
     <Compile Include="Animation\SpineAnimationData.cs" />
     <Compile Include="Animation\WzSpineTextureLoader.cs" />
+    <Compile Include="Animation\MultiFrameAnimator.cs" />
+    <Compile Include="Animation\MultiFrameAnimationData.cs" />
     <Compile Include="CharaSim\MobElemAttr.cs" />
     <Compile Include="CharaSim\Mob.cs" />
     <Compile Include="CharaSim\Npc.cs" />
