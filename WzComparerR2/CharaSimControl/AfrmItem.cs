@@ -105,11 +105,13 @@ namespace WzComparerR2.CharaSimControl
 
             this.vScroll.BtnThumb.Normal = new BitmapOrigin(Resource.VScr9_enabled_thumb0);
             this.vScroll.BtnThumb.Pressed = new BitmapOrigin(Resource.VScr9_enabled_thumb1);
-            this.vScroll.BtnThumb.MouseOver = new BitmapOrigin(Resource.VScr9_enabled_thumb2);
+            this.vScroll.BtnThumb.MouseOver = new BitmapOrigin(Resource.VScr9_enabled_thumb0);
             this.vScroll.BtnThumb.Size = this.vScroll.BtnThumb.Normal.Bitmap.Size;
 
             this.vScroll.Location = new Point(152, 51);
             this.vScroll.Size = new Size(11, 207);
+            this.vScroll.ScrollableLocation = new Point(10, 51);
+            this.vScroll.ScrollableSize = new Size(153, 207);
             this.vScroll.ValueChanged += new EventHandler(vScroll_ValueChanged);
             this.vScroll.ChildButtonStateChanged += new EventHandler(aCtrl_RefreshCall);
 
@@ -697,6 +699,17 @@ namespace WzComparerR2.CharaSimControl
             }
 
             base.OnMouseWheel(e);
+        }
+
+        protected override void OnKeyDown(KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Tab)
+            {
+                this.SelectedIndex = (this.SelectedIndex + 1) % this.itemTabs.Length;
+                this.Refresh();
+            }
+
+            base.OnKeyDown(e);
         }
 
         protected virtual void OnItemMouseDown(ItemMouseEventArgs e)
