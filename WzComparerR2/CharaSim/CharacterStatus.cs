@@ -60,6 +60,10 @@ namespace WzComparerR2.CharaSim
         private CharaProp mastery = null;
         private CharaProp damR = null;
         private CharaProp bossDamR = null;
+        private CharaProp finalDamR = null;
+        private CharaProp ignoreMobDefR = null;
+        private CharaProp statusRes = null;
+        private CharaProp knockbackRes = null;
 
         #region 基础属性
         /// <summary>
@@ -317,6 +321,26 @@ namespace WzComparerR2.CharaSim
         public CharaProp BossDamageRate
         {
             get { return bossDamR; }
+        }
+
+        public CharaProp FinalDamageRate
+        {
+            get { return finalDamR; }
+        }
+
+        public CharaProp IgnoreMobDefenceRate
+        {
+            get { return ignoreMobDefR; }
+        }
+
+        public CharaProp StatusResistance
+        {
+            get { return statusRes; }
+        }
+
+        public CharaProp KnockbackResistance
+        {
+            get { return knockbackRes; }
         }
         #endregion
     }

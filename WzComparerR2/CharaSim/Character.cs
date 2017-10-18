@@ -25,7 +25,7 @@ namespace WzComparerR2.CharaSim
             this.status.Jump.BaseVal = 100;
             //this.status.CriticalDamageMax.BaseVal = 150;
             //this.status.CriticalDamageMin.BaseVal = 120;
-            this.status.CriticalDamage.BaseVal = 100;
+            this.status.CriticalDamage.BaseVal = 0;
 
             this.itemSlots = new ItemBase[5][];
             for (int i = 0; i < this.itemSlots.Length; i++)
