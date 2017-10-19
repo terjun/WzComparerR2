@@ -331,6 +331,19 @@ namespace WzComparerR2.WzLib
                                 break;
                             }
                         }
+                        for (int fileID = 1; ; fileID++)
+                        {
+                            string extDirName = m.Result("$1") + fileID.ToString("D3");
+                            string extWzFile = Path.Combine(baseFolder, extDirName + ".wz");
+                            if (File.Exists(extWzFile) && !dirs.Take(dirCount).Any(dir => extDirName.Equals(dir, StringComparison.OrdinalIgnoreCase)))
+                            {
+                                dirs.Add(extDirName);
+                            }
+                            else
+                            {
+                                break;
+                            }
+                        }
                     }
                 }
             }
