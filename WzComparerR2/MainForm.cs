@@ -1766,7 +1766,7 @@ namespace WzComparerR2
             {
                 if (!this.stringLinker.Load(findStringWz(), findItemWz()))
                 {
-                    MessageBoxEx.Show("String.wz를 먼저 열어주세요.", "오류");
+                    MessageBoxEx.Show("Base.wz를 먼저 열어주세요.", "오류");
                     return;
                 }
                 QueryPerformance.End();

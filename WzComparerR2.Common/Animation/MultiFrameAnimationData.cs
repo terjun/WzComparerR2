@@ -54,6 +54,7 @@ namespace WzComparerR2.Animation
                 }
 
                 int delay = frameNode.Nodes["delay"].GetValueEx<int>(100);
+                int count = 0;
                 foreach (Wz_Node aniNode in frameNode.Nodes)
                 {
                     Frame frame = Frame.CreateFromNode(aniNode, graphicsDevice, findNode);
@@ -63,9 +64,18 @@ namespace WzComparerR2.Animation
                     frame.Delay = delay;
                     if (!anime.Frames.ContainsKey(aniNode.Text))
                     {
+                        if (i != 0)
+                        {
+                            return null;
+                        }
                         anime.Frames[aniNode.Text] = new List<Frame>();
                     }
                     anime.Frames[aniNode.Text].Add(frame);
+                    count++;
+                }
+                if (anime.Frames.Count != count)
+                {
+                    return null;
                 }
             }
             if (anime.Frames.Count > 0)
