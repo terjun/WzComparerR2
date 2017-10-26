@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Linq;
+using System.Runtime.InteropServices;
 using WzComparerR2.WzLib;
 using WzComparerR2.Common;
 
@@ -154,7 +155,8 @@ namespace WzComparerR2.Comparer
                             //对比node的绝对路径
                             var left = (arrayNew[l] as WzVirtualNodeAgent).Target.LinkNodes;
                             var right = (arrayOld[r] as WzVirtualNodeAgent).Target.LinkNodes;
-                            var compFunc2 = new Comparison<Wz_Node>((a, b) => string.Compare(a.FullPathToFile, b.FullPathToFile));
+                            //var compFunc2 = new Comparison<Wz_Node>((a, b) => string.Compare(a.FullPathToFile, b.FullPathToFile));
+                            var compFunc2 = new Comparison<Wz_Node>((a, b) => StrCmpLogicalW(a.FullPathToFile, b.FullPathToFile));
                             left.Sort(compFunc2);
                             right.Sort(compFunc2);
 
@@ -215,7 +217,7 @@ namespace WzComparerR2.Comparer
                                 }
                                 else if (linkNew && linkOld) //两边都是link
                                 {
-                                    if (linkInfoNew.LinkType == linkInfoOld.LinkType 
+                                    if (linkInfoNew.LinkType == linkInfoOld.LinkType
                                         && linkInfoNew.LinkUrl == linkInfoOld.LinkUrl) //link没有变动
                                     {
                                         compared = true;
@@ -470,7 +472,8 @@ namespace WzComparerR2.Comparer
 
             public int CompareTo(ComparableNode other)
             {
-                return Math.Sign(string.CompareOrdinal(this.Name, other.Name));
+                //return Math.Sign(string.CompareOrdinal(this.Name, other.Name));
+                return Math.Sign(StrCmpLogicalW(this.Name, other.Name));
             }
         }
 
@@ -643,7 +646,7 @@ namespace WzComparerR2.Comparer
 
             public void DisposeAll()
             {
-                while(_list.Count > 0)
+                while (_list.Count > 0)
                 {
                     DisposeLast();
                 }
@@ -678,5 +681,8 @@ namespace WzComparerR2.Comparer
             Inlink = 1,
             Outlink = 2
         }
+
+        [DllImport("shlwapi.dll", CharSet = CharSet.Unicode)]
+        static extern int StrCmpLogicalW(string psz1, string psz2);
     }
 }

@@ -677,8 +677,8 @@
             // 
             this.buttonItemCharItem.AutoCheckOnClick = true;
             this.buttonItemCharItem.Name = "buttonItemCharItem";
-            this.buttonItemCharItem.Text = "아이템";
-            this.buttonItemCharItem.Tooltip = "아이템창 열기/닫기";
+            this.buttonItemCharItem.Text = "인벤토리";
+            this.buttonItemCharItem.Tooltip = "인벤토리 열기/닫기";
             this.buttonItemCharItem.CheckedChanged += new System.EventHandler(this.buttonItemCharItem_CheckedChanged);
             // 
             // itemContainer30
@@ -699,8 +699,8 @@
             // 
             this.buttonItemCharaStat.AutoCheckOnClick = true;
             this.buttonItemCharaStat.Name = "buttonItemCharaStat";
-            this.buttonItemCharaStat.Text = "스탯";
-            this.buttonItemCharaStat.Tooltip = "스탯창 열기/닫기";
+            this.buttonItemCharaStat.Text = "능력치";
+            this.buttonItemCharaStat.Tooltip = "능력치 열기/닫기";
             this.buttonItemCharaStat.CheckedChanged += new System.EventHandler(this.buttonItemCharaStat_CheckedChanged);
             // 
             // itemContainer31
@@ -721,7 +721,7 @@
             // 
             this.buttonItemCharaEquip.AutoCheckOnClick = true;
             this.buttonItemCharaEquip.Name = "buttonItemCharaEquip";
-            this.buttonItemCharaEquip.Text = "장비";
+            this.buttonItemCharaEquip.Text = "장비창";
             this.buttonItemCharaEquip.Tooltip = "장비창 열기/닫기";
             this.buttonItemCharaEquip.CheckedChanged += new System.EventHandler(this.buttonItemCharaEquip_CheckedChanged);
             // 
@@ -760,7 +760,7 @@
             // 
             this.buttonItemAddItem.Name = "buttonItemAddItem";
             this.buttonItemAddItem.Text = "아이템 추가";
-            this.buttonItemAddItem.Tooltip = "아이템창에 선택한 아이템 추가";
+            this.buttonItemAddItem.Tooltip = "인벤토리에 선택한 아이템 추가";
             this.buttonItemAddItem.Click += new System.EventHandler(this.buttonItemAddItem_Click);
             // 
             // itemContainer34
