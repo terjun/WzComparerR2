@@ -27,6 +27,7 @@ namespace WzComparerR2.MapRender
             fonts["npcDesc"] = new XnaFont(graphicsDevice, defaultFontName, 13f);
             fonts["mobName"] = fonts["default"];
             fonts["mobLevel"] = new XnaFont(graphicsDevice, "Tahoma", 9f);
+            fonts["mapBarrier"] = new XnaFont(graphicsDevice, defaultFontName, 11f);
             fonts["tooltipTitle"] = new XnaFont(graphicsDevice, new Font(defaultFontName, 14f, FontStyle.Bold, GraphicsUnit.Pixel));
             fonts["tooltipContent"] = fonts["default"];
         }
@@ -72,6 +73,11 @@ namespace WzComparerR2.MapRender
         public XnaFont MobLevelFont
         {
             get { return this["mobLevel"]; }
+        }
+
+        public XnaFont MapBarrierFont
+        {
+            get { return this["mapBarrier"]; }
         }
 
         public XnaFont MapNameFont

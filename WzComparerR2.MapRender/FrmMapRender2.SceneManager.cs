@@ -180,7 +180,36 @@ namespace WzComparerR2.MapRender
                         if (tooltip == null && portal.ToMap != null && portal.ToMap != 999999999
                             && StringLinker.StringMap.TryGetValue(portal.ToMap.Value, out sr))
                         {
-                            tooltip = sr["mapName"];
+                            var tooltip2 = new UIWorldMap.Tooltip();
+                            tooltip2.MapID = portal.ToMap;
+                            tooltip2.Title = sr["mapName"];
+                            tooltip2.Desc = "";
+                            var mapNode = PluginManager.FindWz(string.Format("Map/Map/Map{0}/{1:D9}.img/info", portal.ToMap / 100000000, portal.ToMap));
+                            int barrier = mapNode?.Nodes["barrier"].GetValueEx(0) ?? 0;
+                            int barrierArc = mapNode?.Nodes["barrierArc"].GetValueEx(0) ?? 0;
+                            tooltip2.Barrier = Math.Max(tooltip2.Barrier, barrier);
+                            tooltip2.BarrierArc = Math.Max(tooltip2.BarrierArc, barrierArc);
+                            var mobNode = PluginManager.FindWz(string.Format("Etc/MapObjectInfo.img/{0}/mob", portal.ToMap));
+                            if (mobNode != null)
+                            {
+                                foreach (var valNode in mobNode.Nodes)
+                                {
+                                    tooltip2.Mob.Add(new KeyValuePair<int, bool>(Convert.ToInt32(valNode.Value), barrier > 0 || barrierArc > 0));
+                                }
+                            }
+                            var npcNode = PluginManager.FindWz(string.Format("Etc/MapObjectInfo.img/{0}/npc", portal.ToMap));
+                            if (npcNode != null)
+                            {
+                                foreach (var valNode in npcNode.Nodes)
+                                {
+                                    StringResult sr2 = null;
+                                    StringLinker?.StringNpc.TryGetValue(Convert.ToInt32(valNode.Value), out sr2);
+                                    tooltip2.Npc.Add(sr2.Name);
+                                }
+                            }
+                            tooltip2.Mob = tooltip2.Mob.Distinct().ToList();
+                            tooltip2.Npc = tooltip2.Npc.Distinct().ToList();
+                            tooltip = tooltip2;
                         }
                         this.ui.Minimap.Icons.Add(new UIMinimap2.MapIcon()
                         {
@@ -193,11 +222,76 @@ namespace WzComparerR2.MapRender
                     case 10:
                         this.ui.Minimap.Icons.Add(new UIMinimap2.MapIcon()
                         {
-                            IconType = UIMinimap2.IconType.Transport,
+                            IconType = UIMinimap2.IconType.EnchantPortal,
                             Tooltip = portal.Tooltip,
                             WorldPosition = new EmptyKeys.UserInterface.PointF(portal.X, portal.Y)
                         });
                         break;
+                }
+            }
+            foreach (var npc in mapData.Scene.Npcs)
+            {
+                object tooltip = null;
+                var npcNode = PluginManager.FindWz(string.Format("Npc/{0:D7}.img/info", npc.ID));
+                if ((npcNode?.Nodes["hide"].GetValueEx(0) ?? 0) != 0 || (npcNode?.Nodes["hideName"].GetValueEx(0) ?? 0) != 0)
+                {
+                    continue;
+                }
+                if (StringLinker.StringNpc.TryGetValue(npc.ID, out sr))
+                {
+                    if (sr.Desc != null)
+                    {
+                        tooltip = new KeyValuePair<string, string>(sr.Name, sr.Desc);
+                    }
+                    else
+                    {
+                        tooltip = sr.Name;
+                    }
+                }
+                if (npc.ID == 9010022)
+                {
+                    this.ui.Minimap.Icons.Add(new UIMinimap2.MapIcon()
+                    {
+                        IconType = UIMinimap2.IconType.Transport,
+                        Tooltip = tooltip,
+                        WorldPosition = new EmptyKeys.UserInterface.PointF(npc.X, npc.Y)
+                    });
+                }
+                else if ((npcNode?.Nodes["shop"].GetValueEx(0) ?? 0) != 0)
+                {
+                    this.ui.Minimap.Icons.Add(new UIMinimap2.MapIcon()
+                    {
+                        IconType = UIMinimap2.IconType.Shop,
+                        Tooltip = tooltip,
+                        WorldPosition = new EmptyKeys.UserInterface.PointF(npc.X, npc.Y)
+                    });
+                }
+                else if (npc.ID / 10000 == 900 || npc.ID / 10000 == 901)
+                {
+                    this.ui.Minimap.Icons.Add(new UIMinimap2.MapIcon()
+                    {
+                        IconType = UIMinimap2.IconType.EventNpc,
+                        Tooltip = tooltip,
+                        WorldPosition = new EmptyKeys.UserInterface.PointF(npc.X, npc.Y)
+                    });
+                }
+                else if ((npcNode?.Nodes["trunkPut"].GetValueEx(0) ?? 0) != 0)
+                {
+                    this.ui.Minimap.Icons.Add(new UIMinimap2.MapIcon()
+                    {
+                        IconType = UIMinimap2.IconType.Trunk,
+                        Tooltip = tooltip,
+                        WorldPosition = new EmptyKeys.UserInterface.PointF(npc.X, npc.Y)
+                    });
+                }
+                else
+                {
+                    this.ui.Minimap.Icons.Add(new UIMinimap2.MapIcon()
+                    {
+                        IconType = UIMinimap2.IconType.Npc,
+                        Tooltip = tooltip,
+                        WorldPosition = new EmptyKeys.UserInterface.PointF(npc.X, npc.Y)
+                    });
                 }
             }
 
@@ -342,7 +436,7 @@ namespace WzComparerR2.MapRender
             UpdateTooltip();
         }
 
-        private void MoveToPortal(int? toMap, string pName, string fromPName = null)
+        public void MoveToPortal(int? toMap, string pName, string fromPName = null)
         {
             if (toMap != null && toMap != this.mapData.ID) //跳转地图
             {

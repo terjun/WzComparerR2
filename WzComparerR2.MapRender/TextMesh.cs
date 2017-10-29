@@ -34,7 +34,7 @@ namespace WzComparerR2.MapRender
         public int Bottom { get; set; }
     }
 
-    enum Alignment
+    public enum Alignment
     {
         Near = 0,
         Center = 1,

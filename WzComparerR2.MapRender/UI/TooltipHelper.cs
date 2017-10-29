@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using WzComparerR2.Common;
 using WzComparerR2.Rendering;
 
@@ -45,11 +46,11 @@ namespace WzComparerR2.MapRender.UI
             return block;
         }
 
-        public static TextBlock[] PrepareFormatText(XnaFont font, string formatText, ref Vector2 pos, int width, ref float maxWidth)
+        public static TextBlock[] PrepareFormatText(XnaFont font, string formatText, ref Vector2 pos, int width, ref float maxWidth, int height)
         {
             var layouter = new TextLayouter();
             int y = (int)pos.Y;
-            var blocks = layouter.LayoutFormatText(font, formatText, width, ref y);
+            var blocks = layouter.LayoutFormatText(font, formatText, width, ref y, height);
             for(int i = 0; i < blocks.Length; i++)
             {
                 blocks[i].Position.X += pos.X;
@@ -133,6 +134,7 @@ namespace WzComparerR2.MapRender.UI
             public Color ForeColor;
             public XnaFont Font;
             public string Text;
+            public Alignment Align;
         }
 
         public class TextLayouter : XnaFontRenderer
@@ -144,10 +146,10 @@ namespace WzComparerR2.MapRender.UI
 
             List<TextBlock> blocks;
 
-            public TextBlock[] LayoutFormatText(XnaFont font, string s, int width, ref int y)
+            public TextBlock[] LayoutFormatText(XnaFont font, string s, int width, ref int y, int height)
             {
                 this.blocks = new List<TextBlock>();
-                base.DrawFormatString(s, font, width, ref y, font.Height);
+                base.DrawFormatString(s, font, width, ref y, height);
                 return this.blocks.ToArray();
             }
 

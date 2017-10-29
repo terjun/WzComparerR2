@@ -256,6 +256,15 @@ namespace WzComparerR2.MapRender
                 item.Name = $"life_{item.Type}_{node.Text}";
                 item.Index = int.Parse(node.Text);
 
+                if (item.Type == LifeItem.LifeType.Npc)
+                {
+                    var npcNode = PluginManager.FindWz(string.Format("Npc/{0:D7}.img/info", item.ID));
+                    if ((npcNode?.Nodes["hide"].GetValueEx(0) ?? 0) != 0)
+                    {
+                        continue;
+                    }
+                }
+
                 //直接绑定foothold
                 ContainerNode<FootholdItem> fhNode;
                 if (item.Fh != 0 && (fhNode = FindFootholdByID(item.Fh)) != null)

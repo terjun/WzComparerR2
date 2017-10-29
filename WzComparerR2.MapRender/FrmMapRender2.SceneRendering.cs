@@ -15,6 +15,26 @@ namespace WzComparerR2.MapRender
 {
     public partial class FrmMapRender2
     {
+        private Frame[] showLevel;
+
+        public Frame[] ShowLevel
+        {
+            get
+            {
+                if (showLevel == null)
+                {
+                    showLevel = new Frame[12];
+                    for (int i = 0; i <= 9; i++)
+                    {
+                        showLevel[i] = new Frame(((System.Drawing.Bitmap)Properties.Resources.ResourceManager.GetObject("Basic_img_ShowLevel_0_" + i)).ToTexture(GraphicsDevice));
+                    }
+                    showLevel[10] = new Frame(Properties.Resources.Basic_img_ShowLevel_0_left.ToTexture(GraphicsDevice));
+                    showLevel[11] = new Frame(Properties.Resources.Basic_img_ShowLevel_Bracket_right.ToTexture(GraphicsDevice));
+                }
+                return showLevel;
+            }
+        }
+
         private void UpdateAllItems(SceneNode node, TimeSpan elapsed)
         {
             var container = node as ContainerNode;
@@ -326,7 +346,7 @@ namespace WzComparerR2.MapRender
                 {
                     case LifeItem.LifeType.Mob:
                         {
-                            string lv = "Lv." + (life.LifeInfo?.level ?? 0);
+                            string lv = "" + (life.LifeInfo?.level ?? 0);
                             string name;
                             if (this.StringLinker?.StringMob.TryGetValue(life.ID, out sr) ?? false)
                                 name = sr.Name;
@@ -343,7 +363,7 @@ namespace WzComparerR2.MapRender
                                     ForeColor = Color.White,
                                     BackColor = new Color(Color.Black, 0.7f),
                                     Font = renderEnv.Fonts.MobNameFont,
-                                    Padding = new Margins(2, 2, 2, 1),
+                                    Padding = new Margins(2, 2, 2, 2),
                                     Text = name
                                 }
                             };
@@ -351,7 +371,7 @@ namespace WzComparerR2.MapRender
 
                             //绘制怪物等级
                             var nameRect = batcher.Measure(mesh)[0];
-                            mesh = new MeshItem()
+                            /*mesh = new MeshItem()
                             {
                                 Position = new Vector2(nameRect.X - 2, nameRect.Y + 3),
                                 RenderObject = new TextMesh()
@@ -363,6 +383,30 @@ namespace WzComparerR2.MapRender
                                     Padding = new Margins(2, 1, 1, 1),
                                     Text = lv
                                 }
+                            };*/
+                            int pos = nameRect.X - 1;
+                            Frame frame = ShowLevel[11];
+                            mesh = new MeshItem()
+                            {
+                                Position = new Vector2(pos -= frame.Texture.Width, nameRect.Y + 2),
+                                RenderObject = frame
+                            };
+                            batcher.Draw(mesh);
+                            for (int i = lv.Length - 1; i >= 0; i--)
+                            {
+                                frame = ShowLevel[lv[i] - '0'];
+                                mesh = new MeshItem()
+                                {
+                                    Position = new Vector2(pos -= frame.Texture.Width, nameRect.Y + 2),
+                                    RenderObject = frame
+                                };
+                                batcher.Draw(mesh);
+                            }
+                            frame = ShowLevel[10];
+                            mesh = new MeshItem()
+                            {
+                                Position = new Vector2(pos -= frame.Texture.Width, nameRect.Y + 2),
+                                RenderObject = frame
                             };
                             batcher.Draw(mesh);
                         }
@@ -370,6 +414,11 @@ namespace WzComparerR2.MapRender
 
                     case LifeItem.LifeType.Npc:
                         {
+                            var npcNode = PluginBase.PluginManager.FindWz(string.Format("Npc/{0:D7}.img/info", life.ID));
+                            if ((npcNode?.Nodes["hideName"]?.GetValue(0) ?? 0) != 0)
+                            {
+                                break;
+                            }
                             string name, desc;
                             if (this.StringLinker?.StringNpc.TryGetValue(life.ID, out sr) ?? false)
                             {
@@ -393,7 +442,7 @@ namespace WzComparerR2.MapRender
                                         ForeColor = Color.Yellow,
                                         BackColor = new Color(Color.Black, 0.7f),
                                         Font = renderEnv.Fonts.NpcNameFont,
-                                        Padding = new Margins(2, 2, 2, 1),
+                                        Padding = new Margins(2, 2, 2, 2),
                                         Text = name
                                     }
                                 };
@@ -403,14 +452,14 @@ namespace WzComparerR2.MapRender
                             {
                                 mesh = new MeshItem()
                                 {
-                                    Position = new Vector2(life.X, life.Cy + 20),
+                                    Position = new Vector2(life.X, life.Cy + 21),
                                     RenderObject = new TextMesh()
                                     {
                                         Align = Alignment.Center,
                                         ForeColor = Color.Yellow,
                                         BackColor = new Color(Color.Black, 0.7f),
                                         Font = renderEnv.Fonts.NpcDescFont,
-                                        Padding = new Margins(2, 2, 2, 1),
+                                        Padding = new Margins(2, 2, 2, 2),
                                         Text = desc
                                     }
                                 };

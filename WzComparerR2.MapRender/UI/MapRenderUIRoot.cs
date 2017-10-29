@@ -11,13 +11,16 @@ using EmptyKeys.UserInterface.Media.Effects;
 using EmptyKeys.UserInterface.Themes;
 using EmptyKeys.UserInterface.Data;
 using Res = CharaSimResource.Resource;
+using WzComparerR2.Common;
 
 namespace WzComparerR2.MapRender.UI
 {
     class MapRenderUIRoot : UIRoot
     {
-        public MapRenderUIRoot() : base()
+        public MapRenderUIRoot(FrmMapRender2 game, StringLinker stringLinker) : base()
         {
+            this.Game = game;
+            this.StringLinker = stringLinker;
             InitGlobalResource();
             InitializeComponents();
 
@@ -32,6 +35,8 @@ namespace WzComparerR2.MapRender.UI
         public UIMinimap2 Minimap { get; private set; }
         public UIWorldMap WorldMap { get; private set; }
         public UITopBar TopBar { get; private set; }
+        public FrmMapRender2 Game { get; private set; }
+        public StringLinker StringLinker { get; private set; }
 
         private void InitializeComponents()
         {
@@ -46,7 +51,7 @@ namespace WzComparerR2.MapRender.UI
             this.Minimap = minimap;
             this.Windows.Add(minimap);
 
-            var worldmap = new UIWorldMap();
+            var worldmap = new UIWorldMap(this.Game, this.StringLinker);
             worldmap.Parent = this;
             worldmap.Visibility = Visibility.Collapsed;
             worldmap.Visible += Worldmap_Visible;

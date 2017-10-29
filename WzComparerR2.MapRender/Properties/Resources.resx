@@ -127,7 +127,61 @@
   <data name="Basic_img_ComboBox_normal_2" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\resources\basic.img.combobox.normal.2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="Basic_img_ShowLevel_0_0" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Basic.img.ShowLevel.0.0.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Basic_img_ShowLevel_0_1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Basic.img.ShowLevel.0.1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Basic_img_ShowLevel_0_2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Basic.img.ShowLevel.0.2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Basic_img_ShowLevel_0_3" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Basic.img.ShowLevel.0.3.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Basic_img_ShowLevel_0_4" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Basic.img.ShowLevel.0.4.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Basic_img_ShowLevel_0_5" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Basic.img.ShowLevel.0.5.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Basic_img_ShowLevel_0_6" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Basic.img.ShowLevel.0.6.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Basic_img_ShowLevel_0_7" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Basic.img.ShowLevel.0.7.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Basic_img_ShowLevel_0_8" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Basic.img.ShowLevel.0.8.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Basic_img_ShowLevel_0_9" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Basic.img.ShowLevel.0.9.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Basic_img_ShowLevel_0_left" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Basic.img.ShowLevel.0.left.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Basic_img_ShowLevel_Bracket_right" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Basic.img.ShowLevel.Bracket.right.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="UIWindow2_img_WorldMap_Border_0" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\UIWindow2.img.WorldMap.Border.0.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="UIWindow_img_ToolTip_WorldMap_ArcaneForce" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\UIWindow.img.ToolTip.WorldMap.ArcaneForce.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="UIWindow_img_ToolTip_WorldMap_enchantMob" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\UIWindow.img.ToolTip.WorldMap.enchantMob.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="UIWindow_img_ToolTip_WorldMap_Line" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\UIWindow.img.ToolTip.WorldMap.Line.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="UIWindow_img_ToolTip_WorldMap_Mob" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\UIWindow.img.ToolTip.WorldMap.Mob.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="UIWindow_img_ToolTip_WorldMap_Npc" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\UIWindow.img.ToolTip.WorldMap.Npc.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="UIWindow_img_ToolTip_WorldMap_StarForce" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\UIWindow.img.ToolTip.WorldMap.StarForce.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

@@ -365,9 +365,64 @@ namespace WzComparerR2.MapRender.UI
                             }
                             break;
 
+                        case IconType.EnchantPortal:
+                            {
+                                var texture = this.FindResource("enchantportal") as TextureBase;
+                                if (texture != null)
+                                {
+                                    var rect = drawIconFunc(texture, icon.WorldPosition);
+                                    iconRectCache.Add(new IconRect() { Rect = rect, Tooltip = icon.Tooltip });
+                                }
+                            }
+                            break;
+
                         case IconType.Transport:
                             {
                                 var texture = this.FindResource("transport") as TextureBase;
+                                if (texture != null)
+                                {
+                                    var rect = drawIconFunc(texture, icon.WorldPosition);
+                                    iconRectCache.Add(new IconRect() { Rect = rect, Tooltip = icon.Tooltip });
+                                }
+                            }
+                            break;
+
+                        case IconType.Npc:
+                            {
+                                var texture = this.FindResource("npc") as TextureBase;
+                                if (texture != null)
+                                {
+                                    var rect = drawIconFunc(texture, icon.WorldPosition);
+                                    iconRectCache.Add(new IconRect() { Rect = rect, Tooltip = icon.Tooltip });
+                                }
+                            }
+                            break;
+
+                        case IconType.EventNpc:
+                            {
+                                var texture = this.FindResource("eventnpc") as TextureBase;
+                                if (texture != null)
+                                {
+                                    var rect = drawIconFunc(texture, icon.WorldPosition);
+                                    iconRectCache.Add(new IconRect() { Rect = rect, Tooltip = icon.Tooltip });
+                                }
+                            }
+                            break;
+
+                        case IconType.Shop:
+                            {
+                                var texture = this.FindResource("shop") as TextureBase;
+                                if (texture != null)
+                                {
+                                    var rect = drawIconFunc(texture, icon.WorldPosition);
+                                    iconRectCache.Add(new IconRect() { Rect = rect, Tooltip = icon.Tooltip });
+                                }
+                            }
+                            break;
+
+                        case IconType.Trunk:
+                            {
+                                var texture = this.FindResource("trunk") as TextureBase;
                                 if (texture != null)
                                 {
                                     var rect = drawIconFunc(texture, icon.WorldPosition);
@@ -411,6 +466,11 @@ namespace WzComparerR2.MapRender.UI
                 {
                     addResource("transport");
                     addResource("portal");
+                    addResource("enchantportal");
+                    addResource("npc");
+                    addResource("eventnpc");
+                    addResource("shop");
+                    addResource("trunk");
                 }
             }
 
@@ -432,7 +492,12 @@ namespace WzComparerR2.MapRender.UI
         {
             Unknown = 0,
             Portal,
+            EnchantPortal,
             Transport,
+            Npc,
+            EventNpc,
+            Shop,
+            Trunk,
         }
 
         private sealed class UIMinimapResource : INinePatchResource<TextureBase>

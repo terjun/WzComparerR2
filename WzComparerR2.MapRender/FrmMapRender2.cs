@@ -121,7 +121,7 @@ namespace WzComparerR2.MapRender
             this.renderEnv = new RenderEnv(this, this.graphics);
             this.batcher = new MeshBatcher(this.GraphicsDevice);
             this.resLoader = new ResourceLoader(this.Services);
-            this.ui = new MapRenderUIRoot();
+            this.ui = new MapRenderUIRoot(this, this.StringLinker);
             this.BindingUIInput();
             this.tooltip = new Tooltip2(this.GraphicsDevice);
             this.tooltip.StringLinker = this.StringLinker;
