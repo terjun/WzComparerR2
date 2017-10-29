@@ -591,6 +591,7 @@
             this.btnCharac,
             this.btnReset,
             this.btnLock,
+            this.buttonItem1,
             this.btnExportImage,
             this.btnExportAll});
             this.bar3.Location = new System.Drawing.Point(0, 0);
