@@ -427,29 +427,33 @@ namespace WzComparerR2
                 return;
             }
 
+            var encParams = AnimateEncoderFactory.GetEncoderParams(config.GifEncoder.Value);
+
             string aniName = this.cmbItemAniNames.SelectedItem as string;
-            string gifFileName = pictureBoxEx1.PictureName
+            string aniFileName = pictureBoxEx1.PictureName
                     + (string.IsNullOrEmpty(aniName) ? "" : ("." + aniName))
-                    + ".gif";
+                    + encParams.FileExtension;
+
             if (config.AutoSaveEnabled)
             {
-                gifFileName = Path.Combine(config.AutoSavePictureFolder, string.Join("_", gifFileName.Split(Path.GetInvalidFileNameChars(), StringSplitOptions.None)));
+                aniFileName = Path.Combine(config.AutoSavePictureFolder, string.Join("_", aniFileName.Split(Path.GetInvalidFileNameChars(), StringSplitOptions.None)));
             }
             else
             {
                 var dlg = new SaveFileDialog();
 
-                dlg.Filter = "GIF (*.gif)|*.gif|모든 파일 (*.*)|*.*";
-                dlg.FileName = gifFileName;
+                dlg.Filter = string.Format("{0} (*{1})|*{1}|모든 파일(*.*)|*.*", encParams.FileDescription, encParams.FileExtension);
+                dlg.FileName = aniFileName;
+
                 if (dlg.ShowDialog() != DialogResult.OK)
                 {
                     return;
                 }
-                gifFileName = dlg.FileName;
+                aniFileName = dlg.FileName;
             }
 
-            this.pictureBoxEx1.SaveAsGif((AnimationItem)aniItem.Clone(), gifFileName, config);
-            labelItemStatus.Text = "그림 저장 완료: " + gifFileName;
+            this.pictureBoxEx1.SaveAsGif((AnimationItem)aniItem.Clone(), aniFileName, config);
+            labelItemStatus.Text = "그림 저장 완료: " + aniFileName;
         }
 
         private Node handleUol(Node currentNode, string uolString)
