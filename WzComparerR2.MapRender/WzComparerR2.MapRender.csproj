@@ -159,6 +159,7 @@
     <Compile Include="UI\UIHelper.cs" />
     <Compile Include="UI\UIMiniMap.cs" />
     <Compile Include="UI\UIMinimap2.cs" />
+    <Compile Include="UI\UIMirrorFrame.cs" />
     <Compile Include="UI\UIOptions.cs" />
     <Compile Include="UI\UITopBar.cs" />
     <Compile Include="UI\UIWorldMap.cs" />
