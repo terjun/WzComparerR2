@@ -66,7 +66,7 @@ namespace WzComparerR2.MapRender
             Wz_Node node;
             if (!string.IsNullOrEmpty(this.MapMark))
             {
-                node = PluginManager.FindWz("Map\\MapHelper.img\\mark\\" + this.MapMark);
+                node = PluginManager.FindWz("Map\\MapHelper.img\\mark\\" + this.MapMark).GetLinkedSourceNode(PluginManager.FindWz);
                 if (node != null)
                 {
                     this.MiniMap.MapMark = resLoader.Load<Texture2D>(node);
