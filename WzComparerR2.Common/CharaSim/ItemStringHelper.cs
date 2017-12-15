@@ -330,6 +330,7 @@ namespace WzComparerR2.CharaSim
 
                 case GearType.magicGauntlet: return "매직 건틀렛";
                 case GearType.magicWing: return "매직윙";
+                case GearType.pathOfAbyss: return "패스 오브 어비스";
 
                 default: return null;
             }
@@ -435,6 +436,7 @@ namespace WzComparerR2.CharaSim
 
                 case GearType.magicGauntlet:
                 case GearType.magicWing: return "일리움 착용 가능";
+                case GearType.pathOfAbyss: return "아크 착용 가능";
 
                 default: return null;
             }
@@ -694,6 +696,11 @@ namespace WzComparerR2.CharaSim
                 case 15210: return "일리움(2차)";
                 case 15211: return "일리움(3차)";
                 case 15212: return "일리움(4차)";
+                case 15001: return "아크";
+                case 15500: return "아크(1차)";
+                case 15510: return "아크(2차)";
+                case 15511: return "아크(3차)";
+                case 15512: return "아크(4차)";
             }
             return null;
         }

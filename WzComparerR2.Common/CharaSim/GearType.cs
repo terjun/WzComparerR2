@@ -321,6 +321,7 @@ namespace WzComparerR2.CharaSim
         /// </summary>
         ExplosivePill = 135340,
         magicWing = 135350,
+        pathOfAbyss = 135360,
         /// <summary>
         /// 手杖
         /// </summary>
