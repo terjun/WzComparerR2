@@ -390,6 +390,17 @@ namespace WzComparerR2.MapRender.UI
                             }
                             break;
 
+                        case IconType.HiddenPortal:
+                            {
+                                var texture = this.FindResource("hiddenportal") as TextureBase;
+                                if (texture != null)
+                                {
+                                    var rect = drawIconFunc(texture, icon.WorldPosition);
+                                    iconRectCache.Add(new IconRect() { Rect = rect, Tooltip = icon.Tooltip });
+                                }
+                            }
+                            break;
+
                         case IconType.Transport:
                             {
                                 var texture = this.FindResource("transport") as TextureBase;
@@ -481,6 +492,7 @@ namespace WzComparerR2.MapRender.UI
                     addResource("transport");
                     addResource("portal");
                     addResource("enchantportal");
+                    addResource("hiddenportal");
                     addResource("npc");
                     addResource("eventnpc");
                     addResource("shop");
@@ -507,6 +519,7 @@ namespace WzComparerR2.MapRender.UI
             Unknown = 0,
             Portal,
             EnchantPortal,
+            HiddenPortal,
             Transport,
             Npc,
             EventNpc,

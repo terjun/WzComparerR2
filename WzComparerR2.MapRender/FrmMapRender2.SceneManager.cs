@@ -223,6 +223,18 @@ namespace WzComparerR2.MapRender
                         });
                         break;
 
+                    case 8:
+                        if (portal.Script == "enterTestD")
+                        {
+                            this.ui.Minimap.Icons.Add(new UIMinimap2.MapIcon()
+                            {
+                                IconType = UIMinimap2.IconType.HiddenPortal,
+                                Tooltip = portal.Tooltip,
+                                WorldPosition = new EmptyKeys.UserInterface.PointF(portal.X, portal.Y)
+                            });
+                        }
+                        break;
+
                     case 10:
                         this.ui.Minimap.Icons.Add(new UIMinimap2.MapIcon()
                         {
