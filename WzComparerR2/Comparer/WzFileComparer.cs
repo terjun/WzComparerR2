@@ -217,7 +217,7 @@ namespace WzComparerR2.Comparer
                                 }
                                 else if (linkNew && linkOld) //两边都是link
                                 {
-                                    if (linkInfoNew.LinkType == linkInfoOld.LinkType
+                                    if (linkInfoNew.LinkType == linkInfoOld.LinkType 
                                         && linkInfoNew.LinkUrl == linkInfoOld.LinkUrl) //link没有变动
                                     {
                                         compared = true;
@@ -646,7 +646,7 @@ namespace WzComparerR2.Comparer
 
             public void DisposeAll()
             {
-                while (_list.Count > 0)
+                while(_list.Count > 0)
                 {
                     DisposeLast();
                 }
