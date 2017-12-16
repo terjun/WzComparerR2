@@ -26,7 +26,8 @@ namespace WzComparerR2.CharaSimControl
 
         private ACtrlButton btnFull;
         private ACtrlButton btnSmall;
-        private ACtrlButton btnCoin;
+        private ACtrlButton btnCoin3;
+        private ACtrlButton btnCoin4;
         private ACtrlButton btnPoint;
         private ACtrlButton btnGather;
         private ACtrlButton btnSort;
@@ -130,19 +131,28 @@ namespace WzComparerR2.CharaSimControl
             this.btnSmall.Pressed = new BitmapOrigin(Resource.Item_BtSmall_pressed_0);
             this.btnSmall.MouseOver = new BitmapOrigin(Resource.Item_BtSmall_mouseOver_0);
             this.btnSmall.Disabled = new BitmapOrigin(Resource.Item_BtSmall_disabled_0);
-            this.btnSmall.Location = new Point(147, 337);
+            this.btnSmall.Location = new Point(153, 337);
             this.btnSmall.Size = new Size(16, 16);
             this.btnSmall.MouseClick += new MouseEventHandler(btnSmall_MouseClick);
             this.btnSmall.ButtonStateChanged += new EventHandler(aCtrl_RefreshCall);
 
-            this.btnCoin = new ACtrlButton();
-            this.btnCoin.Normal = new BitmapOrigin(Resource.Item_BtCoin_normal_0);
-            this.btnCoin.Pressed = new BitmapOrigin(Resource.Item_BtCoin_pressed_0);
-            this.btnCoin.MouseOver = new BitmapOrigin(Resource.Item_BtCoin_mouseOver_0);
-            this.btnCoin.Disabled = new BitmapOrigin(Resource.Item_BtCoin_disabled_0);
-            this.btnCoin.Location = new Point(9, 267);
-            this.btnCoin.Size = new Size(40, 16);
-            this.btnCoin.ButtonStateChanged += new EventHandler(aCtrl_RefreshCall);
+            this.btnCoin3 = new ACtrlButton();
+            this.btnCoin3.Normal = new BitmapOrigin(Resource.Item_BtCoin3_normal_0);
+            this.btnCoin3.Pressed = new BitmapOrigin(Resource.Item_BtCoin3_pressed_0);
+            this.btnCoin3.MouseOver = new BitmapOrigin(Resource.Item_BtCoin3_mouseOver_0);
+            this.btnCoin3.Disabled = new BitmapOrigin(Resource.Item_BtCoin3_disabled_0);
+            this.btnCoin3.Location = new Point(9, 267);
+            this.btnCoin3.Size = new Size(38, 16);
+            this.btnCoin3.ButtonStateChanged += new EventHandler(aCtrl_RefreshCall);
+
+            this.btnCoin4 = new ACtrlButton();
+            this.btnCoin4.Normal = new BitmapOrigin(Resource.Item_BtCoin4_normal_0);
+            this.btnCoin4.Pressed = new BitmapOrigin(Resource.Item_BtCoin4_pressed_0);
+            this.btnCoin4.MouseOver = new BitmapOrigin(Resource.Item_BtCoin4_mouseOver_0);
+            this.btnCoin4.Disabled = new BitmapOrigin(Resource.Item_BtCoin4_disabled_0);
+            this.btnCoin4.Location = new Point(9, 337);
+            this.btnCoin4.Size = new Size(40, 16);
+            this.btnCoin4.ButtonStateChanged += new EventHandler(aCtrl_RefreshCall);
 
             this.btnPoint = new ACtrlButton();
             this.btnPoint.Normal = new BitmapOrigin(Resource.Item_BtPoint_normal_0);
@@ -158,7 +168,7 @@ namespace WzComparerR2.CharaSimControl
             this.btnGather.Pressed = new BitmapOrigin(Resource.Item_BtGather_pressed_0);
             this.btnGather.MouseOver = new BitmapOrigin(Resource.Item_BtGather_mouseOver_0);
             this.btnGather.Disabled = new BitmapOrigin(Resource.Item_BtGather_disabled_0);
-            this.btnGather.Location = new Point(129, 267);
+            this.btnGather.Location = new Point(130, 267);
             this.btnGather.Size = new Size(16, 16);
             this.btnGather.ButtonStateChanged += new EventHandler(aCtrl_RefreshCall);
             this.btnGather.MouseClick += new MouseEventHandler(btnGather_MouseClick);
@@ -168,7 +178,7 @@ namespace WzComparerR2.CharaSimControl
             this.btnSort.Pressed = new BitmapOrigin(Resource.Item_BtSort_pressed_0);
             this.btnSort.MouseOver = new BitmapOrigin(Resource.Item_BtSort_mouseOver_0);
             this.btnSort.Disabled = new BitmapOrigin(Resource.Item_BtSort_disabled_0);
-            this.btnSort.Location = new Point(129, 267);
+            this.btnSort.Location = new Point(130, 267);
             this.btnSort.Size = new Size(16, 16);
             this.btnSort.ButtonStateChanged += new EventHandler(aCtrl_RefreshCall);
             this.btnSort.MouseClick += new MouseEventHandler(btnSort_MouseClick);
@@ -353,10 +363,11 @@ namespace WzComparerR2.CharaSimControl
                 this.btnFull.Visible = false;
                 this.btnSmall.Visible = true;
                 this.vScroll.Visible = false;
-                this.btnCoin.Location = new Point(9, 337);
+                this.btnCoin3.Visible = false;
+                this.btnCoin4.Visible = true;
                 this.btnPoint.Location = new Point(190, 337);
-                this.btnGather.Location = new Point(129, 337);
-                this.btnSort.Location = new Point(129, 337);
+                this.btnGather.Location = new Point(135, 337);
+                this.btnSort.Location = new Point(135, 337);
                 this.btnDisassemble3.Visible = false;
                 this.btnDisassemble4.Visible = true;
                 this.btnExtract3.Visible = false;
@@ -382,10 +393,11 @@ namespace WzComparerR2.CharaSimControl
                 this.vScroll.Visible = true;
                 this.vScroll.Maximum = this.SelectedTab.ScrollMaxValue - 6;
                 this.vScroll.Value = this.SelectedTab.ScrollValue;
-                this.btnCoin.Location = new Point(9, 267);
+                this.btnCoin3.Visible = true;
+                this.btnCoin4.Visible = false;
                 this.btnPoint.Location = new Point(9, 285);
-                this.btnGather.Location = new Point(129, 267);
-                this.btnSort.Location = new Point(129, 267);
+                this.btnGather.Location = new Point(130, 267);
+                this.btnSort.Location = new Point(130, 267);
                 this.btnDisassemble3.Visible = true;
                 this.btnDisassemble4.Visible = false;
                 this.btnExtract3.Visible = true;
@@ -852,7 +864,8 @@ namespace WzComparerR2.CharaSimControl
                 yield return this.vScroll;
                 yield return this.btnFull;
                 yield return this.btnSmall;
-                yield return this.btnCoin;
+                yield return this.btnCoin3;
+                yield return this.btnCoin4;
                 yield return this.btnPoint;
                 yield return this.btnGather;
                 yield return this.btnSort;
