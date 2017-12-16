@@ -144,7 +144,7 @@
             this.checkBoxX10.Size = new System.Drawing.Size(125, 18);
             this.checkBoxX10.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
             this.checkBoxX10.TabIndex = 7;
-            this.checkBoxX10.Text = "마스터리 북 레벨 표시";
+            this.checkBoxX10.Text = "스킬 세부 속성 표시";
             // 
             // labelX3
             // 
