@@ -589,6 +589,40 @@ namespace WzComparerR2.CharaSimControl
                 picH += 15;
                 hasPart2 = true;
             }*/
+
+            if (Gear.type == GearType.shovel || Gear.type == GearType.pickaxe)
+            {
+                string skillName = null;
+                switch (Gear.type)
+                {
+                    case GearType.shovel: skillName = "약초채집"; break;
+                    case GearType.pickaxe: skillName = "채광"; break;
+                }
+                if (Gear.Props.TryGetValue(GearPropType.gatherTool_incSkillLevel, out value) && value > 0)
+                {
+                    TextRenderer.DrawText(g, skillName + " 스킬레벨 : +" + value, GearGraphics.EquipDetailFont, new Point(13, picH), Color.White, TextFormatFlags.NoPadding);
+                    picH += 15;
+                    hasPart2 = true;
+                }
+                if (Gear.Props.TryGetValue(GearPropType.gatherTool_incSpeed, out value) && value > 0)
+                {
+                    TextRenderer.DrawText(g, skillName + " 속도증가 : +" + value + "%", GearGraphics.EquipDetailFont, new Point(13, picH), Color.White, TextFormatFlags.NoPadding);
+                    picH += 15;
+                    hasPart2 = true;
+                }
+                if (Gear.Props.TryGetValue(GearPropType.gatherTool_incNum, out value) && value > 0)
+                {
+                    TextRenderer.DrawText(g, "아이템을 최대 " + value + "개 까지 획득 가능", GearGraphics.EquipDetailFont, new Point(13, picH), Color.White, TextFormatFlags.NoPadding);
+                    picH += 15;
+                    hasPart2 = true;
+                }
+                if (Gear.Props.TryGetValue(GearPropType.gatherTool_reqSkillLevel, out value) && value > 0)
+                {
+                    TextRenderer.DrawText(g, skillName + " 스킬레벨 " + value + "이상 사용가능", GearGraphics.EquipDetailFont, new Point(13, picH), Color.White, TextFormatFlags.NoPadding);
+                    picH += 15;
+                    hasPart2 = true;
+                }
+            }
             picH += 5;
 
             //绘制浮动属性
@@ -1151,6 +1185,10 @@ namespace WzComparerR2.CharaSimControl
             if (Gear.Props.TryGetValue(GearPropType.notExtend, out value) && value != 0)
             {
                 tags.Add(ItemStringHelper.GetGearPropString(GearPropType.notExtend, value));
+            }
+            if (Gear.Props.TryGetValue(GearPropType.cantRepair, out value) && value != 0)
+            {
+                tags.Add(ItemStringHelper.GetGearPropString(GearPropType.cantRepair, value));
             }
 
             return tags;

@@ -130,6 +130,7 @@ namespace WzComparerR2.CharaSim
                 case GearPropType.jokerToSetItem: return value == 0 ? null : "#c3개 이상 착용하고 있는 모든 세트 아이템에 포함되는 럭키 아이템!#";
                 case GearPropType.abilityTimeLimited: return value == 0 ? null : "기간 한정 능력치";
                 case GearPropType.blockGoldHammer: return value == 0 ? null : "황금망치 사용 불가";
+                case GearPropType.cantRepair: return value == 0 ? null : "수리 불가";
 
                 case GearPropType.incMHP_incMMP: return "최대 HP / 최대 MP : " + sign + value;
                 case GearPropType.incMHPr_incMMPr: return "최대 HP / 최대 MP : " + sign + value + "%";

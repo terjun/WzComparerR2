@@ -715,7 +715,24 @@ namespace WzComparerR2.CharaSim
                             Wz_Node hsNode = subNode.Nodes["hs"];
                             if (hsNode != null)
                             {
-                                gear.EpicHs = hsNode.GetValue<string>();
+                                gear.EpicHs = Convert.ToString(hsNode.Value);
+                            }
+                            break;
+
+                        case "gatherTool":
+                            foreach (Wz_Node gatherNode in subNode.Nodes)
+                            {
+                                GearPropType type;
+                                if (Enum.TryParse(subNode.Text + "_" + gatherNode.Text, out type))
+                                {
+                                    try
+                                    {
+                                        gear.Props.Add(type, Convert.ToInt32(gatherNode.Value));
+                                    }
+                                    finally
+                                    {
+                                    }
+                                }
                             }
                             break;
 

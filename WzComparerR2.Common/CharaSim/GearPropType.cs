@@ -170,5 +170,11 @@ namespace WzComparerR2.CharaSim
         exceptUpgrade,
         noMoveToLocker,
         onlyUpgrade,
+        cantRepair,
+
+        gatherTool_incSkillLevel = 2000,
+        gatherTool_incSpeed,
+        gatherTool_incNum,
+        gatherTool_reqSkillLevel,
     }
 }
