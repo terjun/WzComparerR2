@@ -454,6 +454,12 @@ namespace WzComparerR2.CharaSim
             {
                 case 61: return "카이저 착용 가능";
                 case 65: return "엔젤릭 버스터 착용 가능";
+                case 21: return "아란 직업군 착용 가능";
+                case 22: return "에반 직업군 착용 가능";
+                case 23: return "메르세데스 착용가능";
+                case 24: return "팬텀 착용 가능";
+                case 25: return "은월 착용 가능";
+                case 27: return "루미너스 착용 가능";
                 case 36: return "제논 착용 가능";
                 default: return null;
             }
