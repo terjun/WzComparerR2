@@ -217,7 +217,7 @@ namespace WzComparerR2.MapRender
                         }
                         this.ui.Minimap.Icons.Add(new UIMinimap2.MapIcon()
                         {
-                            IconType = UIMinimap2.IconType.Portal,
+                            IconType = portal.EnchantPortal ? UIMinimap2.IconType.EnchantPortal : UIMinimap2.IconType.Portal,
                             Tooltip = tooltip,
                             WorldPosition = new EmptyKeys.UserInterface.PointF(portal.X, portal.Y)
                         });
@@ -238,7 +238,7 @@ namespace WzComparerR2.MapRender
                     case 10:
                         this.ui.Minimap.Icons.Add(new UIMinimap2.MapIcon()
                         {
-                            IconType = UIMinimap2.IconType.EnchantPortal,
+                            IconType = UIMinimap2.IconType.HiddenPortal,
                             Tooltip = portal.Tooltip,
                             WorldPosition = new EmptyKeys.UserInterface.PointF(portal.X, portal.Y)
                         });

@@ -68,14 +68,14 @@ namespace WzComparerR2.MapRender.UI
             var current = Vector2.Zero;
             size = Vector2.Zero;
 
-            blocks.Add(PrepareTextLine(fonts.TooltipContentFont, "레벨: " + info.level + (info.boss ? " (Boss)" : null), ref current, Color.White, ref size.X));
+            blocks.Add(PrepareTextLine(fonts.TooltipContentFont, "레벨: " + info.level + (info.boss ? " (보스)" : null), ref current, Color.White, ref size.X));
             blocks.Add(PrepareTextLine(fonts.TooltipContentFont, "HP/MP: " + info.maxHP + " / " + info.maxMP, ref current, Color.White, ref size.X));
             blocks.Add(PrepareTextLine(fonts.TooltipContentFont, "물리/마법공격력: " + info.PADamage + " / " + info.MADamage, ref current, Color.White, ref size.X));
             blocks.Add(PrepareTextLine(fonts.TooltipContentFont, "물리/마법방어율: " + info.PDRate + "% / " + info.MDRate + "%", ref current, Color.White, ref size.X));
             blocks.Add(PrepareTextLine(fonts.TooltipContentFont, "회피/명중치: " + info.acc + " / " + info.eva, ref current, Color.White, ref size.X));
             blocks.Add(PrepareTextLine(fonts.TooltipContentFont, "넉백: " + info.pushed, ref current, Color.White, ref size.X));
             blocks.Add(PrepareTextLine(fonts.TooltipContentFont, "경험치: " + info.exp, ref current, Color.White, ref size.X));
-            if (info.undead) blocks.Add(PrepareTextLine(fonts.TooltipContentFont, "undead: 1", ref current, Color.White, ref size.X));
+            if (info.undead) blocks.Add(PrepareTextLine(fonts.TooltipContentFont, "언데드: 1", ref current, Color.White, ref size.X));
             StringBuilder sb;
             if ((sb = GetLifeElemAttrString(ref info.elemAttr)).Length > 0)
                 blocks.Add(PrepareTextLine(fonts.TooltipContentFont, "속성: " + sb.ToString(), ref current, Color.White, ref size.X));
@@ -86,7 +86,7 @@ namespace WzComparerR2.MapRender.UI
 
         public static StringBuilder GetLifeElemAttrString(ref LifeInfo.ElemAttr elemAttr)
         {
-            StringBuilder sb = new StringBuilder(14);
+            StringBuilder sb = new StringBuilder(25);
             sb.Append(GetElemResistanceString("얼음", elemAttr.I));
             sb.Append(GetElemResistanceString("번개", elemAttr.L));
             sb.Append(GetElemResistanceString("불", elemAttr.F));
