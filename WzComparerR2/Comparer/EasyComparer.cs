@@ -146,6 +146,36 @@ namespace WzComparerR2.Comparer
             GC.Collect();
         }
 
+        public void EasyCompareWzStructures(Wz_Structure structureNew, Wz_Structure structureOld, string outputDir, StreamWriter sw = null)
+        {
+            var virtualNodeNew = RebuildWzStructure(structureNew);
+            var virtualNodeOld = RebuildWzStructure(structureOld);
+            WzFileComparer comparer = new WzFileComparer();
+            comparer.IgnoreWzFile = true;
+
+            var dictNew = SplitVirtualNode(virtualNodeNew);
+            var dictOld = SplitVirtualNode(virtualNodeOld);
+
+            //寻找共同wzType
+            var wzTypeList = dictNew.Select(kv => kv.Key)
+                .Where(wzType => dictOld.ContainsKey(wzType));
+
+            CreateStyleSheet(outputDir);
+
+            foreach (var wzType in wzTypeList)
+            {
+                var vNodeNew = dictNew[wzType];
+                var vNodeOld = dictOld[wzType];
+                var cmp = comparer.Compare(vNodeNew, vNodeOld);
+                OutputFile(vNodeNew.LinkNodes.Select(node => node.Value).OfType<Wz_File>().ToList(),
+                    vNodeOld.LinkNodes.Select(node => node.Value).OfType<Wz_File>().ToList(),
+                    wzType,
+                    cmp.ToList(),
+                    outputDir,
+                    sw);
+            }
+        }
+
         private WzVirtualNode RebuildWzFile(Wz_File wzFile)
         {
             //分组
@@ -181,13 +211,36 @@ namespace WzComparerR2.Comparer
             return topNode;
         }
 
+        private WzVirtualNode RebuildWzStructure(Wz_Structure wzStructure)
+        {
+            //分组
+            List<Wz_File> subFiles = wzStructure.wz_files.Where(wz_file => wz_file != null).ToList();
+            WzVirtualNode topNode = new WzVirtualNode();
+
+            foreach (var grp in subFiles.GroupBy(f => f.Type))
+            {
+                WzVirtualNode fileNode = new WzVirtualNode();
+                fileNode.Name = grp.Key.ToString();
+                foreach (var file in grp)
+                {
+                    fileNode.Combine(file.Node);
+                }
+                topNode.AddChild(fileNode);
+            }
+            return topNode;
+        }
+
         private Dictionary<Wz_Type, WzVirtualNode> SplitVirtualNode(WzVirtualNode node)
         {
             var dict = new Dictionary<Wz_Type, WzVirtualNode>();
-            Wz_File wzFile = node.LinkNodes[0].Value as Wz_File;
-            dict[wzFile.Type] = node;
+            Wz_File wzFile = null;
+            if (node.LinkNodes.Count > 0)
+            {
+                wzFile = node.LinkNodes[0].Value as Wz_File;
+                dict[wzFile.Type] = node;
+            }
 
-            if (wzFile.Type == Wz_Type.Base) //额外处理
+            if (wzFile?.Type == Wz_Type.Base || node.LinkNodes.Count == 0) //额外处理
             {
                 var wzFileList = node.ChildNodes
                     .Select(child => new { Node = child, WzFile = child.LinkNodes[0].Value as Wz_File })

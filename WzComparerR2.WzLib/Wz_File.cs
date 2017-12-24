@@ -473,7 +473,7 @@ namespace WzComparerR2.WzLib
             {
                 string wzName = this.node.Text;
 
-                Match m = Regex.Match(wzName, @"^([A-Za-z]+)\d+(?:\.wz)?$");
+                Match m = Regex.Match(wzName, @"^([A-Za-z]+)\d*(?:\.wz)?$");
                 if (m.Success)
                 {
                     wzName = m.Result("$1");

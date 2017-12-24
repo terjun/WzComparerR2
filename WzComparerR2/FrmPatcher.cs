@@ -8,6 +8,7 @@ using System.Windows.Forms;
 using DevComponents.DotNetBar;
 using DevComponents.AdvTree;
 using System.IO;
+using System.Linq;
 
 using System.Threading;
 using WzComparerR2.WzLib;
@@ -47,6 +48,7 @@ namespace WzComparerR2
                 cmbComparePng.Items.Add(comp);
             }
             cmbComparePng.SelectedItem = WzPngComparison.SizeAndDataLength;
+            typedParts = Enum.GetValues(typeof(Wz_Type)).Cast<Wz_Type>().ToDictionary(type => type, type => new List<PatchPartContext>());
         }
 
         Thread patchThread;
@@ -203,6 +205,10 @@ namespace WzComparerR2
         string compareFolder;
         bool prePatch ;
         bool deadPatch;
+        string htmlFilePath;
+        FileStream htmlFile;
+        StreamWriter sw;
+        Dictionary<Wz_Type, List<PatchPartContext>> typedParts;
 
         private void ExecutePatch(string patchFile, string msFolder, bool prePatch)
         {
@@ -222,7 +228,7 @@ namespace WzComparerR2
                     AppendStateText("패치 준비중...\r\n");
                     long decompressedSize = patcher.PrePatch();
                     AppendStateText(string.Format("패치용량 : {0:N0}B...\r\n", decompressedSize));
-                    AppendStateText(string.Format("패치할 파일 갯수 : {0}개...\r\n",
+                    AppendStateText(string.Format("패치할 파일 개수 : {0}개...\r\n",
                         patcher.PatchParts == null ? -1 : patcher.PatchParts.Count));
                     txtNotice.Text = patcher.NoticeText;
                     foreach (PatchPartContext part in patcher.PatchParts)
@@ -242,10 +248,32 @@ namespace WzComparerR2
                             patcher.PatchParts.Add(advTreePatchFiles.Nodes[i].Tag as PatchPartContext);
                         }
                     }
+                    patcher.PatchParts.Sort((part1, part2) => part1.Offset.CompareTo(part2.Offset));
                 }
                 AppendStateText("패치중...\r\n");
                 DateTime time = DateTime.Now;
                 patcher.Patch(msFolder);
+                if (!string.IsNullOrEmpty(this.compareFolder))
+                {
+                    sw.WriteLine("</table>");
+                    sw.WriteLine("</p>");
+
+                    //html结束
+                    sw.WriteLine("</body>");
+                    sw.WriteLine("</html>");
+
+                    try
+                    {
+                        if (sw != null)
+                        {
+                            sw.Flush();
+                            sw.Close();
+                        }
+                    }
+                    catch
+                    {
+                    }
+                }
                 TimeSpan interval = DateTime.Now - time;
                 MessageBoxEx.Show(this, "패치완료: 소요시간 " + interval.ToString(), "패쳐");
             }
@@ -259,6 +287,18 @@ namespace WzComparerR2
             }
             finally
             {
+                try
+                {
+                    if (sw != null)
+                    {
+                        sw.Flush();
+                        sw.Close();
+                    }
+                }
+                catch
+                {
+                }
+
                 if (patcher != null)
                 {
                     patcher.Close();
@@ -306,10 +346,13 @@ namespace WzComparerR2
                     progressBarX1.Maximum = 0;
                     progressBarX1.Text = string.Empty;
 
+                    typedParts[e.Part.WzType].Add(e.Part);
+
                     if (!string.IsNullOrEmpty(this.compareFolder)
-                        && e.Part.Type == 1
+                        //&& e.Part.Type == 1
                         && Path.GetExtension(e.Part.FileName).Equals(".wz", StringComparison.OrdinalIgnoreCase)
-                        && !Path.GetFileName(e.Part.FileName).Equals("list.wz", StringComparison.OrdinalIgnoreCase))
+                        && !Path.GetFileName(e.Part.FileName).Equals("list.wz", StringComparison.OrdinalIgnoreCase)
+                        && typedParts[e.Part.WzType].Count == ((WzPatcher)sender).PatchParts.Where(part => part.WzType == e.Part.WzType).Count())
                     {
                         Wz_Structure wznew = new Wz_Structure();
                         Wz_Structure wzold = new Wz_Structure();
@@ -322,9 +365,34 @@ namespace WzComparerR2
                             comparer.OutputRemovedImg = chkOutputRemovedImg.Checked;
                             comparer.Comparer.PngComparison = (WzPngComparison)cmbComparePng.SelectedItem;
                             comparer.Comparer.ResolvePngLink = chkResolvePngLink.Checked;
-                            wznew.Load(e.Part.TempFilePath, false);
-                            wzold.Load(e.Part.OldFilePath, false);
-                            comparer.EasyCompareWzFiles(wznew.wz_files[0], wzold.wz_files[0], this.compareFolder);
+                            //wznew.Load(e.Part.TempFilePath, false);
+                            //wzold.Load(e.Part.OldFilePath, false);
+                            //comparer.EasyCompareWzFiles(wznew.wz_files[0], wzold.wz_files[0], this.compareFolder);
+                            foreach (PatchPartContext part in typedParts[e.Part.WzType])
+                            {
+                                wznew.Load(part.TempFilePath, false);
+                                wzold.Load(part.OldFilePath, false);
+                            }
+                            if (htmlFilePath == null)
+                            {
+                                htmlFilePath = Path.Combine(this.compareFolder, "index.html");
+
+                                htmlFile = new FileStream(htmlFilePath, FileMode.Create, FileAccess.Write);
+                                sw = new StreamWriter(htmlFile, Encoding.UTF8);
+                                sw.WriteLine("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">");
+                                sw.WriteLine("<html>");
+                                sw.WriteLine("<head>");
+                                sw.WriteLine("<meta http-equiv=\"content-type\" content=\"text/html;charset=utf-8\">");
+                                sw.WriteLine("<title>Index {0}←{1}</title>", wznew.wz_files.Where(wz_file => wz_file != null).First().Header.WzVersion, wzold.wz_files.Where(wz_file => wz_file != null).First().Header.WzVersion);
+                                sw.WriteLine("<link type=\"text/css\" rel=\"stylesheet\" href=\"style.css\" />");
+                                sw.WriteLine("</head>");
+                                sw.WriteLine("<body>");
+                                //输出概况
+                                sw.WriteLine("<p class=\"wzf\">");
+                                sw.WriteLine("<table>");
+                                sw.WriteLine("<tr><th>파일명</th><th>신버전 용량</th><th>구버전 용량</th><th>변경</th><th>추가</th><th>제거</th></tr>");
+                            }
+                            comparer.EasyCompareWzStructures(wznew, wzold, this.compareFolder, sw);
                         }
                         catch (Exception ex)
                         {
@@ -338,9 +406,13 @@ namespace WzComparerR2
                         }
                     }
 
-                    if (this.deadPatch && e.Part.Type == 1)
+                    if (this.deadPatch /*&& e.Part.Type == 1*/ && typedParts[e.Part.WzType].Count == ((WzPatcher)sender).PatchParts.Where(part => part.WzType == e.Part.WzType).Count())
                     {
-                        ((WzPatcher)sender).SafeMove(e.Part.TempFilePath, e.Part.OldFilePath);
+                        //((WzPatcher)sender).SafeMove(e.Part.TempFilePath, e.Part.OldFilePath);
+                        foreach (PatchPartContext part in typedParts[e.Part.WzType].Where(part => part.Type == 1))
+                        {
+                            ((WzPatcher)sender).SafeMove(part.TempFilePath, part.OldFilePath);
+                        }
                         AppendStateText("  파일 적용...\r\n");
                     }
                     break;
