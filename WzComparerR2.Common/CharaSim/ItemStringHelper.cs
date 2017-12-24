@@ -462,6 +462,7 @@ namespace WzComparerR2.CharaSim
                 case 27: return "루미너스 착용 가능";
                 case 36: return "제논 착용 가능";
                 case 152: return "일리움 착용 가능";
+                case 155: return "아크 착용 가능";
                 default: return null;
             }
         }

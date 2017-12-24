@@ -166,8 +166,10 @@ namespace WzComparerR2.CharaSimControl
         public static readonly Brush GearPropChangeBrush = new SolidBrush(gearCyanColor);
         public static readonly Color gearYellowColor = Color.FromArgb(244, 244, 68);
 
-        public static Brush GetGearNameBrush(int diff, bool up, bool petEquip = false)
+        public static Brush GetGearNameBrush(int diff, bool up, bool cash = false, bool petEquip = false)
         {
+            if (cash && !petEquip)
+                return GearNameBrushB;
             if (diff < 0)
                 return GearNameBrushA;
             if (diff < 6 || petEquip)
