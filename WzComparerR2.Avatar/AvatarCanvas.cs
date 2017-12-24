@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Collections.ObjectModel;
 using System.Drawing;
+using System.Linq;
 using WzComparerR2.WzLib;
 using WzComparerR2.CharaSim;
 
@@ -1087,7 +1088,7 @@ namespace WzComparerR2.Avatar
                 }
 
                 //脸
-                if (this.Face != null && this.Face.Visible && faceAction != null)
+                if (this.Face != null && this.Face.Visible && faceAction != null && Parts.Where(part => part != null && part.Visible && part.InvisibleFace).Count() == 0)
                 {
                     partNode.Add(FindActionFrameNode(this.Face.Node, faceAction));
                 }

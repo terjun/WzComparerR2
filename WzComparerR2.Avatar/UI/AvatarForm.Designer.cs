@@ -706,14 +706,14 @@
             this.cmbEar.TabIndex = 15;
             this.cmbEar.SelectedIndexChanged += new System.EventHandler(this.cmbEar_SelectedIndexChanged);
             //
-            // save button
+            // btnExportImage
             // 
             this.btnExportImage.Name = "btnExportImage";
             this.btnExportImage.Image = global::WzComparerR2.Avatar.Properties.Resources.save;
             this.btnExportImage.Tooltip = "저장";
             this.btnExportImage.Click += new System.EventHandler(this.btnExportImage_Click);
             //
-            // save All~
+            // btnExportAll
             //
             this.btnExportAll.Name = "btnExportAll";
             this.btnExportAll.Image = global::WzComparerR2.Avatar.Properties.Resources.saveall;
