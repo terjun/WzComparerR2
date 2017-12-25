@@ -98,6 +98,10 @@ namespace WzComparerR2.CharaSim
             {
                 return 0;
             }
+            if (this.type == GearType.machineEngine || this.type == GearType.machineArms || this.type == GearType.machineLegs || this.type == GearType.machineBody || this.type == GearType.machineTransistors || this.type == GearType.dragonMask || this.type == GearType.dragonPendant || this.type == GearType.dragonWings || this.type == GearType.dragonTail)
+            {
+                return 0;
+            }
 
             int reqLevel;
             this.Props.TryGetValue(GearPropType.reqLevel, out reqLevel);
