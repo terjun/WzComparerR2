@@ -55,6 +55,10 @@ namespace WzComparerR2
             this.advTree1.Nodes.Add(new Node(string.Format("[KMS] 중복 착용 불가 문자열 오류 제보 <font color=\"#808080\">인소야닷컴 진류</font>")));
             this.advTree1.Nodes.Add(new Node(string.Format("[KMS] 아바타 저장 기능 추가 <font color=\"#808080\">@craftingmod</font>")));
             this.advTree1.Nodes.Add(new Node(string.Format("[KMS] 아바타 불러오기 오류 제보 <font color=\"#808080\">인소야닷컴 일감</font>")));
+            this.advTree1.Nodes.Add(new Node(string.Format("[KMS] 파일 저장시 이름 규칙 오류 제보 <font color=\"#808080\">@mabooky</font>")));
+            this.advTree1.Nodes.Add(new Node(string.Format("[KMS] 아바타 하이레프 귀 오류 제보 <font color=\"#808080\">메이플인벤 누리신드롬</font>")));
+            this.advTree1.Nodes.Add(new Node(string.Format("[KMS] 패치와 함께 비교시 오류 제보 <font color=\"#808080\">@Sunaries</font>")));
+            this.advTree1.Nodes.Add(new Node(string.Format("[KMS] 사용 가능 직업 문구 오류 제보 <font color=\"#808080\">@tanyoucai</font>")));
 
             if (PluginBase.PluginManager.LoadedPlugins.Count > 0)
             {
