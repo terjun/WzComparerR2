@@ -813,6 +813,17 @@ namespace WzComparerR2.CharaSim
             //追加限时属性
             gear.MakeTimeLimitedPropAvailable();
 
+            if (gear.type == GearType.face)
+            {
+                gear.Icon = BitmapOrigin.CreateFromNode(findNode(@"Item\Install\0380.img\03801284\info\icon"), findNode);
+                gear.IconRaw = BitmapOrigin.CreateFromNode(findNode(@"Item\Install\0380.img\03801284\info\iconRaw"), findNode);
+            }
+            if (gear.type == GearType.hair || gear.type == GearType.hair2)
+            {
+                gear.Icon = BitmapOrigin.CreateFromNode(findNode(@"Item\Install\0380.img\03801283\info\icon"), findNode);
+                gear.IconRaw = BitmapOrigin.CreateFromNode(findNode(@"Item\Install\0380.img\03801283\info\iconRaw"), findNode);
+            }
+
             return gear;
         }
     }
