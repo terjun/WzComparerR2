@@ -136,7 +136,7 @@ namespace WzComparerR2.CharaSimControl
                 }
             }
 
-            if (Skill.Level < Skill.MaxLevel)
+            if (Skill.Level < Skill.MaxLevel && !Skill.DisableNextLevelInfo)
             {
                 string hStr = SummaryParser.GetSkillSummary(Skill, Skill.Level + 1, sr, SummaryParams.Default);
                 GearGraphics.DrawString(g, "[다음레벨 " + (Skill.Level + 1) + "]", GearGraphics.ItemDetailFont, 10, 272, ref picH, 16);
