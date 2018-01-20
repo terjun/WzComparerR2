@@ -223,18 +223,19 @@ namespace WzComparerR2
                 AppendStateText("패치 확인중... ");
                 patcher.OpenDecompress();
                 AppendStateText("완료\r\n");
+                AppendStateText("패치 준비중... \r\n");
+                long decompressedSize = patcher.PrePatch();
+                AppendStateText("완료\r\n");
+                AppendStateText(string.Format("패치용량 : {0:N0}B...\r\n", decompressedSize));
+                AppendStateText(string.Format("패치할 파일 개수 : {0}개...\r\n",
+                    patcher.PatchParts == null ? -1 : patcher.PatchParts.Count));
+                txtNotice.Text = patcher.NoticeText;
+                foreach (PatchPartContext part in patcher.PatchParts)
+                {
+                    advTreePatchFiles.Nodes.Add(CreateFileNode(part));
+                }
                 if (prePatch)
                 {
-                    AppendStateText("패치 준비중...\r\n");
-                    long decompressedSize = patcher.PrePatch();
-                    AppendStateText(string.Format("패치용량 : {0:N0}B...\r\n", decompressedSize));
-                    AppendStateText(string.Format("패치할 파일 개수 : {0}개...\r\n",
-                        patcher.PatchParts == null ? -1 : patcher.PatchParts.Count));
-                    txtNotice.Text = patcher.NoticeText;
-                    foreach (PatchPartContext part in patcher.PatchParts)
-                    {
-                        advTreePatchFiles.Nodes.Add(CreateFileNode(part));
-                    }
                     advTreePatchFiles.Enabled = true;
                     AppendStateText("패치할 파일을 선택한 후 패치 버튼을 눌러주세요...\r\n");
                     waiting = true;
