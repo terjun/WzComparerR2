@@ -875,7 +875,7 @@ namespace WzComparerR2
                         QueryPerformance.End();
                         double ms = (Math.Round(QueryPerformance.GetLastInterval(), 4) * 1000);
 
-                        labelItemStatus.Text = "불러오기 완료: 소요시간 " + ms + "ms";
+                        labelItemStatus.Text = "불러오기 완료: 소요 시간 " + ms + "ms";
                     }
                     else
                     {
@@ -1526,7 +1526,7 @@ namespace WzComparerR2
                 }
                 advTree1.EndUpdate();
                 QueryPerformance.End();
-                labelItemStatus.Text = "정렬 완료: 소요시간 " + (Math.Round(QueryPerformance.GetLastInterval(), 4) * 1000) + "ms";
+                labelItemStatus.Text = "정렬 완료: 소요 시간 " + (Math.Round(QueryPerformance.GetLastInterval(), 4) * 1000) + "ms";
             }
             else
             {
@@ -1775,7 +1775,7 @@ namespace WzComparerR2
                 }
                 QueryPerformance.End();
                 double ms = (Math.Round(QueryPerformance.GetLastInterval(), 4) * 1000);
-                labelItemStatus.Text = "StringLinker 초기화 완료: 소요시간 " + ms + "ms";
+                labelItemStatus.Text = "StringLinker 초기화 완료: 소요 시간 " + ms + "ms";
             }
             if (comboBoxItem2.SelectedIndex < 0)
                 comboBoxItem2.SelectedIndex = 0;
@@ -1908,7 +1908,7 @@ namespace WzComparerR2
             if (r)
             {
                 double ms = (Math.Round(QueryPerformance.GetLastInterval(), 4) * 1000);
-                labelItemStatus.Text = "StringLinker 초기화 완료: 소요시간 " + ms + "ms";
+                labelItemStatus.Text = "StringLinker 초기화 완료: 소요 시간 " + ms + "ms";
             }
             else
             {
@@ -2895,7 +2895,7 @@ namespace WzComparerR2
                     {
                         sw.Stop();
                         compareThread = null;
-                        labelXComp1.Text = "Wz 비교 완료: 소요시간 " + sw.Elapsed.ToString();
+                        labelXComp1.Text = "Wz 비교 완료: 소요 시간 " + sw.Elapsed.ToString();
                         labelXComp2.Text = "";
                     }
                 });

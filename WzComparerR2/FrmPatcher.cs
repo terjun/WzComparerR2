@@ -276,7 +276,7 @@ namespace WzComparerR2
                     }
                 }
                 TimeSpan interval = DateTime.Now - time;
-                MessageBoxEx.Show(this, "패치완료: 소요시간 " + interval.ToString(), "패쳐");
+                MessageBoxEx.Show(this, "패치완료: 소요 시간 " + interval.ToString(), "패쳐");
             }
             catch (ThreadAbortException)
             {
