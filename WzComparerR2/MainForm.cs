@@ -540,11 +540,11 @@ namespace WzComparerR2
                 }
                 else
                 {
-                    var frameData2 = this.pictureBoxEx1.LoadFrameAnimation2(node);
+                    var multiData = this.pictureBoxEx1.LoadMultiFrameAnimation(node);
 
-                    if (frameData2 != null)
+                    if (multiData != null)
                     {
-                        this.pictureBoxEx1.ShowAnimation(frameData2);
+                        this.pictureBoxEx1.ShowAnimation(multiData);
                         var aniItem = this.pictureBoxEx1.Items[0] as Animation.MultiFrameAnimator;
 
                         this.cmbItemAniNames.Items.Clear();

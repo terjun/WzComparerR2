@@ -82,7 +82,7 @@ namespace WzComparerR2
             return SpineAnimationData.CreateFromNode(node, null, this.GraphicsDevice, PluginBase.PluginManager.FindWz);
         }
 
-        public MultiFrameAnimationData LoadFrameAnimation2(Wz_Node node)
+        public MultiFrameAnimationData LoadMultiFrameAnimation(Wz_Node node)
         {
             return MultiFrameAnimationData.CreateFromNode(node, this.GraphicsDevice, PluginBase.PluginManager.FindWz);
         }
