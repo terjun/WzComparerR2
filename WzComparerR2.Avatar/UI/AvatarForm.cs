@@ -1238,10 +1238,10 @@ namespace WzComparerR2.Avatar.UI
                     dialogProgress.setMax(avatar.Actions.Count);
 
                     ExportInfo einfo = new ExportInfo(avatar);
-                    einfo.path = System.IO.Path.GetFullPath(fbd.SelectedPath);
-                    einfo.emoFrame = emoFrame;
+                    einfo.Path = System.IO.Path.GetFullPath(fbd.SelectedPath);
+                    einfo.EmotionFrame = emoFrame;
 
-                    lastPath = einfo.path;
+                    lastPath = einfo.Path;
 
                     dialogProgress.StartPosition = FormStartPosition.CenterParent;
                     dialogProgress.Show(this);
@@ -1289,8 +1289,8 @@ namespace WzComparerR2.Avatar.UI
         private void exportCharacter_all(AvatarCanvas avatar, int emoF, string dirPath)
         {
             ExportInfo einfo = new ExportInfo(avatar);
-            einfo.path = dirPath;
-            einfo.emoFrame = emoF;
+            einfo.Path = dirPath;
+            einfo.EmotionFrame = emoF;
             string r = exportCharacter_all(einfo, false);
             MessageBoxEx.Show(r, "완료");
         }
@@ -1298,9 +1298,9 @@ namespace WzComparerR2.Avatar.UI
         // worker method
         private string exportCharacter_all(ExportInfo eInfo, bool noti)
         {
-            AvatarCanvas avatar = eInfo.avatar;
-            int emoFrame = eInfo.emoFrame;
-            string dirPath = eInfo.path;
+            AvatarCanvas avatar = eInfo.Avatar;
+            int emoFrame = eInfo.EmotionFrame;
+            string dirPath = eInfo.Path;
             // AvatarCanvas avatar, int emoFrame, string dirPath
            
             // init default var

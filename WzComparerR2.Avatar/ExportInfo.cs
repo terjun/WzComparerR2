@@ -6,15 +6,15 @@ namespace WzComparerR2.Avatar
 {
     class ExportInfo
     {
-        public ExportInfo(AvatarCanvas _avatar)
+        public ExportInfo(AvatarCanvas avatar)
         {
-            this.avatar = _avatar;
+            this.Avatar = avatar;
         }
 
-        public AvatarCanvas avatar { get; set; }
-        public bool animated { get; set; }
-        public int bodyFrame { get; set; }
-        public int emoFrame { get; set; }
-        public string path { get; set; }
+        public AvatarCanvas Avatar { get; set; }
+        public bool IsAnimated { get; set; }
+        public int BodyFrame { get; set; }
+        public int EmotionFrame { get; set; }
+        public string Path { get; set; }
     }
 }

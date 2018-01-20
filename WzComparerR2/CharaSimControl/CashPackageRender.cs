@@ -223,42 +223,39 @@ namespace WzComparerR2.CharaSimControl
                     if (StringLinker.StringEqp.TryGetValue(commodity.ItemId, out sr))
                     {
                         name = sr.Name;
-                        string[] fullPath = sr.FullPath.Split('\\');
-                        Wz_Node itemNode = PluginBase.PluginManager.FindWz(string.Format(@"Character\{0}\{1:D8}.img", String.Join("\\", new List<string>(fullPath).GetRange(2, fullPath.Length - 3).ToArray()), commodity.ItemId));
-                        if (itemNode != null)
+                        string[] fullPaths = sr.FullPath.Split('\\');
+                        Wz_Node iconNode = PluginBase.PluginManager.FindWz(string.Format(@"Character\{0}\{1:D8}.img\info\iconRaw", String.Join("\\", new ArraySegment<string>(fullPaths, 2, fullPaths.Length - 3)), commodity.ItemId));
+                        if (iconNode != null)
                         {
-                            Gear gear = Gear.CreateFromNode(itemNode, PluginManager.FindWz);
-                            IconRaw = gear.IconRaw;
+                            IconRaw = BitmapOrigin.CreateFromNode(iconNode, PluginBase.PluginManager.FindWz);
                         }
                     }
                     else if (StringLinker.StringItem.TryGetValue(commodity.ItemId, out sr))
                     {
                         name = sr.Name;
-                        if (Regex.IsMatch(sr.FullPath, @"^(Cash|Consume|Etc|Ins).img\\\d+$"))
+                        if (Regex.IsMatch(sr.FullPath, @"^(Cash|Consume|Etc|Ins).img\\.+$"))
                         {
                             string itemType = null;
-                            if (Regex.IsMatch(sr.FullPath, @"^Cash.img\\\d+$"))
+                            if (Regex.IsMatch(sr.FullPath, @"^Cash.img\\.+$"))
                                 itemType = "Cash";
-                            else if (Regex.IsMatch(sr.FullPath, @"^Consume.img\\\d+$"))
+                            else if (Regex.IsMatch(sr.FullPath, @"^Consume.img\\.+$"))
                                 itemType = "Consume";
-                            else if (Regex.IsMatch(sr.FullPath, @"^Etc.img\\\d+$"))
+                            else if (Regex.IsMatch(sr.FullPath, @"^Etc.img\\.+$"))
                                 itemType = "Etc";
-                            else if (Regex.IsMatch(sr.FullPath, @"^Ins.img\\\d+$"))
+                            else if (Regex.IsMatch(sr.FullPath, @"^Ins.img\\.+$"))
                                 itemType = "Install";
-                            Wz_Node itemNode = PluginBase.PluginManager.FindWz(string.Format(@"Item\{0}\{1:D4}.img\{2:D8}", itemType, commodity.ItemId / 10000, commodity.ItemId));
-                            if (itemNode != null)
+                            Wz_Node iconNode = PluginBase.PluginManager.FindWz(string.Format(@"Item\{0}\{1:D4}.img\{2:D8}\info\iconRaw", itemType, commodity.ItemId / 10000, commodity.ItemId));
+                            if (iconNode != null)
                             {
-                                Item item = Item.CreateFromNode(itemNode, PluginManager.FindWz);
-                                IconRaw = item.IconRaw;
+                                IconRaw = BitmapOrigin.CreateFromNode(iconNode, PluginBase.PluginManager.FindWz);
                             }
                         }
-                        else if (Regex.IsMatch(sr.FullPath, @"^Pet.img\\\d+$"))
+                        else if (Regex.IsMatch(sr.FullPath, @"^Pet.img\\.+$"))
                         {
-                            Wz_Node itemNode = PluginBase.PluginManager.FindWz(string.Format(@"Item\Pet\{0:D7}.img", commodity.ItemId));
-                            if (itemNode != null)
+                            Wz_Node iconNode = PluginBase.PluginManager.FindWz(string.Format(@"Item\Pet\{0:D7}.img\info\iconRaw", commodity.ItemId));
+                            if (iconNode != null)
                             {
-                                Item item = Item.CreateFromNode(itemNode, PluginManager.FindWz);
-                                IconRaw = item.IconRaw;
+                                IconRaw = BitmapOrigin.CreateFromNode(iconNode, PluginBase.PluginManager.FindWz);
                             }
                         }
                     }

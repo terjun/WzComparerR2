@@ -891,11 +891,15 @@ namespace WzComparerR2.CharaSimControl
                             }
                         }
 
+                        exclusiveEquip = "#c" + string.Join(", ", itemNames.ToArray());
+
                         char lastCharacter = itemNames.Last().Last();
                         if (lastCharacter >= '가' && lastCharacter <= '힣' && (lastCharacter - '가') % 28 == 0)
-                            exclusiveEquip = "#c" + string.Join(", ", itemNames.ToArray()) + "는 중복 착용이 불가능합니다.#";
+                            exclusiveEquip += "는";
                         else
-                            exclusiveEquip = "#c" + string.Join(", ", itemNames.ToArray()) + "은 중복 착용이 불가능합니다.#";
+                            exclusiveEquip += "은";
+
+                        exclusiveEquip += " 중복 착용이 불가능합니다.#";
                     }
                     GearGraphics.DrawString(g, exclusiveEquip, GearGraphics.EquipDetailFont2, 13, 244, ref picH, 15, ((SolidBrush)GearGraphics.OrangeBrush2).Color);
                     picH += 5;

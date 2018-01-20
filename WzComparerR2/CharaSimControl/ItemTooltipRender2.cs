@@ -68,7 +68,7 @@ namespace WzComparerR2.CharaSimControl
             {
                 Wz_Node itemNode = PluginBase.PluginManager.FindWz(string.Format(@"Item\Special\{0:D4}.img\{1}", this.item.ItemID / 10000, this.item.ItemID));
                 Wz_Node cashPackageNode = PluginBase.PluginManager.FindWz(string.Format(@"Etc\CashPackage.img\{0}", this.item.ItemID));
-                CashPackage cashPackage = CashPackage.CreateFromNode(itemNode, cashPackageNode, PluginManager.FindWz);
+                CashPackage cashPackage = CashPackage.CreateFromNode(itemNode, cashPackageNode, PluginBase.PluginManager.FindWz);
                 return RenderCashPackage(cashPackage);
             }
 
