@@ -133,7 +133,6 @@ namespace WzComparerR2.CharaSimControl
 
                 cashBitmap = new Bitmap((int)Math.Ceiling(titleSize.Width), DefaultPicHeight);
                 g = Graphics.FromImage(cashBitmap);
-                picH = 10;
             }
 
             picH = 10;
