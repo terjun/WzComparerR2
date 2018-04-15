@@ -21,9 +21,9 @@ namespace WzComparerR2.MapRender.UI
 
         protected override void InitializeComponents()
         {
-            mirrorFrame800 = new BitmapImage() { Texture = Engine.Instance.Renderer.CreateTexture(Properties.Resources.UIWindow3_img_mirrorFrame_800) };
-            mirrorFrame1024 = new BitmapImage() { Texture = Engine.Instance.Renderer.CreateTexture(Properties.Resources.UIWindow3_img_mirrorFrame_1024) };
-            mirrorFrame1366 = new BitmapImage() { Texture = Engine.Instance.Renderer.CreateTexture(Properties.Resources.UIWindow3_img_mirrorFrame_1366) };
+            mirrorFrame800 = new BitmapImage() { Texture = Engine.Instance.AssetManager.LoadTexture(null, nameof(Properties.Resources.UIWindow3_img_mirrorFrame_800)) };
+            mirrorFrame1024 = new BitmapImage() { Texture = Engine.Instance.AssetManager.LoadTexture(null, nameof(Properties.Resources.UIWindow3_img_mirrorFrame_1024)) };
+            mirrorFrame1366 = new BitmapImage() { Texture = Engine.Instance.AssetManager.LoadTexture(null, nameof(Properties.Resources.UIWindow3_img_mirrorFrame_1366)) };
 
             Image image = new Image();
             image.SetBinding(Image.WidthProperty, new Binding(UIMirrorFrame.WidthProperty) { Source = this });

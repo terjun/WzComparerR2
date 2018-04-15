@@ -85,7 +85,8 @@ namespace WzComparerR2.MapRender.UI
             set { SetValue(CameraRegionVisibleProperty, value); }
         }
 
-        public MapArea MapAreaControl { get; private set;}
+        public MapArea MapAreaControl { get; private set; }
+
         public bool Mirror
         {
             get { return mirror; }
@@ -93,14 +94,14 @@ namespace WzComparerR2.MapRender.UI
             {
                 if (value != mirror)
                 {
-                    this.resource.LoadResource(Engine.Instance.Renderer, value);
+                    this.resource.LoadResource(Engine.Instance.AssetManager, value);
                 }
                 mirror = value;
             }
         }
 
         private UIMinimapResource resource;
-       
+
         private TextBlock lblStreetName;
         private TextBlock lblMapName;
 
@@ -198,7 +199,7 @@ namespace WzComparerR2.MapRender.UI
         {
             base.OnPropertyChanged(property);
 
-            if (property == MinimapCanvasProperty 
+            if (property == MinimapCanvasProperty
                 || property == MapNameProperty
                 || property == StreetNameProperty)
             {
@@ -233,7 +234,7 @@ namespace WzComparerR2.MapRender.UI
                 var lblRight = Canvas.GetLeft(this.lblMapName) + this.lblMapName.DesiredSize.Width;
                 desireSize.Width = Math.Max(desireSize.Width, lblRight);
             }
-            
+
             this.Width = MathHelper.Clamp(desireSize.Width, this.MinWidth, this.MaxWidth);
             this.Height = MathHelper.Clamp(desireSize.Height, this.MinHeight, this.MaxHeight);
             this.MapAreaControl.Width = Math.Max(0, this.Width - left - right);
@@ -255,7 +256,7 @@ namespace WzComparerR2.MapRender.UI
 
             private List<IconRect> iconRectCache;
             private PointF canvasPosCache;
-           
+
             protected override void OnDraw(Renderer spriterenderer, double elapsedGameTime, float opacity)
             {
                 base.OnDraw(spriterenderer, elapsedGameTime, opacity);
@@ -325,7 +326,7 @@ namespace WzComparerR2.MapRender.UI
                     //计算全局坐标
                     canvasPos = new PointF(pos.X + canvasPos.X, pos.Y + canvasPos.Y);
 
-                    
+
                     transform *= Matrix.CreateTranslation(canvasPos.X, canvasPos.Y, 0);
 
                     //绘制小地图
@@ -356,7 +357,7 @@ namespace WzComparerR2.MapRender.UI
                 {
                     var iconPos = Vector2.Transform(new Vector2(worldPos.X, worldPos.Y), transform);
                     var posF = new PointF(
-                        Math.Round(iconPos.X - texture.Width / 2- 0),
+                        Math.Round(iconPos.X - texture.Width / 2 - 0),
                         Math.Round(iconPos.Y - texture.Height / 2 - 5));
                     var iconSize = new Size(texture.Width, texture.Height);
                     spriterenderer.Draw(texture, posF, iconSize, new ColorW(1f, 1f, 1f, opacity), false);
@@ -455,6 +456,17 @@ namespace WzComparerR2.MapRender.UI
                                 }
                             }
                             break;
+
+                        case IconType.ArrowUp:
+                            {
+                                var texture = this.FindResource("arrowup") as TextureBase;
+                                if (texture != null)
+                                {
+                                    var rect = drawIconFunc(texture, icon.WorldPosition);
+                                    iconRectCache.Add(new IconRect() { Rect = rect, Tooltip = icon.Tooltip });
+                                }
+                            }
+                            break;
                     }
                 }
 
@@ -464,7 +476,7 @@ namespace WzComparerR2.MapRender.UI
 
             public object GetTooltipTarget(PointF mouseLocation)
             {
-                foreach(var iconRect in this.iconRectCache.Reverse<IconRect>())
+                foreach (var iconRect in this.iconRectCache.Reverse<IconRect>())
                 {
                     if (iconRect.Rect.Contains(mouseLocation))
                     {
@@ -497,6 +509,7 @@ namespace WzComparerR2.MapRender.UI
                     addResource("eventnpc");
                     addResource("shop");
                     addResource("trunk");
+                    addResource("arrowup");
                 }
             }
 
@@ -525,13 +538,14 @@ namespace WzComparerR2.MapRender.UI
             EventNpc,
             Shop,
             Trunk,
+            ArrowUp,
         }
 
         private sealed class UIMinimapResource : INinePatchResource<TextureBase>
         {
             public UIMinimapResource()
             {
-                this.LoadResource(Engine.Instance.Renderer);
+                this.LoadResource(Engine.Instance.AssetManager);
             }
 
             public bool HasIcon { get; set; }
@@ -586,33 +600,33 @@ namespace WzComparerR2.MapRender.UI
                 return new Microsoft.Xna.Framework.Point(texture.Width, texture.Height);
             }
 
-            public void LoadResource(Renderer renderer, bool mirror = false)
+            public void LoadResource(AssetManager assetManager, bool mirror = false)
             {
                 if (!mirror)
                 {
-                    this.NW1 = renderer.CreateTexture(Res.UIWindow2_img_MiniMap_MaxMap_nw);
-                    this.NW2 = renderer.CreateTexture(Res.UIWindow2_img_MiniMap_MaxMap_nw2);
-                    this.N = renderer.CreateTexture(Res.UIWindow2_img_MiniMap_MaxMap_n);
-                    this.NE = renderer.CreateTexture(Res.UIWindow2_img_MiniMap_MaxMap_ne);
-                    this.W = renderer.CreateTexture(Res.UIWindow2_img_MiniMap_MaxMap_w);
-                    //this.C = renderer.CreateTexture(Res.UIWindow2_img_MiniMap_MaxMap_c);
-                    this.E = renderer.CreateTexture(Res.UIWindow2_img_MiniMap_MaxMap_e);
-                    this.SW = renderer.CreateTexture(Res.UIWindow2_img_MiniMap_MaxMap_sw);
-                    this.S = renderer.CreateTexture(Res.UIWindow2_img_MiniMap_MaxMap_s);
-                    this.SE = renderer.CreateTexture(Res.UIWindow2_img_MiniMap_MaxMap_se);
+                    this.NW1 = assetManager.LoadTexture(null, nameof(Res.UIWindow2_img_MiniMap_MaxMap_nw));
+                    this.NW2 = assetManager.LoadTexture(null, nameof(Res.UIWindow2_img_MiniMap_MaxMap_nw2));
+                    this.N = assetManager.LoadTexture(null, nameof(Res.UIWindow2_img_MiniMap_MaxMap_n));
+                    this.NE = assetManager.LoadTexture(null, nameof(Res.UIWindow2_img_MiniMap_MaxMap_ne));
+                    this.W = assetManager.LoadTexture(null, nameof(Res.UIWindow2_img_MiniMap_MaxMap_w));
+                    //this.C = assetManager.LoadTexture(null, nameof(Res.UIWindow2_img_MiniMap_MaxMap_c);
+                    this.E = assetManager.LoadTexture(null, nameof(Res.UIWindow2_img_MiniMap_MaxMap_e));
+                    this.SW = assetManager.LoadTexture(null, nameof(Res.UIWindow2_img_MiniMap_MaxMap_sw));
+                    this.S = assetManager.LoadTexture(null, nameof(Res.UIWindow2_img_MiniMap_MaxMap_s));
+                    this.SE = assetManager.LoadTexture(null, nameof(Res.UIWindow2_img_MiniMap_MaxMap_se));
                 }
                 else
                 {
-                    this.NW1 = renderer.CreateTexture(Res.UIWindow2_img_MiniMap_MaxMapMirror_nw);
-                    this.NW2 = renderer.CreateTexture(Res.UIWindow2_img_MiniMap_MaxMapMirror_nw2);
-                    this.N = renderer.CreateTexture(Res.UIWindow2_img_MiniMap_MaxMapMirror_n);
-                    this.NE = renderer.CreateTexture(Res.UIWindow2_img_MiniMap_MaxMapMirror_ne);
-                    this.W = renderer.CreateTexture(Res.UIWindow2_img_MiniMap_MaxMapMirror_w);
-                    //this.C = renderer.CreateTexture(Res.UIWindow2_img_MiniMap_MaxMapMirror_c);
-                    this.E = renderer.CreateTexture(Res.UIWindow2_img_MiniMap_MaxMapMirror_e);
-                    this.SW = renderer.CreateTexture(Res.UIWindow2_img_MiniMap_MaxMapMirror_sw);
-                    this.S = renderer.CreateTexture(Res.UIWindow2_img_MiniMap_MaxMapMirror_s);
-                    this.SE = renderer.CreateTexture(Res.UIWindow2_img_MiniMap_MaxMapMirror_se);
+                    this.NW1 = assetManager.LoadTexture(null, nameof(Res.UIWindow2_img_MiniMap_MaxMapMirror_nw));
+                    this.NW2 = assetManager.LoadTexture(null, nameof(Res.UIWindow2_img_MiniMap_MaxMapMirror_nw2));
+                    this.N = assetManager.LoadTexture(null, nameof(Res.UIWindow2_img_MiniMap_MaxMapMirror_n));
+                    this.NE = assetManager.LoadTexture(null, nameof(Res.UIWindow2_img_MiniMap_MaxMapMirror_ne));
+                    this.W = assetManager.LoadTexture(null, nameof(Res.UIWindow2_img_MiniMap_MaxMapMirror_w));
+                    //this.C = assetManager.LoadTexture(null, nameof(Res.UIWindow2_img_MiniMap_MaxMapMirror_c);
+                    this.E = assetManager.LoadTexture(null, nameof(Res.UIWindow2_img_MiniMap_MaxMapMirror_e));
+                    this.SW = assetManager.LoadTexture(null, nameof(Res.UIWindow2_img_MiniMap_MaxMapMirror_sw));
+                    this.S = assetManager.LoadTexture(null, nameof(Res.UIWindow2_img_MiniMap_MaxMapMirror_s));
+                    this.SE = assetManager.LoadTexture(null, nameof(Res.UIWindow2_img_MiniMap_MaxMapMirror_se));
                 }
             }
         }
@@ -621,7 +635,7 @@ namespace WzComparerR2.MapRender.UI
         {
             public ComboBoxBackgroundResource()
             {
-                this.LoadResource(Engine.Instance.Renderer);
+                this.LoadResource(Engine.Instance.AssetManager);
             }
 
             public TextureBase Left { get; set; }
@@ -633,11 +647,11 @@ namespace WzComparerR2.MapRender.UI
                 return new Microsoft.Xna.Framework.Point(texture.Width, texture.Height);
             }
 
-            private void LoadResource(Renderer renderer)
+            private void LoadResource(AssetManager assetManager)
             {
-                this.Left = renderer.CreateTexture(MRes.Basic_img_ComboBox_normal_0);
-                this.Center = renderer.CreateTexture(MRes.Basic_img_ComboBox_normal_1);
-                this.Right = renderer.CreateTexture(MRes.Basic_img_ComboBox_normal_2);
+                this.Left = assetManager.LoadTexture(null, nameof(MRes.Basic_img_ComboBox_normal_0));
+                this.Center = assetManager.LoadTexture(null, nameof(MRes.Basic_img_ComboBox_normal_1));
+                this.Right = assetManager.LoadTexture(null, nameof(MRes.Basic_img_ComboBox_normal_2));
             }
 
             #region Interface implementation

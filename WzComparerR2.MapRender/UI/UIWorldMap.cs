@@ -11,10 +11,10 @@ using EmptyKeys.UserInterface.Media;
 using EmptyKeys.UserInterface.Data;
 using EmptyKeys.UserInterface.Renderers;
 using EmptyKeys.UserInterface.Media.Imaging;
+using EmptyKeys.UserInterface.Input;
 
 using WzComparerR2.WzLib;
 using WzComparerR2.Common;
-using WzComparerR2.PluginBase;
 
 using Res = CharaSimResource.Resource;
 using MRes = WzComparerR2.MapRender.Properties.Resources;
@@ -28,11 +28,8 @@ namespace WzComparerR2.MapRender.UI
         public static readonly DependencyProperty CurrentMapIDProperty = DependencyProperty.Register("CurrentMapID", typeof(WorldMapInfo), typeof(int?), new FrameworkPropertyMetadata(null));
         public static readonly DependencyProperty UseImageNameAsInfoNameProperty = DependencyProperty.Register("UseImageNameAsInfoName", typeof(WorldMapInfo), typeof(bool), new FrameworkPropertyMetadata(false));
 
-        public UIWorldMap(FrmMapRender2 game, StringLinker stringLinker) : base()
+        public UIWorldMap() : base()
         {
-            this.Game = game;
-            this.StringLinker = stringLinker;
-            this.MapArea.StringLinker = stringLinker;
             this.worldMaps = new ObservableCollection<WorldMapInfo>();
             this.CmbMaps.ItemsSource = this.worldMaps;
             //添加默认item样式
@@ -41,6 +38,7 @@ namespace WzComparerR2.MapRender.UI
             {
                 this.CmbMaps.Resources.Add(typeof(WorldMapInfo), template);
             }
+
             //添加默认点击事件
             UIHelper.RegisterClickEvent(this.MapArea, (_, point) => this.MapArea.HitTest(point), this.OnMapAreaClick);
         }
@@ -48,8 +46,8 @@ namespace WzComparerR2.MapRender.UI
         public bool IsDataLoaded { get; private set; }
         public ComboBox CmbMaps { get; private set; }
         public WorldMapArea MapArea { get; private set; }
-        public FrmMapRender2 Game { get; private set; }
-        public StringLinker StringLinker { get; private set; }
+
+        public event EventHandler<MapSpotEventArgs> MapSpotClick;
 
         private ObservableCollection<WorldMapInfo> worldMaps;
 
@@ -74,7 +72,7 @@ namespace WzComparerR2.MapRender.UI
         protected override void InitializeComponents()
         {
             var canvas = new Canvas();
-            var canvasBackTexture = Engine.Instance.Renderer.CreateTexture(MRes.UIWindow2_img_WorldMap_Border_0);
+            var canvasBackTexture = Engine.Instance.AssetManager.LoadTexture(null, nameof(MRes.UIWindow2_img_WorldMap_Border_0));
             canvas.Background = new ImageBrush() { ImageSource = new BitmapImage() { Texture = canvasBackTexture }, Stretch = Stretch.None };
             canvas.SetBinding(Canvas.WidthProperty, new Binding(UIWorldMap.WidthProperty) { Source = this, Mode = BindingMode.TwoWay });
             canvas.SetBinding(Canvas.HeightProperty, new Binding(UIWorldMap.HeightProperty) { Source = this, Mode = BindingMode.TwoWay });
@@ -99,6 +97,7 @@ namespace WzComparerR2.MapRender.UI
             WorldMapArea mapArea = new WorldMapArea();
             mapArea.Width = 640;
             mapArea.Height = 480;
+            mapArea.InputBindings.Add(new InputBinding(new RelayCommand(MapArea_RightClick), new MouseGesture(MouseAction.RightClick)));
             Canvas.SetLeft(mapArea, 7);
             Canvas.SetTop(mapArea, 44);
             canvas.Children.Add(mapArea);
@@ -114,6 +113,14 @@ namespace WzComparerR2.MapRender.UI
             Canvas.SetLeft(btnBack, 180);
             Canvas.SetTop(btnBack, 23);
             canvas.Children.Add(btnBack);
+
+            ImageButton btnClose = new ImageButton();
+            btnClose.Name = "Close";
+            btnClose.Click += BtnClose_Click;
+            btnClose.SetResourceReference(UIElement.StyleProperty, MapRenderResourceKey.MapRenderButtonStyle);
+            Canvas.SetRight(btnClose, 7);
+            Canvas.SetTop(btnClose, 5);
+            canvas.Children.Add(btnClose);
 
             this.Width = canvasBackTexture.Width;
             this.Height = canvasBackTexture.Height;
@@ -287,7 +294,7 @@ namespace WzComparerR2.MapRender.UI
             }
 
             //处理当前地图信息
-            foreach(var map in this.worldMaps)
+            foreach (var map in this.worldMaps)
             {
                 if (map.ParentMap != null)
                 {
@@ -346,28 +353,37 @@ namespace WzComparerR2.MapRender.UI
             {
                 var link = (MapLink)obj;
                 var linkmapInfo = this.worldMaps.FirstOrDefault(map => map.Name == link.LinkMap);
-                if( linkmapInfo != null)
+                if (linkmapInfo != null)
                 {
                     this.CurrentWorldMap = linkmapInfo;
                 }
             }
             else if (obj is MapSpot)
             {
-                if (((MapSpot)obj).MapNo.Count > 0)
+                var spot = (MapSpot)obj;
+                if (spot.MapNo.Count > 0)
                 {
-                    StringResult sr = null;
-                    StringLinker.StringMap.TryGetValue(((MapSpot)obj).MapNo[0], out sr);
-                    string mapName = sr?["mapName"] ?? "(null)";
-                    int last = (mapName.LastOrDefault(c => c >= '가' && c <= '힣') - '가') % 28;
-                    if (System.Windows.Forms.MessageBox.Show(mapName + (last == 0 || last == 8 ? "" : "으") + "로 이동하시겠습니까?", "MapRender", System.Windows.Forms.MessageBoxButtons.YesNo) == System.Windows.Forms.DialogResult.Yes)
-                    {
-                        this.Game.MoveToPortal(((MapSpot)obj).MapNo[0], "sp");
-                    }
+                    this.MapSpotClick?.Invoke(this, new MapSpotEventArgs(spot.MapNo[0]));
                 }
             }
         }
 
         private void BtnBack_Click(object sender, RoutedEventArgs e)
+        {
+            this.GoBack();
+        }
+
+        private void MapArea_RightClick(object obj)
+        {
+            this.GoBack();
+        }
+
+        private void BtnClose_Click(object sender, RoutedEventArgs e)
+        {
+            this.Hide();
+        }
+
+        private void GoBack()
         {
             var curMap = this.CurrentWorldMap;
             if (curMap != null && curMap.ParentMap != null)
@@ -388,7 +404,6 @@ namespace WzComparerR2.MapRender.UI
 
             public WorldMapInfo WorldMap { get; set; }
             public int? CurrentMapID { get; set; }
-            public StringLinker StringLinker { get; set; }
 
             private List<DrawItem> hitAreaCache;
 
@@ -398,44 +413,10 @@ namespace WzComparerR2.MapRender.UI
                 if (hitItem is MapSpot)
                 {
                     var spot = (MapSpot)hitItem;
-                    var tooltip = new UIWorldMap.Tooltip();
-                    if (spot.MapNo.Count > 0)
+                    var tooltip = new UIWorldMap.Tooltip()
                     {
-                        tooltip.MapID = spot.MapNo[0];
-                    }
-                    tooltip.Title = spot.Title;
-                    tooltip.Desc = spot.Desc;
-                    if (!spot.NoTooltip)
-                    {
-                        foreach (var mapNo in spot.MapNo)
-                        {
-                            var mapNode = PluginManager.FindWz(string.Format("Map/Map/Map{0}/{1:D9}.img/info", mapNo / 100000000, mapNo));
-                            int barrier = mapNode?.Nodes["barrier"].GetValueEx(0) ?? 0;
-                            int barrierArc = mapNode?.Nodes["barrierArc"].GetValueEx(0) ?? 0;
-                            tooltip.Barrier = Math.Max(tooltip.Barrier, barrier);
-                            tooltip.BarrierArc = Math.Max(tooltip.BarrierArc, barrierArc);
-                            var mobNode = PluginManager.FindWz(string.Format("Etc/MapObjectInfo.img/{0}/mob", mapNo));
-                            if (mobNode != null)
-                            {
-                                foreach (var valNode in mobNode.Nodes)
-                                {
-                                    tooltip.Mob.Add(new KeyValuePair<int, bool>(Convert.ToInt32(valNode.Value), barrier > 0 || barrierArc > 0));
-                                }
-                            }
-                            var npcNode = PluginManager.FindWz(string.Format("Etc/MapObjectInfo.img/{0}/npc", mapNo));
-                            if (npcNode != null)
-                            {
-                                foreach (var valNode in npcNode.Nodes)
-                                {
-                                    StringResult sr = null;
-                                    StringLinker?.StringNpc.TryGetValue(Convert.ToInt32(valNode.Value), out sr);
-                                    tooltip.Npc.Add(sr.Name);
-                                }
-                            }
-                        }
-                    }
-                    tooltip.Mob = tooltip.Mob.Distinct().ToList();
-                    tooltip.Npc = tooltip.Npc.Distinct().ToList();
+                        Spot = spot
+                    };
                     return tooltip;
                 }
                 return null;
@@ -635,13 +616,17 @@ namespace WzComparerR2.MapRender.UI
 
         public class Tooltip
         {
-            public int? MapID { get; set; }
-            public string Title { get; set; }
-            public string Desc { get; set; }
-            public int Barrier { get; set; } = 0;
-            public int BarrierArc { get; set; } = 0;
-            public List<KeyValuePair<int, bool>> Mob { get; set; } = new List<KeyValuePair<int, bool>>();
-            public List<string> Npc { get; set; } = new List<string>();
+            public MapSpot Spot { get; set; }
+        }
+
+        public class MapSpotEventArgs : EventArgs
+        {
+            public MapSpotEventArgs(int mapID)
+            {
+                this.MapID = mapID;
+            }
+
+            public int MapID { get; private set; }
         }
     }
 }

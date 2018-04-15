@@ -25,15 +25,24 @@ namespace WzComparerR2.MapRender
 
             //开始加载地图
             yield return new WaitTaskCompletedCoroutine(LoadMap());
+
+            //添加视图状态
+            this.viewData = new MapViewData()
+            {
+                MapID = mapData?.ID ?? -1,
+                Portal = "sp"
+            };
+
             if (this.mapData != null)
             {
-                //添加视图状态
-                viewData = new MapViewData()
-                {
-                    MapID = mapData?.ID ?? -1,
-                    Portal = "sp"
-                };
                 yield return cm.Yield(OnSceneEnter());
+            }
+            else
+            {
+                //添加提示语
+                this.ui.ChatBox.AppendTextSystem("MapRender가 맵을 로드하지 못했습니다. 올바른 맵이 아닙니다.");
+                this.opacity = 1;
+                yield return cm.Yield(OnSceneRunning());
             }
         }
 
@@ -49,7 +58,7 @@ namespace WzComparerR2.MapRender
             this.resLoader.BeginCounting();
 
             //加载地图数据
-            var mapData = new MapData();
+            var mapData = new MapData(this.Services.GetService<IRandom>());
             mapData.Load(mapImg.Node, resLoader);
 
             //处理bgm
@@ -130,11 +139,11 @@ namespace WzComparerR2.MapRender
         private void AfterLoadMap(MapData mapData)
         {
             //同步可视化状态
-            foreach(var portal in mapData.Scene.Portals)
+            foreach (var portal in mapData.Scene.Portals)
             {
                 portal.View.IsEditorMode = this.patchVisibility.PortalInEditMode;
             }
-           
+
             //同步UI
             this.renderEnv.Camera.WorldRect = mapData.VRect;
 
@@ -184,36 +193,10 @@ namespace WzComparerR2.MapRender
                         if (tooltip == null && portal.ToMap != null && portal.ToMap != 999999999
                             && StringLinker.StringMap.TryGetValue(portal.ToMap.Value, out sr))
                         {
-                            var tooltip2 = new UIWorldMap.Tooltip();
-                            tooltip2.MapID = portal.ToMap;
-                            tooltip2.Title = sr["mapName"];
-                            tooltip2.Desc = "";
-                            var mapNode = PluginManager.FindWz(string.Format("Map/Map/Map{0}/{1:D9}.img/info", portal.ToMap / 100000000, portal.ToMap));
-                            int barrier = mapNode?.Nodes["barrier"].GetValueEx(0) ?? 0;
-                            int barrierArc = mapNode?.Nodes["barrierArc"].GetValueEx(0) ?? 0;
-                            tooltip2.Barrier = Math.Max(tooltip2.Barrier, barrier);
-                            tooltip2.BarrierArc = Math.Max(tooltip2.BarrierArc, barrierArc);
-                            var mobNode = PluginManager.FindWz(string.Format("Etc/MapObjectInfo.img/{0}/mob", portal.ToMap));
-                            if (mobNode != null)
-                            {
-                                foreach (var valNode in mobNode.Nodes)
-                                {
-                                    tooltip2.Mob.Add(new KeyValuePair<int, bool>(Convert.ToInt32(valNode.Value), barrier > 0 || barrierArc > 0));
-                                }
-                            }
-                            var npcNode = PluginManager.FindWz(string.Format("Etc/MapObjectInfo.img/{0}/npc", portal.ToMap));
-                            if (npcNode != null)
-                            {
-                                foreach (var valNode in npcNode.Nodes)
-                                {
-                                    StringResult sr2 = null;
-                                    StringLinker?.StringNpc.TryGetValue(Convert.ToInt32(valNode.Value), out sr2);
-                                    tooltip2.Npc.Add(sr2.Name);
-                                }
-                            }
-                            tooltip2.Mob = tooltip2.Mob.Distinct().ToList();
-                            tooltip2.Npc = tooltip2.Npc.Distinct().ToList();
-                            tooltip = tooltip2;
+                            var spot = new UIWorldMap.MapSpot();
+                            spot.Title = sr["mapName"];
+                            spot.MapNo.Add(portal.ToMap ?? 0);
+                            tooltip = new UIWorldMap.Tooltip() { Spot = spot };
                         }
                         this.ui.Minimap.Icons.Add(new UIMinimap2.MapIcon()
                         {
@@ -238,10 +221,22 @@ namespace WzComparerR2.MapRender
                     case 10:
                         this.ui.Minimap.Icons.Add(new UIMinimap2.MapIcon()
                         {
-                            IconType = UIMinimap2.IconType.HiddenPortal,
+                            IconType = UIMinimap2.IconType.ArrowUp,
                             Tooltip = portal.Tooltip,
                             WorldPosition = new EmptyKeys.UserInterface.PointF(portal.X, portal.Y)
                         });
+                        break;
+
+                    case 11:
+                        if (portal.Script == "morassDQ_MP" || portal.Script == "morassDQ_34285")
+                        {
+                            this.ui.Minimap.Icons.Add(new UIMinimap2.MapIcon()
+                            {
+                                IconType = UIMinimap2.IconType.HiddenPortal,
+                                Tooltip = portal.Tooltip,
+                                WorldPosition = new EmptyKeys.UserInterface.PointF(portal.X, portal.Y)
+                            });
+                        }
                         break;
                 }
             }
@@ -374,13 +369,28 @@ namespace WzComparerR2.MapRender
             //记录历史
             if (this.viewData.MapID != this.viewData.ToMapID && this.viewData.ToMapID != null)
             {
-                viewHistory.AddLast(this.viewData);
-                var toViewData = new MapViewData()
+                if (this.viewData.IsMoveBack 
+                    && this.viewData.ToMapID == this.viewHistory.Last?.Value?.MapID)
                 {
-                    MapID = this.viewData.ToMapID.Value,
-                    Portal = this.viewData.ToPortal ?? "sp"
-                };
-                this.viewData = toViewData;
+                    var last = this.viewHistory.Last.Value;
+                    this.viewHistory.RemoveLast();
+                    var toViewData = new MapViewData()
+                    {
+                        MapID = last.MapID,
+                        Portal = last.Portal ?? "sp"
+                    };
+                    this.viewData = toViewData;
+                }
+                else
+                {
+                    viewHistory.AddLast(this.viewData);
+                    var toViewData = new MapViewData()
+                    {
+                        MapID = this.viewData.ToMapID.Value,
+                        Portal = this.viewData.ToPortal ?? "sp"
+                    };
+                    this.viewData = toViewData;
+                }
             }
             else
             {
@@ -401,7 +411,7 @@ namespace WzComparerR2.MapRender
             while (true)
             {
                 SceneUpdate();
-                if (viewData.ToMapID != null)
+                if (this.viewData?.ToMapID != null)
                 {
                     break;
                 }
@@ -447,14 +457,17 @@ namespace WzComparerR2.MapRender
             //更新ui
             this.ui.UpdateLayout(gameTime.ElapsedGameTime.TotalMilliseconds);
             //更新场景
-            UpdateAllItems(mapData.Scene, gameTime.ElapsedGameTime);
+            if (mapData != null)
+            {
+                UpdateAllItems(mapData.Scene, gameTime.ElapsedGameTime);
+            }
             //更新tooltip
             UpdateTooltip();
         }
 
-        public void MoveToPortal(int? toMap, string pName, string fromPName = null)
+        private void MoveToPortal(int? toMap, string pName, string fromPName = null, bool isBack = false)
         {
-            if (toMap != null && toMap != this.mapData.ID) //跳转地图
+            if (toMap != null && toMap != this.mapData?.ID) //跳转地图
             {
                 //寻找地图数据
                 Wz_Node node;
@@ -467,7 +480,12 @@ namespace WzComparerR2.MapRender
                         viewData.ToMapID = toMap;
                         viewData.ToPortal = pName;
                         viewData.Portal = fromPName;
+                        viewData.IsMoveBack = isBack;
                     }
+                }
+                else
+                {
+                    this.ui.ChatBox.AppendTextSystem($"{toMap.Value} 맵으로 이동할 수 없습니다.");
                 }
             }
             else //当前地图
@@ -483,12 +501,25 @@ namespace WzComparerR2.MapRender
             }
         }
 
+        private void MoveToLastMap()
+        {
+            if (viewHistory.Count > 0)
+            {
+                var last = viewHistory.Last.Value;
+                if (last.MapID > -1)
+                {
+                    MoveToPortal(last.MapID, last.Portal, null, true);
+                }
+            }
+        }
+
         class MapViewData
         {
             public int MapID { get; set; }
             public string Portal { get; set; }
             public int? ToMapID { get; set; }
             public string ToPortal { get; set; }
+            public bool IsMoveBack { get; set; }
         }
     }
 }

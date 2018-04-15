@@ -11,35 +11,23 @@ namespace WzComparerR2.CharaSim
     {
         static CharaSimLoader()
         {
-            loadedSetItems = new Dictionary<int, SetItem>();
-            loadedExclusiveEquips = new Dictionary<int, ExclusiveEquip>();
-            loadedCommoditiesBySN = new Dictionary<int, Commodity>();
-            loadedCommoditiesByItemId = new Dictionary<int, Commodity>();
+            LoadedSetItems = new Dictionary<int, SetItem>();
+            LoadedExclusiveEquips = new Dictionary<int, ExclusiveEquip>();
+            LoadedCommoditiesBySN = new Dictionary<int, Commodity>();
+            LoadedCommoditiesByItemId = new Dictionary<int, Commodity>();
         }
 
-        private static Dictionary<int, SetItem> loadedSetItems;
-        private static Dictionary<int, ExclusiveEquip> loadedExclusiveEquips;
-        private static Dictionary<int, Commodity> loadedCommoditiesBySN;
-        private static Dictionary<int, Commodity> loadedCommoditiesByItemId;
+        public static Dictionary<int, SetItem> LoadedSetItems;
+        public static Dictionary<int, ExclusiveEquip> LoadedExclusiveEquips;
+        public static Dictionary<int, Commodity> LoadedCommoditiesBySN;
+        public static Dictionary<int, Commodity> LoadedCommoditiesByItemId;
 
-        public static Dictionary<int, SetItem> LoadedSetItems
+        public static void LoadSetItemsIfEmpty()
         {
-            get { return loadedSetItems; }
-        } 
-
-        public static Dictionary<int, ExclusiveEquip> LoadedExclusiveEquips
-        {
-            get { return loadedExclusiveEquips; }
-        }
-
-        public static Dictionary<int, Commodity> LoadedCommoditiesBySN
-        {
-            get { return loadedCommoditiesBySN; }
-        }
-
-        public static Dictionary<int, Commodity> LoadedCommoditiesByItemId
-        {
-            get { return loadedCommoditiesByItemId; }
+            if (LoadedSetItems.Count == 0)
+            {
+                LoadSetItems();
+            }
         }
 
         public static void LoadSetItems()
@@ -60,7 +48,7 @@ namespace WzComparerR2.CharaSim
             if (optionNode == null)
                 return;
 
-            loadedSetItems.Clear();
+            LoadedSetItems.Clear();
             foreach (Wz_Node node in setItemNode.Nodes)
             {
                 int setItemIndex;
@@ -68,43 +56,53 @@ namespace WzComparerR2.CharaSim
                 {
                     SetItem setItem = SetItem.CreateFromNode(node, optionNode);
                     if (setItem != null)
-                        loadedSetItems[setItemIndex] = setItem;
+                        LoadedSetItems[setItemIndex] = setItem;
                 }
+            }
+        }
+
+        public static void LoadExclusiveEquipsIfEmpty()
+        {
+            if (LoadedExclusiveEquips.Count == 0)
+            {
+                LoadExclusiveEquips();
             }
         }
 
         public static void LoadExclusiveEquips()
         {
-            Wz_Node etcWz = PluginManager.FindWz(Wz_Type.Etc);
-            if (etcWz == null)
-                return;
-            Wz_Node exclusiveEquipNode = etcWz.FindNodeByPath("ExclusiveEquip.img", true);
-            if (exclusiveEquipNode == null)
+            Wz_Node exclusiveNode = PluginManager.FindWz("Etc/ExclusiveEquip.img");
+            if (exclusiveNode == null)
                 return;
 
-            loadedExclusiveEquips.Clear();
-            foreach (Wz_Node node in exclusiveEquipNode.Nodes)
+            LoadedExclusiveEquips.Clear();
+            foreach (Wz_Node node in exclusiveNode.Nodes)
             {
                 int exclusiveEquipIndex;
                 if (Int32.TryParse(node.Text, out exclusiveEquipIndex))
                 {
                     ExclusiveEquip exclusiveEquip = ExclusiveEquip.CreateFromNode(node);
                     if (exclusiveEquip != null)
-                        loadedExclusiveEquips[exclusiveEquipIndex] = exclusiveEquip;
+                        LoadedExclusiveEquips[exclusiveEquipIndex] = exclusiveEquip;
                 }
+            }
+        }
+
+        public static void LoadCommoditiesIfEmpty()
+        {
+            if (LoadedCommoditiesBySN.Count == 0 && LoadedCommoditiesByItemId.Count == 0)
+            {
+                LoadExclusiveEquips();
             }
         }
 
         public static void LoadCommodities()
         {
-            Wz_Node etcWz = PluginManager.FindWz(Wz_Type.Etc);
-            if (etcWz == null)
-                return;
-            Wz_Node commodityNode = etcWz.FindNodeByPath("Commodity.img", true);
+            Wz_Node commodityNode = PluginManager.FindWz("Etc/Commodity.img");
             if (commodityNode == null)
                 return;
 
-            loadedCommoditiesBySN.Clear();
+            LoadedCommoditiesBySN.Clear();
             foreach (Wz_Node node in commodityNode.Nodes)
             {
                 int commodityIndex;
@@ -113,12 +111,18 @@ namespace WzComparerR2.CharaSim
                     Commodity commodity = Commodity.CreateFromNode(node);
                     if (commodity != null)
                     {
-                        loadedCommoditiesBySN[commodity.SN] = commodity;
+                        LoadedCommoditiesBySN[commodity.SN] = commodity;
                         if (commodity.ItemId / 10000 == 910)
-                            loadedCommoditiesByItemId[commodity.ItemId] = commodity;
+                            LoadedCommoditiesByItemId[commodity.ItemId] = commodity;
                     }
                 }
             }
+        }
+
+        public static void ClearAll()
+        {
+            LoadedSetItems.Clear();
+            LoadedExclusiveEquips.Clear();
         }
 
         public static int GetActionDelay(string actionName)

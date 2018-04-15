@@ -2,18 +2,22 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using EmptyKeys.UserInterface;
 using EmptyKeys.UserInterface.Input;
 using EmptyKeys.UserInterface.Media;
 using EmptyKeys.UserInterface.Renderers;
+using EmptyKeys.UserInterface.Mvvm;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System.Reflection;
+using WzComparerR2.WzLib;
 using WzComparerR2.Rendering;
 using WzComparerR2.MapRender;
 using ContentManager = Microsoft.Xna.Framework.Content.ContentManager;
-using Res = WzComparerR2.MapRender.Properties.Resources;
+using MRes = WzComparerR2.MapRender.Properties.Resources;
+using Res = CharaSimResource.Resource;
 
 namespace WzComparerR2.MapRender.UI
 {
@@ -26,6 +30,11 @@ namespace WzComparerR2.MapRender.UI
             _assetManager = new WcR2AssetManager();
             _audioDevice = new WcR2AudioDevice();
             _inputDevice = new MonoGameInputDevice();
+
+            if (ServiceManager.Instance.GetService<IClipboardService>() == null)
+            {
+                ServiceManager.Instance.AddService<IClipboardService>(new ClipBoardService());
+            }
         }
 
         private WcR2AssetManager _assetManager;
@@ -62,7 +71,18 @@ namespace WzComparerR2.MapRender.UI
 
         public static void Unload()
         {
-            InputManager.Current.FocusedElement = null;
+            InputManager.Current.ClearFocus();
+            Engine.instance = null;
+            VisualTreeHelper.Instance.ClearParentCache();
+            typeof(MessageBox).GetFields(BindingFlags.Static | BindingFlags.NonPublic)
+                .FirstOrDefault(field => field.FieldType == typeof(MessageBox))
+                .SetValue(null, Activator.CreateInstance(typeof(MessageBox), true));
+            typeof(InputManager).GetFields(BindingFlags.Static | BindingFlags.NonPublic)
+                .FirstOrDefault(field => field.FieldType == typeof(InputManager))
+                .SetValue(null, (InputManager)null);
+            typeof(DragDrop).GetFields(BindingFlags.Static | BindingFlags.NonPublic)
+                .FirstOrDefault(field => field.FieldType == typeof(DragDrop))
+                .SetValue(null, Activator.CreateInstance(typeof(DragDrop), true));
         }
 
         public static void InitialInputManager()
@@ -166,13 +186,15 @@ namespace WzComparerR2.MapRender.UI
 
     class WcR2AssetManager : MonoGameAssetManager
     {
+        public ContentManager DefaultContentManager { get; set; }
+
         public override FontBase LoadFont(object contentManager, string file)
         {
-            var cm = contentManager as WcR2ContentManager;
+            var cm = (contentManager as WcR2ContentManager) ?? this.DefaultContentManager;
             if (cm != null)
             {
-                var nativeFont = cm.Load<XnaFont>(file);
-                return Engine.Instance.Renderer.CreateFont(nativeFont);
+                var wcR2Font = cm.Load<IWcR2Font>(file);
+                return Engine.Instance.Renderer.CreateFont(wcR2Font);
             }
 
             return base.LoadFont(contentManager, file);
@@ -183,13 +205,13 @@ namespace WzComparerR2.MapRender.UI
         /// </remarks>
         public override TextureBase LoadTexture(object contentManager, string file)
         {
-            var cm = contentManager as WcR2ContentManager;
+            var cm = (contentManager as WcR2ContentManager) ?? this.DefaultContentManager;
             if (cm != null)
             {
-                var bitmap = Res.ResourceManager.GetObject(file) as System.Drawing.Bitmap;
-                if (bitmap != null)
+                var texture = cm.Load<Texture2D>(file);
+                if (texture != null)
                 {
-                    return Engine.Instance.Renderer.CreateTexture(bitmap);
+                    return Engine.Instance.Renderer.CreateTexture(texture);
                 }
             }
 
@@ -203,10 +225,14 @@ namespace WzComparerR2.MapRender.UI
     {
         public WcR2Font(object nativeFont) : base(nativeFont)
         {
-            this.NativeFont = nativeFont as XnaFont;
+            this.NativeFont = nativeFont as IWcR2Font;
+            if (this.NativeFont == null)
+            {
+                throw new ArgumentException("nativeFont not implements IWcR2Font.");
+            }
         }
 
-        public XnaFont NativeFont { get; private set; }
+        public IWcR2Font NativeFont { get; private set; }
 
         public override char? DefaultCharacter
         {
@@ -220,7 +246,7 @@ namespace WzComparerR2.MapRender.UI
 
         public override int LineSpacing
         {
-            get { return NativeFont.Height; }
+            get { return (int)NativeFont.LineHeight; }
         }
 
         public override float Spacing
@@ -236,13 +262,13 @@ namespace WzComparerR2.MapRender.UI
 
         public override Size MeasureString(StringBuilder text, float dpiScaleX, float dpiScaleY)
         {
-            var size = NativeFont.MeasureString(text, 0, text.Length);
+            var size = NativeFont.MeasureString(text);
             return new Size(size.X, size.Y);
         }
 
         public override Size MeasureString(string text, float dpiScaleX, float dpiScaleY)
         {
-            var size = NativeFont.MeasureString(text, 0, text.Length);
+            var size = NativeFont.MeasureString(text);
             return new Size(size.X, size.Y);
         }
     }
@@ -304,13 +330,19 @@ namespace WzComparerR2.MapRender.UI
         {
             get
             {
-                return ((IGraphicsDeviceService)this.ServiceProvider.GetService(typeof(IGraphicsDeviceService))).GraphicsDevice;
+                return this.ServiceProvider.GetService<IGraphicsDeviceService>().GraphicsDevice;
             }
         }
 
+        public bool UseD2DFont { get; set; }
+
         public override T Load<T>(string assetName)
         {
-            if (typeof(T) == typeof(XnaFont))
+            if (assetName == "DirectionalBlurShader")
+            {
+                return default(T);
+            }
+            if (typeof(T) == typeof(IWcR2Font))
             {
                 object value;
                 if (!LoadedAssets.TryGetValue(assetName, out value))
@@ -323,32 +355,108 @@ namespace WzComparerR2.MapRender.UI
                 }
                 return (T)value;
             }
+            else if (typeof(T) == typeof(Texture2D))
+            {
+                object value;
+                if (!LoadedAssets.TryGetValue(assetName, out value))
+                {
+                    var bitmap = MRes.ResourceManager.GetObject(assetName) as System.Drawing.Bitmap;
+                    if (bitmap == null)
+                    {
+                        var obj = Res.ResourceManager.GetObject(assetName);
+                        bitmap = Res.ResourceManager.GetObject(assetName) as System.Drawing.Bitmap;
+                    }
+                    if (bitmap != null)
+                    {
+                        value = bitmap.ToTexture(this.GraphicsDevice);
+                    }
+                    else //寻找wz
+                    {
+                        var png = PluginBase.PluginManager.FindWz(assetName).GetValueEx<Wz_Png>(null);
+                        if (png != null)
+                        {
+                            value = png.ToTexture(this.GraphicsDevice);
+                        }
+                    }
+
+                    if (value != null)
+                    {
+                        LoadedAssets[assetName] = value;
+                    }
+                }
+                return (T)value;
+            }
             return base.Load<T>(assetName);
         }
 
-        private XnaFont LoadXnaFont(string assetName)
+        private IWcR2Font LoadXnaFont(string assetName)
         {
-            string[] fontDesc = assetName.Split(',');
+            string[] fontDesc = assetName.Split(new[] { ',' }, 3);
             string familyName = fontDesc[0];
             float size;
-            FontStyle style;
+            System.Drawing.FontStyle fStyle;
             if (float.TryParse(fontDesc[1], out size)
-                && Enum.TryParse(fontDesc[2], out style))
+                && Enum.TryParse(fontDesc[2], out fStyle))
             {
-                System.Drawing.FontStyle fStyle = System.Drawing.FontStyle.Regular;
-                switch (style)
+                if (this.UseD2DFont)
                 {
-                    case FontStyle.Regular: fStyle = System.Drawing.FontStyle.Regular; break;
-                    case FontStyle.Bold: fStyle = System.Drawing.FontStyle.Bold; break;
-                    case FontStyle.Italic: fStyle = System.Drawing.FontStyle.Italic; break;
+                    var d2dFont = new D2DFont(familyName, size,
+                        (fStyle & System.Drawing.FontStyle.Bold) != 0,
+                        (fStyle & System.Drawing.FontStyle.Italic) != 0
+                        );
+                    return new D2DFontAdapter(d2dFont);
                 }
-                var baseFont = new System.Drawing.Font(familyName, size, fStyle, System.Drawing.GraphicsUnit.Pixel);
-                return new XnaFont(GraphicsDevice, baseFont);
+                else
+                {
+                    var baseFont = new System.Drawing.Font(familyName, size, fStyle, System.Drawing.GraphicsUnit.Pixel);
+                    var xnaFont = new XnaFont(GraphicsDevice, baseFont);
+                    return new XnaFontAdapter(xnaFont);
+                }
             }
             else
             {
                 return null;
             }
+        }
+
+        public override void Unload()
+        {
+            foreach (var kv in this.LoadedAssets)
+            {
+                IDisposable disposable = kv.Value as IDisposable;
+                if (disposable != null)
+                {
+                    disposable.Dispose();
+                }
+            }
+            base.Unload();
+        }
+    }
+
+    class ClipBoardService : IClipboardService
+    {
+        public string GetText()
+        {
+            var text = string.Empty;
+            var thread = new Thread(() =>
+            {
+                text = System.Windows.Forms.Clipboard.GetText();
+            });
+            thread.SetApartmentState(ApartmentState.STA);
+            thread.Start();
+            thread.Join();
+            return text;
+        }
+
+        public void SetText(string text)
+        {
+            var thread = new Thread(() =>
+            {
+                System.Windows.Forms.Clipboard.SetText(text);
+            });
+            thread.SetApartmentState(ApartmentState.STA);
+            thread.Start();
+            thread.Join();
         }
     }
 
@@ -356,7 +464,12 @@ namespace WzComparerR2.MapRender.UI
     {
         public static void AddFont(this FontManager fontManager, string familyName, float size, FontStyle style)
         {
-            string assetName = string.Join(",", familyName, size, style);
+            System.Drawing.FontStyle fStyle = System.Drawing.FontStyle.Regular;
+            if ((style & FontStyle.Bold) != 0)
+                fStyle |= System.Drawing.FontStyle.Bold;
+            if ((style & FontStyle.Italic) != 0)
+                fStyle |= System.Drawing.FontStyle.Italic;
+            string assetName = MapRenderFonts.GetFontResourceKey(familyName, size, fStyle);
             fontManager.AddFont(familyName, size, style, assetName);
         }
 
@@ -368,6 +481,27 @@ namespace WzComparerR2.MapRender.UI
         public static PointF ToPointF(this WzComparerR2.WzLib.Wz_Vector vector)
         {
             return vector == null ? new PointF() : new PointF(vector.X, vector.Y);
+        }
+
+        public static Size MeasureString(this FontBase font, string text, Size layoutSize)
+        {
+            var wcR2Font = (font.GetNativeFont() as IWcR2Font)?.BaseFont;
+            if (wcR2Font != null)
+            {
+                if (wcR2Font is XnaFont)
+                {
+                    var xnaFont = (XnaFont)wcR2Font;
+                    var size = xnaFont.MeasureString(text, new Vector2(layoutSize.Width, layoutSize.Height));
+                    return new Size(size.X, size.Y);
+                }
+                else if (wcR2Font is D2DFont)
+                {
+                    var d2dFont = (D2DFont)wcR2Font;
+                    var size = d2dFont.MeasureString(text, new Vector2(layoutSize.Width, layoutSize.Height));
+                    return new Size(size.X, size.Y);
+                }
+            }
+            return font.MeasureString(text, 1, 1);
         }
     }
 }

@@ -11,16 +11,14 @@ using EmptyKeys.UserInterface.Media.Effects;
 using EmptyKeys.UserInterface.Themes;
 using EmptyKeys.UserInterface.Data;
 using Res = CharaSimResource.Resource;
-using WzComparerR2.Common;
+using MRes = WzComparerR2.MapRender.Properties.Resources;
 
 namespace WzComparerR2.MapRender.UI
 {
     class MapRenderUIRoot : UIRoot
     {
-        public MapRenderUIRoot(FrmMapRender2 game, StringLinker stringLinker) : base()
+        public MapRenderUIRoot() : base()
         {
-            this.Game = game;
-            this.StringLinker = stringLinker;
             InitGlobalResource();
             InitializeComponents();
 
@@ -36,15 +34,13 @@ namespace WzComparerR2.MapRender.UI
         public UIMinimap2 Minimap { get; private set; }
         public UIWorldMap WorldMap { get; private set; }
         public UITopBar TopBar { get; private set; }
-        public FrmMapRender2 Game { get; private set; }
-        public StringLinker StringLinker { get; private set; }
+        public UIChatBox ChatBox { get; private set; }
 
         private void InitializeComponents()
         {
             Style style = RootStyle.CreateRootStyle();
             style.TargetType = this.GetType();
             this.Style = style;
-
             this.Background = null;
 
             var mirrorFrame = new UIMirrorFrame();
@@ -61,9 +57,9 @@ namespace WzComparerR2.MapRender.UI
             this.Minimap = minimap;
             this.Windows.Add(minimap);
 
-            var worldmap = new UIWorldMap(this.Game, this.StringLinker);
+            var worldmap = new UIWorldMap();
             worldmap.Parent = this;
-            worldmap.Visibility = Visibility.Collapsed;
+            worldmap.Hide();
             worldmap.Visible += Worldmap_Visible;
             this.WorldMap = worldmap;
             this.Windows.Add(worldmap);
@@ -76,6 +72,30 @@ namespace WzComparerR2.MapRender.UI
             topBar.SetBinding(UITopBar.IsShortModeProperty, new Binding(Window.VisibilityProperty) { Source = minimap, Converter = UIHelper.CreateConverter((Visibility o) => o == Visibility.Visible) });
             this.TopBar = topBar;
             this.Windows.Add(topBar);
+
+            var chatBox = new UIChatBox();
+            chatBox.Parent = this;
+            chatBox.SetBinding(UIChatBox.TopProperty, new Binding(HeightProperty) { Source = this, Converter = UIHelper.CreateConverter((float height) => height - chatBox.Height) });
+            this.ChatBox = chatBox;
+            this.Windows.Add(chatBox);
+
+            ImageManager.Instance.AddImage(nameof(MRes.Basic_img_BtOK4_normal_0));
+            ImageManager.Instance.AddImage(nameof(MRes.Basic_img_BtOK4_mouseOver_0));
+            ImageManager.Instance.AddImage(nameof(MRes.Basic_img_BtOK4_pressed_0));
+            ImageManager.Instance.AddImage(nameof(MRes.Basic_img_BtOK4_disabled_0));
+            ImageManager.Instance.AddImage(nameof(MRes.Basic_img_BtNo3_normal_0));
+            ImageManager.Instance.AddImage(nameof(MRes.Basic_img_BtNo3_mouseOver_0));
+            ImageManager.Instance.AddImage(nameof(MRes.Basic_img_BtNo3_pressed_0));
+            ImageManager.Instance.AddImage(nameof(MRes.Basic_img_BtNo3_disabled_0));
+            ImageManager.Instance.AddImage(nameof(MRes.Basic_img_BtCancel4_normal_0));
+            ImageManager.Instance.AddImage(nameof(MRes.Basic_img_BtCancel4_mouseOver_0));
+            ImageManager.Instance.AddImage(nameof(MRes.Basic_img_BtCancel4_pressed_0));
+            ImageManager.Instance.AddImage(nameof(MRes.Basic_img_BtCancel4_disabled_0));
+            ImageManager.Instance.AddImage(nameof(MRes.Basic_img_BtClose3_normal_0));
+            ImageManager.Instance.AddImage(nameof(MRes.Basic_img_BtClose3_mouseOver_0));
+            ImageManager.Instance.AddImage(nameof(MRes.Basic_img_BtClose3_pressed_0));
+            ImageManager.Instance.AddImage(nameof(MRes.Basic_img_BtClose3_disabled_0));
+            this.Resources[CommonResourceKeys.MessageBoxWindowStyleKey] = MessageBoxStyle.CreateMessageBoxStyle();
         }
 
         private void Worldmap_Visible(object sender, RoutedEventArgs e)
@@ -94,7 +114,7 @@ namespace WzComparerR2.MapRender.UI
             }
         }
 
-        public void LoadContents(object contentManager)
+        public void LoadContent(object contentManager)
         {
             //UI资源
             FontManager.DefaultFontFamily = (FontFamily)this.FindResource(MapRenderResourceKey.DefaultFontFamily);
@@ -114,42 +134,60 @@ namespace WzComparerR2.MapRender.UI
         private void InitGlobalResource()
         {
             //初始化字体
-            var fontList = new[] { "돋움", "SimSun" };
+            var fontList = MapRenderFonts.DefaultFonts;
             var config = MapRender.Config.MapRenderConfig.Default;
             var resDict = ResourceDictionary.DefaultDictionary;
 
             var fontIndex = config.DefaultFontIndex;
-            if (fontIndex < 0 || fontIndex >= fontList.Length)
+            if (fontIndex < 0 || fontIndex >= fontList.Count)
             {
                 fontIndex = 0;
             }
-
+            
             resDict[MapRenderResourceKey.FontList] = fontList;
             resDict[MapRenderResourceKey.DefaultFontFamily] = new FontFamily(fontList[fontIndex]);
             resDict[MapRenderResourceKey.DefaultFontSize] = 12f;
+
+            //初始化style
+            resDict[MapRenderResourceKey.MapRenderButtonStyle] = MapRenderButtonStyle.CreateMapRenderButtonStyle();
+            resDict[MapRenderResourceKey.TextBoxExStyle] = TextBoxEx.CreateStyle();
         }
 
         private void LoadResource()
         {
-            var renderer = Engine.Instance.Renderer;
+            var assetManager = Engine.Instance.AssetManager;
 
             var tooltipBrush = new NinePatchBrush()
             {
                 Resource = new EKNineFormResource()
                 {
-                    NW = renderer.CreateTexture(Res.UIToolTip_img_Item_Frame2_nw),
-                    N = renderer.CreateTexture(Res.UIToolTip_img_Item_Frame2_n),
-                    NE = renderer.CreateTexture(Res.UIToolTip_img_Item_Frame2_ne),
-                    W = renderer.CreateTexture(Res.UIToolTip_img_Item_Frame2_w),
-                    C = renderer.CreateTexture(Res.UIToolTip_img_Item_Frame2_c),
-                    E = renderer.CreateTexture(Res.UIToolTip_img_Item_Frame2_e),
-                    SW = renderer.CreateTexture(Res.UIToolTip_img_Item_Frame2_sw),
-                    S = renderer.CreateTexture(Res.UIToolTip_img_Item_Frame2_s),
-                    SE = renderer.CreateTexture(Res.UIToolTip_img_Item_Frame2_se),
+                    NW = assetManager.LoadTexture(null, nameof(Res.UIToolTip_img_Item_Frame2_nw)),
+                    N = assetManager.LoadTexture(null, nameof(Res.UIToolTip_img_Item_Frame2_n)),
+                    NE = assetManager.LoadTexture(null, nameof(Res.UIToolTip_img_Item_Frame2_ne)),
+                    W = assetManager.LoadTexture(null, nameof(Res.UIToolTip_img_Item_Frame2_w)),
+                    C = assetManager.LoadTexture(null, nameof(Res.UIToolTip_img_Item_Frame2_c)),
+                    E = assetManager.LoadTexture(null, nameof(Res.UIToolTip_img_Item_Frame2_e)),
+                    SW = assetManager.LoadTexture(null, nameof(Res.UIToolTip_img_Item_Frame2_sw)),
+                    S = assetManager.LoadTexture(null, nameof(Res.UIToolTip_img_Item_Frame2_s)),
+                    SE = assetManager.LoadTexture(null, nameof(Res.UIToolTip_img_Item_Frame2_se)),
+                }
+            };
+
+            var msgBoxBackgroundBrush = new MessageBoxBackgroundBrush()
+            {
+                Resource = new MessageBoxBackgroundResource()
+                {
+                    T = assetManager.LoadTexture(null, nameof(MRes.Basic_img_Notice6_t)),
+                    C = assetManager.LoadTexture(null, nameof(MRes.Basic_img_Notice6_c)),
+                    C_Box = assetManager.LoadTexture(null, nameof(MRes.Basic_img_Notice6_c_box)),
+                    Box = assetManager.LoadTexture(null, nameof(MRes.Basic_img_Notice6_box)),
+                    S_Box = assetManager.LoadTexture(null, nameof(MRes.Basic_img_Notice6_s_box)),
+                    S = assetManager.LoadTexture(null, nameof(MRes.Basic_img_Notice6_s)),
                 }
             };
 
             this.Resources[MapRenderResourceKey.TooltipBrush] = tooltipBrush;
+            this.Resources[MapRenderResourceKey.MessageBoxBackgroundBrush] = msgBoxBackgroundBrush;
         }
 
         public void UnloadContents()
@@ -181,7 +219,13 @@ namespace WzComparerR2.MapRender.UI
 
         public new void UpdateInput(double elapsedGameTime)
         {
-            base.UpdateInput(elapsedGameTime);
+            try
+            {
+                base.UpdateInput(elapsedGameTime);
+            }
+            catch(Exception ex)
+            {
+            }
             this.OnInputUpdated(EventArgs.Empty);
         }
 

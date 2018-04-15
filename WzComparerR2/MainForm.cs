@@ -749,7 +749,7 @@ namespace WzComparerR2
                 wz.Clear();
             }
             openedWz.Clear();
-            CharaSimLoader.LoadedSetItems.Clear();
+            CharaSimLoader.ClearAll();
             stringLinker.Clear();
             labelItemStatus.Text = "모두 닫기 완료";
             GC.Collect();
@@ -1305,7 +1305,7 @@ namespace WzComparerR2
             List<string> wzPath = new List<string>();
             List<string> imagePath = new List<string>();
 
-            Action<int> addPath = i =>
+            Action addPath = () =>
             {
                 List<string> fullPath = new List<string>(wzPath.Count + imagePath.Count);
                 fullPath.AddRange(wzPath);
@@ -1319,17 +1319,9 @@ namespace WzComparerR2
                 case "Cash.img":
                 case "Consume.img":
                 case "Etc.img":
-                case "Ins.img":
                 case "Pet.img":
                     wzPath.Add("Item");
-                    if (pathArray[0] == "Ins.img")
-                    {
-                        wzPath.Add("Install");
-                    }
-                    else
-                    {
-                        wzPath.Add(pathArray[0].Substring(0, pathArray[0].IndexOf(".img")));
-                    }
+                    wzPath.Add(pathArray[0].Substring(0, pathArray[0].IndexOf(".img")));
                     if (pathArray[0] == "Pet.img")
                     {
                         wzPath.Add(id.TrimStart('0') + ".img");
@@ -1340,7 +1332,20 @@ namespace WzComparerR2
                         wzPath.Add(id.Substring(0, 4) + ".img");
                         imagePath.Add(id);
                     }
-                    addPath(0);
+                    addPath();
+                    break;
+
+                case "Ins.img": //KMST1066
+                    wzPath.Add("Item");
+                    wzPath.Add("Install");
+                    wzPath.Add("");
+                    id = id.PadLeft(8, '0');
+                    imagePath.Add(id);
+                    for (int len = 4; len <= 6; len++)
+                    {
+                        wzPath[2] = id.Substring(0, len) + ".img";
+                        addPath();
+                    }
                     break;
 
                 case "Eqp.img":
@@ -1354,28 +1359,28 @@ namespace WzComparerR2
                         wzPath.Add(pathArray[2]);
                     }
                     wzPath.Add(id.PadLeft(8, '0') + ".img");
-                    addPath(0);
+                    addPath();
                     //往往这个不靠谱。。 加一个任意门备用
                     wzPath[1] = "";
-                    addPath(1);
+                    addPath();
                     break;
 
                 case "Map.img":
                     id = id.PadLeft(9, '0');
                     wzPath.AddRange(new string[] { "Map", "Map", "Map" + id[0], id + ".img" });
-                    addPath(0);
+                    addPath();
                     break;
 
                 case "Mob.img":
                     wzPath.Add("Mob");
                     wzPath.Add(id.PadLeft(7, '0') + ".img");
-                    addPath(0);
+                    addPath();
                     break;
 
                 case "Npc.img":
                     wzPath.Add("Npc");
                     wzPath.Add(id.PadLeft(7, '0') + ".img");
-                    addPath(0);
+                    addPath();
                     break;
 
                 case "Skill.img":
@@ -1385,11 +1390,11 @@ namespace WzComparerR2
                     wzPath.Add(id.Substring(0, id.Length - 4) + ".img");
                     imagePath.Add("skill");
                     imagePath.Add(id);
-                    addPath(0);
+                    addPath();
                     if (Regex.IsMatch(id, @"80\d{6}")) //kmst new skill
                     {
                         wzPath[1] = id.Substring(0, 6) + ".img";
-                        addPath(1);
+                        addPath();
                     }
                     break;
 
@@ -1398,7 +1403,7 @@ namespace WzComparerR2
                     wzPath.Add("Special");
                     wzPath.Add("0910.img");
                     imagePath.Add(id);
-                    addPath(0);
+                    addPath();
                     break;
                 default:
                     break;
@@ -2388,18 +2393,9 @@ namespace WzComparerR2
                 case Wz_Type.Character:
                     if ((image = selectedNode.GetValue<Wz_Image>()) == null || !image.TryExtract())
                         return;
-                    if (CharaSimLoader.LoadedSetItems.Count == 0)
-                    {
-                        CharaSimLoader.LoadSetItems();
-                    }
-                    if (CharaSimLoader.LoadedExclusiveEquips.Count == 0)
-                    {
-                        CharaSimLoader.LoadExclusiveEquips();
-                    }
-                    if (CharaSimLoader.LoadedCommoditiesBySN.Count == 0)
-                    {
-                        CharaSimLoader.LoadCommodities();
-                    }
+                    CharaSimLoader.LoadSetItemsIfEmpty();
+                    CharaSimLoader.LoadExclusiveEquipsIfEmpty();
+                    CharaSimLoader.LoadCommoditiesIfEmpty();
                     var gear = Gear.CreateFromNode(image.Node, PluginManager.FindWz);
                     obj = gear;
                     if (gear != null)
@@ -2421,7 +2417,7 @@ namespace WzComparerR2
                         CharaSimLoader.LoadCommodities();
                     }
                     Wz_Node itemNode = selectedNode;
-                    if (Regex.IsMatch(itemNode.FullPathToFile, @"^Item\\(Cash|Consume|Etc|Install|Cash)\\\d{4}.img\\\d+$") || Regex.IsMatch(itemNode.FullPathToFile, @"^Item\\Special\\0910.img\\\d+$"))
+                    if (Regex.IsMatch(itemNode.FullPathToFile, @"^Item\\(Cash|Consume|Etc|Install|Cash)\\\d{4,6}.img\\\d+$") || Regex.IsMatch(itemNode.FullPathToFile, @"^Item\\Special\\0910.img\\\d+$"))
                     {
                         var item = Item.CreateFromNode(itemNode, PluginManager.FindWz);
                         obj = item;
@@ -2434,7 +2430,7 @@ namespace WzComparerR2
                     {
                         if (CharaSimLoader.LoadedSetItems.Count == 0) //宠物 预读套装
                         {
-                            CharaSimLoader.LoadSetItems();
+                            CharaSimLoader.LoadSetItemsIfEmpty();
                         }
                         if (CharaSimLoader.LoadedExclusiveEquips.Count == 0)
                         {
@@ -2488,18 +2484,6 @@ namespace WzComparerR2
                 case Wz_Type.Mob:
                     if ((image = selectedNode.GetValue<Wz_Image>()) == null || !image.TryExtract())
                         return;
-                    if (CharaSimLoader.LoadedSetItems.Count == 0)
-                    {
-                        CharaSimLoader.LoadSetItems();
-                    }
-                    if (CharaSimLoader.LoadedExclusiveEquips.Count == 0)
-                    {
-                        CharaSimLoader.LoadExclusiveEquips();
-                    }
-                    if (CharaSimLoader.LoadedCommoditiesBySN.Count == 0)
-                    {
-                        CharaSimLoader.LoadCommodities();
-                    }
                     var mob = Mob.CreateFromNode(image.Node, PluginManager.FindWz);
                     obj = mob;
                     if (mob != null)
@@ -2511,18 +2495,6 @@ namespace WzComparerR2
                 case Wz_Type.Npc:
                     if ((image = selectedNode.GetValue<Wz_Image>()) == null || !image.TryExtract())
                         return;
-                    if (CharaSimLoader.LoadedSetItems.Count == 0)
-                    {
-                        CharaSimLoader.LoadSetItems();
-                    }
-                    if (CharaSimLoader.LoadedExclusiveEquips.Count == 0)
-                    {
-                        CharaSimLoader.LoadExclusiveEquips();
-                    }
-                    if (CharaSimLoader.LoadedCommoditiesBySN.Count == 0)
-                    {
-                        CharaSimLoader.LoadCommodities();
-                    }
                     var npc = Npc.CreateFromNode(image.Node, PluginManager.FindWz);
                     obj = npc;
                     if (npc != null)

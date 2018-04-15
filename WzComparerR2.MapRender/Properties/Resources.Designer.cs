@@ -63,6 +63,166 @@ namespace WzComparerR2.MapRender.Properties {
         /// <summary>
         ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
         /// </summary>
+        internal static System.Drawing.Bitmap Basic_img_BtCancel4_disabled_0 {
+            get {
+                object obj = ResourceManager.GetObject("Basic_img_BtCancel4_disabled_0", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+        /// </summary>
+        internal static System.Drawing.Bitmap Basic_img_BtCancel4_mouseOver_0 {
+            get {
+                object obj = ResourceManager.GetObject("Basic_img_BtCancel4_mouseOver_0", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+        /// </summary>
+        internal static System.Drawing.Bitmap Basic_img_BtCancel4_normal_0 {
+            get {
+                object obj = ResourceManager.GetObject("Basic_img_BtCancel4_normal_0", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+        /// </summary>
+        internal static System.Drawing.Bitmap Basic_img_BtCancel4_pressed_0 {
+            get {
+                object obj = ResourceManager.GetObject("Basic_img_BtCancel4_pressed_0", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+        /// </summary>
+        internal static System.Drawing.Bitmap Basic_img_BtClose3_disabled_0 {
+            get {
+                object obj = ResourceManager.GetObject("Basic_img_BtClose3_disabled_0", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+        /// </summary>
+        internal static System.Drawing.Bitmap Basic_img_BtClose3_mouseOver_0 {
+            get {
+                object obj = ResourceManager.GetObject("Basic_img_BtClose3_mouseOver_0", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+        /// </summary>
+        internal static System.Drawing.Bitmap Basic_img_BtClose3_normal_0 {
+            get {
+                object obj = ResourceManager.GetObject("Basic_img_BtClose3_normal_0", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+        /// </summary>
+        internal static System.Drawing.Bitmap Basic_img_BtClose3_pressed_0 {
+            get {
+                object obj = ResourceManager.GetObject("Basic_img_BtClose3_pressed_0", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+        /// </summary>
+        internal static System.Drawing.Bitmap Basic_img_BtNo3_disabled_0 {
+            get {
+                object obj = ResourceManager.GetObject("Basic_img_BtNo3_disabled_0", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+        /// </summary>
+        internal static System.Drawing.Bitmap Basic_img_BtNo3_mouseOver_0 {
+            get {
+                object obj = ResourceManager.GetObject("Basic_img_BtNo3_mouseOver_0", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+        /// </summary>
+        internal static System.Drawing.Bitmap Basic_img_BtNo3_normal_0 {
+            get {
+                object obj = ResourceManager.GetObject("Basic_img_BtNo3_normal_0", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+        /// </summary>
+        internal static System.Drawing.Bitmap Basic_img_BtNo3_pressed_0 {
+            get {
+                object obj = ResourceManager.GetObject("Basic_img_BtNo3_pressed_0", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+        /// </summary>
+        internal static System.Drawing.Bitmap Basic_img_BtOK4_disabled_0 {
+            get {
+                object obj = ResourceManager.GetObject("Basic_img_BtOK4_disabled_0", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+        /// </summary>
+        internal static System.Drawing.Bitmap Basic_img_BtOK4_mouseOver_0 {
+            get {
+                object obj = ResourceManager.GetObject("Basic_img_BtOK4_mouseOver_0", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+        /// </summary>
+        internal static System.Drawing.Bitmap Basic_img_BtOK4_normal_0 {
+            get {
+                object obj = ResourceManager.GetObject("Basic_img_BtOK4_normal_0", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+        /// </summary>
+        internal static System.Drawing.Bitmap Basic_img_BtOK4_pressed_0 {
+            get {
+                object obj = ResourceManager.GetObject("Basic_img_BtOK4_pressed_0", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+        /// </summary>
         internal static System.Drawing.Bitmap Basic_img_ComboBox_normal_0 {
             get {
                 object obj = ResourceManager.GetObject("Basic_img_ComboBox_normal_0", resourceCulture);
@@ -86,6 +246,66 @@ namespace WzComparerR2.MapRender.Properties {
         internal static System.Drawing.Bitmap Basic_img_ComboBox_normal_2 {
             get {
                 object obj = ResourceManager.GetObject("Basic_img_ComboBox_normal_2", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+        /// </summary>
+        internal static System.Drawing.Bitmap Basic_img_Notice6_box {
+            get {
+                object obj = ResourceManager.GetObject("Basic_img_Notice6_box", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+        /// </summary>
+        internal static System.Drawing.Bitmap Basic_img_Notice6_c {
+            get {
+                object obj = ResourceManager.GetObject("Basic_img_Notice6_c", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+        /// </summary>
+        internal static System.Drawing.Bitmap Basic_img_Notice6_c_box {
+            get {
+                object obj = ResourceManager.GetObject("Basic_img_Notice6_c_box", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+        /// </summary>
+        internal static System.Drawing.Bitmap Basic_img_Notice6_s {
+            get {
+                object obj = ResourceManager.GetObject("Basic_img_Notice6_s", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+        /// </summary>
+        internal static System.Drawing.Bitmap Basic_img_Notice6_s_box {
+            get {
+                object obj = ResourceManager.GetObject("Basic_img_Notice6_s_box", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+        /// </summary>
+        internal static System.Drawing.Bitmap Basic_img_Notice6_t {
+            get {
+                object obj = ResourceManager.GetObject("Basic_img_Notice6_t", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -206,6 +426,56 @@ namespace WzComparerR2.MapRender.Properties {
         internal static System.Drawing.Bitmap Basic_img_ShowLevel_Bracket_right {
             get {
                 object obj = ResourceManager.GetObject("Basic_img_ShowLevel_Bracket_right", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+        /// </summary>
+        internal static System.Drawing.Bitmap StatusBar3_img_chat_ingame_input_layer_backgrnd {
+            get {
+                object obj = ResourceManager.GetObject("StatusBar3_img_chat_ingame_input_layer_backgrnd", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+        /// </summary>
+        internal static System.Drawing.Bitmap StatusBar3_img_chat_ingame_input_layer_chatEnter {
+            get {
+                object obj = ResourceManager.GetObject("StatusBar3_img_chat_ingame_input_layer_chatEnter", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+        /// </summary>
+        internal static System.Drawing.Bitmap StatusBar3_img_chat_ingame_view_max_bottom {
+            get {
+                object obj = ResourceManager.GetObject("StatusBar3_img_chat_ingame_view_max_bottom", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+        /// </summary>
+        internal static System.Drawing.Bitmap StatusBar3_img_chat_ingame_view_max_center {
+            get {
+                object obj = ResourceManager.GetObject("StatusBar3_img_chat_ingame_view_max_center", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+        /// </summary>
+        internal static System.Drawing.Bitmap StatusBar3_img_chat_ingame_view_max_top {
+            get {
+                object obj = ResourceManager.GetObject("StatusBar3_img_chat_ingame_view_max_top", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

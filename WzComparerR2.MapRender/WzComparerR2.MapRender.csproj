@@ -53,6 +53,9 @@
     <Reference Include="EmptyKeys.UserInterface.MonoGame">
       <HintPath>..\References\EmptyKeys.UserInterface.MonoGame.dll</HintPath>
     </Reference>
+    <Reference Include="IMEHelper">
+      <HintPath>..\References\IMEHelper.dll</HintPath>
+    </Reference>
     <Reference Include="MonoGame.Framework, Version=3.4.0.456, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\References\MonoGame.Framework.dll</HintPath>
@@ -76,6 +79,9 @@
     <Reference Include="System.Configuration" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
+    <Reference Include="TSF">
+      <HintPath>..\References\TSF.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Animation\IStateMachineAnimationData.cs" />
@@ -88,6 +94,8 @@
     <Compile Include="FrmMapRender2.SceneManager.cs" />
     <Compile Include="FrmMapRender2.SceneRendering.cs" />
     <Compile Include="GameExt.cs" />
+    <Compile Include="IRandom.cs" />
+    <Compile Include="IWcR2Font.cs" />
     <Compile Include="LineListMesh.cs" />
     <Compile Include="MapData.cs" />
     <Compile Include="MapScene.cs" />
@@ -95,11 +103,17 @@
     <Compile Include="MeshItem.cs" />
     <Compile Include="Music.cs" />
     <Compile Include="Net\ChatClient.cs" />
+    <Compile Include="Particle.cs" />
+    <Compile Include="ParticleDesc.cs" />
+    <Compile Include="ParticleEmitter.cs" />
+    <Compile Include="ParticleRandom.cs" />
+    <Compile Include="ParticleSystem.cs" />
     <Compile Include="Patches2\BackItem.cs" />
     <Compile Include="Patches2\FootholdItem.cs" />
     <Compile Include="Patches2\LadderRopeItem.cs" />
     <Compile Include="Patches2\LifeItem.cs" />
     <Compile Include="Patches2\ObjItem.cs" />
+    <Compile Include="Patches2\ParticleItem.cs" />
     <Compile Include="Patches2\PortalItem.cs" />
     <Compile Include="Patches2\ReactorItem.cs" />
     <Compile Include="Patches2\SceneItem.cs" />
@@ -146,15 +160,21 @@
     <Compile Include="TileMode.cs" />
     <Compile Include="UI\HitMap.cs" />
     <Compile Include="UI\ITooltipTarget.cs" />
+    <Compile Include="UI\MapRenderButtonStyle.cs" />
+    <Compile Include="UI\MessageBoxBackgroundBrush.cs" />
+    <Compile Include="UI\TCBBrush.cs" />
     <Compile Include="UI\LCRBrush.cs" />
     <Compile Include="UI\MapRenderResourceKey.cs" />
     <Compile Include="UI\MapRenderUIRoot.cs" />
+    <Compile Include="UI\MessageBoxStyle.cs" />
     <Compile Include="UI\NinePatchBrush.cs" />
+    <Compile Include="UI\TextBoxEx.cs" />
     <Compile Include="UI\Tooltip.cs" />
     <Compile Include="Patches\TooltipPatch.cs" />
     <Compile Include="UI\NineFormResource.cs" />
     <Compile Include="UI\Tooltip2.cs" />
     <Compile Include="UI\TooltipHelper.cs" />
+    <Compile Include="UI\UIChatBox.cs" />
     <Compile Include="UI\UIGraphics.cs" />
     <Compile Include="UI\UIHelper.cs" />
     <Compile Include="UI\UIMiniMap.cs" />
@@ -193,6 +213,7 @@
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
@@ -207,7 +228,41 @@
   <ItemGroup>
     <None Include="Resources\UIWindow2.img.WorldMap.Border.0.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="Resources\Basic.img.BtCancel4.disabled.0.png" />
+    <None Include="Resources\Basic.img.BtCancel4.mouseOver.0.png" />
+    <None Include="Resources\Basic.img.BtCancel4.normal.0.png" />
+    <None Include="Resources\Basic.img.BtCancel4.pressed.0.png" />
+    <None Include="Resources\Basic.img.BtClose3.disabled.0.png" />
+    <None Include="Resources\Basic.img.BtClose3.mouseOver.0.png" />
+    <None Include="Resources\Basic.img.BtClose3.normal.0.png" />
+    <None Include="Resources\Basic.img.BtClose3.pressed.0.png" />
+    <None Include="Resources\Basic.img.BtNo3.disabled.0.png" />
+    <None Include="Resources\Basic.img.BtNo3.mouseOver.0.png" />
+    <None Include="Resources\Basic.img.BtNo3.normal.0.png" />
+    <None Include="Resources\Basic.img.BtNo3.pressed.0.png" />
+    <None Include="Resources\Basic.img.BtOK4.disabled.0.png" />
+    <None Include="Resources\Basic.img.BtOK4.mouseOver.0.png" />
+    <None Include="Resources\Basic.img.BtOK4.normal.0.png" />
+    <None Include="Resources\Basic.img.BtOK4.pressed.0.png" />
+    <Content Include="Resources\Basic.img.Notice6.box.png" />
+    <Content Include="Resources\Basic.img.Notice6.c.png" />
+    <Content Include="Resources\Basic.img.Notice6.c_box.png" />
+    <Content Include="Resources\Basic.img.Notice6.s.png" />
+    <Content Include="Resources\Basic.img.Notice6.s_box.png" />
+    <Content Include="Resources\Basic.img.Notice6.t.png" />
+    <Content Include="Resources\StatusBar3.img.chat.ingame.input.layer_backgrnd.png" />
+    <Content Include="Resources\StatusBar3.img.chat.ingame.input.layer_chatEnter.png" />
+    <Content Include="Resources\StatusBar3.img.chat.ingame.view.max.bottom.png" />
+    <Content Include="Resources\StatusBar3.img.chat.ingame.view.max.center.png" />
+    <Content Include="Resources\StatusBar3.img.chat.ingame.view.max.top.png" />
+    <Content Include="Resources\UIWindow.img.ToolTip.WorldMap.ArcaneForce.png" />
+    <Content Include="Resources\UIWindow.img.ToolTip.WorldMap.enchantMob.png" />
+    <Content Include="Resources\UIWindow.img.ToolTip.WorldMap.Line.png" />
+    <Content Include="Resources\UIWindow.img.ToolTip.WorldMap.Mob.png" />
+    <Content Include="Resources\UIWindow.img.ToolTip.WorldMap.Npc.png" />
+    <Content Include="Resources\UIWindow.img.ToolTip.WorldMap.StarForce.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>xcopy "$(TargetDir)*.dll" "$(SolutionDir)WzComparerR2\bin\$(ConfigurationName)\Plugin\$(ProjectName)" /I /Y</PostBuildEvent>

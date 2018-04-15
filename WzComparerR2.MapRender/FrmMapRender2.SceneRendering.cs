@@ -119,13 +119,22 @@ namespace WzComparerR2.MapRender
                             }
                         }
                     }
+                    else if (item is ParticleItem)
+                    {
+                        var particle = (ParticleItem)item;
+                        var pSystem = particle.View?.ParticleSystem;
+                        if (pSystem != null)
+                        {
+                            pSystem.Update(elapsed);
+                        }
+                    }
                 }
             }
             else
             {
-                foreach (var child in node.Nodes)
+                for (int i = 0, i1 = node.Nodes.Count; i < i1; i++)
                 {
-                    UpdateAllItems(child, elapsed);
+                    UpdateAllItems(node.Nodes[i], elapsed);
                 }
             }
         }
@@ -133,7 +142,7 @@ namespace WzComparerR2.MapRender
         private void UpdateTooltip()
         {
             var mouse = renderEnv.Input.MousePosition;
-            
+
             var mouseElem = EmptyKeys.UserInterface.Input.InputManager.Current.MouseDevice.MouseOverElement;
             object target = null;
             if (mouseElem == this.ui.ContentControl)
@@ -164,7 +173,7 @@ namespace WzComparerR2.MapRender
             {
                 sb.Append(" ");
                 StringResult sr;
-                if (this.StringLinker != null && mapID != null 
+                if (this.StringLinker != null && mapID != null
                     && this.StringLinker.StringMap.TryGetValue(mapID.Value, out sr))
                 {
                     sb.Append(sr.Name);
@@ -212,9 +221,15 @@ namespace WzComparerR2.MapRender
 
         private void DrawScene(GameTime gameTime)
         {
+            if (this.mapData == null)
+            {
+                return;
+            }
+
             allItems.Clear();
             var origin = this.renderEnv.Camera.Origin.ToPoint();
             this.batcher.Begin(Matrix.CreateTranslation(new Vector3(-origin.X, -origin.Y, 0)));
+            Rectangle[] rects = null;
             //绘制场景
             foreach (var kv in GetDrawableItems(this.mapData.Scene))
             {
@@ -225,14 +240,15 @@ namespace WzComparerR2.MapRender
 
                 //缓存绘图区域
                 {
-                    Rectangle[] rects = this.batcher.Measure(kv.Value);
+                    int rectCount;
+                    this.batcher.Measure(kv.Value, ref rects, out rectCount);
                     if (kv.Value.RenderObject is Frame)
                     {
                         var frame = (Frame)kv.Value.RenderObject;
                     }
-                    if (rects != null && rects.Length > 0)
+                    if (rects != null && rectCount > 0)
                     {
-                        for (int i = 0; i < rects.Length; i++)
+                        for (int i = 0; i < rectCount; i++)
                         {
                             rects[i].X -= origin.X;
                             rects[i].Y -= origin.Y;
@@ -240,6 +256,8 @@ namespace WzComparerR2.MapRender
                         }
                     }
                 }
+
+                this.batcher.MeshPush(kv.Value);
             }
 
             //在场景之上绘制额外标记
@@ -281,9 +299,10 @@ namespace WzComparerR2.MapRender
 
                 if (lines.Count > 0)
                 {
-                    var meshItem = new MeshItem();
+                    var meshItem = this.batcher.MeshPop();
                     meshItem.RenderObject = new LineListMesh(lines.ToArray(), color, 2);
                     this.batcher.Draw(meshItem);
+                    this.batcher.MeshPush(meshItem);
                 }
             }
 
@@ -299,9 +318,10 @@ namespace WzComparerR2.MapRender
 
                 if (lines.Count > 0)
                 {
-                    var meshItem = new MeshItem();
+                    var meshItem = this.batcher.MeshPop();
                     meshItem.RenderObject = new LineListMesh(lines.ToArray(), color, 3);
                     this.batcher.Draw(meshItem);
+                    this.batcher.MeshPush(meshItem);
                 }
             }
 
@@ -327,9 +347,10 @@ namespace WzComparerR2.MapRender
 
                 if (lines.Count > 0)
                 {
-                    var meshItem = new MeshItem();
+                    var meshItem = this.batcher.MeshPop();
                     meshItem.RenderObject = new LineListMesh(lines.ToArray(), color, 1);
                     this.batcher.Draw(meshItem);
+                    this.batcher.MeshPush(meshItem);
                 }
             }
         }
@@ -345,6 +366,7 @@ namespace WzComparerR2.MapRender
                 switch (life.Type)
                 {
                     case LifeItem.LifeType.Mob:
+                        if (this.patchVisibility.MobNameVisible)
                         {
                             string lv = "" + (life.LifeInfo?.level ?? 0);
                             string name;
@@ -354,35 +376,30 @@ namespace WzComparerR2.MapRender
                                 name = life.ID.ToString();
 
                             //绘制怪物名称
-                            mesh = new MeshItem()
+                            mesh = batcher.MeshPop();
+                            mesh.Position = new Vector2(life.X, life.Cy + 4);
+                            mesh.RenderObject = new TextMesh()
                             {
-                                Position = new Vector2(life.X, life.Cy + 4),
-                                RenderObject = new TextMesh()
-                                {
-                                    Align = Alignment.Center,
-                                    ForeColor = Color.White,
-                                    BackColor = new Color(Color.Black, 0.7f),
-                                    Font = renderEnv.Fonts.MobNameFont,
-                                    Padding = new Margins(2, 2, 2, 2),
-                                    Text = name
-                                }
+                                Align = Alignment.Center,
+                                ForeColor = Color.White,
+                                BackColor = new Color(Color.Black, 0.7f),
+                                Font = renderEnv.Fonts.MobNameFont,
+                                Padding = new Margins(2, 2, 2, 2),
+                                Text = name
                             };
                             batcher.Draw(mesh);
 
                             //绘制怪物等级
                             var nameRect = batcher.Measure(mesh)[0];
-                            /*mesh = new MeshItem()
+                            /*mesh.Position = new Vector2(nameRect.X - 2, nameRect.Y + 3);
+                            mesh.RenderObject = new TextMesh()
                             {
-                                Position = new Vector2(nameRect.X - 2, nameRect.Y + 3),
-                                RenderObject = new TextMesh()
-                                {
-                                    Align = Alignment.Far,
-                                    ForeColor = Color.White,
-                                    BackColor = new Color(Color.Black, 0.7f),
-                                    Font = renderEnv.Fonts.MobLevelFont,
-                                    Padding = new Margins(2, 1, 1, 1),
-                                    Text = lv
-                                }
+                                Align = Alignment.Far,
+                                ForeColor = Color.White,
+                                BackColor = new Color(Color.Black, 0.7f),
+                                Font = renderEnv.Fonts.MobLevelFont,
+                                Padding = new Margins(2, 1, 1, 1),
+                                Text = lv
                             };*/
                             int pos = nameRect.X - 1;
                             Frame frame = ShowLevel[11];
@@ -409,10 +426,12 @@ namespace WzComparerR2.MapRender
                                 RenderObject = frame
                             };
                             batcher.Draw(mesh);
+                            batcher.MeshPush(mesh);
                         }
                         break;
 
                     case LifeItem.LifeType.Npc:
+                        if (this.patchVisibility.NpcNameVisible)
                         {
                             var npcNode = PluginBase.PluginManager.FindWz(string.Format("Npc/{0:D7}.img/info", life.ID));
                             if ((npcNode?.Nodes["hideName"]?.GetValue(0) ?? 0) != 0)
@@ -433,37 +452,35 @@ namespace WzComparerR2.MapRender
 
                             if (name != null)
                             {
-                                mesh = new MeshItem()
+                                mesh = batcher.MeshPop();
+                                mesh.Position = new Vector2(life.X, life.Cy + 4);
+                                mesh.RenderObject = new TextMesh()
                                 {
-                                    Position = new Vector2(life.X, life.Cy + 4),
-                                    RenderObject = new TextMesh()
-                                    {
-                                        Align = Alignment.Center,
-                                        ForeColor = Color.Yellow,
-                                        BackColor = new Color(Color.Black, 0.7f),
-                                        Font = renderEnv.Fonts.NpcNameFont,
-                                        Padding = new Margins(2, 2, 2, 2),
-                                        Text = name
-                                    }
+                                    Align = Alignment.Center,
+                                    ForeColor = Color.Yellow,
+                                    BackColor = new Color(Color.Black, 0.7f),
+                                    Font = renderEnv.Fonts.NpcNameFont,
+                                    Padding = new Margins(2, 2, 2, 2),
+                                    Text = name
                                 };
                                 batcher.Draw(mesh);
+                                batcher.MeshPush(mesh);
                             }
                             if (desc != null)
                             {
-                                mesh = new MeshItem()
+                                mesh = batcher.MeshPop();
+                                mesh.Position = new Vector2(life.X, life.Cy + 21);
+                                mesh.RenderObject = new TextMesh()
                                 {
-                                    Position = new Vector2(life.X, life.Cy + 21),
-                                    RenderObject = new TextMesh()
-                                    {
-                                        Align = Alignment.Center,
-                                        ForeColor = Color.Yellow,
-                                        BackColor = new Color(Color.Black, 0.7f),
-                                        Font = renderEnv.Fonts.NpcDescFont,
-                                        Padding = new Margins(2, 2, 2, 2),
-                                        Text = desc
-                                    }
+                                    Align = Alignment.Center,
+                                    ForeColor = Color.Yellow,
+                                    BackColor = new Color(Color.Black, 0.7f),
+                                    Font = renderEnv.Fonts.NpcDescFont,
+                                    Padding = new Margins(2, 2, 2, 2),
+                                    Text = desc
                                 };
                                 batcher.Draw(mesh);
+                                batcher.MeshPush(mesh);
                             }
                         }
                         break;
@@ -473,33 +490,89 @@ namespace WzComparerR2.MapRender
 
         private IEnumerable<ContainerNode> GetSceneContainers(SceneNode node)
         {
+            /*
             var container = node as ContainerNode;
             if (container != null)  //暂时不考虑缩进z层递归合并  container下没有子节点
             {
                 yield return container;
             }
-            else
+            else 
             {
                 foreach (var mesh in node.Nodes.SelectMany(child => GetSceneContainers(child)))
                 {
                     yield return mesh;
                 }
+            }*/
+            Stack<SceneNode> sceneStack = new Stack<SceneNode>();
+            Stack<int> indices = new Stack<int>();
+
+            SceneNode currNode = node;
+            int i = 0;
+
+            while (currNode != null)
+            {
+                var container = currNode as ContainerNode;
+                if (container != null)
+                {
+                    yield return container;
+                    goto _pop;
+                }
+                else
+                {
+                    if (i < currNode.Nodes.Count)
+                    {
+                        var child = currNode.Nodes[i];
+                        //push
+                        sceneStack.Push(currNode);
+                        indices.Push(i + 1);
+                        currNode = child;
+                        i = 0;
+                        continue;
+                    }
+                    else
+                    {
+                        goto _pop;
+                    }
+                }
+
+                _pop:
+                if (sceneStack.Count > 0)
+                {
+                    currNode = sceneStack.Pop();
+                    i = indices.Pop();
+                }
+                else
+                {
+                    break;
+                }
+                continue;
             }
         }
 
         private IEnumerable<KeyValuePair<SceneItem, MeshItem>> GetDrawableItems(MapScene scene)
         {
-            var containers = GetSceneContainers(scene).ToList();
+            var containers = GetSceneContainers(scene);
+            var kvList = this.drawableItemsCache;
 
-            foreach(var container in containers)
+            foreach (var container in containers)
             {
-                foreach (var kv in container.Slots.Select(item => new KeyValuePair<SceneItem, MeshItem>(item, GetMesh(item)))
-                  .Where(kv => kv.Value != null)
-                  .OrderBy(kv => kv.Value))
+                kvList.Clear();
+                foreach (var item in container.Slots)
+                {
+                    var mesh = GetMesh(item);
+                    if (mesh != null)
+                    {
+                        kvList.Add(new KeyValuePair<SceneItem, MeshItem>(item, mesh));
+                    }
+                }
+                kvList.Sort((kv1, kv2) => kv1.Value.CompareTo(kv2.Value));
+                foreach (var kv in kvList)
                 {
                     yield return kv;
                 }
             }
+
+            kvList.Clear();
         }
 
         private MeshItem GetMesh(SceneItem item)
@@ -549,7 +622,10 @@ namespace WzComparerR2.MapRender
                     return GetMeshReactor((ReactorItem)item);
                 }
             }
-
+            else if (item is ParticleItem)
+            {
+                return GetMeshParticle((ParticleItem)item);
+            }
             return null;
         }
 
@@ -579,7 +655,7 @@ namespace WzComparerR2.MapRender
             {
                 renderSize = Point.Zero;
             }
-            
+
             int cx = (back.Cx == 0 ? renderSize.X : back.Cx);
             int cy = (back.Cy == 0 ? renderSize.Y : back.Cy);
 
@@ -587,7 +663,7 @@ namespace WzComparerR2.MapRender
             Vector2 position = new Vector2(back.X, back.Y);
 
             //计算水平卷动
-            if (back.TileMode.HasFlag(TileMode.ScrollHorizontial))
+            if ((back.TileMode & TileMode.ScrollHorizontal) != 0)
             {
                 position.X += ((float)back.Rx * 5 * back.View.Time / 1000) % cx;// +this.Camera.Center.X * (100 - Math.Abs(this.rx)) / 100;
             }
@@ -597,7 +673,7 @@ namespace WzComparerR2.MapRender
             }
 
             //计算垂直卷动
-            if (back.TileMode.HasFlag(TileMode.ScrollVertical))
+            if ((back.TileMode & TileMode.ScrollVertical) != 0)
             {
                 position.Y += ((float)back.Ry * 5 * back.View.Time / 1000) % cy;// +this.Camera.Center.Y * (100 - Math.Abs(this.ry)) / 100;
             }
@@ -621,7 +697,7 @@ namespace WzComparerR2.MapRender
                 var cameraRect = renderEnv.Camera.ClipRect;
 
                 int l, t, r, b;
-                if (back.TileMode.HasFlag(TileMode.Horizontal) && cx > 0)
+                if ((back.TileMode & TileMode.Horizontal) != 0 && cx > 0)
                 {
                     l = (int)Math.Floor((cameraRect.Left - position.X) / cx) - 1;
                     r = (int)Math.Ceiling((cameraRect.Right - position.X) / cx) + 1;
@@ -632,7 +708,7 @@ namespace WzComparerR2.MapRender
                     r = 1;
                 }
 
-                if (back.TileMode.HasFlag(TileMode.Vertical) && cy > 0)
+                if ((back.TileMode & TileMode.Vertical) != 0 && cy > 0)
                 {
                     t = (int)Math.Floor((cameraRect.Top - position.Y) / cy) - 1;
                     b = (int)Math.Ceiling((cameraRect.Bottom - position.Y) / cy) + 1;
@@ -648,79 +724,116 @@ namespace WzComparerR2.MapRender
 
             //生成mesh
             var renderObj = GetRenderObject(back.View.Animator, back.Flip, back.Alpha);
-            return renderObj == null ? null : new MeshItem()
+            if (renderObj == null)
             {
-                RenderObject = renderObj,
-                Position = position,
-                Z0 = 0,
-                Z1 = back.Index,
-                FlipX = back.Flip,
-                TileRegion = tileRect,
-                TileOffset = tileOff,
-            };
+                return null;
+            }
+            var mesh = batcher.MeshPop();
+            mesh.RenderObject = renderObj;
+            mesh.Position = position;
+            mesh.Z0 = 0;
+            mesh.Z1 = back.Index;
+            mesh.FlipX = back.Flip;
+            mesh.TileRegion = tileRect;
+            mesh.TileOffset = tileOff;
+            return mesh;
         }
 
         private MeshItem GetMeshObj(ObjItem obj)
         {
             var renderObj = GetRenderObject(obj.View.Animator, obj.Flip);
-            return renderObj == null ? null : new MeshItem()
+            if (renderObj == null)
             {
-                RenderObject = renderObj,
-                Position = new Vector2(obj.X, obj.Y),
-                FlipX = obj.Flip,
-                Z0 = obj.Z,
-                Z1 = obj.Index,
-            };
+                return null;
+            }
+            var mesh = batcher.MeshPop();
+            mesh.RenderObject = renderObj;
+            mesh.Position = new Vector2(obj.X, obj.Y);
+            mesh.FlipX = obj.Flip;
+            mesh.Z0 = obj.Z;
+            mesh.Z1 = obj.Index;
+            return mesh;
         }
 
         private MeshItem GetMeshTile(TileItem tile)
         {
             var renderObj = GetRenderObject(tile.View.Animator);
-            return renderObj == null ? null : new MeshItem()
+            if (renderObj == null)
             {
-                RenderObject = renderObj,
-                Position = new Vector2(tile.X, tile.Y),
-                Z0 = ((renderObj as Frame)?.Z ?? 0),
-                Z1 = tile.Index,
-            };
+                return null;
+            }
+            var mesh = batcher.MeshPop();
+            mesh.RenderObject = renderObj;
+            mesh.Position = new Vector2(tile.X, tile.Y);
+            mesh.Z0 = ((renderObj as Frame)?.Z ?? 0);
+            mesh.Z1 = tile.Index;
+            return mesh;
         }
 
         private MeshItem GetMeshLife(LifeItem life)
         {
             var renderObj = GetRenderObject(life.View.Animator);
-            return renderObj == null ? null : new MeshItem()
+            if (renderObj == null)
             {
-                RenderObject = renderObj,
-                Position = new Vector2(life.X, life.Cy),
-                FlipX = life.Flip,
-                Z0 = ((renderObj as Frame)?.Z ?? 0),
-                Z1 = life.Index,
-            };
+                return null;
+            }
+            var mesh = batcher.MeshPop();
+            mesh.RenderObject = renderObj;
+            mesh.Position = new Vector2(life.X, life.Cy);
+            mesh.FlipX = life.Flip;
+            mesh.Z0 = ((renderObj as Frame)?.Z ?? 0);
+            mesh.Z1 = life.Index;
+            return mesh;
         }
 
         private MeshItem GetMeshPortal(PortalItem portal)
         {
             var renderObj = GetRenderObject(portal.View.IsEditorMode ? portal.View.EditorAnimator : portal.View.Animator);
-            return renderObj == null ? null : new MeshItem()
+            if (renderObj == null)
             {
-                RenderObject = renderObj,
-                Position = new Vector2(portal.X, portal.Y),
-                Z0 = ((renderObj as Frame)?.Z ?? 0),
-                Z1 = portal.Index,
-            };
+                return null;
+            }
+            var mesh = batcher.MeshPop();
+            mesh.RenderObject = renderObj;
+            mesh.Position = new Vector2(portal.X, portal.Y);
+            mesh.Z0 = ((renderObj as Frame)?.Z ?? 0);
+            mesh.Z1 = portal.Index;
+            return mesh;
         }
 
         private MeshItem GetMeshReactor(ReactorItem reactor)
         {
             var renderObj = GetRenderObject(reactor.View.Animator);
-            return renderObj == null ? null : new MeshItem()
+            if (renderObj == null)
             {
-                RenderObject = renderObj,
-                Position = new Vector2(reactor.X, reactor.Y),
-                FlipX = reactor.Flip,
-                Z0 = ((renderObj as Frame)?.Z ?? 0),
-                Z1 = reactor.Index,
-            };
+                return null;
+            }
+            var mesh = batcher.MeshPop();
+            mesh.RenderObject = renderObj;
+            mesh.Position = new Vector2(reactor.X, reactor.Y);
+            mesh.FlipX = reactor.Flip;
+            mesh.Z0 = ((renderObj as Frame)?.Z ?? 0);
+            mesh.Z1 = reactor.Index;
+            return mesh;
+        }
+
+        private MeshItem GetMeshParticle(ParticleItem particle)
+        {
+            var pSystem = particle.View?.ParticleSystem;
+            if (pSystem == null)
+            {
+                return null;
+            }
+
+            Vector2 position;
+            position.X = renderEnv.Camera.Center.X * (100 + particle.Rx) / 100;
+            position.Y = renderEnv.Camera.Center.Y * (100 + particle.Ry) / 100;
+
+            var mesh = batcher.MeshPop();
+            mesh.RenderObject = pSystem;
+            mesh.Position = position;
+            mesh.Z0 = particle.Z;
+            return mesh;
         }
 
         private object GetRenderObject(object animator, bool flip = false, int alpha = 255)

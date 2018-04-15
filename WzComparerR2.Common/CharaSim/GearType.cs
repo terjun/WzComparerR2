@@ -165,7 +165,13 @@ namespace WzComparerR2.CharaSim
         /// ESP限制器
         /// </summary>
         espLimiter = 126,
+        /// <summary>
+        /// 锁链 127
+        /// </summary>
         chain2 = 127,
+        /// <summary>
+        /// 魔力手套 128
+        /// </summary>
         magicGauntlet = 128,
         /// <summary>
         /// 单手剑 130
@@ -315,11 +321,17 @@ namespace WzComparerR2.CharaSim
         /// 棋子 135320
         /// </summary>
         chess = 135320,
+        /// <summary>
+        /// 武器传送装置 135330
+        /// </summary>
         transmitter = 135330,
         /// <summary>
         /// 装弹 135340
         /// </summary>
         ExplosivePill = 135340,
+        /// <summary>
+        /// 魔力翅膀 135350
+        /// </summary>
         magicWing = 135350,
         pathOfAbyss = 135360,
         /// <summary>

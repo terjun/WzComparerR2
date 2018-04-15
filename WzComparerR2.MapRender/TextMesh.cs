@@ -11,7 +11,7 @@ namespace WzComparerR2.MapRender
     class TextMesh
     {
         public string Text { get; set; }
-        public XnaFont Font { get; set; }
+        public IWcR2Font Font { get; set; }
         public Color BackColor { get; set; }
         public Color ForeColor { get; set; }
         public Margins Padding { get; set; }
@@ -34,11 +34,10 @@ namespace WzComparerR2.MapRender
         public int Bottom { get; set; }
     }
 
-    public enum Alignment
+    enum Alignment
     {
         Near = 0,
         Center = 1,
         Far = 2
     }
-
 }

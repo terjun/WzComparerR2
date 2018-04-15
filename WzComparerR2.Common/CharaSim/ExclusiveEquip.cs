@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
-
 using WzComparerR2.WzLib;
 
 namespace WzComparerR2.CharaSim
@@ -10,11 +10,11 @@ namespace WzComparerR2.CharaSim
     {
         public ExclusiveEquip()
         {
-            itemIDs = new ExclusiveEquipIDList();
+            this.Items = new List<int>();
         }
-        public string info;
-        public ExclusiveEquipIDList itemIDs;
-        public string msg;
+        public string Info { get; set; }
+        public List<int> Items { get; private set; }
+        public string Msg { get; set; }
 
         public static ExclusiveEquip CreateFromNode(Wz_Node exclusiveEquipNode)
         {
@@ -28,17 +28,17 @@ namespace WzComparerR2.CharaSim
                 switch (subNode.Text)
                 {
                     case "info":
-                        exclusiveEquip.info = Convert.ToString(subNode.Value);
+                        exclusiveEquip.Info = Convert.ToString(subNode.Value);
                         break;
                     case "item":
                         foreach (Wz_Node itemNode in subNode.Nodes)
                         {
                             int itemID = Convert.ToInt32(itemNode.Value);
-                            exclusiveEquip.itemIDs.Add(itemID);
+                            exclusiveEquip.Items.Add(itemID);
                         }
                         break;
                     case "msg":
-                        exclusiveEquip.msg = Convert.ToString(subNode.Value);
+                        exclusiveEquip.Msg = Convert.ToString(subNode.Value);
                         break;
                 }
             }

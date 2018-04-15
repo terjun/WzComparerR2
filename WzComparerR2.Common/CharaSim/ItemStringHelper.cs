@@ -315,7 +315,6 @@ namespace WzComparerR2.CharaSim
                 case GearType.foxPearl: return "여우 구슬";
                 case GearType.chess: return "체스피스";
                 case GearType.powerSource: return "파워소스";
-                case GearType.transmitter: return "무기 전송장치";
 
                 case GearType.energySword: return "에너지소드";
                 case GearType.desperado: return "데스페라도";
@@ -324,12 +323,13 @@ namespace WzComparerR2.CharaSim
                 case GearType.boxingClaw: return "拳爪";
                 case GearType.katana2: return "小太刀";
                 case GearType.espLimiter: return "ESP 리미터";
-                case GearType.chain2: return "체인";
 
                 case GearType.GauntletBuster: return "건틀렛 리볼버";
                 case GearType.ExplosivePill: return "장약";
 
+                case GearType.chain2: return "체인";
                 case GearType.magicGauntlet: return "매직 건틀렛";
+                case GearType.transmitter: return "무기 전송장치";
                 case GearType.magicWing: return "매직윙";
                 case GearType.pathOfAbyss: return "패스 오브 어비스";
 
@@ -378,19 +378,7 @@ namespace WzComparerR2.CharaSim
         {
             switch (type)
             {
-                case GearType.katara: return "듀얼블레이드 직업군 착용 가능";
-                case GearType.demonShield: return "데몬 직업군 착용 가능";
-                case GearType.magicArrow: return "메르세데스 착용가능";
-                case GearType.card: return "팬텀 착용 가능";
-                case GearType.box: return "龙的传人可以装备";
-                case GearType.orb:
-                case GearType.shiningRod: return "루미너스 착용 가능";
-                case GearType.novaMarrow: return "카이저 착용 가능";
-                case GearType.soulBangle:
-                case GearType.soulShooter: return "엔젤릭 버스터 착용 가능";
-                case GearType.soulShield: return "미하일 착용 가능";
-                case GearType.mailin: return "메카닉 착용 가능";
-
+                //0xxx
                 case GearType.heroMedal: return "히어로 직업군 착용 가능";
                 case GearType.rosario: return "팔라딘 직업군 착용 가능";
                 case GearType.chain: return "다크나이트 직업군 착용 가능";
@@ -401,43 +389,66 @@ namespace WzComparerR2.CharaSim
                 case GearType.crossBowThimble: return "신궁 직업군 착용 가능";
                 case GearType.shadowerSheath: return "섀도어 직업군 착용 가능";
                 case GearType.nightLordPoutch: return "나이트로드 직업군 착용 가능";
-
+                case GearType.katara: return "듀얼블레이드 직업군 착용 가능";
                 case GearType.viperWristband: return "바이퍼 직업군 착용 가능";
                 case GearType.captainSight: return "캡틴 직업군 착용 가능";
                 case GearType.cannonGunPowder: 
                 case GearType.cannonGunPowder2: return "캐논 슈터 직업군 착용 가능";
-                case GearType.aranPendulum: return "아란 직업군 착용 가능";
-                case GearType.evanPaper: return "에반 직업군 착용 가능";
-                case GearType.battlemageBall: return "배틀메이지 직업군 착용 가능";
-                case GearType.wildHunterArrowHead: return "와일드헌터 직업군 착용 가능";
-                case GearType.cygnusGem: return "시그너스 기사단 착용 가능";
-                case GearType.controller:
-                case GearType.powerSource:
-                case GearType.energySword: return "제논 착용 가능";
-                case GearType.desperado: return "데몬 어벤져 착용 가능";
-                case GearType.swordZB:
-                case GearType.swordZL: return "제로 착용 가능";
-                case GearType.whistle:
-                case GearType.magicStick: return "林之灵可以装备";
-
-                case GearType.foxPearl: return "은월 착용 가능";
+                case GearType.box:
                 case GearType.boxingClaw: return "龙的传人可以装备";
 
+                //1xxx
+                case GearType.cygnusGem: return "시그너스 기사단 착용 가능";
+
+                //2xxx
+                case GearType.aranPendulum: return GetExtraJobReqString(21);
+                case GearType.evanPaper: return GetExtraJobReqString(22);
+                case GearType.magicArrow: return GetExtraJobReqString(23);
+                case GearType.card: return GetExtraJobReqString(24);
+                case GearType.foxPearl: return GetExtraJobReqString(25);
+                case GearType.orb:
+                case GearType.shiningRod: return GetExtraJobReqString(27);
+
+                //3xxx
+                case GearType.demonShield: return GetExtraJobReqString(31);
+                case GearType.desperado: return "데몬 어벤져 착용 가능";
+                case GearType.battlemageBall: return "배틀메이지 직업군 착용 가능";
+                case GearType.wildHunterArrowHead: return "와일드헌터 직업군 착용 가능";
+                case GearType.mailin: return "매그넘";
+                case GearType.controller:
+                case GearType.powerSource:
+                case GearType.energySword: return GetExtraJobReqString(36);
+                case GearType.GauntletBuster:
+                case GearType.ExplosivePill: return GetExtraJobReqString(37);
+
+                //4xxx
                 case GearType.katana:
                 case GearType.katana2: return "剑豪可以装备";
                 case GearType.fan: return "阴阳师可以装备";
 
+                //5xxx
+                case GearType.soulShield: return "소울실드";
+
+                //6xxx
+                case GearType.novaMarrow: return GetExtraJobReqString(61);
+                //case GearType.chain2:
+                case GearType.transmitter: return GetExtraJobReqString(64);
+                case GearType.soulBangle:
+                case GearType.soulShooter: return GetExtraJobReqString(65);
+
+                //10xxx
+                case GearType.swordZB:
+                case GearType.swordZL: return GetExtraJobReqString(101);
+
+                case GearType.whistle:
+                case GearType.magicStick: return GetExtraJobReqString(112);
+
                 case GearType.espLimiter:
-                case GearType.chess: return "키네시스 착용 가능";
+                case GearType.chess: return GetExtraJobReqString(142);
 
-                case GearType.GauntletBuster:
-                case GearType.ExplosivePill: return "블래스터 착용 가능";
-
-                case GearType.transmitter: return "카데나 직업군 착용 가능";
-
-                case GearType.magicGauntlet:
-                case GearType.magicWing: return "일리움 착용 가능";
-                case GearType.pathOfAbyss: return "아크 착용 가능";
+                case GearType.magicGauntlet: 
+                case GearType.magicWing: return GetExtraJobReqString(152);
+                case GearType.pathOfAbyss: return GetExtraJobReqString(155);
 
                 default: return null;
             }
@@ -452,17 +463,27 @@ namespace WzComparerR2.CharaSim
         {
             switch (specJob)
             {
-                case 61: return "카이저 착용 가능";
-                case 65: return "엔젤릭 버스터 착용 가능";
                 case 21: return "아란 직업군 착용 가능";
                 case 22: return "에반 직업군 착용 가능";
                 case 23: return "메르세데스 착용가능";
                 case 24: return "팬텀 착용 가능";
                 case 25: return "은월 착용 가능";
                 case 27: return "루미너스 착용 가능";
+                case 31: return "데몬 직업군 착용 가능";
                 case 36: return "제논 착용 가능";
+                case 37: return "블래스터 착용 가능";
+                case 41: return "剑豪可以装备";
+                case 42: return "阴阳师可以装备";
+                case 51: return "米哈尔可以装备";
+                case 61: return "카이저 착용 가능";
+                case 64: return "카데나 직업군 착용 가능";
+                case 65: return "엔젤릭 버스터 착용 가능";
+                case 101: return "제로 착용 가능";
+                case 112: return "林之灵可以装备";
+                case 142: return "키네시스 착용 가능";
                 case 152: return "일리움 착용 가능";
                 case 155: return "아크 착용 가능";
+
                 default: return null;
             }
         }

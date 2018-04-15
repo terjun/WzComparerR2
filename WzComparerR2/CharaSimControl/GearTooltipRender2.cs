@@ -830,7 +830,19 @@ namespace WzComparerR2.CharaSimControl
             bool willDrawMedalTag = this.ShowMedalTag
                 && this.Gear.Props.TryGetValue(GearPropType.medalTag, out value)
                 && this.TryGetMedalResource(value, out medalResNode);
-            if (!string.IsNullOrEmpty(sr.Desc) || desc.Count > 0 || Gear.Sample.Bitmap != null || willDrawMedalTag)
+
+            //判断是否绘制技能desc
+            string levelDesc = null;
+            if (Gear.FixLevel && Gear.Props.TryGetValue(GearPropType.level, out value))
+            {
+                var levelInfo = Gear.Levels.FirstOrDefault(info => info.Level == value);
+                if (levelInfo != null && levelInfo.Prob == levelInfo.ProbTotal && !string.IsNullOrEmpty(levelInfo.HS))
+                {
+                    levelDesc = sr[levelInfo.HS];
+                }
+            }
+
+            if (!string.IsNullOrEmpty(sr.Desc) || !string.IsNullOrEmpty(levelDesc) || desc.Count > 0 || Gear.Sample.Bitmap != null || willDrawMedalTag)
             {
                 //分割线4号
                 if (hasPart2)
@@ -853,6 +865,10 @@ namespace WzComparerR2.CharaSimControl
                 {
                     GearGraphics.DrawString(g, sr.Desc.Replace("#", " #"), GearGraphics.EquipDetailFont2, 13, 243, ref picH, 15, orangeColor: ((SolidBrush)GearGraphics.OrangeBrush2).Color);
                 }
+                if (!string.IsNullOrEmpty(levelDesc))
+                {
+                    GearGraphics.DrawString(g, " " + levelDesc, GearGraphics.EquipDetailFont2, 13, 243, ref picH, 15, orangeColor: ((SolidBrush)GearGraphics.OrangeBrush2).Color);
+                }
                 foreach (string str in desc)
                 {
                     GearGraphics.DrawString(g, str, GearGraphics.EquipDetailFont, 13, 243, ref picH, 15, orangeColor: ((SolidBrush)GearGraphics.OrangeBrush2).Color);
@@ -862,25 +878,26 @@ namespace WzComparerR2.CharaSimControl
 
             foreach (KeyValuePair<int, ExclusiveEquip> kv in CharaSimLoader.LoadedExclusiveEquips)
             {
-                if (kv.Value.itemIDs[Gear.ItemID])
+                if (kv.Value.Items.Contains(Gear.ItemID))
                 {
                     if (hasPart2)
                     {
                         g.DrawImage(res["dotline"].Image, 0, picH);
                         picH += 8;
                     }
+
                     string exclusiveEquip;
-                    if (kv.Value.info != null && kv.Value.info.Length > 0)
+                    if (!string.IsNullOrEmpty(kv.Value.Info))
                     {
-                        exclusiveEquip = "#c" + kv.Value.info + "류 아이템은 중복 착용이 불가능합니다.#";
+                        exclusiveEquip = "#c" + kv.Value.Info + "류 아이템은 중복 착용이 불가능합니다.#";
                     }
                     else
                     {
                         List<string> itemNames = new List<string>();
-                        foreach (int item in kv.Value.itemIDs.Items)
+                        foreach (int itemID in kv.Value.Items)
                         {
                             StringResult sr2;
-                            if (StringLinker == null || !StringLinker.StringEqp.TryGetValue(item, out sr2))
+                            if (this.StringLinker == null || !this.StringLinker.StringEqp.TryGetValue(itemID, out sr2))
                             {
                                 sr2 = new StringResult();
                                 sr2.Name = "(null)";

@@ -76,16 +76,16 @@ namespace WzComparerR2.CharaSimControl
             format.Alignment = StringAlignment.Center;
 
             picHeight = 10;
-            TextRenderer.DrawText(g, this.SetItem.setItemName, GearGraphics.EquipDetailFont2, new Point(261, 10), ((SolidBrush)GearGraphics.GreenBrush2).Color, TextFormatFlags.HorizontalCenter);
+            TextRenderer.DrawText(g, this.SetItem.SetItemName, GearGraphics.EquipDetailFont2, new Point(261, 10), ((SolidBrush)GearGraphics.GreenBrush2).Color, TextFormatFlags.HorizontalCenter);
             picHeight += 25;
 
             format.Alignment = StringAlignment.Far;
 
-            if (this.SetItem.setItemID > 0)
+            if (this.SetItem.SetItemID > 0)
             {
                 List<string> partNames = new List<string>();
 
-                foreach (var setItemPart in this.SetItem.itemIDs.Parts)
+                foreach (var setItemPart in this.SetItem.ItemIDs.Parts)
                 {
                     string itemName = setItemPart.Value.RepresentName;
                     string typeName = setItemPart.Value.TypeName;
@@ -223,7 +223,7 @@ namespace WzComparerR2.CharaSimControl
             }
             else
             {
-                for (int i = 0; i < this.SetItem.completeCount; ++i)
+                for (int i = 0; i < this.SetItem.CompleteCount; ++i)
                 {
                     TextRenderer.DrawText(g, "(없음)", GearGraphics.EquipDetailFont2, new Point(10, picHeight), ((SolidBrush)GearGraphics.GrayBrush2).Color, TextFormatFlags.NoPadding);
                     TextRenderer.DrawText(g, "미착용", GearGraphics.EquipDetailFont2, new Point(252 - TextRenderer.MeasureText(g, "미착용", GearGraphics.EquipDetailFont2, new Size(int.MaxValue, int.MaxValue), TextFormatFlags.NoPadding).Width, picHeight), ((SolidBrush)GearGraphics.GrayBrush2).Color, TextFormatFlags.NoPadding);
@@ -261,12 +261,18 @@ namespace WzComparerR2.CharaSimControl
         /// </summary>
         private void RenderEffect(Graphics g, ref int picHeight)
         {
-            foreach (KeyValuePair<int, SetItemEffect> effect in this.SetItem.effects)
+            foreach (KeyValuePair<int, SetItemEffect> effect in this.SetItem.Effects)
             {
-                if (this.SetItem.setItemID > 0)
-                    TextRenderer.DrawText(g, effect.Key + "세트효과", GearGraphics.EquipDetailFont, new Point(10, picHeight), ((SolidBrush)GearGraphics.GreenBrush2).Color, TextFormatFlags.NoPadding);
+                string effTitle;
+                if (this.SetItem.SetItemID < 0)
+                {
+                    effTitle = $"월드 내 중복 착용 효과({effect.Key} / {this.SetItem.CompleteCount})";
+                }
                 else
-                    TextRenderer.DrawText(g, "월드 내 중복 착용 효과(" + effect.Key + " / " + this.SetItem.completeCount + ")", GearGraphics.EquipDetailFont, new Point(10, picHeight), ((SolidBrush)GearGraphics.GreenBrush2).Color, TextFormatFlags.NoPadding);
+                {
+                    effTitle = effect.Key + "세트효과";
+                }
+                TextRenderer.DrawText(g, effTitle, GearGraphics.EquipDetailFont, new Point(10, picHeight), ((SolidBrush)GearGraphics.GreenBrush2).Color, TextFormatFlags.NoPadding);
                 picHeight += 15;
                 //Brush brush = effect.Value.Enabled ? Brushes.White : GearGraphics.GrayBrush2;
                 var color = effect.Value.Enabled ? Color.White : GearGraphics.GrayColor2;

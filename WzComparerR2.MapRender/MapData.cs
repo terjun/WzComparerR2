@@ -16,11 +16,13 @@ namespace WzComparerR2.MapRender
 {
     public class MapData
     {
-        public MapData()
+        public MapData(IRandom random)
         {
             this.Scene = new MapScene();
             this.MiniMap = new MiniMap();
             this.Tooltips = new List<TooltipItem>();
+
+            this.random = random;
         }
 
         #region 基本信息
@@ -43,6 +45,8 @@ namespace WzComparerR2.MapRender
 
         public MapScene Scene { get; private set; }
         public IList<TooltipItem> Tooltips { get; private set; }
+
+        private readonly IRandom random;
 
         public void Load(Wz_Node mapImgNode, ResourceLoader resLoader)
         {
@@ -124,6 +128,10 @@ namespace WzComparerR2.MapRender
             {
                 LoadTooltip(node);
             }
+            if ((node = mapImgNode.Nodes["particle"]) != null)
+            {
+                LoadParticle(node);
+            }
 
             //计算地图大小
             CalcMapSize();
@@ -203,7 +211,7 @@ namespace WzComparerR2.MapRender
             var objNode = layerNode.Nodes["obj"];
             if (objNode != null)
             {
-                foreach(var node in objNode.Nodes)
+                foreach (var node in objNode.Nodes)
                 {
                     var item = ObjItem.LoadFromNode(node);
                     item.Name = $"obj_{level}_{node.Text}";
@@ -218,7 +226,7 @@ namespace WzComparerR2.MapRender
             var tileNode = layerNode.Nodes["tile"];
             if (tS != null && tileNode != null)
             {
-                foreach(var node in tileNode.Nodes)
+                foreach (var node in tileNode.Nodes)
                 {
                     var item = TileItem.LoadFromNode(node);
                     item.TS = tS;
@@ -234,9 +242,9 @@ namespace WzComparerR2.MapRender
         {
             var layerSceneNode = (LayerNode)this.Scene.Layers.Nodes[level];
 
-            foreach(var group in fhLayerNode.Nodes)
+            foreach (var group in fhLayerNode.Nodes)
             {
-                foreach(var node in group.Nodes)
+                foreach (var node in group.Nodes)
                 {
                     var item = FootholdItem.LoadFromNode(node);
                     item.ID = int.Parse(node.Text);
@@ -250,7 +258,7 @@ namespace WzComparerR2.MapRender
 
         private void LoadLife(Wz_Node lifeNode)
         {
-            foreach(var node in lifeNode.Nodes)
+            foreach (var node in lifeNode.Nodes)
             {
                 var item = LifeItem.LoadFromNode(node);
                 item.Name = $"life_{item.Type}_{node.Text}";
@@ -317,10 +325,10 @@ namespace WzComparerR2.MapRender
         {
             //计算reactor所在层
             var layer = Scene.Layers.Nodes.OfType<LayerNode>()
-                .FirstOrDefault(l => l.Foothold.Nodes.Count > 0) 
+                .FirstOrDefault(l => l.Foothold.Nodes.Count > 0)
                 ?? (Scene.Layers.Nodes[0] as LayerNode);
 
-            foreach(var node in reactorNode.Nodes)
+            foreach (var node in reactorNode.Nodes)
             {
                 var item = ReactorItem.LoadFromNode(node);
                 item.Name = $"reactor_{node.Text}";
@@ -397,6 +405,16 @@ namespace WzComparerR2.MapRender
             }
         }
 
+        private void LoadParticle(Wz_Node node)
+        {
+            foreach (var particleNode in node.Nodes)
+            {
+                var item = ParticleItem.LoadFromNode(particleNode);
+                item.Name = node.Text;
+                Scene.Effect.Slots.Add(item);
+            }
+        }
+
         private void CalcMapSize()
         {
             if (!this.VRect.IsEmpty)
@@ -407,7 +425,7 @@ namespace WzComparerR2.MapRender
             var rect = Rectangle.Empty;
 
             int xMAX = int.MinValue;
-            foreach(LayerNode layer in this.Scene.Layers.Nodes)
+            foreach (LayerNode layer in this.Scene.Layers.Nodes)
             {
                 foreach (ContainerNode<FootholdItem> item in layer.Foothold.Nodes)
                 {
@@ -497,6 +515,10 @@ namespace WzComparerR2.MapRender
                         else if (item is ReactorItem)
                         {
                             PreloadResource(resLoader, (ReactorItem)item);
+                        }
+                        else if (item is ParticleItem)
+                        {
+                            PreloadResource(resLoader, (ParticleItem)item);
                         }
                     }
                 }
@@ -736,6 +758,35 @@ namespace WzComparerR2.MapRender
             reactor.View = view;
         }
 
+        private void PreloadResource(ResourceLoader resLoader, ParticleItem particle)
+        {
+            string path = $@"Effect\particle.img\{particle.ParticleName}";
+            var particleNode = PluginManager.FindWz(path);
+
+            if (particleNode == null)
+            {
+                return;
+            }
+
+            var desc = resLoader.LoadParticleDesc(particleNode);
+            var pSystem = new ParticleSystem(this.random);
+            pSystem.LoadDescription(desc);
+
+            for (int i = 0; i < particle.SubItems.Length; i++)
+            {
+                var subItem = particle.SubItems[i];
+                var pGroup = pSystem.CreateGroup(i.ToString());
+                pGroup.Position = new Vector2(subItem.X, subItem.Y);
+                pGroup.Active();
+                pSystem.Groups.Add(pGroup);
+            }
+
+            particle.View = new ParticleItem.ItemView()
+            {
+                ParticleSystem = pSystem
+            };
+        }
+
         private StateMachineAnimator CreateSMAnimator(Wz_Node node, ResourceLoader resLoader)
         {
             var aniData = new Dictionary<string, RepeatableFrameAnimationData>();
@@ -784,7 +835,7 @@ namespace WzComparerR2.MapRender
                 return null;
             }
         }
-        
+
         private object CreateAnimator(object animationData, string aniName = null)
         {
             if (animationData is RepeatableFrameAnimationData)
@@ -825,14 +876,13 @@ namespace WzComparerR2.MapRender
 
         private void AddNpcAI(StateMachineAnimator ani)
         {
-            Random r = new Random();
             var actions = new[] { "stand", "say", "mouse", "move", "hand", "laugh", "eye" };
             var availActions = ani.Data.States.Where(act => actions.Where(acts => act.Contains(acts)).Count() > 0).ToArray();
             if (availActions.Length > 0)
             {
                 ani.AnimationEnd += (o, e) =>
                 {
-                    e.NextState = availActions[r.Next(availActions.Length)];
+                    e.NextState = availActions[this.random.Next(availActions.Length)];
                 };
             }
         }

@@ -19,7 +19,7 @@ namespace WzComparerR2.MapRender.UI
     {
         public UIOptions()
         {
-            
+
         }
 
         public event EventHandler OK;
@@ -35,7 +35,7 @@ namespace WzComparerR2.MapRender.UI
             grid.ColumnDefinitions.Add(new ColumnDefinition());
             grid.SetBinding(BackgroundProperty, new Binding(Control.BackgroundProperty) { Source = this });
             this.Content = grid;
-           
+
             TextBlock title = new TextBlock();
             title.Text = "설정";
             title.IsHitTestVisible = false;
@@ -140,6 +140,10 @@ namespace WzComparerR2.MapRender.UI
             grid.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(24, GridUnitType.Pixel) });
             grid.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(24, GridUnitType.Pixel) });
             grid.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(24, GridUnitType.Pixel) });
+            grid.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(24, GridUnitType.Pixel) });
+            grid.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(24, GridUnitType.Pixel) });
+            grid.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(24, GridUnitType.Pixel) });
+            grid.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(24, GridUnitType.Pixel) });
             grid.ColumnDefinitions.Add(new ColumnDefinition());
             grid.ColumnDefinitions.Add(new ColumnDefinition());
 
@@ -226,7 +230,44 @@ namespace WzComparerR2.MapRender.UI
             Grid.SetColumnSpan(chk2, 2);
             grid.Children.Add(chk2);
 
-            return grid;
+            TextBlock lbl5 = new TextBlock();
+            lbl5.VerticalAlignment = VerticalAlignment.Center;
+            lbl5.Text = "渲染";
+            lbl5.Foreground = Brushes.Yellow;
+            Grid.SetRow(lbl5, 6);
+            Grid.SetColumn(lbl5, 0);
+            grid.Children.Add(lbl5);
+
+            CheckBox chk3 = new CheckBox();
+            chk3.Content = "使用D2D绘制";
+            chk3.Margin = new Thickness(18, 0, 0, 0);
+            chk3.SetBinding(CheckBox.IsCheckedProperty, new Binding(nameof(UIOptionsDataModel.UseD2dRenderer)));
+            Grid.SetRow(chk3, 7);
+            Grid.SetColumn(chk3, 0);
+            Grid.SetColumnSpan(chk3, 2);
+            grid.Children.Add(chk3);
+
+            CheckBox chk4 = new CheckBox();
+            chk4.Content = "显示Npc名称";
+            chk4.Margin = new Thickness(18, 0, 0, 0);
+            chk4.SetBinding(CheckBox.IsCheckedProperty, new Binding(nameof(UIOptionsDataModel.NpcNameVisible)));
+            Grid.SetRow(chk4, 8);
+            Grid.SetColumn(chk4, 0);
+            Grid.SetColumnSpan(chk4, 2);
+            grid.Children.Add(chk4);
+
+            CheckBox chk5 = new CheckBox();
+            chk5.Content = "显示Mob名称";
+            chk5.Margin = new Thickness(18, 0, 0, 0);
+            chk5.SetBinding(CheckBox.IsCheckedProperty, new Binding(nameof(UIOptionsDataModel.MobNameVisible)));
+            Grid.SetRow(chk5, 9);
+            Grid.SetColumn(chk5, 0);
+            Grid.SetColumnSpan(chk5, 2);
+            grid.Children.Add(chk5);
+
+            ScrollViewer viewer = new ScrollViewer();
+            viewer.Content = grid;
+            return viewer;
         }
 
         private UIElement GetTabContent2()
@@ -273,7 +314,7 @@ namespace WzComparerR2.MapRender.UI
             grid.ColumnDefinitions.Add(new ColumnDefinition());
 
             CheckBox chk1 = new CheckBox();
-            chk1.Content = "img 파일 이름을 월드맵 이름으로 사용";
+            chk1.Content = "img 이름을 월드맵 이름으로 사용";
             chk1.SetBinding(CheckBox.IsCheckedProperty, new Binding(nameof(UIOptionsDataModel.WorldMap_UseImageNameAsInfoName)));
             Grid.SetRow(chk1, 0);
             Grid.SetColumn(chk1, 0);
@@ -287,7 +328,7 @@ namespace WzComparerR2.MapRender.UI
         {
             StackPanel panel = new StackPanel();
             panel.Orientation = Orientation.Vertical;
-
+            
             var tips = new[]
             {
                  "단축키 :",
@@ -297,15 +338,17 @@ namespace WzComparerR2.MapRender.UI
                  "Esc 설정",
                  "Ctrl+1~9 레이어 표시 변경",
                  "Ctrl+U 시야 범위 제한 변경",
+                 "` 채팅창",
                  "Alt+Enter 해상도 변경",
                  "ScrollLock 스크린샷",
             };
-            
-            foreach(var tip in tips)
+
+            foreach (var tip in tips)
             {
                 TextBlock lbl = new TextBlock();
                 lbl.TextWrapping = TextWrapping.Wrap;
                 lbl.Text = tip;
+                lbl.Margin = new Thickness(0, 1, 0, 1);
                 panel.Children.Add(lbl);
             }
 
@@ -316,7 +359,7 @@ namespace WzComparerR2.MapRender.UI
 
         private Style GetTabItemStyle()
         {
-            var style =  EmptyKeys.UserInterface.Themes.TabControlStyle.CreateTabItemStyle();
+            var style = EmptyKeys.UserInterface.Themes.TabControlStyle.CreateTabItemStyle();
             var templateSetter = style.Setters.FirstOrDefault(s => s.Property == Control.TemplateProperty);
             if (templateSetter != null)
             {
@@ -333,7 +376,7 @@ namespace WzComparerR2.MapRender.UI
                         ContentPresenter presenter = (elem as Border)?.Child as ContentPresenter;
                         if (presenter != null)
                         {
-                            presenter.Margin = new Thickness(6, 2, 6, 2);
+                            presenter.Margin = new Thickness(6, 1, 6, 1);
                         }
                         return elem;
                     });
@@ -350,10 +393,14 @@ namespace WzComparerR2.MapRender.UI
         private bool _muteOnLeaveFocus;
         private float _volume;
         private int _selectedFont;
-        private bool _ClipMapRegion;
+        private bool _clipMapRegion;
+        private bool _useD2dRenderer;
+        private bool _npcNameVisible;
+        private bool _mobNameVisible;
         private bool _topBarVisible;
         private bool _minimap_cameraRegionVisible;
         private bool _worldmap_useImageNameAsInfoName;
+
 
         public bool MuteOnLeaveFocus
         {
@@ -375,8 +422,26 @@ namespace WzComparerR2.MapRender.UI
 
         public bool ClipMapRegion
         {
-            get { return this._ClipMapRegion; }
-            set { base.SetProperty(ref this._ClipMapRegion, value); }
+            get { return this._clipMapRegion; }
+            set { base.SetProperty(ref this._clipMapRegion, value); }
+        }
+
+        public bool UseD2dRenderer
+        {
+            get { return this._useD2dRenderer; }
+            set { base.SetProperty(ref this._useD2dRenderer, value); }
+        }
+
+        public bool NpcNameVisible
+        {
+            get { return this._npcNameVisible; }
+            set { base.SetProperty(ref this._npcNameVisible, value); }
+        }
+
+        public bool MobNameVisible
+        {
+            get { return this._mobNameVisible; }
+            set { base.SetProperty(ref this._mobNameVisible, value); }
         }
 
         public bool TopBarVisible
