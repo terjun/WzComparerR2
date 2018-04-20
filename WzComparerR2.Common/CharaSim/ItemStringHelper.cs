@@ -414,7 +414,7 @@ namespace WzComparerR2.CharaSim
                 case GearType.desperado: return "데몬 어벤져 착용 가능";
                 case GearType.battlemageBall: return "배틀메이지 직업군 착용 가능";
                 case GearType.wildHunterArrowHead: return "와일드헌터 직업군 착용 가능";
-                case GearType.mailin: return "매그넘";
+                case GearType.mailin: return "메카닉 착용 가능";
                 case GearType.controller:
                 case GearType.powerSource:
                 case GearType.energySword: return GetExtraJobReqString(36);
@@ -427,7 +427,7 @@ namespace WzComparerR2.CharaSim
                 case GearType.fan: return "阴阳师可以装备";
 
                 //5xxx
-                case GearType.soulShield: return "소울실드";
+                case GearType.soulShield: return "미하일 착용 가능";
 
                 //6xxx
                 case GearType.novaMarrow: return GetExtraJobReqString(61);
