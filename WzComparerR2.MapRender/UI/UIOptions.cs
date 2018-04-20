@@ -232,14 +232,14 @@ namespace WzComparerR2.MapRender.UI
 
             TextBlock lbl5 = new TextBlock();
             lbl5.VerticalAlignment = VerticalAlignment.Center;
-            lbl5.Text = "渲染";
+            lbl5.Text = "렌더링";
             lbl5.Foreground = Brushes.Yellow;
             Grid.SetRow(lbl5, 6);
             Grid.SetColumn(lbl5, 0);
             grid.Children.Add(lbl5);
 
             CheckBox chk3 = new CheckBox();
-            chk3.Content = "使用D2D绘制";
+            chk3.Content = "D2D 사용";
             chk3.Margin = new Thickness(18, 0, 0, 0);
             chk3.SetBinding(CheckBox.IsCheckedProperty, new Binding(nameof(UIOptionsDataModel.UseD2dRenderer)));
             Grid.SetRow(chk3, 7);
@@ -248,7 +248,7 @@ namespace WzComparerR2.MapRender.UI
             grid.Children.Add(chk3);
 
             CheckBox chk4 = new CheckBox();
-            chk4.Content = "显示Npc名称";
+            chk4.Content = "NPC 이름 표시";
             chk4.Margin = new Thickness(18, 0, 0, 0);
             chk4.SetBinding(CheckBox.IsCheckedProperty, new Binding(nameof(UIOptionsDataModel.NpcNameVisible)));
             Grid.SetRow(chk4, 8);
@@ -257,7 +257,7 @@ namespace WzComparerR2.MapRender.UI
             grid.Children.Add(chk4);
 
             CheckBox chk5 = new CheckBox();
-            chk5.Content = "显示Mob名称";
+            chk5.Content = "몬스터 이름 표시";
             chk5.Margin = new Thickness(18, 0, 0, 0);
             chk5.SetBinding(CheckBox.IsCheckedProperty, new Binding(nameof(UIOptionsDataModel.MobNameVisible)));
             Grid.SetRow(chk5, 9);
