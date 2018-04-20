@@ -320,7 +320,7 @@ namespace WzComparerR2.Avatar
                         for(int i = 0, i0 = part == "keydown" ? keydownCount : 1; i < i0; i++)
                         {
                             effGif.Item1.Frames.ForEach(af => layer.AddFrame((GifFrame)af));
-                            layers.Add(new Tuple<GifLayer, int>(layer, effGif.Item2));
+                            layers.Add(new Tuple<GifLayer, int>(layer,effGif.Item2));
                             fDelay+= effGif.Item1.Frames.Select(f => f.Delay).Sum();
                         }
 

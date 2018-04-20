@@ -17,10 +17,10 @@ namespace WzComparerR2.CharaSim
             LoadedCommoditiesByItemId = new Dictionary<int, Commodity>();
         }
 
-        public static Dictionary<int, SetItem> LoadedSetItems;
-        public static Dictionary<int, ExclusiveEquip> LoadedExclusiveEquips;
-        public static Dictionary<int, Commodity> LoadedCommoditiesBySN;
-        public static Dictionary<int, Commodity> LoadedCommoditiesByItemId;
+        public static Dictionary<int, SetItem> LoadedSetItems { get; private set; }
+        public static Dictionary<int, ExclusiveEquip> LoadedExclusiveEquips { get; private set; }
+        public static Dictionary<int, Commodity> LoadedCommoditiesBySN { get; private set; }
+        public static Dictionary<int, Commodity> LoadedCommoditiesByItemId { get; private set; }
 
         public static void LoadSetItemsIfEmpty()
         {

@@ -159,7 +159,7 @@
             this.labelX3.Name = "labelX3";
             this.labelX3.Size = new System.Drawing.Size(142, 30);
             this.labelX3.TabIndex = 6;
-            this.labelX3.Text = "1레벨씩 증가 및 감소<b>- +</b> <br/> 레벨간격을 설정한 만큼 증가 및 감소<b>[ ]</b>";
+            this.labelX3.Text = "1레벨씩 증가 및 감소 <b>- +</b> <br/> 레벨간격을 설정한 만큼 증가 및 감소 <b>[ ]</b>";
             // 
             // comboBoxEx2
             // 
@@ -217,7 +217,7 @@
             this.labelX2.Name = "labelX2";
             this.labelX2.Size = new System.Drawing.Size(81, 18);
             this.labelX2.TabIndex = 4;
-            this.labelX2.Text = "레벨간격설정";
+            this.labelX2.Text = "레벨 간격 설정";
             // 
             // labelX1
             // 
@@ -231,7 +231,7 @@
             this.labelX1.Name = "labelX1";
             this.labelX1.Size = new System.Drawing.Size(81, 18);
             this.labelX1.TabIndex = 3;
-            this.labelX1.Text = "기본스킬레벨";
+            this.labelX1.Text = "기본 스킬 레벨";
             // 
             // comboBoxEx1
             // 
