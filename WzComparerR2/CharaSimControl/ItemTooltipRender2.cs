@@ -473,6 +473,35 @@ namespace WzComparerR2.CharaSimControl
                 GearGraphics.DrawString(g, "\n#c기간 정액제 아이템입니다.#", GearGraphics.ItemDetailFont, 100, right, ref picH, 16);
             }
 
+            if (item.ItemID / 10000 == 500)
+            {
+                Wz_Node petDialog = PluginManager.FindWz("String\\PetDialog.img\\" + item.ItemID);
+                Dictionary<string, int> commandLev = new Dictionary<string, int>();
+                foreach (Wz_Node commandNode in PluginManager.FindWz("Item\\Pet\\" + item.ItemID + ".img\\interact").Nodes)
+                {
+                    foreach (string command in petDialog?.Nodes[commandNode.Nodes["command"].GetValue<string>()].GetValueEx<string>(null)?.Split('|') ?? Enumerable.Empty<string>())
+                    {
+                        int l0;
+                        if (!commandLev.TryGetValue(command, out l0))
+                        {
+                            commandLev.Add(command, commandNode.Nodes["l0"].GetValue<int>());
+                        }
+                        else
+                        {
+                            commandLev[command] = Math.Min(l0, commandNode.Nodes["l0"].GetValue<int>());
+                        }
+                    }
+                }
+
+                GearGraphics.DrawString(g, "[사용 가능한 명령어]", GearGraphics.ItemDetailFont, 100, right, ref picH, 16);
+                foreach (int l0 in commandLev.Values.OrderBy(i => i).Distinct())
+                {
+                    GearGraphics.DrawString(g, "Lv. " + l0 + " 이상 : " + string.Join(", ", commandLev.Where(i => i.Value == l0).Select(i => i.Key).OrderBy(s => s)), GearGraphics.ItemDetailFont, 100, right, ref picH, 16);
+                }
+                GearGraphics.DrawString(g, "Tip. 펫의 레벨이 15가 되면 특정 말을 하도록 시킬 수 있습니다.", GearGraphics.ItemDetailFont, 100, right, ref picH, 16);
+                GearGraphics.DrawString(g, "#c예) /펫 [할 말]#", GearGraphics.ItemDetailFont, 100, right, ref picH, 16);
+            }
+
             string incline = null;
             ItemPropType[] inclineTypes = new ItemPropType[]{
                     ItemPropType.charismaEXP,

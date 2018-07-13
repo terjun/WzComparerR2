@@ -219,15 +219,12 @@ namespace WzComparerR2.CharaSimControl
                 StringResult sr = null;
                 if (StringLinker != null)
                 {
+                    Wz_Node iconNode = null;
                     if (StringLinker.StringEqp.TryGetValue(commodity.ItemId, out sr))
                     {
                         name = sr.Name;
                         string[] fullPaths = sr.FullPath.Split('\\');
-                        Wz_Node iconNode = PluginBase.PluginManager.FindWz(string.Format(@"Character\{0}\{1:D8}.img\info\iconRaw", String.Join("\\", new ArraySegment<string>(fullPaths, 2, fullPaths.Length - 3)), commodity.ItemId));
-                        if (iconNode != null)
-                        {
-                            IconRaw = BitmapOrigin.CreateFromNode(iconNode, PluginBase.PluginManager.FindWz);
-                        }
+                        iconNode = PluginBase.PluginManager.FindWz(string.Format(@"Character\{0}\{1:D8}.img\info\iconRaw", String.Join("\\", new List<string>(fullPaths).GetRange(2, fullPaths.Length - 3).ToArray()), commodity.ItemId));
                     }
                     else if (StringLinker.StringItem.TryGetValue(commodity.ItemId, out sr))
                     {
@@ -243,24 +240,20 @@ namespace WzComparerR2.CharaSimControl
                                 itemType = "Etc";
                             else if (Regex.IsMatch(sr.FullPath, @"^Ins.img\\.+$"))
                                 itemType = "Install";
-                            Wz_Node iconNode = PluginBase.PluginManager.FindWz(string.Format(@"Item\{0}\{1:D4}.img\{2:D8}\info\iconRaw", itemType, commodity.ItemId / 10000, commodity.ItemId));
-                            if (iconNode != null)
-                            {
-                                IconRaw = BitmapOrigin.CreateFromNode(iconNode, PluginBase.PluginManager.FindWz);
-                            }
+                            iconNode = PluginBase.PluginManager.FindWz(string.Format(@"Item\{0}\{1:D4}.img\{2:D8}\info\iconRaw", itemType, commodity.ItemId / 10000, commodity.ItemId));
                         }
                         else if (Regex.IsMatch(sr.FullPath, @"^Pet.img\\.+$"))
                         {
-                            Wz_Node iconNode = PluginBase.PluginManager.FindWz(string.Format(@"Item\Pet\{0:D7}.img\info\iconRaw", commodity.ItemId));
-                            if (iconNode != null)
-                            {
-                                IconRaw = BitmapOrigin.CreateFromNode(iconNode, PluginBase.PluginManager.FindWz);
-                            }
+                            iconNode = PluginBase.PluginManager.FindWz(string.Format(@"Item\Pet\{0:D7}.img\info\iconRaw", commodity.ItemId));
                         }
                     }
                     else
                     {
                         name = "(null)";
+                    }
+                    if (iconNode != null)
+                    {
+                        IconRaw = BitmapOrigin.CreateFromNode(iconNode, PluginBase.PluginManager.FindWz);
                     }
                 }
                 if (sr == null)

@@ -106,8 +106,8 @@ namespace WzComparerR2.CharaSimControl
                         {
                             if (StringLinker.StringEqp.TryGetValue(itemID.Key, out sr))
                             {
-                                string[] fullPath = sr.FullPath.Split('\\');
-                                Wz_Node itemNode = PluginBase.PluginManager.FindWz(string.Format(@"Character\{0}\{1:D8}.img", String.Join("\\", new ArraySegment<string>(fullPath, 2, fullPath.Length - 3)), itemID.Key));
+                                string[] fullPaths = sr.FullPath.Split('\\');
+                                Wz_Node itemNode = PluginBase.PluginManager.FindWz(string.Format(@"Character\{0}\{1:D8}.img", String.Join("\\", new List<string>(fullPaths).GetRange(2, fullPaths.Length - 3).ToArray()), itemID.Key));
                                 if (itemNode != null)
                                 {
                                     Gear gear = Gear.CreateFromNode(itemNode, PluginBase.PluginManager.FindWz);

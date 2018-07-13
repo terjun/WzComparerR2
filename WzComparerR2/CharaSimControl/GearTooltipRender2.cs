@@ -819,6 +819,11 @@ namespace WzComparerR2.CharaSimControl
                     desc.Add(" #c사용 전 1회에 한해 타인과 교환할 수 있으며, 아이템 사용 후에는 교환이 제한됩니다.#");
                 }
 
+                if (PluginBase.PluginManager.FindWz("Effect/ItemEff.img/" + Gear.ItemID) != null)
+                {
+                    desc.Add(" #c캐릭터 정보창 등 일부 상황에서는 보이지 않는 아이템입니다.#");
+                }
+
                 if (desc.Last() == "")
                 {
                     desc.RemoveAt(desc.Count - 1);
