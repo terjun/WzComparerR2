@@ -74,8 +74,8 @@
             this.avatarContainer1 = new WzComparerR2.Avatar.UI.AvatarContainer();
             this.labelX5 = new DevComponents.DotNetBar.LabelX();
             this.cmbEar = new DevComponents.DotNetBar.Controls.ComboBoxEx();
-            this.btnExportImage = new DevComponents.DotNetBar.ButtonItem();
-            this.btnExportAll = new DevComponents.DotNetBar.ButtonItem();
+            this.btnSave = new DevComponents.DotNetBar.ButtonItem();
+            this.btnExport = new DevComponents.DotNetBar.ButtonItem();
             this.dockSite2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.bar1)).BeginInit();
             this.bar1.SuspendLayout();
@@ -309,7 +309,7 @@
             this.labelX4.Size = new System.Drawing.Size(31, 18);
             this.labelX4.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
             this.labelX4.TabIndex = 13;
-            this.labelX4.Text = "장비";
+            this.labelX4.Text = "무기";
             // 
             // chkTamingPlay
             // 
@@ -592,8 +592,8 @@
             this.btnReset,
             this.btnLock,
             this.buttonItem1,
-            this.btnExportImage,
-            this.btnExportAll});
+            this.btnSave,
+            this.btnExport});
             this.bar3.Location = new System.Drawing.Point(0, 0);
             this.bar3.Name = "bar3";
             this.bar3.Size = new System.Drawing.Size(203, 26);
@@ -706,19 +706,19 @@
             this.cmbEar.TabIndex = 15;
             this.cmbEar.SelectedIndexChanged += new System.EventHandler(this.cmbEar_SelectedIndexChanged);
             //
-            // btnExportImage
+            // btnSave
             // 
-            this.btnExportImage.Name = "btnExportImage";
-            this.btnExportImage.Image = global::WzComparerR2.Avatar.Properties.Resources.save;
-            this.btnExportImage.Tooltip = "저장";
-            this.btnExportImage.Click += new System.EventHandler(this.btnExportImage_Click);
+            this.btnSave.Name = "btnSave";
+            this.btnSave.Image = global::WzComparerR2.Avatar.Properties.Resources.save;
+            this.btnSave.Tooltip = "저장";
+            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
             //
-            // btnExportAll
+            // btnExport
             //
-            this.btnExportAll.Name = "btnExportAll";
-            this.btnExportAll.Image = global::WzComparerR2.Avatar.Properties.Resources.saveall;
-            this.btnExportAll.Tooltip = "행동 모두 저장";
-            this.btnExportAll.Click += new System.EventHandler(this.btnExportAll_Click);
+            this.btnExport.Name = "btnExport";
+            this.btnExport.Image = global::WzComparerR2.Avatar.Properties.Resources.export;
+            this.btnExport.Tooltip = "동작 내보내기";
+            this.btnExport.Click += new System.EventHandler(this.btnExport_Click);
             // 
             // AvatarForm
             // 
@@ -796,7 +796,7 @@
         private DevComponents.DotNetBar.ButtonItem buttonItem1;
         private DevComponents.DotNetBar.Controls.ComboBoxEx cmbEar;
         private DevComponents.DotNetBar.LabelX labelX5;
-        private DevComponents.DotNetBar.ButtonItem btnExportImage;
-        private DevComponents.DotNetBar.ButtonItem btnExportAll;
+        private DevComponents.DotNetBar.ButtonItem btnSave;
+        private DevComponents.DotNetBar.ButtonItem btnExport;
     }
 }

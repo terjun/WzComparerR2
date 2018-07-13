@@ -33,7 +33,7 @@ namespace WzComparerR2
                     return new AnimateEncoderParams()
                     {
                         ID = 1,
-                        EncoderType = typeof(BuildInGifEncoder),
+                        EncoderType = typeof(IndexGifEncoder),
                         FileExtension = ".gif",
                         FileDescription = "GIF",
                         SupportAlphaChannel = false,
@@ -43,7 +43,7 @@ namespace WzComparerR2
                     return new AnimateEncoderParams()
                     {
                         ID = 2,
-                        EncoderType = typeof(BuildInGifEncoder),
+                        EncoderType = typeof(BuildInApngEncoder),
                         FileExtension = ".png",
                         FileDescription = "APNG",
                         SupportAlphaChannel = true,

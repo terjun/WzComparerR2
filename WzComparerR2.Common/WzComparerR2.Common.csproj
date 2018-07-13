@@ -152,6 +152,7 @@
     <Compile Include="Gif.cs" />
     <Compile Include="IndexGifEncoder.cs" />
     <Compile Include="GifFrame.cs" />
+    <Compile Include="ProgressDialog.cs" />
     <Compile Include="Rendering\AnimationGraphics.cs" />
     <Compile Include="Rendering\BlendEx.cs" />
     <Compile Include="Rendering\D2DContext.cs" />
