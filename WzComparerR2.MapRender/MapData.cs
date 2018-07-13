@@ -21,6 +21,7 @@ namespace WzComparerR2.MapRender
             this.Scene = new MapScene();
             this.MiniMap = new MiniMap();
             this.Tooltips = new List<TooltipItem>();
+            this.Date = DateTime.Now;
 
             this.random = random;
         }
@@ -45,6 +46,7 @@ namespace WzComparerR2.MapRender
 
         public MapScene Scene { get; private set; }
         public IList<TooltipItem> Tooltips { get; private set; }
+        public DateTime Date { get; set; }
 
         private readonly IRandom random;
 
@@ -70,7 +72,7 @@ namespace WzComparerR2.MapRender
             Wz_Node node;
             if (!string.IsNullOrEmpty(this.MapMark))
             {
-                node = PluginManager.FindWz("Map\\MapHelper.img\\mark\\" + this.MapMark).GetLinkedSourceNode(PluginManager.FindWz);
+                node = PluginManager.FindWz("Map\\MapHelper.img\\mark\\" + this.MapMark)?.GetLinkedSourceNode(PluginManager.FindWz);
                 if (node != null)
                 {
                     this.MiniMap.MapMark = resLoader.Load<Texture2D>(node);
@@ -802,28 +804,25 @@ namespace WzComparerR2.MapRender
                     }
                 }
             }
-            long now = Int64.Parse(DateTime.Now.ToString("yyyyMMddHHmm"));
-            foreach (var conditionNode in node.Nodes)
+            long date = Int64.Parse(Date.ToString("yyyyMMddHHmm"));
+            foreach (var conditionNode in node.Nodes.Where(n => n.Text.StartsWith("condition")))
             {
-                var condName = conditionNode.Text;
-                if (condName.StartsWith("condition"))
+                if ((conditionNode.Nodes.Any(n => n.Text.All(char.IsDigit)) && conditionNode.Nodes.Where(n => n.Text.All(char.IsDigit)).All(n => resLoader.PatchVisibility.IsVisibleExact(int.Parse(n.Text), Convert.ToInt32(n.Value)))) || (conditionNode.Nodes["dateStart"].GetValueEx<long>(0) <= date && date <= conditionNode.Nodes["dateEnd"].GetValueEx<long>(0)))
                 {
-                    if (conditionNode.Nodes["dateStart"].GetValueEx<long>(0) <= now && now <= conditionNode.Nodes["dateEnd"].GetValueEx<long>(0))
+                    aniData.Clear();
+                    foreach (var conditionedActionNode in conditionNode.Nodes)
                     {
-                        aniData.Clear();
-                        foreach (var conditionedActionNode in conditionNode.Nodes)
+                        var conditionedActName = conditionedActionNode.Text;
+                        if (conditionedActName != "dateStart" && conditionedActName != "dateEnd")
                         {
-                            var conditionedActName = conditionedActionNode.Text;
-                            if (conditionedActName != "dateStart" && conditionedActName != "dateEnd")
+                            var ani = resLoader.LoadAnimationData(conditionedActionNode) as RepeatableFrameAnimationData;
+                            if (ani != null)
                             {
-                                var ani = resLoader.LoadAnimationData(conditionedActionNode) as RepeatableFrameAnimationData;
-                                if (ani != null)
-                                {
-                                    aniData.Add(condName + "/" + conditionedActName, ani);
-                                }
+                                aniData.Add(conditionNode.Text + "/" + conditionedActName, ani);
                             }
                         }
                     }
+                    break;
                 }
             }
             if (aniData.Count > 0)
@@ -877,7 +876,7 @@ namespace WzComparerR2.MapRender
         private void AddNpcAI(StateMachineAnimator ani)
         {
             var actions = new[] { "stand", "say", "mouse", "move", "hand", "laugh", "eye" };
-            var availActions = ani.Data.States.Where(act => actions.Where(acts => act.Contains(acts)).Count() > 0).ToArray();
+            var availActions = ani.Data.States.Where(act => !act.EndsWith("_old") && actions.Where(acts => act.Contains(acts)).Count() > 0).ToArray();
             if (availActions.Length > 0)
             {
                 ani.AnimationEnd += (o, e) =>

@@ -221,7 +221,7 @@ namespace WzComparerR2.MapRender
                     case 10:
                         this.ui.Minimap.Icons.Add(new UIMinimap2.MapIcon()
                         {
-                            IconType = UIMinimap2.IconType.ArrowUp,
+                            IconType = portal.ToMap == mapData.ID ? UIMinimap2.IconType.ArrowUp : UIMinimap2.IconType.HiddenPortal,
                             Tooltip = portal.Tooltip,
                             WorldPosition = new EmptyKeys.UserInterface.PointF(portal.X, portal.Y)
                         });

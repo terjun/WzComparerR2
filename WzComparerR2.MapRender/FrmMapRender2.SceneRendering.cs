@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Linq;
+using WzComparerR2.WzLib;
 using WzComparerR2.Common;
 using WzComparerR2.Rendering;
 using WzComparerR2.MapRender.UI;
@@ -189,10 +190,10 @@ namespace WzComparerR2.MapRender
             sb.Append(" [").Append(this.mapData?.Bgm ?? "(noBgm)").Append("]");
 
             //显示fps
-            sb.AppendFormat(" [fps u:{0:f2} d:{1:f2}]", fpsCounter.UpdatePerSec, fpsCounter.DrawPerSec);
+            sb.AppendFormat(" [FPS u:{0:f2} d:{1:f2}]", fpsCounter.UpdatePerSec, fpsCounter.DrawPerSec);
 
             //可见性
-            sb.Append(" ctrl+");
+            sb.Append(" Ctrl+");
             int[] array = new[] { 1, 2, 3, 4, 5, 6, 7, 9, 10 };
             for (int i = 0; i < array.Length; i++)
             {
@@ -216,6 +217,11 @@ namespace WzComparerR2.MapRender
                 {
                     MoveToPortal(portal.ToMap, portal.ToName, portal.PName);
                 }
+            }
+            else if (item is ReactorItem)
+            {
+                var reactor = (ReactorItem)item;
+                reactor.View.NextStage = reactor.View.Stage + 1;
             }
         }
 
@@ -434,7 +440,7 @@ namespace WzComparerR2.MapRender
                         if (this.patchVisibility.NpcNameVisible)
                         {
                             var npcNode = PluginBase.PluginManager.FindWz(string.Format("Npc/{0:D7}.img/info", life.ID));
-                            if ((npcNode?.Nodes["hideName"]?.GetValue(0) ?? 0) != 0)
+                            if ((npcNode?.Nodes["hideName"].GetValueEx(0) ?? 0) != 0)
                             {
                                 break;
                             }
@@ -589,6 +595,13 @@ namespace WzComparerR2.MapRender
             {
                 if (patchVisibility.ObjVisible)
                 {
+                    foreach (Tuple<int, int> quest in ((ObjItem)item).Quest)
+                    {
+                        if (!patchVisibility.IsVisible(quest.Item1, quest.Item2))
+                        {
+                            return null;
+                        }
+                    }
                     return GetMeshObj((ObjItem)item);
                 }
             }

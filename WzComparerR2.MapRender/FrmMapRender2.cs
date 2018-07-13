@@ -145,6 +145,7 @@ namespace WzComparerR2.MapRender
             this.renderEnv = new RenderEnv(this, this.graphics);
             this.batcher = new MeshBatcher(this.GraphicsDevice) { CullingEnabled = true };
             this.resLoader = new ResourceLoader(this.Services);
+            this.resLoader.PatchVisibility = this.patchVisibility;
             this.ui = new MapRenderUIRoot();
             this.BindingUIInput();
             this.tooltip = new Tooltip2(this.Content);
@@ -508,6 +509,10 @@ namespace WzComparerR2.MapRender
                     this.ui.ChatBox.AppendTextHelp(@"/back 이전 맵으로 이동");
                     this.ui.ChatBox.AppendTextHelp(@"/home 마을로 귀환");
                     this.ui.ChatBox.AppendTextHelp(@"/history [maxCount] 방문 기록 보기");
+                    this.ui.ChatBox.AppendTextHelp(@"/questlist 관련된 퀘스트 목록 보기");
+                    this.ui.ChatBox.AppendTextHelp(@"/questset (questID) (questState) 해당 퀘스트의 상태 설정");
+                    this.ui.ChatBox.AppendTextHelp(@"/datelist 관련된 시간 목록 보기");
+                    this.ui.ChatBox.AppendTextHelp(@"/dateset (yyyyMMddHHmm) 렌더링 기준 시각 설정");
                     break;
 
                 case "/map":
@@ -566,6 +571,56 @@ namespace WzComparerR2.MapRender
                         
                         node = node.Previous;
                         historyCount--;
+                    }
+                    break;
+                    
+                case "/questlist":
+                    List<Tuple<int, int>> questList = this?.mapData.Scene.Layers.Nodes.SelectMany(l => ((LayerNode)l).Obj.Slots.SelectMany(item => ((ObjItem)item).Quest)).Union(this?.mapData.Scene.Npcs.SelectMany(item => item.Quest)).Distinct().ToList();
+                    this.ui.ChatBox.AppendTextHelp($"관련된 퀘스트 개수: ({questList.Count()})");
+                    foreach (Tuple<int, int> item in questList)
+                    {
+                        Wz_Node questInfoNode = PluginBase.PluginManager.FindWz($@"Quest\QuestInfo.img\{item.Item1}");
+                        string questName = questInfoNode?.Nodes["name"].GetValueEx<string>(null) ?? "null";
+                        this.ui.ChatBox.AppendTextHelp($"  {questName}({item.Item1}) / {item.Item2}");
+                    }
+                    break;
+
+                case "/questset":
+                    int questID, questState;
+                    if (arguments.Length > 2 && Int32.TryParse(arguments[1], out questID) && questID > -1 && Int32.TryParse(arguments[2], out questState) && questState >= -1 && questState <= 2)
+                    {
+                        this.patchVisibility.SetVisible(questID, questState);
+                        this.mapData.PreloadResource(resLoader);
+                        Wz_Node questInfoNode = PluginBase.PluginManager.FindWz($@"Quest\QuestInfo.img\{questID}");
+                        string questName = questInfoNode?.Nodes["name"].GetValueEx<string>(null) ?? "null";
+                        this.ui.ChatBox.AppendTextSystem($"{questName}({questID})의 상태를 {questState}(으)로 변경했습니다.");
+                    }
+                    else
+                    {
+                        this.ui.ChatBox.AppendTextSystem($"정확한 퀘스트 상태를 입력하세요.");
+                    }
+                    break;
+
+                case "/datelist":
+                    List<Tuple<long, long>> dateList = this?.mapData.Scene.Npcs.SelectMany(item => item.Date).ToList();
+                    this.ui.ChatBox.AppendTextHelp($"관련된 시각 개수: ({dateList.Count()})");
+                    foreach (Tuple<long, long> item in dateList)
+                    {
+                        this.ui.ChatBox.AppendTextHelp($"  {item.Item1} ~ {item.Item2}");
+                    }
+                    break;
+
+                case "/dateset":
+                    DateTime datetime;
+                    if (arguments.Length > 1 && DateTime.TryParseExact(arguments[1], "yyyyMMddHHmm", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out datetime))
+                    {
+                        this.mapData.Date = datetime;
+                        this.mapData.PreloadResource(resLoader);
+                        this.ui.ChatBox.AppendTextSystem($"렌더링 기준 시각을 {datetime}(으)로 변경했습니다.");
+                    }
+                    else
+                    {
+                        this.ui.ChatBox.AppendTextSystem($"정확한 시각을 입력하세요.");
                     }
                     break;
 
