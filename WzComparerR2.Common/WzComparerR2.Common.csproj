@@ -76,6 +76,7 @@
     <Compile Include="CharaSim\CashPackage.cs" />
     <Compile Include="CharaSim\Commodity.cs" />
     <Compile Include="CharaSim\ExclusiveEquip.cs" />
+    <Compile Include="CharaSim\SetItemBonusByTime.cs" />
     <Compile Include="Controls\AnimationItemEventArgs.cs" />
     <Compile Include="Controls\AnimationRecoder.cs" />
     <Compile Include="Animation\Frame.cs" />

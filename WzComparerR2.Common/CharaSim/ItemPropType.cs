@@ -29,6 +29,7 @@ namespace WzComparerR2.CharaSim
         multiPet,
         life,
         limitedLife,
+        permanent,
         flatRate,
         noMoveToLocker,
         exp_minLev,

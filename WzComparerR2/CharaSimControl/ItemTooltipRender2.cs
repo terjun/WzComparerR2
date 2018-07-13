@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Windows.Forms;
@@ -326,54 +327,53 @@ namespace WzComparerR2.CharaSimControl
             }
 
             //绘制标题
+            bool hasPart2 = false;
             format.Alignment = StringAlignment.Center;
             TextRenderer.DrawText(g, sr.Name.Replace(Environment.NewLine, ""), GearGraphics.ItemNameFont2, new Point(tooltip.Width, picH), Color.White, TextFormatFlags.HorizontalCenter | TextFormatFlags.NoPrefix);
             picH += 21;
 
-            bool hasInfo = false;
             //额外特性
             string attr = GetItemAttributeString();
             if (!string.IsNullOrEmpty(attr))
             {
                 TextRenderer.DrawText(g, attr, GearGraphics.ItemDetailFont, new Point(tooltip.Width, picH), ((SolidBrush)GearGraphics.OrangeBrush4).Color, TextFormatFlags.HorizontalCenter);
                 picH += 16;
-                hasInfo = true;
+                hasPart2 = true;
             }
 
+            string expireTime = null;
             if (item.TimeLimited)
             {
                 DateTime time = DateTime.Now.AddDays(7d);
-                string expireStr;
-                if (!item.Cash) expireStr = time.ToString("yyyy년 M월 d일 HH시 mm분까지 사용가능");
-                else expireStr = time.ToString("yyyy년 M월 d일 HH시까지 사용가능");
-                TextRenderer.DrawText(g, expireStr, GearGraphics.ItemDetailFont, new Point(tooltip.Width, picH), Color.White, TextFormatFlags.HorizontalCenter);
-                picH += 16;
-                hasInfo = true;
+                if (!item.Cash) expireTime = time.ToString("yyyy년 M월 d일 HH시 mm분까지 사용가능");
+                else expireTime = time.ToString("yyyy년 M월 d일 HH시까지 사용가능");
             }
             else if (item.EndUseDate != null)
             {
-                string expireStr = string.Format("{0}년 {1}월 {2}일 {3:D2}시 {4:D2}분까지 사용가능", Convert.ToInt32(item.EndUseDate.Substring(0, 4)), Convert.ToInt32(item.EndUseDate.Substring(4, 2)), Convert.ToInt32(item.EndUseDate.Substring(6, 2)), Convert.ToInt32(item.EndUseDate.Substring(8, 2)), Convert.ToInt32(item.EndUseDate.Substring(10, 2)));
-                TextRenderer.DrawText(g, expireStr, GearGraphics.ItemDetailFont, new Point(tooltip.Width, picH), Color.White, TextFormatFlags.HorizontalCenter);
-                picH += 16;
-                hasInfo = true;
+                expireTime = string.Format("{0}년 {1}월 {2}일 {3:D2}시 {4:D2}분까지 사용가능", Convert.ToInt32(item.EndUseDate.Substring(0, 4)), Convert.ToInt32(item.EndUseDate.Substring(4, 2)), Convert.ToInt32(item.EndUseDate.Substring(6, 2)), Convert.ToInt32(item.EndUseDate.Substring(8, 2)), Convert.ToInt32(item.EndUseDate.Substring(10, 2)));
             }
-            if (item.ItemID / 10000 == 500 && item.Props.TryGetValue(ItemPropType.limitedLife, out value) && value != 0)
+            else if (item.Props.TryGetValue(ItemPropType.permanent, out value) && value != 0)
             {
-                string expireStr = string.Format("마법의 시간: {0}시간 {1}분", value / 3600, (value % 3600) / 60);
-                TextRenderer.DrawText(g, expireStr, GearGraphics.ItemDetailFont, new Point(tooltip.Width, picH), Color.White, TextFormatFlags.HorizontalCenter);
-                picH += 16;
-                hasInfo = true;
+                expireTime = ItemStringHelper.GetItemPropString(ItemPropType.permanent, value);
             }
-            else if (item.ItemID / 10000 == 500 && item.Props.TryGetValue(ItemPropType.life, out value) && value != 0)
+            else if (item.ItemID / 10000 == 500 && item.Props.TryGetValue(ItemPropType.limitedLife, out value) && value > 0)
+            {
+                expireTime = string.Format("마법의 시간: {0}시간 {1}분", value / 3600, (value % 3600) / 60);
+            }
+            else if (item.ItemID / 10000 == 500 && item.Props.TryGetValue(ItemPropType.life, out value) && value > 0)
             {
                 DateTime time = DateTime.Now.AddDays(value);
-                string expireStr = time.ToString("마법의 시간: yyyy년 M월 d일 HH시까지");
-                TextRenderer.DrawText(g, expireStr, GearGraphics.ItemDetailFont, new Point(tooltip.Width, picH), Color.White, TextFormatFlags.HorizontalCenter);
+                expireTime = time.ToString("마법의 시간: yyyy년 M월 d일 HH시까지");
+            }
+            if (!string.IsNullOrEmpty(expireTime))
+            {
+                //g.DrawString(expireTime, GearGraphics.ItemDetailFont, Brushes.White, tooltip.Width / 2, picH, format);
+                TextRenderer.DrawText(g, expireTime, GearGraphics.ItemDetailFont, new Point(tooltip.Width, picH), Color.White, TextFormatFlags.HorizontalCenter);
                 picH += 16;
-                hasInfo = true;
+                hasPart2 = true;
             }
 
-            if (hasInfo)
+            if (hasPart2)
             {
                 picH += 4;
             }
@@ -390,22 +390,21 @@ namespace WzComparerR2.CharaSimControl
             }
             if (item.Cash)
             {
+                Bitmap cashImg = null;
+
                 if (item.Props.TryGetValue(ItemPropType.wonderGrade, out value) && value > 0)
                 {
-                    Image label = Resource.ResourceManager.GetObject("CashItem_label_" + (value + 3)) as Image;
-                    if (label != null)
-                    {
-                        g.DrawImage(GearGraphics.EnlargeBitmap(new Bitmap(label)),
-                            iconX + 6 + 68 - 26,
-                            picH + 6 + 68 - 26);
-                    }
+                    string resKey = $"CashShop_img_CashItem_label_{value + 3}";
+                    cashImg = Resource.ResourceManager.GetObject(resKey) as Bitmap;
                 }
-                else
+                if (cashImg == null) //default cashImg
                 {
-                    g.DrawImage(GearGraphics.EnlargeBitmap(Resource.CashItem_0),
+                    cashImg = Resource.CashItem_0;
+                }
+
+                g.DrawImage(GearGraphics.EnlargeBitmap(cashImg),
                     iconX + 6 + 68 - 26,
                     picH + 6 + 68 - 26);
-                }
             }
             g.DrawImage(Resource.UIToolTip_img_Item_ItemIcon_new, iconX + 7, picH + 7);
             g.DrawImage(Resource.UIToolTip_img_Item_ItemIcon_cover, iconX + 4, picH + 4); //绘制左上角cover
@@ -565,12 +564,19 @@ namespace WzComparerR2.CharaSimControl
                 }
                 if (nickResNode != null)
                 {
-                    string nickName = sr.Name;
-                    if (sr["nickWithQR"] != null)
+                    //获取称号名称
+                    string nickName;
+                    string nickWithQR = sr["nickWithQR"];
+                    if (nickWithQR != null)
                     {
-                        nickName = new Regex(@"#qr\d*#").Replace(sr["nickWithQR"], sr["qrDefault"]);
+                        string qrDefault = sr["qrDefault"] ?? string.Empty;
+                        nickName = Regex.Replace(nickWithQR, "#qr.*?#", qrDefault);
                     }
-                    this.DrawNickTag(g, nickResNode, nickName, tooltip.Width, ref picH);
+                    else
+                    {
+                        nickName = sr.Name;
+                    }
+                    GearGraphics.DrawNameTag(g, nickResNode, nickName, tooltip.Width, ref picH);
                     picH += 4;
                 }
             }
@@ -740,65 +746,6 @@ namespace WzComparerR2.CharaSimControl
         {
             resNode = PluginBase.PluginManager.FindWz("UI/NameTag.img/nick/" + nickTag);
             return resNode != null;
-        }
-
-        private void DrawNickTag(Graphics g, Wz_Node resNode, string nickName, int picW, ref int picH)
-        {
-            if (g == null || resNode == null)
-                return;
-
-            //加载资源和文本颜色
-            var wce = new[] { "w", "c", "e" }.Select(n =>
-            {
-                var node = resNode.FindNodeByPath(n);
-                if (node == null)
-                {
-                    return new BitmapOrigin();
-                }
-                return BitmapOrigin.CreateFromNode(node, PluginBase.PluginManager.FindWz);
-            }).ToArray();
-
-            Color color = Color.FromArgb(resNode.FindNodeByPath("clr").GetValueEx(-1));
-
-            //测试y轴大小
-            int offsetY = wce.Min(bmp => bmp.OpOrigin.Y);
-            int height = wce.Max(bmp => bmp.Rectangle.Bottom);
-
-            //测试宽度
-            var font = GearGraphics.ItemDetailFont;
-            var fmt = StringFormat.GenericTypographic;
-            int width = string.IsNullOrEmpty(nickName) ? 0 : TextRenderer.MeasureText(g, nickName, font, new Size(int.MaxValue, int.MaxValue), TextFormatFlags.NoPadding).Width;
-            int left = picW / 2 - width / 2;
-            int right = left + width;
-
-            //开始绘制背景
-            picH -= offsetY;
-            if (wce[0].Bitmap != null)
-            {
-                g.DrawImage(wce[0].Bitmap, left - wce[0].Origin.X, picH - wce[0].Origin.Y);
-            }
-            if (wce[1].Bitmap != null) //不用拉伸 用纹理平铺 看运气
-            {
-                var brush = new TextureBrush(wce[1].Bitmap);
-                Rectangle rect = new Rectangle(left, picH - wce[1].Origin.Y, right - left, brush.Image.Height);
-                brush.TranslateTransform(rect.X, rect.Y);
-                g.FillRectangle(brush, rect);
-                brush.Dispose();
-            }
-            if (wce[2].Bitmap != null)
-            {
-                g.DrawImage(wce[2].Bitmap, right - wce[2].Origin.X, picH - wce[2].Origin.Y);
-            }
-
-            //绘制文字
-            if (!string.IsNullOrEmpty(nickName))
-            {
-                var brush = new SolidBrush(color);
-                TextRenderer.DrawText(g, nickName, font, new Point(picW / 2 - width / 2, picH), color, TextFormatFlags.NoPadding);
-                brush.Dispose();
-            }
-
-            picH += height;
         }
     }
 }

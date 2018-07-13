@@ -6,11 +6,13 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.Drawing.Drawing2D;
 using System.Runtime.InteropServices;
+using System.Windows.Forms;
 using CharaSimResource;
 using WzComparerR2.CharaSim;
 using TR = System.Windows.Forms.TextRenderer;
 using TextFormatFlags = System.Windows.Forms.TextFormatFlags;
 using WzComparerR2.Text;
+using WzComparerR2.WzLib;
 
 namespace WzComparerR2.CharaSimControl
 {
@@ -433,6 +435,67 @@ namespace WzComparerR2.CharaSimControl
             brush.ResetTransform();
             brush.TranslateTransform(guideX[x0], guideY[y0]);
             g.FillRectangle(brush, guideX[x0], guideY[y0], guideX[x1] - guideX[x0], guideY[y1] - guideY[y0]);
+        }
+
+        public static void DrawNameTag(Graphics g, Wz_Node resNode, string tagName, int picW, ref int picH)
+        {
+            if (g == null || resNode == null)
+                return;
+
+            //加载资源和文本颜色
+            var wce = new[] { "w", "c", "e" }.Select(n =>
+            {
+                var node = resNode.FindNodeByPath(n);
+                if (node == null)
+                {
+                    return new BitmapOrigin();
+                }
+                return BitmapOrigin.CreateFromNode(node, PluginBase.PluginManager.FindWz);
+            }).ToArray();
+
+            Color color = Color.FromArgb(resNode.FindNodeByPath("clr").GetValueEx(-1));
+
+            //测试y轴大小
+            int offsetY = wce.Min(bmp => bmp.OpOrigin.Y);
+            int height = wce.Max(bmp => bmp.Rectangle.Bottom);
+
+            //测试宽度
+            var font = GearGraphics.ItemDetailFont2;
+            var fmt = StringFormat.GenericTypographic;
+            //int width = string.IsNullOrEmpty(tagName) ? 0 : (int)Math.Ceiling(g.MeasureString(tagName, font, 261, fmt).Width);
+            int width = string.IsNullOrEmpty(tagName) ? 0 : TextRenderer.MeasureText(g, tagName, font, new Size(int.MaxValue, int.MaxValue), TextFormatFlags.NoPadding).Width;
+            int left = picW / 2 - width / 2;
+            int right = left + width;
+
+            //开始绘制背景
+            picH -= offsetY;
+            if (wce[0].Bitmap != null)
+            {
+                g.DrawImage(wce[0].Bitmap, left - wce[0].Origin.X, picH - wce[0].Origin.Y);
+            }
+            if (wce[1].Bitmap != null) //不用拉伸 用纹理平铺 看运气
+            {
+                var brush = new TextureBrush(wce[1].Bitmap);
+                Rectangle rect = new Rectangle(left, picH - wce[1].Origin.Y, right - left, brush.Image.Height);
+                brush.TranslateTransform(rect.X, rect.Y);
+                g.FillRectangle(brush, rect);
+                brush.Dispose();
+            }
+            if (wce[2].Bitmap != null)
+            {
+                g.DrawImage(wce[2].Bitmap, right - wce[2].Origin.X, picH - wce[2].Origin.Y);
+            }
+
+            //绘制文字
+            if (!string.IsNullOrEmpty(tagName))
+            {
+                var brush = new SolidBrush(color);
+                //g.DrawString(tagName, font, brush, left, picH, fmt);
+                TextRenderer.DrawText(g, tagName, font, new Point(left, picH), color, TextFormatFlags.NoPadding);
+                brush.Dispose();
+            }
+
+            picH += height;
         }
 
         [DllImport("user32.dll")]

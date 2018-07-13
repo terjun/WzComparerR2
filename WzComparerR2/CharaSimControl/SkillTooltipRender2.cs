@@ -27,7 +27,7 @@ namespace WzComparerR2.CharaSimControl
         public bool ShowProperties { get; set; } = true;
         public bool ShowDelay { get; set; }
         public bool ShowReqSkill { get; set; } = true;
-       
+
 
         public override Bitmap Render()
         {
@@ -73,7 +73,7 @@ namespace WzComparerR2.CharaSimControl
             StringResult sr;
             if (StringLinker == null || !StringLinker.StringSkill.TryGetValue(Skill.SkillID, out sr))
             {
-                sr = new StringResult(true);
+                sr = new StringResultSkill();
                 sr.Name = "(null)";
             }
 
@@ -232,7 +232,7 @@ namespace WzComparerR2.CharaSimControl
                 if (Skill.CombatOrders)
                 {
                     attr.Add("컴뱃오더스 적용 가능");
-                } 
+                }
                 if (Skill.NotRemoved)
                 {
                     attr.Add("버프 해제 불가");

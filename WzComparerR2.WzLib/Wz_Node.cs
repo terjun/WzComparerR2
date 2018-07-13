@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Xml;
+using System.Reflection;
+using System.Text.RegularExpressions;
 
 namespace WzComparerR2.WzLib
 {
@@ -178,7 +181,8 @@ namespace WzComparerR2.WzLib
 
         public T GetValue<T>(T defaultValue)
         {
-            if (typeof(Wz_Image) == typeof(T))
+            var typeT = typeof(T);
+            if (typeof(Wz_Image) == typeT)
             {
                 if (this is Wz_Image.Wz_ImageNode)
                 {
@@ -199,7 +203,12 @@ namespace WzComparerR2.WzLib
             {
                 try
                 {
-                    T result = (T)iconvertible.ToType(typeof(T), null);
+                    if (typeT.IsGenericType && typeT.GetGenericTypeDefinition() == typeof(Nullable<>))
+                    {
+                        typeT = typeT.GetGenericArguments()[0];
+                    }
+
+                    T result = (T)iconvertible.ToType(typeT, null);
                     return result;
                 }
                 catch
@@ -215,70 +224,198 @@ namespace WzComparerR2.WzLib
         }
 
         //innerClass
-        public class WzNodeCollection : System.Collections.ObjectModel.KeyedCollection<string, Wz_Node>
+        public class WzNodeCollection : IEnumerable<Wz_Node>
         {
-            public WzNodeCollection(Wz_Node baseNode)
-                : base()
+            public WzNodeCollection(Wz_Node owner)
+
             {
-                this.parentNode = baseNode;
+                this.owner = owner;
+                this.innerCollection = null;
+            }
+
+            private readonly Wz_Node owner;
+            private InnerCollection innerCollection;
+
+            public Wz_Node this[int index]
+            {
+                get { return this.innerCollection?[index]; }
+            }
+
+            public Wz_Node this[string key]
+            {
+                get { return this.innerCollection?[key]; }
+            }
+
+            public int Count
+            {
+                get { return this.innerCollection?.Count ?? 0; }
             }
 
             public Wz_Node Add(string nodeText)
             {
-                Wz_Node newNode = new Wz_Node(nodeText);
-                this.Add(newNode);
-                return newNode;
+                this.EnsureInnerCollection();
+                return this.innerCollection.Add(nodeText);
             }
 
-            public new void Add(Wz_Node item)
+            public void Add(Wz_Node item)
             {
-                base.Add(item);
-                if (item.parentNode != null)
-                {
-                    int index = item.parentNode.nodes.Items.IndexOf(item);
-                    if (index > -1)
-                    {
-                        item.parentNode.nodes.RemoveItem(index);
-                    }
-                }
-                item.parentNode = this.parentNode;
+                this.EnsureInnerCollection();
+                this.innerCollection.Add(item);
             }
-
-            protected override void RemoveItem(int index)
-            {
-                var item = this[index];
-                if (item != null)
-                {
-                    item.parentNode = null;
-                }
-                base.RemoveItem(index);
-            }
-
-            private Wz_Node parentNode;
 
             public void Sort()
             {
-                List<Wz_Node> lst = base.Items as List<Wz_Node>;
-                if (lst != null)
-                    lst.Sort();
+                this.innerCollection?.Sort();
             }
 
-            public new Wz_Node this[string key]
+            public void Sort<T>(Func<Wz_Node, T> getKeyFunc) where T : IComparable<T>
             {
-                get
+                if (getKeyFunc == null)
                 {
-                    Wz_Node node;
-                    if (key != null && this.Dictionary != null && this.Dictionary.TryGetValue(key, out node))
-                        return node;
-                    return null;
+                    this.Sort();
+                }
+                else if (this.innerCollection != null)
+                {
+                    this.innerCollection.Sort(getKeyFunc);
                 }
             }
 
-            protected override string GetKeyForItem(Wz_Node item)
+            public void Trim()
             {
-                if (item != null)
+                this.innerCollection?.Trim();
+            }
+
+            public void Clear()
+            {
+                this.innerCollection?.Clear();
+            }
+
+            public IEnumerator<Wz_Node> GetEnumerator()
+            {
+                return this.innerCollection?.GetEnumerator() ?? System.Linq.Enumerable.Empty<Wz_Node>().GetEnumerator();
+            }
+
+            System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+            {
+                return this.GetEnumerator();
+            }
+
+            private void EnsureInnerCollection()
+            {
+                if (this.innerCollection == null)
+                {
+                    this.innerCollection = new InnerCollection(this.owner);
+                }
+            }
+
+            private class InnerCollection : KeyedCollection<string, Wz_Node>
+            {
+                public InnerCollection(Wz_Node owner)
+                    : base(null, 12)
+                {
+                    this.parentNode = owner;
+                }
+
+                public Wz_Node Add(string nodeText)
+                {
+                    Wz_Node newNode = new Wz_Node(nodeText);
+                    this.Add(newNode);
+                    return newNode;
+                }
+
+                public new void Add(Wz_Node item)
+                {
+                    base.Add(item);
+                    if (item.parentNode != null)
+                    {
+                        int index = item.parentNode.nodes.innerCollection.Items.IndexOf(item);
+                        if (index > -1)
+                        {
+                            item.parentNode.nodes.innerCollection.RemoveItem(index);
+                        }
+                    }
+                    item.parentNode = this.parentNode;
+                }
+
+                protected override void RemoveItem(int index)
+                {
+                    var item = this[index];
+                    if (item != null)
+                    {
+                        item.parentNode = null;
+                    }
+                    base.RemoveItem(index);
+                }
+
+                private readonly Wz_Node parentNode;
+
+                public void Sort()
+                {
+                    (base.Items as List<Wz_Node>)?.Sort();
+                }
+
+                public void Sort<T>(Func<Wz_Node, T> getKeyFunc) where T : IComparable<T>
+                {
+                    ListSorter.Sort(base.Items as List<Wz_Node>, getKeyFunc);
+                }
+
+                public void Trim()
+                {
+                    (base.Items as List<Wz_Node>)?.TrimExcess();
+                }
+
+                public new Wz_Node this[string key]
+                {
+                    get
+                    {
+                        if (key == null)
+                        {
+                            return null;
+                        }
+                        if (this.Dictionary != null)
+                        {
+                            Wz_Node node;
+                            this.Dictionary.TryGetValue(key, out node);
+                            return node;
+                        }
+                        else
+                        {
+                            List<Wz_Node> list = this.Items as List<Wz_Node>;
+                            foreach (var node in list)
+                            {
+                                if (this.Comparer.Equals(this.GetKeyForItem(node), key))
+                                {
+                                    return node;
+                                }
+                            }
+                            return null;
+                        }
+                    }
+                }
+
+                protected override string GetKeyForItem(Wz_Node item)
+                {
                     return item.text;
-                return null;
+                }
+            }
+
+            internal static class ListSorter
+            {
+                public static void Sort<T, TKey>(List<T> list, Func<T, TKey> getKeyFunc)
+                {
+                    T[] innerArray = list.GetType()
+                        .GetField("_items", BindingFlags.Instance | BindingFlags.NonPublic)
+                        .GetValue(list) as T[];
+
+                    TKey[] keys = new TKey[list.Count];
+
+                    for (int i = 0; i < keys.Length; i++)
+                    {
+                        keys[i] = getKeyFunc(innerArray[i]);
+                    }
+
+                    Array.Sort(keys, innerArray, 0, keys.Length);
+                }
             }
         }
 
@@ -303,7 +440,7 @@ namespace WzComparerR2.WzLib
         {
             if (other != null)
             {
-                //return string.Compare(this.Text, other.Text, StringComparison.InvariantCulture);
+                //return string.Compare(this.Text, other.Text, StringComparison.Ordinal);
                 return StrCmpLogicalW(this.Text, other.Text);
             }
             else
@@ -453,6 +590,43 @@ namespace WzComparerR2.WzLib
 
             //结束标识
             writer.WriteEndElement();
+        }
+
+        public static void SortByImgID(this Wz_Node.WzNodeCollection nodes)
+        {
+            if (regexImgID == null)
+            {
+                regexImgID = new Regex(@"^(\d+)\.img$", RegexOptions.Compiled);
+            }
+
+            nodes.Sort(GetKey);
+        }
+
+        private static Regex regexImgID;
+
+        private static SortKey GetKey(Wz_Node node)
+        {
+            var key = new SortKey();
+            var m = regexImgID.Match(node.Text);
+            if (m.Success)
+            {
+                key.HasID = Int32.TryParse(m.Result("$1"), out key.ImgID);
+            }
+            key.Text = node.Text;
+            return key;
+        }
+
+        private struct SortKey : IComparable<SortKey>
+        {
+            public bool HasID;
+            public int ImgID;
+            public string Text;
+
+            public int CompareTo(SortKey other)
+            {
+                if (this.HasID && other.HasID) return this.ImgID.CompareTo(other.ImgID);
+                return StringComparer.Ordinal.Compare(this.Text, other.Text);
+            }
         }
     }
 }

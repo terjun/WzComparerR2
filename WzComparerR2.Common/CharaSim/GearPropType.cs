@@ -44,6 +44,7 @@ namespace WzComparerR2.CharaSim
         imdR,
         incIMDR,
         damR,
+        nbdR,
         statR,
 
         //潜能属性
@@ -94,6 +95,8 @@ namespace WzComparerR2.CharaSim
         Option,
         OptionToMob,
         activeSkill,
+        bonusByTime,
+
         //特殊装备属性
         attackSpeed = 200,
         tuc,
@@ -171,6 +174,7 @@ namespace WzComparerR2.CharaSim
         noMoveToLocker,
         onlyUpgrade,
         cantRepair,
+        colorvar,
 
         gatherTool_incSkillLevel = 2000,
         gatherTool_incSpeed,

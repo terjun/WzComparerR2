@@ -74,7 +74,7 @@ namespace WzComparerR2.Animation
                 }
                 else
                 {
-                    return null;
+                    break;
                 }
             }
             if (frameNode.Value is Wz_Png)

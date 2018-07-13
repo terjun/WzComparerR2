@@ -94,14 +94,16 @@ namespace WzComparerR2.CharaSim
                 case GearPropType.incDAMr: return "데미지 : " + sign + value + "%";
                 case GearPropType.incCr: return "크리티컬 확률 : " + sign + value + "%";
                 case GearPropType.knockback: return "직접 타격시 " + value + "%의 확률로 넉백";
-                case GearPropType.incPVPDamage: return "대난투 시 추가 공격력" + sign + " " + value;
+                case GearPropType.incPVPDamage: return "대난투 시 추가 공격력 " + sign + " " + value;
                 case GearPropType.incPQEXPr: return "파티퀘스트 경험치 " + value + "% 증가";
+                case GearPropType.incEXPr: return "经验值增加" + value + "%";
                 case GearPropType.incBDR:
                 case GearPropType.bdR: return "보스 몬스터 공격시 데미지 +" + value + "%";
                 case GearPropType.incIMDR:
                 case GearPropType.imdR: return "몬스터 방어력 무시 : +" + value + "%";
                 //case GearPropType.limitBreak: return "최대 데미지 제한 증가 : +" + value;
                 case GearPropType.reduceReq: return "착용 레벨 감소 : - " + value;
+                case GearPropType.nbdR: return "일반 몬스터 공격 시 데미지 : +" + value + "%";
 
                 case GearPropType.only: return value == 0 ? null : "고유 아이템";
                 case GearPropType.tradeBlock: return value == 0 ? null : "교환 불가";
@@ -131,6 +133,7 @@ namespace WzComparerR2.CharaSim
                 case GearPropType.abilityTimeLimited: return value == 0 ? null : "기간 한정 능력치";
                 case GearPropType.blockGoldHammer: return value == 0 ? null : "황금망치 사용 불가";
                 case GearPropType.cantRepair: return value == 0 ? null : "수리 불가";
+                case GearPropType.colorvar: return value == 0 ? null : "#c该装备可通过染色颜料来变更颜色.#";
 
                 case GearPropType.incMHP_incMMP: return "최대 HP / 최대 MP : " + sign + value;
                 case GearPropType.incMHPr_incMMPr: return "최대 HP / 최대 MP : " + sign + value + "%";
@@ -448,6 +451,7 @@ namespace WzComparerR2.CharaSim
 
                 case GearType.magicGauntlet: 
                 case GearType.magicWing: return GetExtraJobReqString(152);
+
                 case GearType.pathOfAbyss: return GetExtraJobReqString(155);
 
                 default: return null;
@@ -483,7 +487,6 @@ namespace WzComparerR2.CharaSim
                 case 142: return "키네시스 착용 가능";
                 case 152: return "일리움 착용 가능";
                 case 155: return "아크 착용 가능";
-
                 default: return null;
             }
         }
@@ -506,6 +509,8 @@ namespace WzComparerR2.CharaSim
                     return value == 0 ? null : "파티 퀘스트 아이템";
                 case ItemPropType.multiPet:
                     return value == 0 ? "일반펫 (다른 일반펫과 중복 사용불가)" : "멀티펫 (다른 펫과 최대 3개 중복 사용가능)";
+                case ItemPropType.permanent:
+                    return value == 0 ? null : "可以一直使用魔法的神奇宠物。";
                 default:
                     return null;
             }
