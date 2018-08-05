@@ -1519,12 +1519,12 @@ namespace WzComparerR2.CharaSimControl
         {
             switch (grade)
             {
+                default:
                 case GearGrade.B: return Resource.AdditionalOptionTooltip_rare;
                 case GearGrade.A: return Resource.AdditionalOptionTooltip_epic;
                 case GearGrade.S: return Resource.AdditionalOptionTooltip_unique;
                 case GearGrade.SS: return Resource.AdditionalOptionTooltip_legendary;
             }
-            return null;
         }
 
         private bool TryGetMedalResource(int medalTag, out Wz_Node resNode)
