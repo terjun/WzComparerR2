@@ -207,7 +207,7 @@ namespace WzComparerR2.MapRender
                         break;
 
                     case 8:
-                        if (portal.Script == "enterTestD")
+                        if (portal.ShownAtMinimap)
                         {
                             this.ui.Minimap.Icons.Add(new UIMinimap2.MapIcon()
                             {
@@ -228,7 +228,7 @@ namespace WzComparerR2.MapRender
                         break;
 
                     case 11:
-                        if (portal.Script == "morassDQ_MP" || portal.Script == "morassDQ_34285")
+                        if (portal.ShownAtMinimap)
                         {
                             this.ui.Minimap.Icons.Add(new UIMinimap2.MapIcon()
                             {

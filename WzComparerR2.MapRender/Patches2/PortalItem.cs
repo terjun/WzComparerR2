@@ -18,6 +18,7 @@ namespace WzComparerR2.MapRender.Patches2
         public string Script { get; set; }
         public int Image { get; set; }
         public bool EnchantPortal { get; set; }
+        public bool ShownAtMinimap { get; set; }
 
         public ItemView View { get; set; }
         public ItemTooltip Tooltip { get; set; }
@@ -34,7 +35,8 @@ namespace WzComparerR2.MapRender.Patches2
                 ToName = node.Nodes["tn"].GetValueEx<string>(null),
                 Script = node.Nodes["script"].GetValueEx<string>(null),
                 Image = node.Nodes["image"].GetValueEx<int>(0),
-                EnchantPortal = node.Nodes["enchantPortal"].GetValueEx<int>(0) != 0
+                EnchantPortal = node.Nodes["enchantPortal"].GetValueEx<int>(0) != 0,
+                ShownAtMinimap = node.Nodes["shownAtMinimap"].GetValueEx<int>(0) != 0
             };
             return item;
         }
