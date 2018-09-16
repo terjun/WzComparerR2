@@ -2529,7 +2529,7 @@ namespace WzComparerR2
                 case Wz_Type.Skill:
                     Wz_Node skillNode = selectedNode;
                     //模式路径分析
-                    if (Regex.IsMatch(skillNode.FullPathToFile, @"^Skill\\Recipe_\d+.img\\\d+$"))
+                    if (Regex.IsMatch(skillNode.FullPathToFile, @"^Skill\d*\\Recipe_\d+.img\\\d+$"))
                     {
                         Recipe recipe = Recipe.CreateFromNode(skillNode);
                         obj = recipe;
@@ -2538,7 +2538,7 @@ namespace WzComparerR2
                             fileName = "recipe_" + recipe.RecipeID + ".png";
                         }
                     }
-                    else if (Regex.IsMatch(skillNode.FullPathToFile, @"^Skill\\\d+.img\\skill\\\d+$"))
+                    else if (Regex.IsMatch(skillNode.FullPathToFile, @"^Skill\d*\\\d+.img\\skill\\\d+$"))
                     {
                         Skill skill = Skill.CreateFromNode(skillNode, PluginManager.FindWz);
                         if (skill != null)
