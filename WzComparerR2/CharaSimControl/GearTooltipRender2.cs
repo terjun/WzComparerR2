@@ -321,28 +321,25 @@ namespace WzComparerR2.CharaSimControl
             }
             if (Gear.Cash) //绘制cash标识
             {
+                Bitmap cashImg = null;
+
                 if (Gear.Props.TryGetValue(GearPropType.royalSpecial, out value) && value > 0)
                 {
-                    Image label = Resource.ResourceManager.GetObject("CashItem_label_" + (value - 1)) as Image;
-                    if (label != null)
-                    {
-                        g.DrawImage(GearGraphics.EnlargeBitmap(new Bitmap(label)),
-                            18 + 68 - 26,
-                            picH + 15 + 68 - 26);
-                    }
+                    string resKey = $"CashShop_img_CashItem_label_{value - 1}";
+                    cashImg = Resource.ResourceManager.GetObject(resKey) as Bitmap;
                 }
                 else if (Gear.Props.TryGetValue(GearPropType.masterSpecial, out value) && value > 0)
                 {
-                    g.DrawImage(GearGraphics.EnlargeBitmap(Resource.CashItem_label_3),
-                        18 + 68 - 26,
-                        picH + 15 + 68 - 26);
+                    cashImg = Resource.CashShop_img_CashItem_label_3;
                 }
-                else
+                if (cashImg == null) //default cashImg
                 {
-                    g.DrawImage(GearGraphics.EnlargeBitmap(Resource.CashItem_0),
-                        18 + 68 - 26,
-                        picH + 15 + 68 - 26);
+                    cashImg = Resource.CashItem_0;
                 }
+
+                g.DrawImage(GearGraphics.EnlargeBitmap(cashImg),
+                    18 + 68 - 26,
+                    picH + 15 + 68 - 26);
             }
             //检查星岩
             bool hasSocket = Gear.GetBooleanValue(GearPropType.nActivatedSocket);

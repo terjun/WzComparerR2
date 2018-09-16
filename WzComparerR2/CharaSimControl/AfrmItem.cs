@@ -509,27 +509,32 @@ namespace WzComparerR2.CharaSimControl
             }
             if (gear.Cash)
             {
+                Bitmap cashImg = null;
+
                 int value;
                 if (gear.Props.TryGetValue(GearPropType.royalSpecial, out value) && value > 0)
                 {
-                    Image label = Resource.ResourceManager.GetObject("CashItem_label_" + (value - 1)) as Image;
-                    if (label != null)
-                    {
-                        g.DrawImage(new Bitmap(label), origin.X + 20, origin.Y - 12);
-                    }
+                    string resKey = $"CashShop_img_CashItem_label_{value - 1}";
+                    cashImg = Resource.ResourceManager.GetObject(resKey) as Bitmap;
                 }
                 else if (gear.Props.TryGetValue(GearPropType.masterSpecial, out value) && value > 0)
                 {
-                    g.DrawImage(Resource.CashItem_label_3, origin.X + 20, origin.Y - 12);
+                    cashImg = Resource.CashShop_img_CashItem_label_3;
                 }
-                else
+                if (cashImg == null) //default cashImg
                 {
-                    g.DrawImage(Resource.CashItem_0, origin.X + 20, origin.Y - 12);
+                    cashImg = Resource.CashItem_0;
                 }
+
+                g.DrawImage(cashImg, origin.X + 20, origin.Y - 12);
             }
             if (gear.TimeLimited)
             {
                 g.DrawImage(Resource.Item_timeLimit_0, origin.X, origin.Y - 32);
+            }
+            if (gear.Protected)
+            {
+                g.DrawImage(Resource.ItemProtector_Icon_0, origin.X + 20, origin.Y - 12);
             }
         }
 
@@ -544,19 +549,20 @@ namespace WzComparerR2.CharaSimControl
             }
             if (item.Cash)
             {
+                Bitmap cashImg = null;
+
                 int value;
                 if (item.Props.TryGetValue(ItemPropType.wonderGrade, out value) && value > 0)
                 {
-                    Image label = Resource.ResourceManager.GetObject("CashItem_label_" + (value + 3)) as Image;
-                    if (label != null)
-                    {
-                        g.DrawImage(new Bitmap(label), origin.X + 20, origin.Y - 12);
-                    }
+                    string resKey = $"CashShop_img_CashItem_label_{value + 3}";
+                    cashImg = Resource.ResourceManager.GetObject(resKey) as Bitmap;
                 }
-                else
+                if (cashImg == null) //default cashImg
                 {
-                    g.DrawImage(Resource.CashItem_0, origin.X + 20, origin.Y - 12);
+                    cashImg = Resource.CashItem_0;
                 }
+
+                g.DrawImage(cashImg, origin.X + 20, origin.Y - 12);
             }
             if (item.TimeLimited)
             {
