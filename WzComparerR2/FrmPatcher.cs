@@ -406,15 +406,20 @@ namespace WzComparerR2
                             wzold.Clear();
                             GC.Collect();
                         }
+
+                        if (this.deadPatch && typedParts[e.Part.WzType].Count == ((WzPatcher)sender).PatchParts.Where(part => part.WzType == e.Part.WzType).Count())
+                        {
+                            foreach (PatchPartContext part in typedParts[e.Part.WzType].Where(part => part.Type == 1))
+                            {
+                                ((WzPatcher)sender).SafeMove(part.TempFilePath, part.OldFilePath);
+                            }
+                            AppendStateText("  파일 적용...\r\n");
+                        }
                     }
 
-                    if (this.deadPatch /*&& e.Part.Type == 1*/ && typedParts[e.Part.WzType].Count == ((WzPatcher)sender).PatchParts.Where(part => part.WzType == e.Part.WzType).Count())
+                    if (string.IsNullOrEmpty(this.compareFolder) && this.deadPatch && e.Part.Type == 1)
                     {
-                        //((WzPatcher)sender).SafeMove(e.Part.TempFilePath, e.Part.OldFilePath);
-                        foreach (PatchPartContext part in typedParts[e.Part.WzType].Where(part => part.Type == 1))
-                        {
-                            ((WzPatcher)sender).SafeMove(part.TempFilePath, part.OldFilePath);
-                        }
+                        ((WzPatcher)sender).SafeMove(e.Part.TempFilePath, e.Part.OldFilePath);
                         AppendStateText("  파일 적용...\r\n");
                     }
                     break;
