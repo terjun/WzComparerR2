@@ -345,15 +345,25 @@ namespace WzComparerR2.CharaSimControl
             if (item.TimeLimited)
             {
                 DateTime time = DateTime.Now.AddDays(7d);
-                if (!item.Cash) expireTime = time.ToString("yyyy년 M월 d일 HH시 mm분까지 사용가능");
-                else expireTime = time.ToString("yyyy년 M월 d일 HH시까지 사용가능");
+                if (!item.Cash)
+                {
+                    expireTime = time.ToString("yyyy년 M월 d일 HH시 mm분까지 사용가능");
+                }
+                else
+                {
+                    expireTime = time.ToString("yyyy년 M월 d일 HH시까지 사용가능");
+                }
             }
             else if (item.EndUseDate != null)
             {
                 expireTime = string.Format("{0}년 {1}월 {2}일 {3:D2}시 {4:D2}분까지 사용가능", Convert.ToInt32(item.EndUseDate.Substring(0, 4)), Convert.ToInt32(item.EndUseDate.Substring(4, 2)), Convert.ToInt32(item.EndUseDate.Substring(6, 2)), Convert.ToInt32(item.EndUseDate.Substring(8, 2)), Convert.ToInt32(item.EndUseDate.Substring(10, 2)));
             }
-            else if (item.Props.TryGetValue(ItemPropType.permanent, out value) && value != 0)
+            else if ((item.Props.TryGetValue(ItemPropType.permanent, out value) && value != 0) || (item.ItemID / 10000 == 500 && item.Props.TryGetValue(ItemPropType.life, out value) && value == 0))
             {
+                if (value == 0)
+                {
+                    value = 1;
+                }
                 expireTime = ItemStringHelper.GetItemPropString(ItemPropType.permanent, value);
             }
             else if (item.ItemID / 10000 == 500 && item.Props.TryGetValue(ItemPropType.limitedLife, out value) && value > 0)
@@ -534,33 +544,22 @@ namespace WzComparerR2.CharaSimControl
                 && this.TryGetNickResource(value, out nickResNode);
             int minLev = 0, maxLev = 0;
             bool willDrawExp = item.Props.TryGetValue(ItemPropType.exp_minLev, out minLev) && item.Props.TryGetValue(ItemPropType.exp_maxLev, out maxLev);
-            if (item.Sample.Bitmap != null || willDrawNickTag || willDrawExp)
+            if (!string.IsNullOrEmpty(sr["desc_leftalign"]) || item.Sample.Bitmap != null || willDrawNickTag || willDrawExp)
             {
                 if (picH < iconY + 84)
                 {
                     picH = iconY + 84;
+                }
+                if (!string.IsNullOrEmpty(sr["desc_leftalign"]))
+                {
+                    picH += 12;
+                    GearGraphics.DrawString(g, sr["desc_leftalign"], GearGraphics.ItemDetailFont, 14, right, ref picH, 16);
                 }
                 if (item.Sample.Bitmap != null)
                 {
                     g.DrawImage(item.Sample.Bitmap, (tooltip.Width - item.Sample.Bitmap.Width) / 2, picH);
                     picH += item.Sample.Bitmap.Height;
                     picH += 2;
-                }
-                if (minLev > 0 && maxLev > 0)
-                {
-                    long totalExp = 0;
-
-                    for (int i = minLev; i < maxLev; i++)
-                        totalExp += Character.ExpToNextLevel(i);
-
-                    g.DrawLine(Pens.White, 6, picH, tooltip.Width - 7, picH);
-                    picH += 8;
-
-                    TextRenderer.DrawText(g, "총  경험치량 :" + totalExp, GearGraphics.ItemDetailFont2, new Point(10, picH), ((SolidBrush)GearGraphics.OrangeBrush4).Color, TextFormatFlags.NoPadding);
-                    picH += 16;
-
-                    TextRenderer.DrawText(g, "잔여 경험치량:" + totalExp, GearGraphics.ItemDetailFont2, new Point(10, picH), Color.Red, TextFormatFlags.NoPadding);
-                    picH += 16;
                 }
                 if (nickResNode != null)
                 {
@@ -578,6 +577,22 @@ namespace WzComparerR2.CharaSimControl
                     }
                     GearGraphics.DrawNameTag(g, nickResNode, nickName, tooltip.Width, ref picH);
                     picH += 4;
+                }
+                if (minLev > 0 && maxLev > 0)
+                {
+                    long totalExp = 0;
+
+                    for (int i = minLev; i < maxLev; i++)
+                        totalExp += Character.ExpToNextLevel(i);
+
+                    g.DrawLine(Pens.White, 6, picH, tooltip.Width - 7, picH);
+                    picH += 8;
+
+                    TextRenderer.DrawText(g, "총  경험치량 :" + totalExp, GearGraphics.ItemDetailFont2, new Point(10, picH), ((SolidBrush)GearGraphics.OrangeBrush4).Color, TextFormatFlags.NoPadding);
+                    picH += 16;
+
+                    TextRenderer.DrawText(g, "잔여 경험치량:" + totalExp, GearGraphics.ItemDetailFont2, new Point(10, picH), Color.Red, TextFormatFlags.NoPadding);
+                    picH += 16;
                 }
             }
 

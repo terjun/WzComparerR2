@@ -510,7 +510,7 @@ namespace WzComparerR2.CharaSim
                 case ItemPropType.multiPet:
                     return value == 0 ? "일반펫 (다른 일반펫과 중복 사용불가)" : "멀티펫 (다른 펫과 최대 3개 중복 사용가능)";
                 case ItemPropType.permanent:
-                    return value == 0 ? null : "可以一直使用魔法的神奇宠物。";
+                    return value == 0 ? null : "마법의 시간이 끝나지 않는 미라클 펫입니다.";
                 default:
                     return null;
             }
@@ -609,6 +609,9 @@ namespace WzComparerR2.CharaSim
                 case 2000: return "레전드";
                 case 2001: return "에반";
                 case 2002: return "메르세데스";
+                case 2003: return "팬텀";
+                case 2004: return "루미너스";
+                case 2005: return "은월";
                 case 2100: return "아란(1차)";
                 case 2110: return "아란(2차)";
                 case 2111: return "아란(3차)";
@@ -719,6 +722,9 @@ namespace WzComparerR2.CharaSim
                 case 11210: return "林之灵(2次)";
                 case 11211: return "林之灵(3次)";
                 case 11212: return "林之灵(4次)";
+
+                case 13000:
+                case 13100: return "핑크빈";
 
                 case 14000: return "키네시스";
                 case 14200: return "키네시스(1차)";

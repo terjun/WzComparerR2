@@ -532,10 +532,6 @@ namespace WzComparerR2.CharaSimControl
             {
                 g.DrawImage(Resource.Item_timeLimit_0, origin.X, origin.Y - 32);
             }
-            if (gear.Protected)
-            {
-                g.DrawImage(Resource.ItemProtector_Icon_0, origin.X + 20, origin.Y - 12);
-            }
         }
 
         private void renderItem(Graphics g, Item item, Point origin)
