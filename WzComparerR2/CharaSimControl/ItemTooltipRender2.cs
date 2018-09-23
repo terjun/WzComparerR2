@@ -333,11 +333,30 @@ namespace WzComparerR2.CharaSimControl
             picH += 21;
 
             //额外特性
-            string attr = GetItemAttributeString();
-            if (!string.IsNullOrEmpty(attr))
+            var attrList = GetItemAttributeString();
+            if (attrList.Count > 0)
             {
-                TextRenderer.DrawText(g, attr, GearGraphics.ItemDetailFont, new Point(tooltip.Width, picH), ((SolidBrush)GearGraphics.OrangeBrush4).Color, TextFormatFlags.HorizontalCenter);
-                picH += 16;
+                var font = GearGraphics.ItemDetailFont;
+                string attrStr = null;
+                for (int i = 0; i < attrList.Count; i++)
+                {
+                    var newStr = (attrStr != null ? (attrStr + ", ") : null) + attrList[i];
+                    if (TextRenderer.MeasureText(g, newStr, font, new Size(int.MaxValue, int.MaxValue), TextFormatFlags.NoPadding).Width > tooltip.Width - 7)
+                    {
+                        TextRenderer.DrawText(g, attrStr, GearGraphics.ItemDetailFont, new Point(tooltip.Width, picH), ((SolidBrush)GearGraphics.OrangeBrush4).Color, TextFormatFlags.HorizontalCenter | TextFormatFlags.NoPadding);
+                        picH += 16;
+                        attrStr = attrList[i];
+                    }
+                    else
+                    {
+                        attrStr = newStr;
+                    }
+                }
+                if (!string.IsNullOrEmpty(attrStr))
+                {
+                    TextRenderer.DrawText(g, attrStr, GearGraphics.ItemDetailFont, new Point(tooltip.Width, picH), ((SolidBrush)GearGraphics.OrangeBrush4).Color, TextFormatFlags.HorizontalCenter | TextFormatFlags.NoPadding);
+                    picH += 16;
+                }
                 hasPart2 = true;
             }
 
@@ -450,7 +469,7 @@ namespace WzComparerR2.CharaSimControl
             }
             if (item.Props.TryGetValue(ItemPropType.tradeAvailable, out value) && value > 0)
             {
-                attr = ItemStringHelper.GetItemPropString(ItemPropType.tradeAvailable, value);
+                string attr = ItemStringHelper.GetItemPropString(ItemPropType.tradeAvailable, value);
                 if (!string.IsNullOrEmpty(attr))
                     GearGraphics.DrawString(g, "#c" + attr + "#", GearGraphics.ItemDetailFont2, 100, right, ref picH, 16);
             }
@@ -593,6 +612,29 @@ namespace WzComparerR2.CharaSimControl
 
                     TextRenderer.DrawText(g, "잔여 경험치량:" + totalExp, GearGraphics.ItemDetailFont2, new Point(10, picH), Color.Red, TextFormatFlags.NoPadding);
                     picH += 16;
+
+                    string cantAccountSharable = null;
+                    Wz_Node itemWz = PluginManager.FindWz(Wz_Type.Item);
+                    if (itemWz != null)
+                    {
+                        string imgClass = (item.ItemID / 10000).ToString("d4") + ".img\\" + item.ItemID.ToString("d8");
+                        foreach (Wz_Node node0 in itemWz.Nodes)
+                        {
+                            Wz_Node imgNode = node0.FindNodeByPath(imgClass, true);
+                            if (imgNode != null)
+                            {
+                                cantAccountSharable = imgNode.FindNodeByPath("info\\cantAccountSharable\\tooltip").GetValueEx<string>(null);
+                                break;
+                            }
+                        }
+                    }
+
+                    if (cantAccountSharable != null)
+                    {
+                        TextRenderer.DrawText(g, cantAccountSharable, GearGraphics.ItemDetailFont2, new Point(10, picH), ((SolidBrush)GearGraphics.SetItemNameBrush).Color, TextFormatFlags.NoPadding);
+                        picH += 16;
+                        picH += 16;
+                    }
                 }
             }
 
@@ -637,7 +679,7 @@ namespace WzComparerR2.CharaSimControl
             return tooltip;
         }
 
-        private string GetItemAttributeString()
+        private List<string> GetItemAttributeString()
         {
             int value, value2;
             List<string> tags = new List<string>();
@@ -679,7 +721,7 @@ namespace WzComparerR2.CharaSimControl
                 tags.Add(ItemStringHelper.GetItemPropString(ItemPropType.multiPet, 0));
             }
 
-            return tags.Count > 0 ? string.Join(", ", tags.ToArray()) : null;
+            return tags;
         }
 
         private Bitmap RenderLinkRecipeInfo(Recipe recipe)
