@@ -185,6 +185,9 @@
             this.tsmi2ExpandLevel = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmi2CollapseLevel = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
+            this.tsmi2ExpandType = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmi2CollapseType = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator();
             this.tsmi2Prev = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmi2Next = new System.Windows.Forms.ToolStripMenuItem();
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
@@ -219,7 +222,7 @@
             this.advTree1 = new DevComponents.AdvTree.AdvTree();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.tsmi1Sort = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripSeparator();
             this.tsmi1Export = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmi1DumpAsXml = new System.Windows.Forms.ToolStripMenuItem();
             this.nodeConnector1 = new DevComponents.AdvTree.NodeConnector();
@@ -2135,6 +2138,9 @@
             this.tsmi2ExpandLevel,
             this.tsmi2CollapseLevel,
             this.toolStripMenuItem2,
+            this.tsmi2ExpandType,
+            this.tsmi2CollapseType,
+            this.toolStripMenuItem3,
             this.tsmi2Prev,
             this.tsmi2Next});
             this.contextMenuStrip2.Name = "contextMenuStrip2";
@@ -2199,12 +2205,31 @@
             this.toolStripMenuItem2.Name = "toolStripMenuItem2";
             this.toolStripMenuItem2.Size = new System.Drawing.Size(192, 6);
             // 
+            // tsmi2ExpandType
+            // 
+            this.tsmi2ExpandType.Name = "tsmi2ExpandType";
+            this.tsmi2ExpandType.Size = new System.Drawing.Size(195, 22);
+            this.tsmi2ExpandType.Text = "동일 유형 확장(&A)";
+            this.tsmi2ExpandType.Click += new System.EventHandler(this.tsmi2ExpandType_Click);
+            // 
+            // tsmi2CollapseType
+            // 
+            this.tsmi2CollapseType.Name = "tsmi2CollapseType";
+            this.tsmi2CollapseType.Size = new System.Drawing.Size(195, 22);
+            this.tsmi2CollapseType.Text = "동일 유형 축소(&L)";
+            this.tsmi2CollapseType.Click += new System.EventHandler(this.tsmi2CollapseType_Click);
+            // 
+            // toolStripMenuItem3
+            // 
+            this.toolStripMenuItem3.Name = "toolStripMenuItem3";
+            this.toolStripMenuItem3.Size = new System.Drawing.Size(192, 6);
+            // 
             // tsmi2Prev
             // 
             this.tsmi2Prev.Name = "tsmi2Prev";
             this.tsmi2Prev.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Z)));
             this.tsmi2Prev.Size = new System.Drawing.Size(195, 22);
-            this.tsmi2Prev.Text = "이전 선택(&P)";
+            this.tsmi2Prev.Text = "이동 취소(&P)";
             this.tsmi2Prev.Click += new System.EventHandler(this.tsmi2Prev_Click);
             // 
             // tsmi2Next
@@ -2212,7 +2237,7 @@
             this.tsmi2Next.Name = "tsmi2Next";
             this.tsmi2Next.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.X)));
             this.tsmi2Next.Size = new System.Drawing.Size(195, 22);
-            this.tsmi2Next.Text = "다음 선택(&N)";
+            this.tsmi2Next.Text = "다시 이동(&N)";
             this.tsmi2Next.Click += new System.EventHandler(this.tsmi2Next_Click);
             // 
             // imageList1
@@ -2606,7 +2631,7 @@
             // 
             this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsmi1Sort,
-            this.toolStripMenuItem3,
+            this.toolStripMenuItem4,
             this.tsmi1Export,
             this.tsmi1DumpAsXml});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
@@ -2619,10 +2644,10 @@
             this.tsmi1Sort.Text = "정렬(&S)";
             this.tsmi1Sort.Click += new System.EventHandler(this.tsmi1Sort_Click);
             // 
-            // toolStripMenuItem3
+            // toolStripMenuItem4
             // 
-            this.toolStripMenuItem3.Name = "toolStripMenuItem3";
-            this.toolStripMenuItem3.Size = new System.Drawing.Size(151, 6);
+            this.toolStripMenuItem4.Name = "toolStripMenuItem4";
+            this.toolStripMenuItem4.Size = new System.Drawing.Size(151, 6);
             // 
             // tsmi1Export
             // 
@@ -2900,7 +2925,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MinimumSize = new System.Drawing.Size(750, 513);
             this.Name = "MainForm";
-            this.Text = "[KMS] WzComparerR2";
+            this.Text = "WzComparerR2-KMS";
             this.ribbonControl1.ResumeLayout(false);
             this.ribbonControl1.PerformLayout();
             this.ribbonPanel2.ResumeLayout(false);
@@ -3082,6 +3107,9 @@
         private System.Windows.Forms.ToolStripMenuItem tsmi2ExpandLevel;
         private System.Windows.Forms.ToolStripMenuItem tsmi2CollapseLevel;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem2;
+        private System.Windows.Forms.ToolStripMenuItem tsmi2ExpandType;
+        private System.Windows.Forms.ToolStripMenuItem tsmi2CollapseType;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem3;
         private System.Windows.Forms.ToolStripMenuItem tsmi2Prev;
         private System.Windows.Forms.ToolStripMenuItem tsmi2Next;
         private DevComponents.DotNetBar.ItemContainer itemContainer37;
@@ -3101,7 +3129,7 @@
         private DevComponents.DotNetBar.LabelX labelXComp1;
         private DevComponents.DotNetBar.LabelX labelXComp2;
         private System.Windows.Forms.ToolStripMenuItem tsmi1Export;
-        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem3;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem4;
         private DevComponents.DotNetBar.ComboBoxItem comboBoxItemLanguage;
         private DevComponents.Editors.ComboItem comboItem13;
         private DevComponents.Editors.ComboItem comboItem14;

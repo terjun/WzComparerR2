@@ -1099,6 +1099,30 @@ namespace WzComparerR2
                     "offset: " + png.Offset + "\r\n" +
                     "size: " + png.Width + "*" + png.Height + "\r\n" +
                     "png format: " + png.Form;
+
+                var linkNode = selectedNode.GetLinkedSourceNode(PluginManager.FindWz);
+                if (linkNode != selectedNode)
+                {
+                    png = linkNode.GetValueEx<Wz_Png>(null);
+                    if (png != null)
+                    {
+                        string valueStr = Convert.ToString((selectedNode.Nodes["source"] ?? selectedNode.Nodes["_inlink"] ?? selectedNode.Nodes["_outlink"])?.Value);
+                        if (valueStr != null && valueStr.Contains("\n") && !valueStr.Contains("\r\n"))
+                        {
+                            valueStr = valueStr.Replace("\n", "\r\n");
+                        }
+                        textBoxX1.AppendText("\r\n\r\n" + Convert.ToString(valueStr));
+
+                        pictureBoxEx1.PictureName = GetSelectedNodeImageName();
+                        pictureBoxEx1.ShowImage(png);
+                        this.cmbItemAniNames.Items.Clear();
+                        advTree3.PathSeparator = ".";
+                        textBoxX1.AppendText("\r\n\r\ndataLength: " + png.DataLength + " bytes\r\n" +
+                            "offset: " + png.Offset + "\r\n" +
+                            "size: " + png.Width + "*" + png.Height + "\r\n" +
+                            "png format: " + png.Form);
+                    }
+                }
             }
             else if ((vector = selectedNode.Value as Wz_Vector) != null)
             {
@@ -2364,6 +2388,60 @@ namespace WzComparerR2
             }
         }
 
+        private void tsmi2ExpandType_Click(object sender, EventArgs e)
+        {
+            if (advTree3.SelectedNode == null)
+                return;
+
+            advTree3.BeginUpdate();
+            foreach (Node node in getEqualTypeNode(advTree3.SelectedNode))
+            {
+                node.Expand();
+            }
+            advTree3.EndUpdate();
+        }
+
+        private void tsmi2CollapseType_Click(object sender, EventArgs e)
+        {
+            if (advTree3.SelectedNode == null)
+                return;
+
+            advTree3.BeginUpdate();
+            foreach (Node node in getEqualTypeNode(advTree3.SelectedNode))
+            {
+                node.Collapse();
+            }
+            advTree3.EndUpdate();
+        }
+
+        private IEnumerable<Node> getEqualTypeNode(Node currentNode)
+        {
+            if (currentNode == null)
+                yield break;
+            Type type = currentNode.AsWzNode()?.Value?.GetType();
+            Node parent = currentNode;
+            while (parent != null && parent.Parent != null)
+            {
+                parent = parent.Parent;
+            }
+            Queue<Node> nodeList = new Queue<Node>();
+            nodeList.Enqueue(parent);
+            while (nodeList.Count > 0)
+            {
+                int count = nodeList.Count;
+                for (int i = 0; i < count; i++)
+                {
+                    Node node = nodeList.Dequeue();
+                    if (node.AsWzNode()?.Value?.GetType() == type)
+                    {
+                        yield return node;
+                    }
+                    foreach (Node child in node.Nodes)
+                        nodeList.Enqueue(child);
+                }
+            }
+        }
+
         private void tsmi2Prev_Click(object sender, EventArgs e)
         {
             if (historyNodeList.PrevCount > 0)
@@ -2883,7 +2961,7 @@ namespace WzComparerR2
             }
 
             FolderBrowserDialog dlg = new FolderBrowserDialog();
-            dlg.Description = "저장할 폴더를 선택하세요";
+            dlg.Description = "저장할 폴더를 선택하세요.";
 
             if (dlg.ShowDialog() == DialogResult.OK)
             {
@@ -3034,7 +3112,7 @@ namespace WzComparerR2
         private void btnExportSkill_Click(object sender, EventArgs e)
         {
             FolderBrowserDialog dlg = new FolderBrowserDialog();
-            dlg.Description = "내보내고자 하는 폴더를 선택하세요";
+            dlg.Description = "내보내고자 하는 폴더를 선택하세요.";
             if (dlg.ShowDialog() == DialogResult.OK)
             {
                 if (!this.stringLinker.HasValues)
