@@ -234,14 +234,15 @@ namespace WzComparerR2
                 foreach (PatchPartContext part in patcher.PatchParts)
                 {
                     advTreePatchFiles.Nodes.Add(CreateFileNode(part));
+                    advTreePatchFiles.Nodes[advTreePatchFiles.Nodes.Count - 1].Enabled = prePatch;
                 }
                 if (prePatch)
                 {
-                    advTreePatchFiles.Enabled = true;
+                    //advTreePatchFiles.Enabled = true;
                     AppendStateText("패치할 파일을 선택한 후 패치 버튼을 눌러주세요...\r\n");
                     waiting = true;
                     waitHandle.WaitOne();
-                    advTreePatchFiles.Enabled = false;
+                    //advTreePatchFiles.Enabled = false;
                     patcher.PatchParts.Clear();
                     for (int i = 0, j = advTreePatchFiles.Nodes.Count; i < j; i++)
                     {
@@ -249,6 +250,7 @@ namespace WzComparerR2
                         {
                             patcher.PatchParts.Add(advTreePatchFiles.Nodes[i].Tag as PatchPartContext);
                         }
+                        advTreePatchFiles.Nodes[i].Enabled = false;
                     }
                     patcher.PatchParts.Sort((part1, part2) => part1.Offset.CompareTo(part2.Offset));
                 }

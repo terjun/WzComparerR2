@@ -581,7 +581,7 @@
             this.advTreePatchFiles.DoubleClickTogglesNode = false;
             this.advTreePatchFiles.DragDropNodeCopyEnabled = false;
             this.advTreePatchFiles.DropAsChildOffset = 65535;
-            this.advTreePatchFiles.Enabled = false;
+            this.advTreePatchFiles.Enabled = true;
             this.advTreePatchFiles.ExpandWidth = 0;
             this.advTreePatchFiles.GridRowLines = true;
             this.advTreePatchFiles.Location = new System.Drawing.Point(0, 0);
