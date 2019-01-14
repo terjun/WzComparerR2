@@ -59,6 +59,7 @@ namespace WzComparerR2
             this.advTree1.Nodes.Add(new Node(string.Format("[KMS] 아바타 하이레프 귀 오류 제보 <font color=\"#808080\">메이플인벤 누리신드롬</font>")));
             this.advTree1.Nodes.Add(new Node(string.Format("[KMS] 패치와 함께 비교시 오류 제보 <font color=\"#808080\">@Sunaries</font>")));
             this.advTree1.Nodes.Add(new Node(string.Format("[KMS] 사용 가능 직업 문구 오류 제보 <font color=\"#808080\">@tanyoucai</font>")));
+            this.advTree1.Nodes.Add(new Node(string.Format("[KMS] 퀘스트 상태 파티클 미적용 오류 제보 <font color=\"#808080\">메이플인벤 펄더</font>")));
 
             if (PluginBase.PluginManager.LoadedPlugins.Count > 0)
             {

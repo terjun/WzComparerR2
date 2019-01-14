@@ -336,7 +336,7 @@ namespace WzComparerR2.MapRender.UI
                  "M 미니맵",
                  "W 월드맵",
                  "Esc 설정",
-                 "Ctrl+1~9 레이어 표시 변경",
+                 "Ctrl+1~0 레이어 표시 변경",
                  "Ctrl+U 시야 범위 제한 변경",
                  "` 채팅창",
                  "Alt+Enter 해상도 변경",

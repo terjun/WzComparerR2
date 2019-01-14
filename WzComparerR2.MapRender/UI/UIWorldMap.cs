@@ -656,6 +656,7 @@ namespace WzComparerR2.MapRender.UI
                         if (link.LinkImg.HitMap?[(int)pos.X, (int)pos.Y] ?? false)
                         {
                             addItem(link.LinkImg, link);
+                            break;
                         }
                     }
                 }

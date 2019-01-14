@@ -789,10 +789,19 @@ namespace WzComparerR2.MapRender
             for (int i = 0; i < particle.SubItems.Length; i++)
             {
                 var subItem = particle.SubItems[i];
+                if (subItem.Quest.Exists(quest => !resLoader.PatchVisibility.IsVisible(quest.Item1, quest.Item2)))
+                {
+                    continue;
+                }
                 var pGroup = pSystem.CreateGroup(i.ToString());
                 pGroup.Position = new Vector2(subItem.X, subItem.Y);
                 pGroup.Active();
                 pSystem.Groups.Add(pGroup);
+            }
+
+            if (pSystem.Groups.Count == 0)
+            {
+                pSystem = new ParticleSystem(this.random);
             }
 
             particle.View = new ParticleItem.ItemView()
@@ -887,8 +896,8 @@ namespace WzComparerR2.MapRender
 
         private void AddNpcAI(StateMachineAnimator ani)
         {
-            var actions = new[] { "stand", "say", "mouse", "move", "hand", "laugh", "eye" };
-            var availActions = ani.Data.States.Where(act => !act.EndsWith("_old") && actions.Where(acts => act.Contains(acts)).Count() > 0).ToArray();
+            var actions = new List<string> { "stand", "say", "mouse", "move", "hand", "laugh", "eye" };
+            var availActions = ani.Data.States.Where(act => !act.EndsWith("_old") && actions.Exists(acts => act.Contains(acts))).ToArray();
             if (availActions.Length > 0)
             {
                 ani.AnimationEnd += (o, e) =>
