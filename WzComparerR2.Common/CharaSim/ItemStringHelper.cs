@@ -336,6 +336,9 @@ namespace WzComparerR2.CharaSim
                 case GearType.magicWing: return "매직윙";
                 case GearType.pathOfAbyss: return "패스 오브 어비스";
 
+                case GearType.ancientBow: return "에인션트 보우";
+                case GearType.relic: return "렐릭";
+
                 default: return null;
             }
         }
@@ -390,6 +393,7 @@ namespace WzComparerR2.CharaSim
                 case GearType.book3: return "비숍 계열 마법사 착용 가능";
                 case GearType.bowMasterFeather: return "보우마스터 직업군 착용 가능";
                 case GearType.crossBowThimble: return "신궁 직업군 착용 가능";
+                case GearType.relic: return "패스파인더 직업군 착용 가능";
                 case GearType.shadowerSheath: return "섀도어 직업군 착용 가능";
                 case GearType.nightLordPoutch: return "나이트로드 직업군 착용 가능";
                 case GearType.katara: return "듀얼블레이드 직업군 착용 가능";
@@ -553,13 +557,17 @@ namespace WzComparerR2.CharaSim
                 case 230: return "클레릭";
                 case 231: return "프리스트";
                 case 232: return "비숍";
-                case 300: return "아쳐";
+                case 300: return "아처";
+                case 301: return "아처";
                 case 310: return "헌터";
                 case 311: return "레인저";
                 case 312: return "보우마스터";
                 case 320: return "사수";
                 case 321: return "저격수";
                 case 322: return "신궁";
+                case 330: return "에인션트 아처";
+                case 331: return "체이서";
+                case 332: return "패스파인더";
                 case 400: return "로그";
                 case 410: return "어쌔신";
                 case 411: return "허밋";
@@ -723,7 +731,7 @@ namespace WzComparerR2.CharaSim
                 case 11211: return "林之灵(3次)";
                 case 11212: return "林之灵(4次)";
 
-                case 13000:
+                case 13000: return "핑크빈";
                 case 13100: return "핑크빈";
 
                 case 14000: return "키네시스";

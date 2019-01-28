@@ -337,6 +337,7 @@ namespace WzComparerR2.CharaSim
         /// 精气珠 135360
         /// </summary>
         pathOfAbyss = 135360,
+        relic = 135370,
         /// <summary>
         /// 手杖
         /// </summary>
@@ -430,6 +431,7 @@ namespace WzComparerR2.CharaSim
         /// 机甲手枪 158
         /// </summary>
         GauntletBuster = 158,
+        ancientBow = 159,
         /// <summary>
         /// 拼图 168
         /// </summary>
