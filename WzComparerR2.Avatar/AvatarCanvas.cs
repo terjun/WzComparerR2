@@ -1099,7 +1099,7 @@ namespace WzComparerR2.Avatar
                 partNode.Add(headNode);
 
                 //脸
-                if (this.Face != null && this.Face.Visible && faceAction != null && Parts.Where(part => part != null && part.Visible && part.InvisibleFace).Count() == 0)
+                if (this.Face != null && this.Face.Visible && faceAction != null)
                 {
                     if ((face ?? true) && !invisibleFace)
                     {
