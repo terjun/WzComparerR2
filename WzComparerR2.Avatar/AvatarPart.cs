@@ -21,7 +21,6 @@ namespace WzComparerR2.Avatar
         public BitmapOrigin Icon { get; private set; }
         public bool Visible { get; set; }
         public int? ID { get; private set; }
-        public bool InvisibleFace { get; private set; }
 
         private void LoadInfo()
         {
@@ -47,10 +46,6 @@ namespace WzComparerR2.Avatar
 
                     case "icon":
                         this.Icon = BitmapOrigin.CreateFromNode(node, PluginBase.PluginManager.FindWz);
-                        break;
-
-                    case "invisibleFace":
-                        this.InvisibleFace = node.GetValue<int>() != 0;
                         break;
                 }
             }

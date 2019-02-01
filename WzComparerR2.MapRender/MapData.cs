@@ -896,8 +896,8 @@ namespace WzComparerR2.MapRender
 
         private void AddNpcAI(StateMachineAnimator ani)
         {
-            var actions = new List<string> { "stand", "say", "mouse", "move", "hand", "laugh", "eye" };
-            var availActions = ani.Data.States.Where(act => !act.EndsWith("_old") && actions.Exists(acts => act.Contains(acts))).ToArray();
+            var actions = new[] { "stand", "say", "mouse", "move", "hand", "laugh", "eye" };
+            var availActions = ani.Data.States.Where(act => !act.EndsWith("_old") && Array.Exists(actions, acts => act.Contains(acts))).ToArray();
             if (availActions.Length > 0)
             {
                 ani.AnimationEnd += (o, e) =>
