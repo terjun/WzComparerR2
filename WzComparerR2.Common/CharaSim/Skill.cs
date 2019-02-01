@@ -40,6 +40,7 @@ namespace WzComparerR2.CharaSim
         public BitmapOrigin IconDisabled { get; set; }
 
         public HyperSkillType Hyper { get; set; }
+        public bool HyperStat { get; set; }
 
         public int Level
         {
@@ -141,6 +142,9 @@ namespace WzComparerR2.CharaSim
                         break;
                     case "hyper":
                         skill.Hyper = (HyperSkillType)childNode.GetValue<int>();
+                        break;
+                    case "hyperStat":
+                        skill.HyperStat = childNode.GetValue<int>() != 0;
                         break;
                     case "invisible":
                         skill.Invisible = childNode.GetValue<int>() != 0;

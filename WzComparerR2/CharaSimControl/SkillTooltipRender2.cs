@@ -82,10 +82,10 @@ namespace WzComparerR2.CharaSimControl
             TextRenderer.DrawText(g, sr.Name, GearGraphics.ItemNameFont2, new Point(bitmap.Width, 10), Color.White, TextFormatFlags.HorizontalCenter | TextFormatFlags.NoPrefix);
 
             //绘制图标
-            picH = 33;
-            g.FillRectangle(GearGraphics.GearIconBackBrush2, 14, picH, 68, 68);
             if (Skill.Icon.Bitmap != null)
             {
+                picH = 33;
+                g.FillRectangle(GearGraphics.GearIconBackBrush2, 14, picH, 68, 68);
                 g.DrawImage(GearGraphics.EnlargeBitmap(Skill.Icon.Bitmap),
                 14 + (1 - Skill.Icon.Origin.X) * 2,
                 picH + (33 - Skill.Icon.Bitmap.Height) * 2);
@@ -93,24 +93,26 @@ namespace WzComparerR2.CharaSimControl
 
             //绘制desc
             picH = 35;
-            if (!Skill.PreBBSkill)
+            if (Skill.HyperStat)
+                GearGraphics.DrawString(g, "[최대 레벨 : " + Skill.MaxLevel + "]", GearGraphics.ItemDetailFont2, 10, 274, ref picH, 16);
+            else if (!Skill.PreBBSkill)
                 GearGraphics.DrawString(g, "[마스터 레벨 : " + Skill.MaxLevel + "]", GearGraphics.ItemDetailFont2, 92, 274, ref picH, 16);
 
             if (sr.Desc != null)
             {
                 string hdesc = SummaryParser.GetSkillSummary(sr.Desc, Skill.Level, Skill.Common, SummaryParams.Default);
                 //string hStr = SummaryParser.GetSkillSummary(skill, skill.Level, sr, SummaryParams.Default);
-                GearGraphics.DrawString(g, hdesc, GearGraphics.ItemDetailFont2, 92, 274, ref picH, 16);
+                GearGraphics.DrawString(g, hdesc, GearGraphics.ItemDetailFont2, Skill.Icon.Bitmap == null ? 10 : 92, 274, ref picH, 16);
             }
             if (Skill.TimeLimited)
             {
                 DateTime time = DateTime.Now.AddDays(7d);
                 string expireStr = time.ToString("유효기간 : yyyy년 M월 d일 HH시 mm분");
-                GearGraphics.DrawString(g, "#c" + expireStr + "#", GearGraphics.ItemDetailFont2, 92, 274, ref picH, 16);
+                GearGraphics.DrawString(g, "#c" + expireStr + "#", GearGraphics.ItemDetailFont2, Skill.Icon.Bitmap == null ? 10 : 92, 274, ref picH, 16);
             }
             /*if (Skill.ReqLevel > 0)
             {
-                GearGraphics.DrawString(g, "#c[필요 레벨 : " + Skill.ReqLevel.ToString() + "]#", GearGraphics.ItemDetailFont2, 90, 270, ref picH, 16);
+                GearGraphics.DrawString(g, "#c[要求等级：" + Skill.ReqLevel.ToString() + "]#", GearGraphics.ItemDetailFont2, 90, 270, ref picH, 16);
             }
             if (Skill.ReqAmount > 0)
             {

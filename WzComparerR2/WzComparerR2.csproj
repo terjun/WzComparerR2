@@ -104,6 +104,8 @@
     <Compile Include="CharaSimControl\ItemTooltipRender2.cs" />
     <Compile Include="CharaSimControl\MobTooltipRenderer.cs" />
     <Compile Include="CharaSimControl\NpcTooltipRenderer.cs" />
+    <Compile Include="CharaSimControl\ObjectMouseEventArgs.cs" />
+    <Compile Include="CharaSimControl\ObjectMouseEventHandler.cs" />
     <Compile Include="CharaSimControl\RecipeTooltipRender.cs" />
     <Compile Include="CharaSimControl\RenderHelper.cs" />
     <Compile Include="CharaSimControl\SetItemTooltipRender.cs" />
@@ -114,6 +116,7 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="CharaSimControl\GearGraphics.cs" />
+    <Compile Include="CharaSimControl\HelpTooltipRender.cs" />
     <Compile Include="CharaSimControl\TextBlock.cs" />
     <Compile Include="CharaSim\Character.cs" />
     <Compile Include="CharaSim\CharacterStatus.cs" />
