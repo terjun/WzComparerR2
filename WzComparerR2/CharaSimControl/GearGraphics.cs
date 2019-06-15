@@ -165,7 +165,9 @@ namespace WzComparerR2.CharaSimControl
         /// 表示装备属性变化的青色画刷。
         /// </summary>
         public static readonly Brush GearPropChangeBrush = new SolidBrush(gearCyanColor);
-        public static readonly Color gearYellowColor = Color.FromArgb(244, 244, 68);
+        public static readonly Color skillYellowColor = Color.FromArgb(244, 244, 68);
+        public static readonly Color itemPinkColor = Color.FromArgb(255, 102, 204);
+        public static readonly Color itemPurpleColor = Color.FromArgb(187, 119, 255);
 
         public static Brush GetGearNameBrush(int diff, bool up, bool cash = false, bool petEquip = false)
         {
