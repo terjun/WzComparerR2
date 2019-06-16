@@ -27,6 +27,7 @@ namespace WzComparerR2.CharaSimControl
             this.MobRender = new MobTooltipRenderer();
             this.NpcRender = new NpcTooltipRenderer();
             this.HelpRender = new HelpTooltipRender();
+            this.SetItemRender = new SetItemTooltipRender();
             this.SizeChanged += AfrmTooltip_SizeChanged;
 
             this.MouseClick += AfrmTooltip_MouseClick;
@@ -54,6 +55,7 @@ namespace WzComparerR2.CharaSimControl
         public MobTooltipRenderer MobRender { get; private set; }
         public NpcTooltipRenderer NpcRender { get; private set; }
         public HelpTooltipRender HelpRender { get; private set; }
+        public SetItemTooltipRender SetItemRender { get; private set; }
 
         public string ImageFileName { get; set; }
 
@@ -166,6 +168,11 @@ namespace WzComparerR2.CharaSimControl
             {
                 renderer = HelpRender;
                 HelpRender.Pair = this.item as TooltipHelp;
+            }
+            else if (item is SetItem)
+            {
+                renderer = SetItemRender;
+                SetItemRender.SetItem = this.item as SetItem;
             }
             else
             {

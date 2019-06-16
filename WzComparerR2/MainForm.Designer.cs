@@ -106,6 +106,7 @@
             this.comboItem7 = new DevComponents.Editors.ComboItem();
             this.comboItem8 = new DevComponents.Editors.ComboItem();
             this.comboItem9 = new DevComponents.Editors.ComboItem();
+            this.comboItem19 = new DevComponents.Editors.ComboItem();
             this.itemContainer12 = new DevComponents.DotNetBar.ItemContainer();
             this.buttonItemSearchString = new DevComponents.DotNetBar.ButtonItem();
             this.buttonItemSelectStringWz = new DevComponents.DotNetBar.ButtonItem();
@@ -1140,7 +1141,8 @@
             this.comboItem6,
             this.comboItem7,
             this.comboItem8,
-            this.comboItem9});
+            this.comboItem9,
+            this.comboItem19});
             this.comboBoxItem2.Name = "comboBoxItem2";
             // 
             // comboItem3
@@ -1170,6 +1172,10 @@
             // comboItem9
             // 
             this.comboItem9.Text = "스킬";
+            // 
+            // comboItem19
+            // 
+            this.comboItem19.Text = "세트 아이템";
             // 
             // itemContainer12
             // 
@@ -3176,5 +3182,6 @@
         private DevComponents.DotNetBar.Controls.CheckBoxX chkResolvePngLink;
         private DevComponents.DotNetBar.ComboBoxItem cmbItemSkins;
         private DevComponents.DotNetBar.ButtonItem btnItemOpenImg;
+        private DevComponents.Editors.ComboItem comboItem19;
     }
 }

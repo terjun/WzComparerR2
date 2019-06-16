@@ -250,7 +250,7 @@ namespace WzComparerR2.CharaSimControl
         {
             if (e.Obj is Skill && !this.stringLinker.HasValues)
             {
-                this.stringLinker.Load(PluginBase.PluginManager.FindWz(Wz_Type.String).GetValueEx<Wz_File>(null), PluginBase.PluginManager.FindWz(Wz_Type.Item).GetValueEx<Wz_File>(null));
+                this.stringLinker.Load(PluginBase.PluginManager.FindWz(Wz_Type.String).GetValueEx<Wz_File>(null), PluginBase.PluginManager.FindWz(Wz_Type.Item).GetValueEx<Wz_File>(null), PluginBase.PluginManager.FindWz(Wz_Type.Etc).GetValueEx<Wz_File>(null));
             }
             if (e.Obj == null)
             {

@@ -1502,6 +1502,13 @@ namespace WzComparerR2
                     imagePath.Add(id);
                     addPath();
                     break;
+
+                case "SetItemInfo.img":
+                    wzPath.Add("Etc");
+                    wzPath.Add("SetItemInfo.img");
+                    imagePath.Add(id);
+                    addPath();
+                    break;
                 default:
                     break;
             }
@@ -1872,7 +1879,7 @@ namespace WzComparerR2
             QueryPerformance.Start();
             if (!this.stringLinker.HasValues)
             {
-                if (!this.stringLinker.Load(findStringWz(), findItemWz()))
+                if (!this.stringLinker.Load(findStringWz(), findItemWz(), findEtcWz()))
                 {
                     MessageBoxEx.Show("Base.wz를 먼저 열어주세요.", "오류");
                     return;
@@ -1894,6 +1901,7 @@ namespace WzComparerR2
                     dicts.Add(stringLinker.StringMob);
                     dicts.Add(stringLinker.StringNpc);
                     dicts.Add(stringLinker.StringSkill);
+                    dicts.Add(stringLinker.StringSetItem);
                     break;
                 case 1:
                     dicts.Add(stringLinker.StringEqp);
@@ -1912,6 +1920,9 @@ namespace WzComparerR2
                     break;
                 case 6:
                     dicts.Add(stringLinker.StringSkill);
+                    break;
+                case 7:
+                    dicts.Add(stringLinker.StringSetItem);
                     break;
             }
             listViewExString.BeginUpdate();
@@ -1947,6 +1958,21 @@ namespace WzComparerR2
                 foreach (Wz_File file in wz.wz_files)
                 {
                     if (file.Type == Wz_Type.Item)
+                    {
+                        return file;
+                    }
+                }
+            }
+            return null;
+        }
+
+        private Wz_File findEtcWz()
+        {
+            foreach (Wz_Structure wz in openedWz)
+            {
+                foreach (Wz_File file in wz.wz_files)
+                {
+                    if (file.Type == Wz_Type.Etc)
                     {
                         return file;
                     }
@@ -2001,13 +2027,14 @@ namespace WzComparerR2
         {
             Wz_File stringWzFile = advTree1.SelectedNode?.AsWzNode()?.FindNodeByPath("String").GetNodeWzFile();
             Wz_File itemWzFile = advTree1.SelectedNode?.AsWzNode()?.FindNodeByPath("Item").GetNodeWzFile();
-            if (stringWzFile == null || itemWzFile == null)
+            Wz_File etcWzFile = advTree1.SelectedNode?.AsWzNode()?.FindNodeByPath("Etc").GetNodeWzFile();
+            if (stringWzFile == null || itemWzFile == null || etcWzFile == null)
             {
                 MessageBoxEx.Show("Base.wz를 선택하세요.", "오류");
                 return;
             }
             QueryPerformance.Start();
-            bool r = stringLinker.Load(stringWzFile, itemWzFile);
+            bool r = stringLinker.Load(stringWzFile, itemWzFile, etcWzFile);
             QueryPerformance.End();
             if (r)
             {
@@ -2536,7 +2563,7 @@ namespace WzComparerR2
 
             if (!this.stringLinker.HasValues)
             {
-                this.stringLinker.Load(findStringWz(), findItemWz());
+                this.stringLinker.Load(findStringWz(), findItemWz(), findEtcWz());
             }
 
             object obj = null;
@@ -2557,18 +2584,7 @@ namespace WzComparerR2
                     }
                     break;
                 case Wz_Type.Item:
-                    if (CharaSimLoader.LoadedSetItems.Count == 0)
-                    {
-                        CharaSimLoader.LoadSetItems();
-                    }
-                    if (CharaSimLoader.LoadedExclusiveEquips.Count == 0)
-                    {
-                        CharaSimLoader.LoadExclusiveEquips();
-                    }
-                    if (CharaSimLoader.LoadedCommoditiesBySN.Count == 0)
-                    {
-                        CharaSimLoader.LoadCommodities();
-                    }
+                    CharaSimLoader.LoadCommoditiesIfEmpty();
                     Wz_Node itemNode = selectedNode;
                     if (Regex.IsMatch(itemNode.FullPathToFile, @"^Item\\(Cash|Consume|Etc|Install|Cash)\\\d{4,6}.img\\\d+$") || Regex.IsMatch(itemNode.FullPathToFile, @"^Item\\Special\\0910.img\\\d+$"))
                     {
@@ -2584,14 +2600,6 @@ namespace WzComparerR2
                         if (CharaSimLoader.LoadedSetItems.Count == 0) //宠物 预读套装
                         {
                             CharaSimLoader.LoadSetItemsIfEmpty();
-                        }
-                        if (CharaSimLoader.LoadedExclusiveEquips.Count == 0)
-                        {
-                            CharaSimLoader.LoadExclusiveEquips();
-                        }
-                        if (CharaSimLoader.LoadedCommoditiesBySN.Count == 0)
-                        {
-                            CharaSimLoader.LoadCommodities();
                         }
                         if ((image = selectedNode.GetValue<Wz_Image>()) == null || !image.TryExtract())
                             return;
@@ -2653,6 +2661,22 @@ namespace WzComparerR2
                     if (npc != null)
                     {
                         fileName = npc.ID + ".png";
+                    }
+                    break;
+
+                case Wz_Type.Etc:
+                    CharaSimLoader.LoadSetItemsIfEmpty();
+                    Wz_Node setItemNode = selectedNode;
+                    if (Regex.IsMatch(setItemNode.FullPathToFile, @"^Etc\\SetItemInfo.img\\-?\d+$"))
+                    {
+                        SetItem setItem;
+                        if (!CharaSimLoader.LoadedSetItems.TryGetValue(Convert.ToInt32(selectedNode.Text), out setItem))
+                            return;
+                        obj = setItem;
+                        if (setItem != null)
+                        {
+                            fileName = setItem.SetItemID + ".png";
+                        }
                     }
                     break;
             }
@@ -3116,7 +3140,7 @@ namespace WzComparerR2
             if (dlg.ShowDialog() == DialogResult.OK)
             {
                 if (!this.stringLinker.HasValues)
-                    this.stringLinker.Load(findStringWz(), findItemWz());
+                    this.stringLinker.Load(findStringWz(), findItemWz(), findEtcWz());
 
                 DBConnection conn = new DBConnection(this.stringLinker);
                 DataSet ds = conn.GenerateSkillTable();
@@ -3139,7 +3163,7 @@ namespace WzComparerR2
             if (dlg.ShowDialog() == DialogResult.OK)
             {
                 if (!this.stringLinker.HasValues)
-                    this.stringLinker.Load(findStringWz(), findItemWz());
+                    this.stringLinker.Load(findStringWz(), findItemWz(), findEtcWz());
 
                 DBConnection conn = new DBConnection(this.stringLinker);
                 conn.ExportSkillOption(dlg.SelectedPath);

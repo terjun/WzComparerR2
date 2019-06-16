@@ -559,7 +559,16 @@ namespace WzComparerR2.CharaSimControl
                 float fontLineHeight = GetFontLineHeight(font);
                 this.infinityRect = new RectangleF(0, 0, ushort.MaxValue, fontLineHeight);
 
-                base.DrawPlainText(s, font, x1 - x, ref y, height);
+                //base.DrawPlainText(s, font, x1 - x, ref y, height);
+                if (TextRenderer.MeasureText(g, s, font, new Size(int.MaxValue, int.MaxValue), TextFormatFlags.NoPadding).Width <= x1 - x)
+                {
+                    TextRenderer.DrawText(g, s, font, new Point(x, y), color, TextFormatFlags.NoPadding);
+                    y += height;
+                }
+                else
+                {
+                    base.DrawPlainText(s, font, x1 - x, ref y, height);
+                }
             }
 
             private float GetFontLineHeight(Font font)
