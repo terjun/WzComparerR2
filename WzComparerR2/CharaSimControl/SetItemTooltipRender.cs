@@ -197,7 +197,7 @@ namespace WzComparerR2.CharaSimControl
                         if (!cash)
                         {
                             TextRenderer.DrawText(g, itemName, GearGraphics.EquipDetailFont2, new Point(10, picHeight), ((SolidBrush)brush).Color, TextFormatFlags.NoPadding);
-                            TextRenderer.DrawText(g, typeName, GearGraphics.EquipDetailFont2, new Point(252 - TextRenderer.MeasureText(g, typeName, GearGraphics.EquipDetailFont2, new Size(int.MaxValue, int.MaxValue), TextFormatFlags.NoPadding).Width, picHeight), ((SolidBrush)brush).Color, TextFormatFlags.NoPadding);
+                            TextRenderer.DrawText(g, typeName, GearGraphics.EquipDetailFont2, new Point(261 - 10 - TextRenderer.MeasureText(g, typeName, GearGraphics.EquipDetailFont2, new Size(int.MaxValue, int.MaxValue), TextFormatFlags.NoPadding).Width, picHeight), ((SolidBrush)brush).Color, TextFormatFlags.NoPadding);
                             picHeight += 18;
                         }
                         else
@@ -210,9 +210,42 @@ namespace WzComparerR2.CharaSimControl
                                 g.DrawImage(icon.Bitmap, 10 + 2 - icon.Origin.X, picHeight + 2 + 32 - icon.Origin.Y);
                             }
                             g.DrawImage(Resource.CashItem_0, 10 + 2 + 20, picHeight + 2 + 32 - 12);
-                            TextRenderer.DrawText(g, itemName, GearGraphics.EquipDetailFont2, new Point(50, picHeight), ((SolidBrush)brush).Color, TextFormatFlags.NoPadding);
-                            TextRenderer.DrawText(g, typeName, GearGraphics.EquipDetailFont2, new Point(252 - TextRenderer.MeasureText(g, typeName, GearGraphics.EquipDetailFont2, new Size(int.MaxValue, int.MaxValue), TextFormatFlags.NoPadding).Width, picHeight), ((SolidBrush)brush).Color, TextFormatFlags.NoPadding);
-                            picHeight += 40;
+                            TextRenderer.DrawText(g, itemName, GearGraphics.EquipDetailFont2, new Point(52, picHeight), ((SolidBrush)brush).Color, TextFormatFlags.NoPadding);
+                            TextRenderer.DrawText(g, typeName, GearGraphics.EquipDetailFont2, new Point(261 - 10 - TextRenderer.MeasureText(g, typeName, GearGraphics.EquipDetailFont2, new Size(int.MaxValue, int.MaxValue), TextFormatFlags.NoPadding).Width, picHeight), ((SolidBrush)brush).Color, TextFormatFlags.NoPadding);
+                            if (setItemPart.Value.ByGender)
+                            {
+                                picHeight += 18;
+                                foreach (var itemID in setItemPart.Value.ItemIDs.Keys)
+                                {
+                                    StringResult sr = null; ;
+                                    if (this.StringLinker != null)
+                                    {
+                                        if (this.StringLinker.StringEqp.TryGetValue(itemID, out sr))
+                                        {
+                                            itemName = sr.Name;
+                                            switch (Gear.GetGender(itemID))
+                                            {
+                                                case 0: itemName += " (남)"; break;
+                                                case 1: itemName += " (여)"; break;
+                                            }
+                                        }
+                                        else if (this.StringLinker.StringItem.TryGetValue(itemID, out sr)) //兼容宠物
+                                        {
+                                            itemName = sr.Name;
+                                        }
+                                    }
+                                    if (sr == null)
+                                    {
+                                        itemName = "(null)";
+                                    }
+                                    TextRenderer.DrawText(g, "- " + itemName, GearGraphics.EquipDetailFont2, new Point(61, picHeight), ((SolidBrush)brush).Color, TextFormatFlags.NoPadding);
+                                    picHeight += 18;
+                                }
+                            }
+                            else
+                            {
+                                picHeight += 40;
+                            }
                         }
                     }
                 }
