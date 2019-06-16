@@ -342,6 +342,9 @@ namespace WzComparerR2.CharaSim
                 case GearType.fan2: return "부채";
                 case GearType.fanPendulum: return "선추";
 
+                case GearType.relic: return "遗物";
+                case GearType.ancientBow: return "远古弓";
+
                 default: return null;
             }
         }
@@ -406,6 +409,7 @@ namespace WzComparerR2.CharaSim
                 case GearType.cannonGunPowder2: return "캐논 슈터 직업군 착용 가능";
                 case GearType.box:
                 case GearType.boxingClaw: return "龙的传人可以装备";
+                case GearType.relic: return "古迹猎人职业群可穿戴";
 
                 //1xxx
                 case GearType.cygnusGem: return "시그너스 기사단 착용 가능";

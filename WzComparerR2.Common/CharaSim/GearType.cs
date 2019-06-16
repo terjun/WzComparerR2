@@ -341,6 +341,10 @@ namespace WzComparerR2.CharaSim
         relic = 135370,
         fanPendulum = 135380,
         /// <summary>
+        /// 遗物 135370x
+        /// </summary>
+        relic = 135370,
+        /// <summary>
         /// 手杖
         /// </summary>
         cane = 136,
@@ -433,6 +437,10 @@ namespace WzComparerR2.CharaSim
         /// 机甲手枪 158
         /// </summary>
         GauntletBuster = 158,
+        ancientBow = 159,
+        /// <summary>
+        /// 远古弓 159
+        /// </summary>
         ancientBow = 159,
         /// <summary>
         /// 拼图 168
