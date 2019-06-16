@@ -339,6 +339,9 @@ namespace WzComparerR2.CharaSim
                 case GearType.ancientBow: return "에인션트 보우";
                 case GearType.relic: return "렐릭";
 
+                case GearType.fan2: return "부채";
+                case GearType.fanPendulum: return "선추";
+
                 default: return null;
             }
         }
@@ -457,6 +460,8 @@ namespace WzComparerR2.CharaSim
                 case GearType.magicWing: return GetExtraJobReqString(152);
 
                 case GearType.pathOfAbyss: return GetExtraJobReqString(155);
+
+                case GearType.fanPendulum: return "호영 직업군 착용 가능";
 
                 default: return null;
             }
@@ -750,6 +755,12 @@ namespace WzComparerR2.CharaSim
                 case 15510: return "아크(2차)";
                 case 15511: return "아크(3차)";
                 case 15512: return "아크(4차)";
+
+                case 16000: return "호영";
+                case 16400: return "호영(1차)";
+                case 16410: return "호영(2차)";
+                case 16411: return "호영(3차)";
+                case 16412: return "호영(4차)";
             }
             return null;
         }

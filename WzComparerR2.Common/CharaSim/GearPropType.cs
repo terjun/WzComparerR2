@@ -46,6 +46,7 @@ namespace WzComparerR2.CharaSim
         damR,
         nbdR,
         statR,
+        incCHUC,
 
         //潜能属性
         incPADr = 100,

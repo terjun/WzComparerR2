@@ -534,8 +534,9 @@ namespace WzComparerR2.CharaSimControl
             }
             else if (hasTuc)
             {
-                TextRenderer.DrawText(g, "업그레이드 가능 횟수 : " + value, GearGraphics.EquipDetailFont, new Point(13, picH), Color.White, TextFormatFlags.NoPadding);
-                picH += 15;
+                //TextRenderer.DrawText(g, "업그레이드 가능 횟수 : " + value, GearGraphics.EquipDetailFont, new Point(13, picH), Color.White, TextFormatFlags.NoPadding);
+                //picH += 15;
+                GearGraphics.DrawString(g, "업그레이드 가능 횟수 : " + value + " #c(복구 가능 횟수 : 0)#", GearGraphics.EquipDetailFont, 13, 244, ref picH, 15, orangeColor: ((SolidBrush)GearGraphics.OrangeBrush3).Color);
                 hasPart2 = true;
             }
 
@@ -552,7 +553,7 @@ namespace WzComparerR2.CharaSimControl
                     GearGraphics.DrawPlainText(g, ItemStringHelper.GetGearPropString(GearPropType.superiorEqp, value), GearGraphics.EquipDetailFont, ((SolidBrush)GearGraphics.GreenBrush2).Color, 13, 244, ref picH, 15);
                 }
 
-                if (!Gear.GetBooleanValue(GearPropType.exceptUpgrade))
+                /*if (!Gear.GetBooleanValue(GearPropType.exceptUpgrade))
                 {
                     int maxStar = Gear.GetMaxStar();
 
@@ -566,7 +567,7 @@ namespace WzComparerR2.CharaSimControl
                         TextRenderer.DrawText(g, "최대 " + maxStar + "성까지 강화 가능", GearGraphics.EquipDetailFont, new Point(13, picH), Color.White, TextFormatFlags.NoPadding);
                         picH += 15;
                     }
-                }
+                }*/
             }
 
             if (Gear.Props.TryGetValue(GearPropType.limitBreak, out value) && value > 0) //突破上限
@@ -922,7 +923,7 @@ namespace WzComparerR2.CharaSimControl
 
                         exclusiveEquip += " 중복 착용이 불가능합니다.#";
                     }
-                    GearGraphics.DrawString(g, exclusiveEquip, GearGraphics.EquipDetailFont2, 13, 244, ref picH, 15, ((SolidBrush)GearGraphics.OrangeBrush2).Color);
+                    GearGraphics.DrawString(g, exclusiveEquip, GearGraphics.EquipDetailFont2, 13, 244, ref picH, 15, orangeColor: ((SolidBrush)GearGraphics.OrangeBrush2).Color);
                     picH += 5;
                     break;
                 }
@@ -1418,7 +1419,7 @@ namespace WzComparerR2.CharaSimControl
 
         private void DrawStar2(Graphics g, ref int picH)
         {
-            int maxStar = Gear.GetMaxStar();
+            int maxStar = Math.Max(Gear.GetMaxStar(), Gear.Star);
             if (maxStar > 0)
             {
                 for (int i = 0; i < maxStar; i += 15)

@@ -173,6 +173,7 @@ namespace WzComparerR2.CharaSim
         /// 魔力手套 128
         /// </summary>
         magicGauntlet = 128,
+        fan2 = 129,
         /// <summary>
         /// 单手剑 130
         /// </summary>
@@ -338,6 +339,7 @@ namespace WzComparerR2.CharaSim
         /// </summary>
         pathOfAbyss = 135360,
         relic = 135370,
+        fanPendulum = 135380,
         /// <summary>
         /// 手杖
         /// </summary>
