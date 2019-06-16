@@ -336,14 +336,11 @@ namespace WzComparerR2.CharaSim
                 case GearType.magicWing: return "매직윙";
                 case GearType.pathOfAbyss: return "패스 오브 어비스";
 
-                case GearType.ancientBow: return "에인션트 보우";
                 case GearType.relic: return "렐릭";
+                case GearType.ancientBow: return "에인션트 보우";
 
                 case GearType.fan2: return "부채";
                 case GearType.fanPendulum: return "선추";
-
-                case GearType.relic: return "遗物";
-                case GearType.ancientBow: return "远古弓";
 
                 default: return null;
             }
@@ -399,7 +396,6 @@ namespace WzComparerR2.CharaSim
                 case GearType.book3: return "비숍 계열 마법사 착용 가능";
                 case GearType.bowMasterFeather: return "보우마스터 직업군 착용 가능";
                 case GearType.crossBowThimble: return "신궁 직업군 착용 가능";
-                case GearType.relic: return "패스파인더 직업군 착용 가능";
                 case GearType.shadowerSheath: return "섀도어 직업군 착용 가능";
                 case GearType.nightLordPoutch: return "나이트로드 직업군 착용 가능";
                 case GearType.katara: return "듀얼블레이드 직업군 착용 가능";
@@ -409,7 +405,7 @@ namespace WzComparerR2.CharaSim
                 case GearType.cannonGunPowder2: return "캐논 슈터 직업군 착용 가능";
                 case GearType.box:
                 case GearType.boxingClaw: return "龙的传人可以装备";
-                case GearType.relic: return "古迹猎人职业群可穿戴";
+                case GearType.relic: return "패스파인더 직업군 착용 가능";
 
                 //1xxx
                 case GearType.cygnusGem: return "시그너스 기사단 착용 가능";

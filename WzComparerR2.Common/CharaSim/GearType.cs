@@ -173,6 +173,9 @@ namespace WzComparerR2.CharaSim
         /// 魔力手套 128
         /// </summary>
         magicGauntlet = 128,
+        /// <summary>
+        /// 부채 129
+        /// </summary>
         fan2 = 129,
         /// <summary>
         /// 单手剑 130
@@ -338,12 +341,14 @@ namespace WzComparerR2.CharaSim
         /// 精气珠 135360
         /// </summary>
         pathOfAbyss = 135360,
-        relic = 135370,
-        fanPendulum = 135380,
         /// <summary>
         /// 遗物 135370x
         /// </summary>
         relic = 135370,
+        /// <summary>
+        /// 선추 135380x
+        /// </summary>
+        fanPendulum = 135380,
         /// <summary>
         /// 手杖
         /// </summary>
@@ -437,7 +442,6 @@ namespace WzComparerR2.CharaSim
         /// 机甲手枪 158
         /// </summary>
         GauntletBuster = 158,
-        ancientBow = 159,
         /// <summary>
         /// 远古弓 159
         /// </summary>
