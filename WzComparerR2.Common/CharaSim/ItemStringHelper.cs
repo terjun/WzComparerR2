@@ -163,13 +163,13 @@ namespace WzComparerR2.CharaSim
                     case GearPropType.incMHP:
                     case GearPropType.incMMP:
                     case GearPropType.incMDF:
-                    case GearPropType.incARC:
                     case GearPropType.incPAD:
                     case GearPropType.incMAD:
                     case GearPropType.incPDD:
                     case GearPropType.incMDD:
                     case GearPropType.incSpeed:
                     case GearPropType.incJump:
+                    case GearPropType.incARC:
                         subfix = $"({standardValue} #$+{value - standardValue}#)"; break;
 
                     case GearPropType.bdR:
