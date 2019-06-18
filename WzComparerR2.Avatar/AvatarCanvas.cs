@@ -689,7 +689,7 @@ namespace WzComparerR2.Avatar
                     Wz_Node linkNode = childNode;
                     while (linkNode?.Value is Wz_Uol)
                     {
-                        linkNode = ((Wz_Uol)childNode.Value).HandleUol(linkNode);
+                        linkNode = ((Wz_Uol)linkNode.Value).HandleUol(linkNode);
                     }
                     if (linkNode == null)
                     {
