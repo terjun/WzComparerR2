@@ -788,6 +788,7 @@ namespace WzComparerR2.CharaSim
                     case 2: gear.Grade = GearGrade.B; break;
                     case 3: gear.Grade = GearGrade.A; break;
                     case 5: gear.Grade = GearGrade.S; break;
+                    case 7: gear.Grade = GearGrade.SS; break;
                     default: gear.Grade = (GearGrade)(value - 1); break;
                 }
             }
