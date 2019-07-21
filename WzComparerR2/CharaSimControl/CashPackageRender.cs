@@ -196,7 +196,7 @@ namespace WzComparerR2.CharaSimControl
             else
                 columnRight = (int)Math.Ceiling(titleSize.Height);
 
-            for(int i = 0; i < CashPackage.SN.Count; ++i)
+            for (int i = 0; i < CashPackage.SN.Count; ++i)
             {
                 if (CashPackage.SN.Count >= 8 && i == (CashPackage.SN.Count + 1) / 2)
                 {
@@ -275,7 +275,7 @@ namespace WzComparerR2.CharaSimControl
                         if (commodity.originalPrice == commodity.Price)
                             commodity.originalPrice = 0;
                     }
-                    if (commodity.originalPrice > 0)
+                    if (commodity.originalPrice > 0 && commodity.Price < commodity.originalPrice)
                     {
                         info += commodity.originalPrice + "캐시      ";
                         totalOriginalPrice += commodity.originalPrice;
@@ -318,7 +318,7 @@ namespace WzComparerR2.CharaSimControl
                     if (commodity.Bonus == 0)
                     {
                         TextRenderer.DrawText(g, info, GearGraphics.ItemDetailFont, new Point(columnLeft + 55, picH + 33), Color.White, TextFormatFlags.NoPadding);
-                        if (commodity.originalPrice > 0)
+                        if (commodity.originalPrice > 0 && commodity.Price < commodity.originalPrice)
                         {
                             int width = TextRenderer.MeasureText(g, info.Substring(0, info.IndexOf("      ")), GearGraphics.ItemDetailFont, new Size(int.MaxValue, int.MaxValue), TextFormatFlags.NoPadding).Width;
                             g.DrawLine(Pens.White, columnLeft + 55, picH + 33 + 4, columnLeft + 55 + width + 1, picH + 33 + 4);
@@ -338,7 +338,7 @@ namespace WzComparerR2.CharaSimControl
                     if (commodity.Bonus == 0)
                     {
                         TextRenderer.DrawText(g, info, GearGraphics.ItemDetailFont, new Point(columnLeft + 55, picH + 24), Color.White, TextFormatFlags.NoPadding);
-                        if (commodity.originalPrice > 0)
+                        if (commodity.originalPrice > 0 && commodity.Price < commodity.originalPrice)
                         {
                             int width = TextRenderer.MeasureText(g, info.Substring(0, info.IndexOf("      ")), GearGraphics.ItemDetailFont, new Size(int.MaxValue, int.MaxValue), TextFormatFlags.NoPadding).Width;
                             g.DrawLine(Pens.White, columnLeft + 55, picH + 24 + 4, columnLeft + 55 + width + 1, picH + 24 + 4);
