@@ -146,10 +146,10 @@ namespace WzComparerR2.CharaSimControl
                 }
             }
 
-            int dressUpgrade;
-            if (this.item.Props.TryGetValue(ItemPropType.dressUpgrade, out dressUpgrade))
+            int value;
+            if (this.item.Props.TryGetValue(ItemPropType.dressUpgrade, out value) || this.item.Props.TryGetValue(ItemPropType.addTooltip, out value))
             {
-                int itemID = dressUpgrade;
+                int itemID = value;
                 int itemIDClass = itemID / 1000000;
                 if (itemIDClass == 1) //通过ID寻找装备
                 {
