@@ -507,6 +507,8 @@ namespace WzComparerR2.CharaSim
             {
                 case ItemPropType.tradeBlock:
                     return GetGearPropString(GearPropType.tradeBlock, value);
+                case ItemPropType.useTradeBlock:
+                    return value == 0 ? null : "사용시 교환 불가";
                 case ItemPropType.tradeAvailable:
                     return GetGearPropString(GearPropType.tradeAvailable, value);
                 case ItemPropType.only:

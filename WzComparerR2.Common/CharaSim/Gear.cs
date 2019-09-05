@@ -720,7 +720,7 @@ namespace WzComparerR2.CharaSim
                             break;
 
                         case "onlyUpgrade":
-                            gear.Props.Add(GearPropType.onlyUpgrade, Convert.ToInt32(subNode.Value));
+                            gear.Props.Add(GearPropType.onlyUpgrade, Convert.ToInt32(subNode.Nodes["0"]?.Value));
                             break;
 
                         case "epic":

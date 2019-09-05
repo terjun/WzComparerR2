@@ -598,7 +598,7 @@ namespace WzComparerR2.CharaSimControl
                     GearGraphics.DrawString(g, "Lv. " + l0 + " 이상 : " + string.Join(", ", commandLev.Where(i => i.Value == l0).Select(i => i.Key).OrderBy(s => s)), GearGraphics.ItemDetailFont, 100, right, ref picH, 16);
                 }
                 GearGraphics.DrawString(g, "Tip. 펫의 레벨이 15가 되면 특정 말을 하도록 시킬 수 있습니다.", GearGraphics.ItemDetailFont, 100, right, ref picH, 16);
-                GearGraphics.DrawString(g, "#c예) /펫 [할 말]#", GearGraphics.ItemDetailFont, 100, right, ref picH, 16);
+                GearGraphics.DrawString(g, "#c예) /펫 [할 말]#", GearGraphics.ItemDetailFont, 100, right, ref picH, 16, ((SolidBrush)GearGraphics.OrangeBrush4).Color);
             }
 
             string incline = null;
@@ -771,6 +771,10 @@ namespace WzComparerR2.CharaSimControl
             {
                 tags.Add(ItemStringHelper.GetItemPropString(ItemPropType.tradeBlock, value));
             }
+            if (item.Props.TryGetValue(ItemPropType.useTradeBlock, out value) && value != 0)
+            {
+                tags.Add(ItemStringHelper.GetItemPropString(ItemPropType.useTradeBlock, value));
+            }
             else if (item.ItemID / 10000 == 501 || item.ItemID / 10000 == 502 || item.ItemID / 10000 == 516)
             {
                 tags.Add(ItemStringHelper.GetItemPropString(ItemPropType.tradeBlock, 1));
@@ -779,7 +783,7 @@ namespace WzComparerR2.CharaSimControl
             {
                 if (item.Props.TryGetValue(ItemPropType.exp_minLev, out value2) && value2 != 0)
                 {
-                    tags.Add("사용시 교환 불가");
+                    tags.Add(ItemStringHelper.GetItemPropString(ItemPropType.useTradeBlock, 1));
                 }
                 tags.Add(ItemStringHelper.GetItemPropString(ItemPropType.accountSharable, value));
             }

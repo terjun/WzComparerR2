@@ -48,5 +48,6 @@ namespace WzComparerR2.CharaSim
         autoBuff,
         giantPet,
         addTooltip,
+        useTradeBlock,
     }
 }
