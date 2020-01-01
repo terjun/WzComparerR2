@@ -717,7 +717,7 @@ namespace WzComparerR2.CharaSim
                 }
                 return exp;
             }
-            if (level >= 140 && level <= 179)
+            if (level >= 140 && level <= 169)
             {
                 exp = ExpToNextLevel(139);
                 while (level > 139)
@@ -727,12 +727,12 @@ namespace WzComparerR2.CharaSim
                 }
                 return exp;
             }
-            if (level >= 180 && level <= 199)
+            if (level >= 170 && level <= 199)
             {
-                exp = ExpToNextLevel(179);
-                while (level > 179)
+                exp = ExpToNextLevel(169);
+                while (level > 169)
                 {
-                    exp = (long)(exp * 1.06);
+                    exp = (long)(exp * 1.05);
                     level -= 1;
                 }
                 return exp;
