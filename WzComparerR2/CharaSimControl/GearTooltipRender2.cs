@@ -825,6 +825,12 @@ namespace WzComparerR2.CharaSimControl
                 desc.Add(" #c캐릭터 정보창 등 일부 상황에서는 보이지 않는 아이템입니다.#");
             }
 
+            if (Gear.Props.TryGetValue(GearPropType.noPetEquipStatMoveItem, out value) && value != 0)
+            {
+                desc.Add("");
+                desc.Add(" #c펫 장비 능력치 이전 주문서를 사용할 수 없는 아이템입니다.#");
+            }
+
             if (desc.Last() == "")
             {
                 desc.RemoveAt(desc.Count - 1);

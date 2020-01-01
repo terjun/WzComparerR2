@@ -176,6 +176,7 @@ namespace WzComparerR2.CharaSim
         onlyUpgrade,
         cantRepair,
         colorvar,
+        noPetEquipStatMoveItem,
 
         gatherTool_incSkillLevel = 2000,
         gatherTool_incSpeed,
