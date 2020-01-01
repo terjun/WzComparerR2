@@ -339,8 +339,8 @@ namespace WzComparerR2.CharaSim
                 case GearType.relic: return "렐릭";
                 case GearType.ancientBow: return "에인션트 보우";
 
-                case GearType.fan2: return "부채";
-                case GearType.fanPendulum: return "선추";
+                case GearType.handFan: return "扇子";
+                case GearType.fanTassel: return "扇坠";
 
                 case GearType.tuner: return "튜너";
                 case GearType.bracelet: return "브레이슬릿";
@@ -465,9 +465,7 @@ namespace WzComparerR2.CharaSim
                 case GearType.magicWing: return GetExtraJobReqString(152);
 
                 case GearType.pathOfAbyss: return GetExtraJobReqString(155);
-
-                case GearType.fanPendulum: return GetExtraJobReqString(164);
-
+                case GearType.fanTassel: return GetExtraJobReqString(164);
                 default: return null;
             }
         }

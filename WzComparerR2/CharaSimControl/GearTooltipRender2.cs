@@ -534,8 +534,6 @@ namespace WzComparerR2.CharaSimControl
             }
             else if (hasTuc)
             {
-                //TextRenderer.DrawText(g, "업그레이드 가능 횟수 : " + value, GearGraphics.EquipDetailFont, new Point(13, picH), Color.White, TextFormatFlags.NoPadding);
-                //picH += 15;
                 GearGraphics.DrawString(g, "업그레이드 가능 횟수 : " + value + (Gear.Cash ? "" : " #c(복구 가능 횟수 : 0)#"), GearGraphics.EquipDetailFont, 13, 244, ref picH, 15, orangeColor: ((SolidBrush)GearGraphics.OrangeBrush3).Color);
                 hasPart2 = true;
             }

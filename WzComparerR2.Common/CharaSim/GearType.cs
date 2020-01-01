@@ -179,9 +179,9 @@ namespace WzComparerR2.CharaSim
         /// </summary>
         magicGauntlet = 128,
         /// <summary>
-        /// 부채 129
+        /// 扇子 129
         /// </summary>
-        fan2 = 129,
+        handFan = 129,
         /// <summary>
         /// 单手剑 130
         /// </summary>
@@ -351,9 +351,9 @@ namespace WzComparerR2.CharaSim
         /// </summary>
         relic = 135370,
         /// <summary>
-        /// 선추 135380x
+        /// 扇坠 135380x
         /// </summary>
-        fanPendulum = 135380,
+        fanTassel = 135380,
         /// <summary>
         /// 브레이슬릿 135400x
         /// </summary>
