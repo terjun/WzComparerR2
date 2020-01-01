@@ -98,7 +98,7 @@ namespace WzComparerR2.CharaSim
                 case GearPropType.incPQEXPr: return "파티퀘스트 경험치 " + value + "% 증가";
                 case GearPropType.incEXPr: return "经验值增加" + value + "%";
                 case GearPropType.incBDR:
-                case GearPropType.bdR: return "보스 몬스터 공격시 데미지 +" + value + "%";
+                case GearPropType.bdR: return "보스 몬스터 공격 시 데미지 +" + value + "%";
                 case GearPropType.incIMDR:
                 case GearPropType.imdR: return "몬스터 방어력 무시 : +" + value + "%";
                 //case GearPropType.limitBreak: return "최대 데미지 제한 증가 : +" + value;

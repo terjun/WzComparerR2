@@ -398,14 +398,14 @@ namespace WzComparerR2.CharaSimControl
                 bool max = (Gear.Levels != null && value >= Gear.Levels.Count);
                 TextRenderer.DrawText(g, "성장 레벨 : " + (max ? "MAX" : value.ToString()), GearGraphics.EquipDetailFont, new Point(13, picH), ((SolidBrush)GearGraphics.OrangeBrush3).Color, TextFormatFlags.NoPadding);
                 picH += 15;
-                TextRenderer.DrawText(g, "성장 경험치 : " + (max ? "MAX" : "0%"), GearGraphics.EquipDetailFont, new Point(13, picH), ((SolidBrush)GearGraphics.OrangeBrush3).Color, TextFormatFlags.NoPadding);
+                TextRenderer.DrawText(g, "성장 경험치" + (max ? ": MAX" : " : 0%"), GearGraphics.EquipDetailFont, new Point(13, picH), ((SolidBrush)GearGraphics.OrangeBrush3).Color, TextFormatFlags.NoPadding);
                 picH += 15;
             }
-            else if (Gear.ItemID / 10000 == 171 && Gear.ItemID != 1712000)
+            else if (Gear.ItemID / 10000 == 171)
             {
                 TextRenderer.DrawText(g, "성장 레벨 : 1", GearGraphics.EquipDetailFont, new Point(13, picH), ((SolidBrush)GearGraphics.OrangeBrush3).Color, TextFormatFlags.NoPadding);
                 picH += 15;
-                TextRenderer.DrawText(g, "성장치 : 1 / 0 ( 0% )", GearGraphics.EquipDetailFont, new Point(13, picH), ((SolidBrush)GearGraphics.OrangeBrush3).Color, TextFormatFlags.NoPadding);
+                TextRenderer.DrawText(g, "성장치 : 1 / 12 ( 8% )", GearGraphics.EquipDetailFont, new Point(13, picH), ((SolidBrush)GearGraphics.OrangeBrush3).Color, TextFormatFlags.NoPadding);
                 picH += 15;
             }
 
@@ -536,7 +536,7 @@ namespace WzComparerR2.CharaSimControl
             {
                 //TextRenderer.DrawText(g, "업그레이드 가능 횟수 : " + value, GearGraphics.EquipDetailFont, new Point(13, picH), Color.White, TextFormatFlags.NoPadding);
                 //picH += 15;
-                GearGraphics.DrawString(g, "업그레이드 가능 횟수 : " + value + " #c(복구 가능 횟수 : 0)#", GearGraphics.EquipDetailFont, 13, 244, ref picH, 15, orangeColor: ((SolidBrush)GearGraphics.OrangeBrush3).Color);
+                GearGraphics.DrawString(g, "업그레이드 가능 횟수 : " + value + (Gear.Cash ? "" : " #c(복구 가능 횟수 : 0)#"), GearGraphics.EquipDetailFont, 13, 244, ref picH, 15, orangeColor: ((SolidBrush)GearGraphics.OrangeBrush3).Color);
                 hasPart2 = true;
             }
 
@@ -751,6 +751,11 @@ namespace WzComparerR2.CharaSimControl
                 }
             }
 
+            if (!string.IsNullOrEmpty(Gear.EpicHs) && sr[Gear.EpicHs] != null)
+            {
+                desc.Add(sr[Gear.EpicHs].Replace("#", " #"));
+            }
+
             //绘制倾向
             if (Gear.State == GearState.itemList)
             {
@@ -802,11 +807,6 @@ namespace WzComparerR2.CharaSimControl
                     }
                 }
 
-                if (!string.IsNullOrEmpty(Gear.EpicHs) && sr[Gear.EpicHs] != null)
-                {
-                    desc.Add(sr[Gear.EpicHs].Replace("#", " #"));
-                }
-
                 desc.Add("");
 
                 if (!string.IsNullOrEmpty(incline))
@@ -816,18 +816,18 @@ namespace WzComparerR2.CharaSimControl
 
                 if (Gear.Cash && (!Gear.Props.TryGetValue(GearPropType.noMoveToLocker, out value) || value == 0) && (!Gear.Props.TryGetValue(GearPropType.tradeBlock, out value) || value == 0) && (!Gear.Props.TryGetValue(GearPropType.accountSharable, out value) || value == 0))
                 {
-                    desc.Add(" #c넥슨캐시로 구매하면 사용 전 1회에 한해 타인과 교환 할 수 있습니다.#");
+                    desc.Add(" #c사용 전 1회에 한해 타인과 교환할 수 있으며, 아이템 사용 후에는 교환이 제한됩니다.#");
                 }
+            }
 
-                if (PluginBase.PluginManager.FindWz("Effect/ItemEff.img/" + Gear.ItemID) != null)
-                {
-                    desc.Add(" #c캐릭터 정보창 등 일부 상황에서는 보이지 않는 아이템입니다.#");
-                }
+            if (PluginBase.PluginManager.FindWz(string.Format("Effect/ItemEff.img/{0}/effect", Gear.ItemID)) != null)
+            {
+                desc.Add(" #c캐릭터 정보창 등 일부 상황에서는 보이지 않는 아이템입니다.#");
+            }
 
-                if (desc.Last() == "")
-                {
-                    desc.RemoveAt(desc.Count - 1);
-                }
+            if (desc.Last() == "")
+            {
+                desc.RemoveAt(desc.Count - 1);
             }
 
             //判断是否绘制徽章
