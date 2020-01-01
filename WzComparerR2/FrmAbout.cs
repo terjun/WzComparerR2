@@ -46,20 +46,21 @@ namespace WzComparerR2
         {
             this.advTree1.Nodes.Clear();
 
-            this.advTree1.Nodes.Add(new Node(string.Format("KMS <font color=\"#808080\">v3.1.1</font>")));
-            this.advTree1.Nodes.Add(new Node(string.Format("[KMS] 각종 기능 추가, 최종 번역 <font color=\"#808080\">박현민</font>")));
-            this.advTree1.Nodes.Add(new Node(string.Format("[KMS] 문자열 번역 <font color=\"#808080\">슈린냥</font>")));
-            this.advTree1.Nodes.Add(new Node(string.Format("[KMS] 문자열 오류 제보 <font color=\"#808080\">인소야닷컴 실버</font>")));
-            this.advTree1.Nodes.Add(new Node(string.Format("[KMS] 문자열 오류 제보 <font color=\"#808080\">jusir_@naver.com</font>")));
-            this.advTree1.Nodes.Add(new Node(string.Format("[KMS] 장비 툴팁 오류 제보 <font color=\"#808080\">@Sunaries</font>")));
-            this.advTree1.Nodes.Add(new Node(string.Format("[KMS] 중복 착용 불가 문자열 오류 제보 <font color=\"#808080\">인소야닷컴 진류</font>")));
-            this.advTree1.Nodes.Add(new Node(string.Format("[KMS] 아바타 저장 기능 추가 <font color=\"#808080\">@craftingmod</font>")));
-            this.advTree1.Nodes.Add(new Node(string.Format("[KMS] 아바타 불러오기 오류 제보 <font color=\"#808080\">인소야닷컴 일감</font>")));
-            this.advTree1.Nodes.Add(new Node(string.Format("[KMS] 파일 저장시 이름 규칙 오류 제보 <font color=\"#808080\">@mabooky</font>")));
-            this.advTree1.Nodes.Add(new Node(string.Format("[KMS] 아바타 하이레프 귀 오류 제보 <font color=\"#808080\">메이플인벤 누리신드롬</font>")));
-            this.advTree1.Nodes.Add(new Node(string.Format("[KMS] 패치와 함께 비교시 오류 제보 <font color=\"#808080\">@Sunaries</font>")));
-            this.advTree1.Nodes.Add(new Node(string.Format("[KMS] 사용 가능 직업 문구 오류 제보 <font color=\"#808080\">@tanyoucai</font>")));
-            this.advTree1.Nodes.Add(new Node(string.Format("[KMS] 퀘스트 상태 파티클 미적용 오류 제보 <font color=\"#808080\">메이플인벤 펄더</font>")));
+            this.advTree1.Nodes.Add(new Node("KMS <font color=\"#808080\">v3.1.1</font>"));
+            this.advTree1.Nodes.Add(new Node("[KMS] 각종 기능 추가, 최종 번역 <font color=\"#808080\">박현민</font>"));
+            this.advTree1.Nodes.Add(new Node("[KMS] 문자열 번역 <font color=\"#808080\">슈린냥</font>"));
+            this.advTree1.Nodes.Add(new Node("[KMS] 문자열 오류 제보 <font color=\"#808080\">인소야닷컴 실버</font>"));
+            this.advTree1.Nodes.Add(new Node("[KMS] 문자열 오류 제보 <font color=\"#808080\">jusir_@naver.com</font>"));
+            this.advTree1.Nodes.Add(new Node("[KMS] 장비 툴팁 오류 제보 <font color=\"#808080\">@Sunaries</font>"));
+            this.advTree1.Nodes.Add(new Node("[KMS] 중복 착용 불가 문자열 오류 제보 <font color=\"#808080\">인소야닷컴 진류</font>"));
+            this.advTree1.Nodes.Add(new Node("[KMS] 아바타 저장 기능 추가 <font color=\"#808080\">@craftingmod</font>"));
+            this.advTree1.Nodes.Add(new Node("[KMS] 아바타 불러오기 오류 제보 <font color=\"#808080\">인소야닷컴 일감</font>"));
+            this.advTree1.Nodes.Add(new Node("[KMS] 파일 저장시 이름 규칙 오류 제보 <font color=\"#808080\">@mabooky</font>"));
+            this.advTree1.Nodes.Add(new Node("[KMS] 아바타 하이레프 귀 오류 제보 <font color=\"#808080\">메이플인벤 누리신드롬</font>"));
+            this.advTree1.Nodes.Add(new Node("[KMS] 패치와 함께 비교시 오류 제보 <font color=\"#808080\">@Sunaries</font>"));
+            this.advTree1.Nodes.Add(new Node("[KMS] 사용 가능 직업 문구 오류 제보 <font color=\"#808080\">@tanyoucai</font>"));
+            this.advTree1.Nodes.Add(new Node("[KMS] 퀘스트 상태 파티클 미적용 오류 제보 <font color=\"#808080\">메이플인벤 펄더</font>"));
+            this.advTree1.Nodes.Add(new Node("[KMS] 아바타 오류 제보 <font color=\"#808080\">@giraffebin</font>"));
 
             if (PluginBase.PluginManager.LoadedPlugins.Count > 0)
             {
