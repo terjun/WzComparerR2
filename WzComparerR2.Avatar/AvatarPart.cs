@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Drawing;
+using WzComparerR2.CharaSim;
 using WzComparerR2.WzLib;
 using System.Text.RegularExpressions;
 
@@ -28,6 +29,15 @@ namespace WzComparerR2.Avatar
             if (m.Success)
             {
                 this.ID = Convert.ToInt32(m.Result("$1"));
+                GearType type = Gear.GetGearType(this.ID.Value);
+                if (type == GearType.face || type == GearType.face2)
+                {
+                    Icon = BitmapOrigin.CreateFromNode(PluginBase.PluginManager.FindWz(@"Item\Install\0380.img\03801284\info\icon"), PluginBase.PluginManager.FindWz);
+                }
+                if (type == GearType.hair || type == GearType.hair2)
+                {
+                    Icon = BitmapOrigin.CreateFromNode(PluginBase.PluginManager.FindWz(@"Item\Install\0380.img\03801283\info\icon"), PluginBase.PluginManager.FindWz);
+                }
             }
 
             Wz_Node infoNode = this.Node.FindNodeByPath("info");
