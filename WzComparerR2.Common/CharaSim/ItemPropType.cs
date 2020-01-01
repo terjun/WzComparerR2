@@ -49,5 +49,6 @@ namespace WzComparerR2.CharaSim
         giantPet,
         addTooltip,
         useTradeBlock,
+        level,
     }
 }

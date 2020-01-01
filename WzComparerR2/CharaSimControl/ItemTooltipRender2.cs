@@ -43,6 +43,7 @@ namespace WzComparerR2.CharaSimControl
 
         public bool LinkRecipeInfo { get; set; }
         public bool LinkRecipeItem { get; set; }
+        public bool ShowLevelOrSealed { get; set; }
         public bool ShowNickTag { get; set; }
 
         public TooltipRender LinkRecipeInfoRender { get; set; }
@@ -63,6 +64,12 @@ namespace WzComparerR2.CharaSimControl
             Bitmap recipeInfoBmp = null;
             Bitmap recipeItemBmp = null;
             Bitmap setItemBmp = null;
+            Bitmap levelBmp = null;
+            int levelHeight = 0;
+            if (this.ShowLevelOrSealed)
+            {
+                levelBmp = RenderLevel(out levelHeight);
+            }
 
             if (this.item.ItemID / 10000 == 910)
             {
@@ -212,6 +219,7 @@ namespace WzComparerR2.CharaSimControl
             Point recipeInfoOrigin = Point.Empty;
             Point recipeItemOrigin = Point.Empty;
             Point setItemOrigin = Point.Empty;
+            Point levelOrigin = Point.Empty;
 
             if (recipeItemBmp != null)
             {
@@ -240,6 +248,12 @@ namespace WzComparerR2.CharaSimControl
                 setItemOrigin = new Point(totalSize.Width, 0);
                 totalSize.Width += setItemBmp.Width;
                 totalSize.Height = Math.Max(totalSize.Height, setItemBmp.Height);
+            }
+            if (levelBmp != null)
+            {
+                levelOrigin = new Point(totalSize.Width, 0);
+                totalSize.Width += levelBmp.Width;
+                totalSize.Height = Math.Max(totalSize.Height, levelHeight);
             }
 
             //开始绘制
@@ -282,6 +296,14 @@ namespace WzComparerR2.CharaSimControl
                     new Rectangle(Point.Empty, setItemBmp.Size), GraphicsUnit.Pixel);
             }
 
+            if (levelBmp != null)
+            {
+                //绘制背景区域
+                GearGraphics.DrawNewTooltipBack(g, levelOrigin.X, levelOrigin.Y, levelBmp.Width, levelHeight);
+                //复制图像
+                g.DrawImage(levelBmp, levelOrigin.X, levelOrigin.Y, new Rectangle(0, 0, levelBmp.Width, levelHeight), GraphicsUnit.Pixel);
+            }
+
             if (itemBmp != null)
                 itemBmp.Dispose();
             if (recipeInfoBmp != null)
@@ -290,6 +312,8 @@ namespace WzComparerR2.CharaSimControl
                 recipeItemBmp.Dispose();
             if (setItemBmp != null)
                 setItemBmp.Dispose();
+            if (levelBmp != null)
+                levelBmp.Dispose();
 
             g.Dispose();
             return tooltip;
@@ -552,7 +576,7 @@ namespace WzComparerR2.CharaSimControl
                 }
                 else if (item.Props.TryGetValue(ItemPropType.onlyCash, out value) && value > 0)
                 {
-                    GearGraphics.DrawString(g, "#c넥슨캐시로만 구매할 수 있습니다.#", GearGraphics.ItemDetailFont, 100, right, ref picH, 16);
+                    GearGraphics.DrawString(g, "\n#c넥슨캐시로만 구매할 수 있습니다.#", GearGraphics.ItemDetailFont, 100, right, ref picH, 16);
                 }
                 else if ((!item.Props.TryGetValue(ItemPropType.tradeBlock, out value) || value == 0) && item.ItemID / 10000 != 501 && item.ItemID / 10000 != 502 && item.ItemID / 10000 != 516)
                 {
@@ -872,6 +896,106 @@ namespace WzComparerR2.CharaSimControl
 
             renderer.TargetItem = cashPackage;
             return renderer.Render();
+        }
+
+        private Bitmap RenderLevel(out int picHeight)
+        {
+            Bitmap level = null;
+            Graphics g = null;
+            StringFormat format = new StringFormat();
+            format.Alignment = StringAlignment.Center;
+            picHeight = 0;
+            if (Item.Levels != null)
+            {
+                if (level == null)
+                {
+                    level = new Bitmap(261, DefaultPicHeight);
+                    g = Graphics.FromImage(level);
+                }
+                picHeight += 13;
+                TextRenderer.DrawText(g, "레벨 정보", GearGraphics.EquipDetailFont, new Point(261, picHeight), ((SolidBrush)GearGraphics.GreenBrush2).Color, TextFormatFlags.HorizontalCenter);
+                picHeight += 15;
+
+                for (int i = 0; i < Item.Levels.Count; i++)
+                {
+                    var info = Item.Levels[i];
+                    TextRenderer.DrawText(g, "레벨 " + info.Level + (i >= Item.Levels.Count - 1 ? "(MAX)" : null), GearGraphics.EquipDetailFont, new Point(10, picHeight), ((SolidBrush)GearGraphics.GreenBrush2).Color, TextFormatFlags.NoPadding);
+                    picHeight += 15;
+                    foreach (var kv in info.BonusProps)
+                    {
+                        GearLevelInfo.Range range = kv.Value;
+
+                        string propString = ItemStringHelper.GetGearPropString(kv.Key, kv.Value.Min);
+                        if (propString != null)
+                        {
+                            if (range.Max != range.Min)
+                            {
+                                propString += " ~ " + kv.Value.Max + (propString.EndsWith("%") ? "%" : null);
+                            }
+                            TextRenderer.DrawText(g, propString, GearGraphics.EquipDetailFont, new Point(10, picHeight), Color.White, TextFormatFlags.NoPadding);
+                            picHeight += 15;
+                        }
+                    }
+                    if (info.Skills.Count > 0)
+                    {
+                        string title = string.Format("{2:P2}({0}/{1}) 확률로 스킬 강화 옵션 추가 :", info.Prob, info.ProbTotal, info.Prob * 1.0 / info.ProbTotal);
+                        TextRenderer.DrawText(g, title, GearGraphics.EquipDetailFont, new Point(10, picHeight), Color.White, TextFormatFlags.NoPadding);
+                        picHeight += 15;
+                        foreach (var kv in info.Skills)
+                        {
+                            StringResult sr = null;
+                            if (this.StringLinker != null)
+                            {
+                                this.StringLinker.StringSkill.TryGetValue(kv.Key, out sr);
+                            }
+                            string text = string.Format(" {0} +{2}레벨", sr == null ? null : sr.Name, kv.Key, kv.Value);
+                            TextRenderer.DrawText(g, text, GearGraphics.EquipDetailFont, new Point(10, picHeight), ((SolidBrush)GearGraphics.OrangeBrush).Color, TextFormatFlags.NoPadding);
+                            picHeight += 15;
+                        }
+                    }
+                    if (info.EquipmentSkills.Count > 0)
+                    {
+                        string title;
+                        if (info.Prob < info.ProbTotal)
+                        {
+                            title = string.Format("{2:P2}({0}/{1}) 확률로 스킬 사용 가능 :", info.Prob, info.ProbTotal, info.Prob * 1.0 / info.ProbTotal);
+                        }
+                        else
+                        {
+                            title = "스킬 사용 가능 :";
+                        }
+                        TextRenderer.DrawText(g, title, GearGraphics.EquipDetailFont, new Point(10, picHeight), Color.White, TextFormatFlags.NoPadding);
+                        picHeight += 15;
+                        foreach (var kv in info.EquipmentSkills)
+                        {
+                            StringResult sr = null;
+                            if (this.StringLinker != null)
+                            {
+                                this.StringLinker.StringSkill.TryGetValue(kv.Key, out sr);
+                            }
+                            string text = string.Format(" {0} {2}레벨", sr == null ? null : sr.Name, kv.Key, kv.Value);
+                            TextRenderer.DrawText(g, text, GearGraphics.EquipDetailFont, new Point(10, picHeight), ((SolidBrush)GearGraphics.OrangeBrush).Color, TextFormatFlags.NoPadding);
+                            picHeight += 15;
+                        }
+                    }
+                    if (info.Exp > 0)
+                    {
+                        TextRenderer.DrawText(g, "단위 경험치 : " + info.Exp + "%", GearGraphics.EquipDetailFont, new Point(10, picHeight), Color.White, TextFormatFlags.NoPadding);
+                        picHeight += 15;
+                    }
+
+                    picHeight += 2;
+                }
+            }
+
+
+            format.Dispose();
+            if (g != null)
+            {
+                g.Dispose();
+                picHeight += 13;
+            }
+            return level;
         }
 
         private bool TryGetNickResource(int nickTag, out Wz_Node resNode)
