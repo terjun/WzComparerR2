@@ -371,7 +371,7 @@ namespace WzComparerR2.CharaSimControl
                 TextRenderer.DrawText(g, totalOriginalPrice + "캐시     " + totalPrice + "캐시", GearGraphics.ItemDetailFont, new Point(53, picH), Color.White, TextFormatFlags.NoPadding);
                 TextRenderer.DrawText(g, totalOriginalPrice + "캐시", GearGraphics.ItemDetailFont, new Point(53, picH), Color.Red, TextFormatFlags.NoPadding);
                 g.DrawImage(Resource.CSDiscount_arrow, 53 + TextRenderer.MeasureText(g, totalOriginalPrice + "캐시", GearGraphics.ItemDetailFont, new Size(int.MaxValue, int.MaxValue), TextFormatFlags.NoPadding).Width + 5, picH + 1);
-                DrawDiscountNum(g, "-" + (int)((1 - (double)totalPrice / totalOriginalPrice) * 100) + "%", cashBitmap.Width - 9, picH - 1, StringAlignment.Far);
+                DrawDiscountNum(g, "-" + (int)((100 - 100.0 * totalPrice / totalOriginalPrice)) + "%", cashBitmap.Width - 9, picH - 1, StringAlignment.Far);
             }
             picH += 11;
 
