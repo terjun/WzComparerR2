@@ -100,7 +100,7 @@ namespace WzComparerR2.CharaSim
                 case GearPropType.incBDR:
                 case GearPropType.bdR: return "보스 몬스터 공격 시 데미지 +" + value + "%";
                 case GearPropType.incIMDR:
-                case GearPropType.imdR: return "몬스터 방어력 무시 : +" + value + "%";
+                case GearPropType.imdR: return "몬스터 방어율 무시 : +" + value + "%";
                 //case GearPropType.limitBreak: return "최대 데미지 제한 증가 : +" + value;
                 case GearPropType.reduceReq: return "착용 레벨 감소 : - " + value;
                 case GearPropType.nbdR: return "일반 몬스터 공격 시 데미지 : +" + value + "%";
