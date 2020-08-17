@@ -281,6 +281,7 @@ namespace WzComparerR2.CharaSimControl
             //分割线1号
             picH += 7;
             g.DrawImage(res["dotline"].Image, 0, picH);
+            picH += 1;
 
             //绘制装备图标
             if (Gear.Grade > 0 && (int)Gear.Grade <= 4) //绘制外框
@@ -1428,7 +1429,7 @@ namespace WzComparerR2.CharaSimControl
                     }
                     picH += 18;
                 }
-                picH -= 1;
+                //picH -= 1;
             }
         }
 
