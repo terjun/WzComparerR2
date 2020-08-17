@@ -550,22 +550,6 @@ namespace WzComparerR2.CharaSimControl
                 {
                     GearGraphics.DrawPlainText(g, ItemStringHelper.GetGearPropString(GearPropType.superiorEqp, value), GearGraphics.EquipDetailFont, ((SolidBrush)GearGraphics.GreenBrush2).Color, 13, 244, ref picH, 15);
                 }
-
-                /*if (!Gear.GetBooleanValue(GearPropType.exceptUpgrade))
-                {
-                    int maxStar = Gear.GetMaxStar();
-
-                    if (Gear.Star > 0) //星星
-                    {
-                        TextRenderer.DrawText(g, Gear.Star + "성 강화 적용 (최대 " + maxStar + "성)", GearGraphics.EquipDetailFont, new Point(13, picH), Color.White, TextFormatFlags.NoPadding);
-                        picH += 15;
-                    }
-                    else
-                    {
-                        TextRenderer.DrawText(g, "최대 " + maxStar + "성까지 강화 가능", GearGraphics.EquipDetailFont, new Point(13, picH), Color.White, TextFormatFlags.NoPadding);
-                        picH += 15;
-                    }
-                }*/
             }
 
             if (Gear.Props.TryGetValue(GearPropType.limitBreak, out value) && value > 0) //突破上限
