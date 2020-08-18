@@ -207,7 +207,7 @@ namespace WzComparerR2.CharaSimControl
                         typeName = "(" + typeName + ")";
                     }
 
-                    if (this.SetItem.CompleteCount > 1 && this.SetItem.ItemIDs.Parts.Count == 1)
+                    if (this.SetItem.Effects.Count > 1 && this.SetItem.ItemIDs.Parts.Count == 1)
                     {
                         typeName += "  [0/3]";
                     }
