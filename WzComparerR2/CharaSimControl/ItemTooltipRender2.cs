@@ -419,9 +419,17 @@ namespace WzComparerR2.CharaSimControl
                     expireTime = time.ToString("yyyy년 M월 d일 HH시까지 사용가능");
                 }
             }
-            else if (item.EndUseDate != null)
+            else if (item.ConsumableFrom != null || item.EndUseDate != null)
             {
-                expireTime = string.Format("{0}년 {1}월 {2}일 {3:D2}시 {4:D2}분까지 사용가능", Convert.ToInt32(item.EndUseDate.Substring(0, 4)), Convert.ToInt32(item.EndUseDate.Substring(4, 2)), Convert.ToInt32(item.EndUseDate.Substring(6, 2)), Convert.ToInt32(item.EndUseDate.Substring(8, 2)), Convert.ToInt32(item.EndUseDate.Substring(10, 2)));
+                expireTime = "";
+                if (item.ConsumableFrom != null)
+                {
+                    expireTime += string.Format("\n{0}년 {1}월 {2}일 {3:D2}시 {4:D2}분부터 사용가능", Convert.ToInt32(item.ConsumableFrom.Substring(0, 4)), Convert.ToInt32(item.ConsumableFrom.Substring(4, 2)), Convert.ToInt32(item.ConsumableFrom.Substring(6, 2)), Convert.ToInt32(item.ConsumableFrom.Substring(8, 2)), Convert.ToInt32(item.ConsumableFrom.Substring(10, 2)));
+                }
+                if (item.EndUseDate != null)
+                {
+                    expireTime += string.Format("\n{0}년 {1}월 {2}일 {3:D2}시 {4:D2}분까지 사용가능", Convert.ToInt32(item.EndUseDate.Substring(0, 4)), Convert.ToInt32(item.EndUseDate.Substring(4, 2)), Convert.ToInt32(item.EndUseDate.Substring(6, 2)), Convert.ToInt32(item.EndUseDate.Substring(8, 2)), Convert.ToInt32(item.EndUseDate.Substring(10, 2)));
+                }
             }
             else if ((item.Props.TryGetValue(ItemPropType.permanent, out value) && value != 0) || (item.ItemID / 10000 == 500 && item.Props.TryGetValue(ItemPropType.life, out value) && value == 0))
             {
@@ -442,9 +450,17 @@ namespace WzComparerR2.CharaSimControl
             }
             if (!string.IsNullOrEmpty(expireTime))
             {
+                picH += 3;
                 //g.DrawString(expireTime, GearGraphics.ItemDetailFont, Brushes.White, tooltip.Width / 2, picH, format);
-                TextRenderer.DrawText(g, expireTime, GearGraphics.ItemDetailFont, new Point(tooltip.Width, picH), Color.White, TextFormatFlags.HorizontalCenter);
-                picH += 16;
+                foreach (string expireTimeLine in expireTime.Split(new char[] { '\n' }, StringSplitOptions.RemoveEmptyEntries))
+                {
+                    TextRenderer.DrawText(g, expireTimeLine, GearGraphics.ItemDetailFont, new Point(tooltip.Width, picH), Color.White, TextFormatFlags.HorizontalCenter);
+                    picH += 16;
+                }
+                if (expireTime.Contains('\n'))
+                {
+                    picH += 4;
+                }
                 hasPart2 = true;
             }
 
