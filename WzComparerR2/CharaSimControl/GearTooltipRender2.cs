@@ -522,7 +522,7 @@ namespace WzComparerR2.CharaSimControl
             bool hasReduce = Gear.Props.TryGetValue(GearPropType.reduceReq, out value);
             if (hasReduce && value > 0)
             {
-                TextRenderer.DrawText(g, ItemStringHelper.GetGearPropString(GearPropType.reduceReq, value), GearGraphics.EquipDetailFont, new Point(13, picH), Color.White, TextFormatFlags.NoPadding);
+                TextRenderer.DrawText(g, ItemStringHelper.GetGearPropString(GearPropType.reduceReq, value), GearGraphics.EquipDetailFont, new Point(13, picH), ((SolidBrush)GearGraphics.GreenBrush2).Color, TextFormatFlags.NoPadding);
                 picH += 15;
                 hasPart2 = true;
             }
@@ -1243,17 +1243,21 @@ namespace WzComparerR2.CharaSimControl
             Size size;
             //需求等级
             this.Gear.Props.TryGetValue(GearPropType.reqLevel, out value);
+            int reduceReq = 0;
             {
-                int reduceReq;
-                if (this.Gear.Props.TryGetValue(GearPropType.reduceReq, out reduceReq))
-                {
-                    value = Math.Max(0, value - reduceReq);
-                }
+                this.Gear.Props.TryGetValue(GearPropType.reduceReq, out reduceReq);
             }
-            can = this.charStat == null || this.charStat.Level >= value;
-            type = GetReqType(can, value);
+            int value2 = Math.Max(0, value - reduceReq);
+            can = this.charStat == null || this.charStat.Level >= value2;
+            type = GetReqType(can, value2);
             g.DrawImage(FindReqImage(type, "reqLEV", out size), x, y);
-            DrawReqNum(g, value.ToString().PadLeft(3), (type == NumberType.Can ? NumberType.YellowNumber : type), x + 54, y, StringAlignment.Near);
+            int levX = DrawReqNum(g, value2.ToString().PadLeft(3), (type == NumberType.Can ? NumberType.YellowNumber : type), x + 54, y, StringAlignment.Near);
+            if (reduceReq != 0)
+            {
+                DrawReqNum(g, $"({value.ToString()}-{reduceReq.ToString()})", NumberType.Can, levX + 2, y, StringAlignment.Near);
+                DrawReqNum(g, $"({value.ToString()}-{reduceReq.ToString()}", NumberType.YellowNumber, levX + 2, y, StringAlignment.Near);
+                DrawReqNum(g, $"({value.ToString()}", NumberType.Can, levX + 2, y, StringAlignment.Near);
+            }
 
             //需求人气
             this.Gear.Props.TryGetValue(GearPropType.reqPOP, out value);
@@ -1443,10 +1447,10 @@ namespace WzComparerR2.CharaSimControl
                 return NumberType.Cannot;
         }
 
-        private void DrawReqNum(Graphics g, string numString, NumberType type, int x, int y, StringAlignment align)
+        private int DrawReqNum(Graphics g, string numString, NumberType type, int x, int y, StringAlignment align)
         {
             if (g == null || numString == null || align == StringAlignment.Center)
-                return;
+                return x;
             int spaceWidth = type == NumberType.LookAhead ? 3 : 6;
             bool near = align == StringAlignment.Near;
 
@@ -1464,10 +1468,16 @@ namespace WzComparerR2.CharaSimControl
                         break;
                     case '-':
                         image = Resource.ResourceManager.GetObject("UIToolTip_img_Item_Equip_" + type.ToString() + "_" + "minus") as Image;
-                        origin.Y = 3;
+                        origin.Y = 2;
                         break;
                     case '%':
                         image = Resource.ResourceManager.GetObject("UIToolTip_img_Item_Equip_" + type.ToString() + "_" + "percent") as Image;
+                        break;
+                    case '(':
+                        image = Resource.ResourceManager.GetObject("UIToolTip_img_Item_Equip_" + type.ToString() + "_" + "leftParenthesis") as Image;
+                        break;
+                    case ')':
+                        image = Resource.ResourceManager.GetObject("UIToolTip_img_Item_Equip_" + type.ToString() + "_" + "rightParenthesis") as Image;
                         break;
                     default:
                         if ('0' <= c && c <= '9')
@@ -1500,6 +1510,7 @@ namespace WzComparerR2.CharaSimControl
                     x += spaceWidth * (near ? 1 : -1);
                 }
             }
+            return x;
         }
 
         private Image GetAdditionalOptionIcon(GearGrade grade)
