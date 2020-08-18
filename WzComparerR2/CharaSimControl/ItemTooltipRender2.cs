@@ -531,17 +531,18 @@ namespace WzComparerR2.CharaSimControl
                         SetItem setItem;
                         if (CharaSimLoader.LoadedSetItems.TryGetValue(setID, out setItem))
                         {
+                            string wonderGradeString = null;
                             string setItemName = setItem.SetItemName;
                             string setSkillName = "";
-                            foreach (KeyValuePair<int, SetItemEffect> effect in setItem.Effects)
+                            switch (value)
                             {
-                                foreach (KeyValuePair<GearPropType, object> prop in effect.Value.PropsV5)
-                                {
-                                    if (prop.Key == GearPropType.activeSkill)
+                                case 1:
+                                    wonderGradeString = "원더 블랙";
+                                    foreach (KeyValuePair<GearPropType, object> prop in setItem.Effects.Values.SelectMany(f => f.PropsV5))
                                     {
-                                        List<SetItemActiveSkill> ops = (List<SetItemActiveSkill>)prop.Value;
-                                        foreach (SetItemActiveSkill p in ops)
+                                        if (prop.Key == GearPropType.activeSkill)
                                         {
+                                            SetItemActiveSkill p = ((List<SetItemActiveSkill>)prop.Value)[0];
                                             StringResult sr2;
                                             if (StringLinker == null || !StringLinker.StringSkill.TryGetValue(p.SkillID, out sr2))
                                             {
@@ -549,11 +550,23 @@ namespace WzComparerR2.CharaSimControl
                                                 sr2.Name = p.SkillID.ToString();
                                             }
                                             setSkillName = Regex.Replace(sr2.Name, " Lv.\\d", "");
+                                            break;
                                         }
                                     }
-                                }
+                                    break;
+                                case 4:
+                                    wonderGradeString = "루나 스윗";
+                                    setSkillName = "루나 스윗";
+                                    break;
+                                case 5:
+                                    wonderGradeString = "루나 드림";
+                                    setSkillName = "루나 드림";
+                                    break;
                             }
-                            desc += $"\n#c원더 블랙# 등급의 #c{setItemName}# 펫 장착시 #c{setSkillName}# 세트 효과를 얻게 됩니다. (최대 3단계)\n세트 효과는 장착한 #c{setItemName}# 펫의 종류에 따라 3세트까지 강화됩니다.";
+                            if (wonderGradeString != null)
+                            {
+                                desc += $"\n#c{wonderGradeString}# 등급의 #c{setItemName}# 펫 장착시 #c{setSkillName}# 세트 효과를 얻게 됩니다. (최대 3단계)\n세트 효과는 장착한 #c{setItemName}# 펫의 종류에 따라 3세트까지 강화됩니다.";
+                            }
                         }
                     }
                 }
