@@ -1178,7 +1178,7 @@ namespace WzComparerR2.CharaSimControl
                 int value2;
                 if (Gear.Props.TryGetValue(GearPropType.sharableOnce, out value2) && value2 != 0)
                 {
-                    tags.Add(ItemStringHelper.GetGearPropString(GearPropType.sharableOnce, value2));
+                    tags.AddRange(ItemStringHelper.GetGearPropString(GearPropType.sharableOnce, value2).Split('\n'));
                 }
                 else
                 {

@@ -108,8 +108,8 @@ namespace WzComparerR2.CharaSim
                 case GearPropType.only: return value == 0 ? null : "고유 아이템";
                 case GearPropType.tradeBlock: return value == 0 ? null : "교환 불가";
                 case GearPropType.equipTradeBlock: return value == 0 ? null : "장착시 교환 불가";
-                case GearPropType.accountSharable: return value == 0 ? null : "월드 내 나의 캐릭터간 이동만 가능";
-                case GearPropType.sharableOnce: return value == 0 ? null : "계정 내 1회 이동 가능(이동 후 교환불가)";
+                case GearPropType.accountSharable: return value == 0 ? null : "월드 내 나의 캐릭터 간 이동만 가능";
+                case GearPropType.sharableOnce: return value == 0 ? null : "월드 내 나의 캐릭터 간 1회 이동 가능\n(이동 후 교환불가)";
                 case GearPropType.onlyEquip: return value == 0 ? null : "고유장착 아이템";
                 case GearPropType.notExtend: return value == 0 ? null : "유효기간 연장 불가";
                 case GearPropType.tradeAvailable:
@@ -122,7 +122,7 @@ namespace WzComparerR2.CharaSim
                 case GearPropType.accountShareTag:
                     switch (value)
                     {
-                        case 1: return "#c쉐어 네임 텍을 사용하면 1회 같은 계정 내 캐릭터로 이동할 수 있습니다.#";
+                        case 1: return "#c쉐어 네임 텍을 사용하면 월드 내 나의 캐릭터 간 1회 이동할 수 있습니다.#";
                         default: return null;
                     }
                 case GearPropType.noPotential: return value == 0 ? null : "잠재능력 설정 불가";
@@ -519,6 +519,8 @@ namespace WzComparerR2.CharaSim
                     return GetGearPropString(GearPropType.only, value);
                 case ItemPropType.accountSharable:
                     return GetGearPropString(GearPropType.accountSharable, value);
+                case ItemPropType.sharableOnce:
+                    return GetGearPropString(GearPropType.sharableOnce, value);
                 case ItemPropType.quest:
                     return value == 0 ? null : "퀘스트 아이템";
                 case ItemPropType.pquest:

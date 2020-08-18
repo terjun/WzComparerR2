@@ -809,7 +809,14 @@ namespace WzComparerR2.CharaSimControl
                 {
                     tags.Add(ItemStringHelper.GetItemPropString(ItemPropType.useTradeBlock, 1));
                 }
-                tags.Add(ItemStringHelper.GetItemPropString(ItemPropType.accountSharable, value));
+                if (item.Props.TryGetValue(ItemPropType.sharableOnce, out value2) && value2 != 0)
+                {
+                    tags.AddRange(ItemStringHelper.GetItemPropString(ItemPropType.sharableOnce, value2).Split('\n'));
+                }
+                else
+                {
+                    tags.Add(ItemStringHelper.GetItemPropString(ItemPropType.accountSharable, value));
+                }
             }
             if (item.Props.TryGetValue(ItemPropType.multiPet, out value))
             {
