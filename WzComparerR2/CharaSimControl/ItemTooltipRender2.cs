@@ -523,6 +523,40 @@ namespace WzComparerR2.CharaSimControl
             desc += sr.Desc;
             if (item.ItemID / 10000 == 500)
             {
+                if (item.Props.TryGetValue(ItemPropType.wonderGrade, out value) && value > 0)
+                {
+                    int setID;
+                    if (item.Props.TryGetValue(ItemPropType.setItemID, out setID))
+                    {
+                        SetItem setItem;
+                        if (CharaSimLoader.LoadedSetItems.TryGetValue(setID, out setItem))
+                        {
+                            string setItemName = setItem.SetItemName;
+                            string setSkillName = "";
+                            foreach (KeyValuePair<int, SetItemEffect> effect in setItem.Effects)
+                            {
+                                foreach (KeyValuePair<GearPropType, object> prop in effect.Value.PropsV5)
+                                {
+                                    if (prop.Key == GearPropType.activeSkill)
+                                    {
+                                        List<SetItemActiveSkill> ops = (List<SetItemActiveSkill>)prop.Value;
+                                        foreach (SetItemActiveSkill p in ops)
+                                        {
+                                            StringResult sr2;
+                                            if (StringLinker == null || !StringLinker.StringSkill.TryGetValue(p.SkillID, out sr2))
+                                            {
+                                                sr2 = new StringResult();
+                                                sr2.Name = p.SkillID.ToString();
+                                            }
+                                            setSkillName = Regex.Replace(sr2.Name, " Lv.\\d", "");
+                                        }
+                                    }
+                                }
+                            }
+                            desc += $"\n#c원더 블랙# 등급의 #c{setItemName}# 펫 장착시 #c{setSkillName}# 세트 효과를 얻게 됩니다. (최대 3단계)\n세트 효과는 장착한 #c{setItemName}# 펫의 종류에 따라 3세트까지 강화됩니다.";
+                        }
+                    }
+                }
                 desc += "\n#c스킬:메소 줍기";
                 if (item.Props.TryGetValue(ItemPropType.pickupItem, out value) && value > 0)
                 {
