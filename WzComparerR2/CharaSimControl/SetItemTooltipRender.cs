@@ -81,7 +81,8 @@ namespace WzComparerR2.CharaSimControl
             if (itemNode != null)
             {
                 var item = Item.CreateFromNode(itemNode, PluginManager.FindWz);
-                return item.Props.TryGetValue(ItemPropType.wonderGrade, out int value) && value != 0;
+                int value;
+                return item.Props.TryGetValue(ItemPropType.wonderGrade, out value) && (value == 1 || value == 4 || value == 5 || value == 6);
             }
             return false;
         }
