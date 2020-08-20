@@ -369,6 +369,7 @@ namespace WzComparerR2
                             comparer.OutputRemovedImg = chkOutputRemovedImg.Checked;
                             comparer.Comparer.PngComparison = (WzPngComparison)cmbComparePng.SelectedItem;
                             comparer.Comparer.ResolvePngLink = chkResolvePngLink.Checked;
+                            comparer.PatchingStateChanged += new EventHandler<PatchingEventArgs>(patcher_PatchingStateChanged);
                             //wznew.Load(e.Part.TempFilePath, false);
                             //wzold.Load(e.Part.OldFilePath, false);
                             //comparer.EasyCompareWzFiles(wznew.wz_files[0], wzold.wz_files[0], this.compareFolder);
@@ -430,6 +431,18 @@ namespace WzComparerR2
                         ((WzPatcher)sender).SafeMove(e.Part.TempFilePath, e.Part.OldFilePath);
                         AppendStateText("  파일 적용...\r\n");
                     }
+                    break;
+                case PatchingState.CompareStarted:
+                    progressBarX1.Maximum = e.Part.NewFileLength;
+                    break;
+                case PatchingState.CompareProcessChanged:
+                    progressBarX1.Value = (int)e.CurrentFileLength;
+                    progressBarX1.Text = string.Format("{0:N0}/{1:N0}", e.CurrentFileLength, e.Part.NewFileLength);
+                    break;
+                case PatchingState.CompareFinished:
+                    progressBarX1.Value = 0;
+                    progressBarX1.Maximum = 0;
+                    progressBarX1.Text = string.Empty;
                     break;
             }
         }

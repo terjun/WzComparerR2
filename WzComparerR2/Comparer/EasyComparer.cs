@@ -45,6 +45,7 @@ namespace WzComparerR2.Comparer
 
         public event EventHandler StateInfoChanged;
         public event EventHandler StateDetailChanged;
+        public event EventHandler<Patcher.PatchingEventArgs> PatchingStateChanged;
 
         protected virtual void OnStateInfoChanged(EventArgs e)
         {
@@ -56,6 +57,12 @@ namespace WzComparerR2.Comparer
         {
             if (this.StateDetailChanged != null)
                 this.StateDetailChanged(this, e);
+        }
+
+        protected virtual void OnPatchingStateChanged(Patcher.PatchingEventArgs e)
+        {
+            if (this.PatchingStateChanged != null)
+                this.PatchingStateChanged(this, e);
         }
 
         public void EasyCompareWzFiles(Wz_File fileNew, Wz_File fileOld, string outputDir)
@@ -373,8 +380,14 @@ namespace WzComparerR2.Comparer
                     count[i] = 0;
                 }
 
+                Patcher.PatchPartContext part = new Patcher.PatchPartContext("", 0, 0);
+                part.NewFileLength = count[3] + (this.OutputAddedImg ? count[4] : 0) + (this.OutputRemovedImg ? count[5] : 0);
+
+                OnPatchingStateChanged(new Patcher.PatchingEventArgs(part, Patcher.PatchingState.CompareStarted));
+
                 foreach (CompareDifference diff in diffLst)
                 {
+                    OnPatchingStateChanged(new Patcher.PatchingEventArgs(part, Patcher.PatchingState.TempFileBuildProcessChanged, count[0] + count[1] + count[2]));
                     switch (diff.DifferenceType)
                     {
                         case DifferenceType.Changed:
@@ -456,6 +469,7 @@ namespace WzComparerR2.Comparer
                 catch
                 {
                 }
+                OnPatchingStateChanged(new Patcher.PatchingEventArgs(null, Patcher.PatchingState.CompareFinished));
             }
         }
 
