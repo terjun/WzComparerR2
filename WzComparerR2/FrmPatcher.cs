@@ -235,6 +235,10 @@ namespace WzComparerR2
                 {
                     advTreePatchFiles.Nodes.Add(CreateFileNode(part));
                     advTreePatchFiles.Nodes[advTreePatchFiles.Nodes.Count - 1].Enabled = prePatch;
+                    if (prePatch && part.Type == 1)
+                    {
+                        advTreePatchFiles.Nodes[advTreePatchFiles.Nodes.Count - 1].Checked = File.Exists(Path.Combine(msFolder, part.FileName));
+                    }
                 }
                 if (prePatch)
                 {
@@ -302,6 +306,18 @@ namespace WzComparerR2
                 catch
                 {
                 }
+                try
+                {
+                    if (htmlFile != null)
+                    {
+                        htmlFile.Flush();
+                        htmlFile.Close();
+                    }
+                }
+                catch
+                {
+                }
+                htmlFilePath = null;
 
                 if (patcher != null)
                 {
@@ -337,7 +353,7 @@ namespace WzComparerR2
                     AppendStateText("  완료\r\n");
                     break;
                 case PatchingState.TempFileCreated:
-                    AppendStateText("  임시 파일 생성...\r\n");
+                    AppendStateText("  임시 파일 작성 시작...\r\n");
                     progressBarX1.Maximum = e.Part.NewFileLength;
                     break;
                 case PatchingState.TempFileBuildProcessChanged:
@@ -345,7 +361,7 @@ namespace WzComparerR2
                     progressBarX1.Text = string.Format("{0:N0}/{1:N0}", e.CurrentFileLength, e.Part.NewFileLength);
                     break;
                 case PatchingState.TempFileClosed:
-                    AppendStateText("  임시 파일 삭제...\r\n");
+                    AppendStateText("  임시 파일 작성 완료...\r\n");
                     progressBarX1.Value = 0;
                     progressBarX1.Maximum = 0;
                     progressBarX1.Text = string.Empty;
