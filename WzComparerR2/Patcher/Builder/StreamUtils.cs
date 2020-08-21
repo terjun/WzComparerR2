@@ -35,11 +35,26 @@ namespace WzComparerR2.Patcher.Builder
             stream.Write(buffer, 0, length);
         }
 
-        public static uint MoveStreamWithCrc32(Stream src, Stream dest, int length, uint crc)
+        public static uint MoveStreamWithCrc32(Stream src, Stream dest, int length, uint crc, EventHandler<PatchingEventArgs> PatchingStateChanged = null)
         {
             byte[] buffer = new byte[0x8000];
+            PatchPartContext part = new PatchPartContext("", 0, 0);
+            part.NewFileLength = length;
+
+            double patchProc = 0;
+            const double patchProcReportInverval = 0.005;
+
             while (length > 0)
             {
+                if (PatchingStateChanged != null && part.NewFileLength > 0)
+                {
+                    double curProc = 1.0 * (part.NewFileLength - length) / part.NewFileLength;
+                    if (curProc - patchProc >= patchProcReportInverval)// || curProc >= 1 - patchProcReportInverval)
+                    {
+                        PatchingStateChanged(null, new PatchingEventArgs(part, PatchingState.TempFileBuildProcessChanged, part.NewFileLength - length));//更新进度改变
+                        patchProc = curProc;
+                    }
+                }
                 int count = src.Read(buffer, 0, Math.Min(buffer.Length, length));
                 if (count == 0)
                     break;

@@ -401,7 +401,7 @@ namespace WzComparerR2.Patcher
             part.TempFilePath = tempFileName;
             this.OnTempFileCreated(part);
             //创建文件同时计算checksum
-            uint checkSum1 = StreamUtils.MoveStreamWithCrc32(this.inflateStream, tempFileStream, part.NewFileLength, 0U);
+            uint checkSum1 = StreamUtils.MoveStreamWithCrc32(this.inflateStream, tempFileStream, part.NewFileLength, 0U, PatchingStateChanged);
             tempFileStream.Flush();
 
             this.OnVerifyNewChecksumBegin(part);
