@@ -43,16 +43,20 @@ namespace WzComparerR2.Patcher.Builder
 
             double patchProc = 0;
             const double patchProcReportInverval = 0.005;
+            int patchLength = 0;
+            const int patchLengthReportInterval = 1 * 1024 * 1024;
 
             while (length > 0)
             {
                 if (PatchingStateChanged != null && part.NewFileLength > 0)
                 {
-                    double curProc = 1.0 * (part.NewFileLength - length) / part.NewFileLength;
-                    if (curProc - patchProc >= patchProcReportInverval)// || curProc >= 1 - patchProcReportInverval)
+                    int curLength = part.NewFileLength - length;
+                    double curProc = 1.0 * curLength / part.NewFileLength;
+                    if (curProc - patchProc >= patchProcReportInverval && curLength - patchLength >= patchLengthReportInterval)// || curProc >= 1 - patchProcReportInverval)
                     {
-                        PatchingStateChanged(null, new PatchingEventArgs(part, PatchingState.TempFileBuildProcessChanged, part.NewFileLength - length));//更新进度改变
+                        PatchingStateChanged(null, new PatchingEventArgs(part, PatchingState.TempFileBuildProcessChanged, curLength));//更新进度改变
                         patchProc = curProc;
+                        patchLength = curLength;
                     }
                 }
                 int count = src.Read(buffer, 0, Math.Min(buffer.Length, length));
