@@ -318,6 +318,10 @@ namespace WzComparerR2
                 {
                 }
                 htmlFilePath = null;
+                foreach (List<PatchPartContext> parts in typedParts.Values)
+                {
+                    parts.Clear();
+                }
 
                 if (patcher != null)
                 {
