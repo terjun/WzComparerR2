@@ -535,7 +535,7 @@ namespace WzComparerR2.CharaSimControl
                 //初始化环境
                 this.g = g;
                 this.drawX = x;
-                this.defaultColor = (textColor == null ? Color.White : (Color)textColor);
+                this.defaultColor = textColor ?? Color.White;
                 if (orangeColor != null)
                 {
                     this.orangeColor = (Color)orangeColor;
