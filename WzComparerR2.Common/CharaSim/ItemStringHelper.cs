@@ -339,8 +339,8 @@ namespace WzComparerR2.CharaSim
                 case GearType.relic: return "렐릭";
                 case GearType.ancientBow: return "에인션트 보우";
 
-                case GearType.handFan: return "扇子";
-                case GearType.fanTassel: return "扇坠";
+                case GearType.handFan: return "부채";
+                case GearType.fanTassel: return "선추";
 
                 case GearType.tuner: return "튜너";
                 case GearType.bracelet: return "브레이슬릿";
