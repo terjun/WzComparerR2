@@ -237,7 +237,7 @@ namespace WzComparerR2.CharaSim
                 case GearType.longcoat: return "한벌옷";
                 case GearType.machineEngine: return "메카닉 엔진";
                 case GearType.machineArms: return "메카닉 암";
-                case GearType.machineLegs: return "메카닉 다리";
+                case GearType.machineLegs: return "메카닉 레그";
                 case GearType.machineBody: return "메카닉 프레임";
                 case GearType.machineTransistors: return "메카닉 트랜지스터";
                 case GearType.pants: return "하의";
