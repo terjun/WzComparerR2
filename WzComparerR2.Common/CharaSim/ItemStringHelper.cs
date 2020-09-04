@@ -414,6 +414,10 @@ namespace WzComparerR2.CharaSim
 
                 //2xxx
                 case GearType.aranPendulum: return GetExtraJobReqString(21);
+                case GearType.dragonMask:
+                case GearType.dragonPendant:
+                case GearType.dragonWings:
+                case GearType.dragonTail:
                 case GearType.evanPaper: return GetExtraJobReqString(22);
                 case GearType.magicArrow: return GetExtraJobReqString(23);
                 case GearType.card: return GetExtraJobReqString(24);
@@ -424,8 +428,13 @@ namespace WzComparerR2.CharaSim
                 //3xxx
                 case GearType.demonShield: return GetExtraJobReqString(31);
                 case GearType.desperado: return "데몬 어벤져 착용 가능";
-                case GearType.battlemageBall: return "배틀메이지 직업군 착용 가능";
-                case GearType.wildHunterArrowHead: return "와일드헌터 직업군 착용 가능";
+                case GearType.battlemageBall: return "배틀메이지 착용 가능";
+                case GearType.wildHunterArrowHead: return "와일드헌터 착용 가능";
+                case GearType.machineEngine:
+                case GearType.machineArms:
+                case GearType.machineLegs:
+                case GearType.machineBody:
+                case GearType.machineTransistors:
                 case GearType.mailin: return "메카닉 착용 가능";
                 case GearType.controller:
                 case GearType.powerSource:
@@ -479,8 +488,8 @@ namespace WzComparerR2.CharaSim
         {
             switch (specJob)
             {
-                case 21: return "아란 직업군 착용 가능";
-                case 22: return "에반 직업군 착용 가능";
+                case 21: return "아란 착용 가능";
+                case 22: return "에반 착용 가능";
                 case 23: return "메르세데스 착용가능";
                 case 24: return "팬텀 착용 가능";
                 case 25: return "은월 착용 가능";
@@ -490,17 +499,17 @@ namespace WzComparerR2.CharaSim
                 case 37: return "블래스터 착용 가능";
                 case 41: return "剑豪可以装备";
                 case 42: return "阴阳师可以装备";
-                case 51: return "米哈尔可以装备";
+                case 51: return "미하일 착용 가능";
                 case 61: return "카이저 착용 가능";
-                case 64: return "카데나 직업군 착용 가능";
+                case 64: return "카데나 착용 가능";
                 case 65: return "엔젤릭 버스터 착용 가능";
                 case 101: return "제로 착용 가능";
                 case 112: return "林之灵可以装备";
                 case 142: return "키네시스 착용 가능";
-                case 151: return "아델 직업군 착용 가능";
+                case 151: return "아델 착용 가능";
                 case 152: return "일리움 착용 가능";
                 case 155: return "아크 착용 가능";
-                case 164: return "호영 직업군 착용 가능";
+                case 164: return "호영 착용 가능";
                 default: return null;
             }
         }
