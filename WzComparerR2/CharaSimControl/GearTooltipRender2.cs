@@ -724,7 +724,7 @@ namespace WzComparerR2.CharaSimControl
                 GearPropType.tradeAvailable,
                 GearPropType.accountShareTag,
                 GearPropType.jokerToSetItem,
-                GearPropType.colorvar,
+                //GearPropType.colorvar,
             };
             foreach (GearPropType type in descTypes)
             {
@@ -789,8 +789,6 @@ namespace WzComparerR2.CharaSimControl
                         incline += ", " + inclineString[i] + " " + value;
                     }
                 }
-
-                desc.Add("");
 
                 if (!string.IsNullOrEmpty(incline))
                 {
