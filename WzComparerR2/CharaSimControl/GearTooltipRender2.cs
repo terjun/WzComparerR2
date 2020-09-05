@@ -399,7 +399,8 @@ namespace WzComparerR2.CharaSimControl
                 bool max = (Gear.Levels != null && value >= Gear.Levels.Count);
                 TextRenderer.DrawText(g, "성장 레벨 : " + (max ? "MAX" : value.ToString()), GearGraphics.EquipDetailFont, new Point(13, picH), ((SolidBrush)GearGraphics.OrangeBrush3).Color, TextFormatFlags.NoPadding);
                 picH += 15;
-                TextRenderer.DrawText(g, "성장 경험치" + (max ? ": MAX" : " : 0%"), GearGraphics.EquipDetailFont, new Point(13, picH), ((SolidBrush)GearGraphics.OrangeBrush3).Color, TextFormatFlags.NoPadding);
+                string expString = Gear.Levels != null ? " : 0/" + Gear.Levels.First().Point : " : 0%";
+                TextRenderer.DrawText(g, "성장 경험치" + (max ? ": MAX" : expString), GearGraphics.EquipDetailFont, new Point(13, picH), ((SolidBrush)GearGraphics.OrangeBrush3).Color, TextFormatFlags.NoPadding);
                 picH += 15;
             }
             else if (Gear.ItemID / 10000 == 171)
@@ -1070,6 +1071,11 @@ namespace WzComparerR2.CharaSimControl
                     if (info.Exp > 0)
                     {
                         TextRenderer.DrawText(g, "단위 경험치 : " + info.Exp + "%", GearGraphics.EquipDetailFont, new Point(10, picHeight), Color.White, TextFormatFlags.NoPadding);
+                        picHeight += 15;
+                    }
+                    if (info.Point > 0 && info.DecPoint > 0)
+                    {
+                        TextRenderer.DrawText(g, "경험치 (-일간 감소량) : " + info.Point + " (-" + info.DecPoint + ")", GearGraphics.EquipDetailFont, new Point(10, picHeight), Color.White, TextFormatFlags.NoPadding);
                         picHeight += 15;
                     }
 
