@@ -812,7 +812,7 @@ namespace WzComparerR2.CharaSimControl
                 desc.Add(" #c펫 장비 능력치 이전 주문서를 사용할 수 없는 아이템입니다.#");
             }
 
-            if (desc.Last() == "")
+            if (desc.Count >= 1 && desc.Last() == "")
             {
                 desc.RemoveAt(desc.Count - 1);
             }
