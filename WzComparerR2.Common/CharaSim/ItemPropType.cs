@@ -47,7 +47,6 @@ namespace WzComparerR2.CharaSim
         consumeMP,
         autoBuff,
         giantPet,
-        addTooltip,
         useTradeBlock,
         level,
         sharableOnce,

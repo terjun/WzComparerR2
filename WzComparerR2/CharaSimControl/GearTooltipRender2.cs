@@ -399,7 +399,7 @@ namespace WzComparerR2.CharaSimControl
                 bool max = (Gear.Levels != null && value >= Gear.Levels.Count);
                 TextRenderer.DrawText(g, "성장 레벨 : " + (max ? "MAX" : value.ToString()), GearGraphics.EquipDetailFont, new Point(13, picH), ((SolidBrush)GearGraphics.OrangeBrush3).Color, TextFormatFlags.NoPadding);
                 picH += 15;
-                string expString = Gear.Levels != null ? " : 0/" + Gear.Levels.First().Point : " : 0%";
+                string expString = Gear.Levels != null && Gear.Levels.First().Point != 0 ? " : 0/" + Gear.Levels.First().Point : " : 0%";
                 TextRenderer.DrawText(g, "성장 경험치" + (max ? ": MAX" : expString), GearGraphics.EquipDetailFont, new Point(13, picH), ((SolidBrush)GearGraphics.OrangeBrush3).Color, TextFormatFlags.NoPadding);
                 picH += 15;
             }
