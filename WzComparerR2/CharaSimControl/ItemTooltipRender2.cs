@@ -159,54 +159,10 @@ namespace WzComparerR2.CharaSimControl
             }
 
             int value;
-            if (this.item.Props.TryGetValue(ItemPropType.dressUpgrade, out value) || this.item.Props.TryGetValue(ItemPropType.addTooltip, out value))
+            if (this.item.Props.TryGetValue(ItemPropType.dressUpgrade, out value))
             {
                 int itemID = value;
-                int itemIDClass = itemID / 1000000;
-                if (itemIDClass == 1) //通过ID寻找装备
-                {
-                    Wz_Node charaWz = PluginManager.FindWz(Wz_Type.Character);
-                    if (charaWz != null)
-                    {
-                        string imgName = itemID.ToString("d8") + ".img";
-                        foreach (Wz_Node node0 in charaWz.Nodes)
-                        {
-                            Wz_Node imgNode = node0.FindNodeByPath(imgName, true);
-                            if (imgNode != null)
-                            {
-                                Gear gear = Gear.CreateFromNode(imgNode, path=>PluginManager.FindWz(path));
-                                if (gear != null)
-                                {
-                                    recipeItemBmp = RenderLinkRecipeGear(gear);
-                                }
-
-                                break;
-                            }
-                        }
-                    }
-                }
-                else if (itemIDClass >= 2 && itemIDClass <= 5) //通过ID寻找道具
-                {
-                    Wz_Node itemWz = PluginManager.FindWz(Wz_Type.Item);
-                    if (itemWz != null)
-                    {
-                        string imgClass = (itemID / 10000).ToString("d4") + ".img\\" + itemID.ToString("d8");
-                        foreach (Wz_Node node0 in itemWz.Nodes)
-                        {
-                            Wz_Node imgNode = node0.FindNodeByPath(imgClass, true);
-                            if (imgNode != null)
-                            {
-                                Item item = Item.CreateFromNode(imgNode, PluginManager.FindWz);
-                                if (item != null)
-                                {
-                                    recipeItemBmp = RenderLinkRecipeItem(item);
-                                }
-
-                                break;
-                            }
-                        }
-                    }
-                }
+                AppendGearOrItem(itemID);
             }
 
             int setID;
