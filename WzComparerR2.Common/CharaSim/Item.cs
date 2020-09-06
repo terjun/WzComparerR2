@@ -12,6 +12,7 @@ namespace WzComparerR2.CharaSim
         {
             this.Props = new Dictionary<ItemPropType, int>();
             this.Specs = new Dictionary<ItemSpecType, int>();
+            this.AddTooltips = new List<int>();
         }
 
         public int Level { get; set; }
@@ -22,6 +23,7 @@ namespace WzComparerR2.CharaSim
 
         public Dictionary<ItemPropType, int> Props { get; private set; }
         public Dictionary<ItemSpecType, int> Specs { get; private set; }
+        public List<int> AddTooltips { get; internal set; } // Additional Tooltips
 
         public bool Cash
         {
@@ -213,6 +215,20 @@ namespace WzComparerR2.CharaSim
                                 }
                             }
                             item.Props.Add(ItemPropType.level, 1);
+                            break;
+
+                        case "addTooltip":
+                            if (subNode.Nodes.Count > 0)
+                            {
+                                foreach (Wz_Node tooltipNode in subNode.Nodes)
+                                {
+                                    item.AddTooltips.Add(Convert.ToInt32(tooltipNode.Value));
+                                }
+                            }
+                            else
+                            {
+                                item.AddTooltips.Add(Convert.ToInt32(subNode.Value));
+                            }
                             break;
 
                         default:

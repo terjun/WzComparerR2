@@ -165,6 +165,14 @@ namespace WzComparerR2.CharaSimControl
                 AppendGearOrItem(itemID);
             }
 
+            if (this.item.AddTooltips.Count > 0)
+            {
+                foreach (int itemID in item.AddTooltips)
+                {
+                    AppendGearOrItem(itemID);
+                }
+            }
+
             int setID;
             if (this.item.Props.TryGetValue(ItemPropType.setItemID, out setID))
             {
@@ -178,24 +186,29 @@ namespace WzComparerR2.CharaSimControl
             //计算布局
             Size totalSize = new Size(itemBmp.Width, picHeight);
             Point recipeInfoOrigin = Point.Empty;
-            Point recipeItemOrigin = Point.Empty;
+            List<Point> recipeItemOrigins = new List<Point>();
             Point setItemOrigin = Point.Empty;
             Point levelOrigin = Point.Empty;
 
-            if (recipeItemBmp != null)
+            if (recipeItemBmps.Count > 0)
             {
-                recipeItemOrigin.X = totalSize.Width;
-                totalSize.Width += recipeItemBmp.Width;
-
                 if (recipeInfoBmp != null)
                 {
+                    recipeItemOrigins.Add(new Point(totalSize.Width, 0));
                     recipeInfoOrigin.X = itemBmp.Width - recipeInfoBmp.Width;
                     recipeInfoOrigin.Y = picHeight;
-                    totalSize.Height = Math.Max(picHeight + recipeInfoBmp.Height, recipeItemBmp.Height);
+                    totalSize.Width += recipeItemBmps[0].Width;
+                    totalSize.Height = Math.Max(picHeight + recipeInfoBmp.Height, recipeItemBmps[0].Height);
                 }
                 else
                 {
-                    totalSize.Height = Math.Max(picHeight, recipeItemBmp.Height);
+                    int itemCnt = recipeItemBmps.Count;
+                    for (int i = 0; i < itemCnt; ++i)
+                    {
+                        recipeItemOrigins.Add(new Point(totalSize.Width, 0));
+                        totalSize.Width += recipeItemBmps[i].Width;
+                        totalSize.Height = Math.Max(picHeight, recipeItemBmps[i].Height);
+                    }
                 }
             }
             else if (recipeInfoBmp != null)
@@ -244,10 +257,14 @@ namespace WzComparerR2.CharaSimControl
             }
 
             //绘制产出道具
-            if (recipeItemBmp != null)
+            if (recipeItemBmps.Count > 0)
             {
-                g.DrawImage(recipeItemBmp, recipeItemOrigin.X, recipeItemOrigin.Y,
-                    new Rectangle(Point.Empty, recipeItemBmp.Size), GraphicsUnit.Pixel);
+                int itemCnt = recipeItemBmps.Count;
+                for (int i = 0; i < itemCnt; ++i)
+                {
+                    g.DrawImage(recipeItemBmps[i], recipeItemOrigins[i].X, recipeItemOrigins[i].Y,
+                        new Rectangle(Point.Empty, recipeItemBmps[i].Size), GraphicsUnit.Pixel);
+                }
             }
 
             //绘制套装
@@ -269,8 +286,9 @@ namespace WzComparerR2.CharaSimControl
                 itemBmp.Dispose();
             if (recipeInfoBmp != null)
                 recipeInfoBmp.Dispose();
-            if (recipeItemBmp != null)
-                recipeItemBmp.Dispose();
+            if (recipeItemBmps.Count > 0)
+                foreach (Bitmap recipeItemBmp in recipeItemBmps)
+                    recipeItemBmp.Dispose();
             if (setItemBmp != null)
                 setItemBmp.Dispose();
             if (levelBmp != null)
