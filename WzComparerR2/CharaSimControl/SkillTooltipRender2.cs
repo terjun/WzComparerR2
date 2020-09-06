@@ -110,6 +110,18 @@ namespace WzComparerR2.CharaSimControl
                 string expireStr = time.ToString("유효기간 : yyyy년 M월 d일 HH시 mm분");
                 GearGraphics.DrawString(g, "#c" + expireStr + "#", GearGraphics.ItemDetailFont2, Skill.Icon.Bitmap == null ? 10 : 92, 274, ref picH, 16);
             }
+            if (Skill.RelationSkill != null)
+            {
+                StringResult sr2 = null;
+                if (StringLinker == null || !StringLinker.StringSkill.TryGetValue(Skill.RelationSkill.Item1, out sr2))
+                {
+                    sr2 = new StringResultSkill();
+                    sr2.Name = "(null)";
+                }
+                DateTime time = DateTime.Now.AddMinutes(Skill.RelationSkill.Item2);
+                string expireStr = time.ToString("유효기간 : yyyy년 M월 d일 H시 m분");
+                GearGraphics.DrawString(g, "#c" + sr2.Name + "의 " + expireStr + "#", GearGraphics.ItemDetailFont2, Skill.Icon.Bitmap == null ? 10 : 92, 274, ref picH, 16);
+            }
             /*if (Skill.ReqLevel > 0)
             {
                 GearGraphics.DrawString(g, "#c[要求等级：" + Skill.ReqLevel.ToString() + "]#", GearGraphics.ItemDetailFont2, 90, 270, ref picH, 16);
