@@ -342,7 +342,7 @@ namespace WzComparerR2.CharaSimControl
                         List<Potential> ops = (List<Potential>)prop.Value;
                         foreach (Potential p in ops)
                         {
-                            GearGraphics.DrawString(g, p.ConvertSummary(), GearGraphics.EquipDetailFont2, 10, 244, ref picHeight, 15, null, color);
+                            GearGraphics.DrawString(g, p.ConvertSummary(), GearGraphics.EquipDetailFont2, 10, 244, ref picHeight, 15, textColor: color);
                         }
                     }
                     else if (prop.Key == GearPropType.OptionToMob)
