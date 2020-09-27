@@ -345,13 +345,14 @@ namespace WzComparerR2
                     AppendStateText("[" + e.Part.FileName + "] 패치중\r\n");
                     break;
                 case PatchingState.VerifyOldChecksumBegin:
-                    AppendStateText("  패치 전 체크섬 계산...");
+                    AppendStateText("  패치 전 체크섬 확인...");
+                    progressBarX1.Maximum = e.Part.NewFileLength;
                     break;
                 case PatchingState.VerifyOldChecksumEnd:
                     AppendStateText("  완료\r\n");
                     break;
                 case PatchingState.VerifyNewChecksumBegin:
-                    AppendStateText("  패치 후 체크섬 계산...");
+                    AppendStateText("  패치 후 체크섬 확인...");
                     break;
                 case PatchingState.VerifyNewChecksumEnd:
                     AppendStateText("  완료\r\n");
