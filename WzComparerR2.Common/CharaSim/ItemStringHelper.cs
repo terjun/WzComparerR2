@@ -406,7 +406,7 @@ namespace WzComparerR2.CharaSim
                 case GearType.cannonGunPowder: 
                 case GearType.cannonGunPowder2: return "캐논 슈터 직업군 착용 가능";
                 case GearType.box:
-                case GearType.boxingClaw: return "龙的传人可以装备";
+                case GearType.boxingClaw: return "龙的传人可穿戴装备";
                 case GearType.relic: return "패스파인더 직업군 착용 가능";
 
                 //1xxx
@@ -444,8 +444,8 @@ namespace WzComparerR2.CharaSim
 
                 //4xxx
                 case GearType.katana:
-                case GearType.katana2: return "剑豪可以装备";
-                case GearType.fan: return "阴阳师可以装备";
+                case GearType.katana2: return "剑豪可穿戴装备";
+                case GearType.fan: return "阴阳师可穿戴装备";
 
                 //5xxx
                 case GearType.soulShield: return "미하일 착용 가능";
@@ -497,14 +497,14 @@ namespace WzComparerR2.CharaSim
                 case 31: return "데몬 직업군 착용 가능";
                 case 36: return "제논 착용 가능";
                 case 37: return "블래스터 착용 가능";
-                case 41: return "剑豪可以装备";
-                case 42: return "阴阳师可以装备";
+                case 41: return "剑豪可穿戴装备";
+                case 42: return "阴阳师可穿戴装备";
                 case 51: return "미하일 착용 가능";
                 case 61: return "카이저 착용 가능";
                 case 64: return "카데나 착용 가능";
                 case 65: return "엔젤릭 버스터 착용 가능";
                 case 101: return "제로 착용 가능";
-                case 112: return "林之灵可以装备";
+                case 112: return "林之灵可穿戴装备";
                 case 142: return "키네시스 착용 가능";
                 case 151: return "아델 착용 가능";
                 case 152: return "일리움 착용 가능";
