@@ -510,7 +510,6 @@ namespace WzComparerR2.Comparer
                 count[idx]++;
             }
             StateDetail = "문서 출력중";
-            sw.WriteLine("<table class=\"img\">");
             bool noChange = diffList.Count <= 0;
             sw.WriteLine("<table class=\"img{0}\">", noChange ? " noChange" : "");
             sw.WriteLine("<tr><th colspan=\"3\"><a name=\"{1}\">{0}</a> 변경:{2} 추가:{3} 제거:{4}</th></tr>",
