@@ -126,12 +126,12 @@ namespace WzComparerR2.CharaSim
         }
 
         private static readonly int[][] starData = new int[][] {
-            new[]{ 0, 5, 3 }, 
-            new[]{ 95, 8, 5 }, 
-            new[]{ 110, 10, 8 }, 
-            new[]{ 120, 15, 10 }, 
-            new[]{ 130, 20, 12 }, 
-            new[]{ 140, 25, 15 }, 
+            new[]{ 0, 5, 3 },
+            new[]{ 95, 8, 5 },
+            new[]{ 110, 10, 8 },
+            new[]{ 120, 15, 10 },
+            new[]{ 130, 20, 12 },
+            new[]{ 140, 25, 15 },
         };
 
         public override object Clone()
@@ -349,6 +349,8 @@ namespace WzComparerR2.CharaSim
                     return GearType.shiningRod;
                 case 1213:
                     return GearType.tuner;
+                case 1214:
+                    return GearType.breathShooter;
             }
             if (code / 10000 == 135)
             {
@@ -357,6 +359,7 @@ namespace WzComparerR2.CharaSim
                     case 13522:
                     case 13528:
                     case 13529:
+                    case 13540:
                         return (GearType)(code / 10);
 
                     default:

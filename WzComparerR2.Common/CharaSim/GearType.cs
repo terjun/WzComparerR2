@@ -151,6 +151,10 @@ namespace WzComparerR2.CharaSim
         /// </summary>
         tuner = 1213,
         /// <summary>
+        /// 브레스 슈터 1214
+        /// </summary>
+        breathShooter = 1214,
+        /// <summary>
         /// 灵魂手铳 122
         /// </summary>
         soulShooter = 122,
@@ -359,6 +363,10 @@ namespace WzComparerR2.CharaSim
         /// </summary>
         bracelet = 135400,
         /// <summary>
+        /// 웨폰 벨트 135401x
+        /// </summary>
+        weaponBelt = 135401,
+        /// <summary>
         /// 手杖
         /// </summary>
         cane = 136,
@@ -438,7 +446,6 @@ namespace WzComparerR2.CharaSim
         /// 扇 155
         /// </summary>
         fan = 155,
-
         /// <summary>
         /// 大剑 156
         /// </summary>
