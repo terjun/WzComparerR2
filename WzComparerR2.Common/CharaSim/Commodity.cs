@@ -115,7 +115,11 @@ namespace WzComparerR2.CharaSim
                         commodity.termStart = Convert.ToInt32(subNode.Value);
                         break;
                     case "termEnd":
-                        commodity.termEnd = Convert.ToInt32(subNode.Value);
+                        string value = Convert.ToString(subNode.Value);
+                        if(!Int32.TryParse(value, out commodity.termEnd))
+                        {
+                            commodity.termEnd = Convert.ToInt32(value.Split('/')[0] + value.Split('/')[1].Substring(0, 2));
+                        }
                         break;
                 }
             }
