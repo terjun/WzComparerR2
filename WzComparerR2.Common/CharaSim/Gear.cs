@@ -126,12 +126,12 @@ namespace WzComparerR2.CharaSim
         }
 
         private static readonly int[][] starData = new int[][] {
-            new[]{ 0, 5, 3 },
-            new[]{ 95, 8, 5 },
-            new[]{ 110, 10, 8 },
-            new[]{ 120, 15, 10 },
-            new[]{ 130, 20, 12 },
-            new[]{ 140, 25, 15 },
+            new[]{ 0, 5, 3 }, 
+            new[]{ 95, 8, 5 }, 
+            new[]{ 110, 10, 8 }, 
+            new[]{ 120, 15, 10 }, 
+            new[]{ 130, 20, 12 }, 
+            new[]{ 140, 25, 15 }, 
         };
 
         public override object Clone()

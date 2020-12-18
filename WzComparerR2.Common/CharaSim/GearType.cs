@@ -446,6 +446,7 @@ namespace WzComparerR2.CharaSim
         /// 扇 155
         /// </summary>
         fan = 155,
+
         /// <summary>
         /// 大剑 156
         /// </summary>

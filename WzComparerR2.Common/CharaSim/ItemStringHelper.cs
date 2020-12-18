@@ -286,7 +286,7 @@ namespace WzComparerR2.CharaSim
                 //case GearType.petEquip: return "펫장비";
                 case GearType.taming:
                 case GearType.taming2:
-                case GearType.taming3:
+                case GearType.taming3: 
                 case GearType.tamingChair: return "라이딩";
                 case GearType.saddle: return "안장";
                 case GearType.katana: return "武士刀";
@@ -307,7 +307,7 @@ namespace WzComparerR2.CharaSim
                 case GearType.nightLordPoutch: return "부적";
                 case GearType.viperWristband: return "리스트밴드";
                 case GearType.captainSight: return "조준기";
-                case GearType.cannonGunPowder:
+                case GearType.cannonGunPowder: 
                 case GearType.cannonGunPowder2: return "화약통";
                 case GearType.aranPendulum: return "무게추";
                 case GearType.evanPaper: return "문서";
@@ -406,7 +406,7 @@ namespace WzComparerR2.CharaSim
                 case GearType.katara: return "듀얼블레이드 직업군 착용 가능";
                 case GearType.viperWristband: return "바이퍼 직업군 착용 가능";
                 case GearType.captainSight: return "캡틴 직업군 착용 가능";
-                case GearType.cannonGunPowder:
+                case GearType.cannonGunPowder: 
                 case GearType.cannonGunPowder2: return "캐논 슈터 직업군 착용 가능";
                 case GearType.box:
                 case GearType.boxingClaw: return "龙的传人可穿戴装备";
