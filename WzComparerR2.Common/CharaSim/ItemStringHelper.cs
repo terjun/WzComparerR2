@@ -143,6 +143,7 @@ namespace WzComparerR2.CharaSim
                 //case GearPropType.incACC_incEVA: return "명중치 / 회피치：" + sign + value;
 
                 case GearPropType.incARC: return "ARC : " + sign + value;
+                case GearPropType.incAUT: return "AUT : " + sign + value;
                 default: return null;
             }
         }
@@ -170,6 +171,7 @@ namespace WzComparerR2.CharaSim
                     case GearPropType.incSpeed:
                     case GearPropType.incJump:
                     case GearPropType.incARC:
+                    case GearPropType.incAUT:
                         subfix = $"({standardValue} #$+{value - standardValue}#)"; break;
 
                     case GearPropType.bdR:
