@@ -349,6 +349,8 @@ namespace WzComparerR2.CharaSim
                     return GearType.shiningRod;
                 case 1213:
                     return GearType.tuner;
+                case 1214:
+                    return GearType.breathShooter;
             }
             if (code / 10000 == 135)
             {
@@ -357,6 +359,7 @@ namespace WzComparerR2.CharaSim
                     case 13522:
                     case 13528:
                     case 13529:
+                    case 13540:
                         return (GearType)(code / 10);
 
                     default:
