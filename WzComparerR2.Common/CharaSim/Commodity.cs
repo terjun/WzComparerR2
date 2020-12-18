@@ -35,7 +35,7 @@ namespace WzComparerR2.CharaSim
         public int Refundable;
         public int WebShop;
         public int termStart;
-        public int termEnd;
+        public string termEnd;
 
         public static Commodity CreateFromNode(Wz_Node commodityNode)
         {
@@ -115,10 +115,11 @@ namespace WzComparerR2.CharaSim
                         commodity.termStart = Convert.ToInt32(subNode.Value);
                         break;
                     case "termEnd":
-                        string value = Convert.ToString(subNode.Value);
-                        if(!Int32.TryParse(value, out commodity.termEnd))
+                        commodity.termEnd = Convert.ToString(subNode.Value);
+                        int value;
+                        if (Int32.TryParse(commodity.termEnd, out value))
                         {
-                            commodity.termEnd = Convert.ToInt32(value.Split('/')[0] + value.Split('/')[1].Substring(0, 2));
+                            commodity.termEnd = string.Format("{0:D8}/{1:D2}0000", value / 100, value % 100);
                         }
                         break;
                 }
