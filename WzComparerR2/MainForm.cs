@@ -1,5 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System; 
+using System.Collections.Generic; 
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
@@ -168,9 +168,8 @@ namespace WzComparerR2
                 this.columnHeader9.Width = UIStateConfig.Default.ColumnWidth9;
                 this.dotNetBarManager1.LayoutDefinition = UIStateConfig.Default.BarLayout;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                MessageBox.Show("Invalid ui data!");
                 this.WindowState = FormWindowState.Normal;
                 this.Size = new Size(1200, 800); // = new Size(766, 520);
                 this.ribbonControl1.Expanded = false; // = false;
