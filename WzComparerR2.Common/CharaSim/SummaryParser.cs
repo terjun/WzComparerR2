@@ -111,17 +111,17 @@ namespace WzComparerR2.CharaSim
                         }
                     }
                     //匹配#c...#段落
-                    if (beginC)
-                    {
-                        beginC = false;
-                        sb.Append(param.CEnd);
-                        idx++;
-                    }
-                    else if (idx + 1 < H.Length && H[idx + 1] == 'c')
+                    if (idx + 1 < H.Length && H[idx + 1] == 'c')
                     {
                         beginC = true;
                         sb.Append(param.CStart);
                         idx += 2;
+                    }
+                    else if (beginC)
+                    {
+                        beginC = false;
+                        sb.Append(param.CEnd);
+                        idx++;
                     }
                     else if (idx + 1 < H.Length && len == 0)//匹配省略c的段落
                     {
