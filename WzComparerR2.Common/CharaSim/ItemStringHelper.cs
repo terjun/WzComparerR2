@@ -164,14 +164,14 @@ namespace WzComparerR2.CharaSim
                     case GearPropType.incMHP:
                     case GearPropType.incMMP:
                     case GearPropType.incMDF:
+                    case GearPropType.incARC:
+                    case GearPropType.incAUT:
                     case GearPropType.incPAD:
                     case GearPropType.incMAD:
                     case GearPropType.incPDD:
                     case GearPropType.incMDD:
                     case GearPropType.incSpeed:
                     case GearPropType.incJump:
-                    case GearPropType.incARC:
-                    case GearPropType.incAUT:
                         subfix = $"({standardValue} #$+{value - standardValue}#)"; break;
 
                     case GearPropType.bdR:
@@ -217,10 +217,12 @@ namespace WzComparerR2.CharaSim
             switch (type)
             {
                 //case GearType.body: return "纸娃娃(身体)";
-                //case GearType.head: return "纸娃娃(头部)";
-                //case GearType.face: return "纸娃娃(脸型)";
-                //case GearType.hair:
-                //case GearType.hair2: return "纸娃娃(发型)";
+                case GearType.head: return "피부";
+                case GearType.face:
+                case GearType.face2: return "성형";
+                case GearType.hair:
+                case GearType.hair2:
+                case GearType.hair3: return "헤어";
                 case GearType.faceAccessory: return "얼굴장식";
                 case GearType.eyeAccessory: return "눈장식";
                 case GearType.earrings: return "귀고리";
@@ -285,7 +287,7 @@ namespace WzComparerR2.CharaSim
                 case GearType.soulShield: return "소울실드";
                 case GearType.demonShield: return "포스실드";
                 case GearType.totem: return "图腾";
-                //case GearType.petEquip: return "펫장비";
+                case GearType.petEquip: return "펫장비";
                 case GearType.taming:
                 case GearType.taming2:
                 case GearType.taming3: 
@@ -371,7 +373,9 @@ namespace WzComparerR2.CharaSim
                 case 8: return "느림";
                 case 9: return "매우느림";
                 default:
-                    return attackSpeed.ToString();
+                    if (attackSpeed < 2) return "吃屎一样快";
+                    else if (attackSpeed > 9) return "吃屎一样慢";
+                    else return attackSpeed.ToString();
             }
         }
 
@@ -474,7 +478,7 @@ namespace WzComparerR2.CharaSim
                 case GearType.espLimiter:
                 case GearType.chess: return GetExtraJobReqString(142);
 
-                case GearType.magicGauntlet:
+                case GearType.magicGauntlet: 
                 case GearType.magicWing: return GetExtraJobReqString(152);
 
                 case GearType.pathOfAbyss: return GetExtraJobReqString(155);
@@ -767,7 +771,7 @@ namespace WzComparerR2.CharaSim
                 case 11211: return "林之灵(3次)";
                 case 11212: return "林之灵(4次)";
 
-                case 13000: return "핑크빈";
+                case 13000:
                 case 13100: return "핑크빈";
 
                 case 14000: return "키네시스";
