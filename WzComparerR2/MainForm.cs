@@ -1456,7 +1456,7 @@ namespace WzComparerR2
                     {
                         wzPath.Add("TamingMob");
                     }
-                    else
+                    else if (pathArray[2] != "Skin")
                     {
                         wzPath.Add(pathArray[2]);
                     }
