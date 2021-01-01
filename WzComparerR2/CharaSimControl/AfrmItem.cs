@@ -520,6 +520,7 @@ namespace WzComparerR2.CharaSimControl
             if (gear.Cash)
             {
                 Bitmap cashImg = null;
+                Point cashOrigin = new Point(12, 12);
 
                 int value;
                 if (gear.Props.TryGetValue(GearPropType.royalSpecial, out value) && value > 0)
@@ -531,12 +532,17 @@ namespace WzComparerR2.CharaSimControl
                 {
                     cashImg = Resource.CashShop_img_CashItem_label_3;
                 }
+                else if (gear.Props.TryGetValue(GearPropType.BTSLabel, out value) && value > 0)
+                {
+                    cashImg = Resource.CashShop_img_CashItem_label_10;
+                    cashOrigin = new Point(cashImg.Width, cashImg.Height);
+                }
                 if (cashImg == null) //default cashImg
                 {
                     cashImg = Resource.CashItem_0;
                 }
 
-                g.DrawImage(cashImg, origin.X + 20, origin.Y - 12);
+                g.DrawImage(cashImg, origin.X + 32 - cashOrigin.X, origin.Y - cashOrigin.Y);
             }
             if (gear.TimeLimited)
             {
@@ -556,6 +562,7 @@ namespace WzComparerR2.CharaSimControl
             if (item.Cash)
             {
                 Bitmap cashImg = null;
+                Point cashOrigin = new Point(12, 12);
 
                 int value;
                 if (item.Props.TryGetValue(ItemPropType.wonderGrade, out value) && value > 0)
@@ -563,12 +570,17 @@ namespace WzComparerR2.CharaSimControl
                     string resKey = $"CashShop_img_CashItem_label_{value + 3}";
                     cashImg = Resource.ResourceManager.GetObject(resKey) as Bitmap;
                 }
+                else if (item.Props.TryGetValue(ItemPropType.BTSLabel, out value) && value > 0)
+                {
+                    cashImg = Resource.CashShop_img_CashItem_label_10;
+                    cashOrigin = new Point(cashImg.Width, cashImg.Height);
+                }
                 if (cashImg == null) //default cashImg
                 {
                     cashImg = Resource.CashItem_0;
                 }
 
-                g.DrawImage(cashImg, origin.X + 20, origin.Y - 12);
+                g.DrawImage(cashImg, origin.X + 32 - cashOrigin.X, origin.Y - cashOrigin.Y);
             }
             if (item.TimeLimited)
             {
