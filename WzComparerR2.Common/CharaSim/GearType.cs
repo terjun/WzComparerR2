@@ -298,7 +298,7 @@ namespace WzComparerR2.CharaSim
         /// <summary>
         /// 火药桶 135_92
         /// </summary>
-        cannonGunPowder = 135292,
+        connonGunPowder = 135292,
         /// <summary>
         /// 砝码 135_93
         /// </summary>
@@ -322,7 +322,7 @@ namespace WzComparerR2.CharaSim
         /// <summary>
         /// 火药桶 135_98
         /// </summary>
-        cannonGunPowder2 = 135298,
+        connonGunPowder2 = 135298,
         /// <summary>
         /// 控制器 135300
         /// </summary>
