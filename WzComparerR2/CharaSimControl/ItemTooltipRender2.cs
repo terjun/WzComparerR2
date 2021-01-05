@@ -417,6 +417,7 @@ namespace WzComparerR2.CharaSimControl
             }
             else if ((item.Props.TryGetValue(ItemPropType.permanent, out value) && value != 0) || (item.ItemID / 10000 == 500 && item.Props.TryGetValue(ItemPropType.life, out value) && value == 0))
             {
+                picH -= 3;
                 if (value == 0)
                 {
                     value = 1;
@@ -425,16 +426,21 @@ namespace WzComparerR2.CharaSimControl
             }
             else if (item.ItemID / 10000 == 500 && item.Props.TryGetValue(ItemPropType.limitedLife, out value) && value > 0)
             {
+                picH -= 3;
                 expireTime = string.Format("마법의 시간: {0}시간 {1}분", value / 3600, (value % 3600) / 60);
             }
             else if (item.ItemID / 10000 == 500 && item.Props.TryGetValue(ItemPropType.life, out value) && value > 0)
             {
+                picH -= 3;
                 DateTime time = DateTime.Now.AddDays(value);
                 expireTime = time.ToString("마법의 시간: yyyy년 M월 d일 HH시까지");
             }
             if (!string.IsNullOrEmpty(expireTime))
             {
-                picH += 3;
+                if (attrList.Count > 0)
+                {
+                    picH += 3;
+                }
                 //g.DrawString(expireTime, GearGraphics.ItemDetailFont, Brushes.White, tooltip.Width / 2, picH, format);
                 foreach (string expireTimeLine in expireTime.Split(new char[] { '\n' }, StringSplitOptions.RemoveEmptyEntries))
                 {
