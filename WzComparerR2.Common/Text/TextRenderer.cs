@@ -262,6 +262,7 @@ namespace WzComparerR2.Text
                                 if (r < runs.Count)
                                 {
                                     start = run.StartIndex;
+                                    colorID = run.ColorID;
                                 }
                                 xOffset = run.X;
                             }
