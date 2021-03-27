@@ -352,7 +352,7 @@ namespace WzComparerR2.CharaSim
                 case GearType.breathShooter: return "브레스 슈터";
                 case GearType.weaponBelt: return "웨폰 벨트";
 
-                case GearType.boxingCannon: return "拳炮";
+                case GearType.boxingCannon: return "拳封";
                 case GearType.boxingSky: return "拳天";
                 default: return null;
             }
