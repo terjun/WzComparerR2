@@ -778,8 +778,10 @@ namespace WzComparerR2.CharaSim
                 case 11211: return "林之灵(3次)";
                 case 11212: return "林之灵(4次)";
 
-                case 13000:
+                case 13000: return "핑크빈";
+                case 13001: return "예티";
                 case 13100: return "핑크빈";
+                case 13500: return "예티";
 
                 case 14000: return "키네시스";
                 case 14200: return "키네시스(1차)";
