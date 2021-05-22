@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace WzComparerR2.CharaSim
@@ -557,6 +558,54 @@ namespace WzComparerR2.CharaSim
                     return value == 0 ? "일반펫 (다른 일반펫과 중복 사용불가)" : "멀티펫 (다른 펫과 최대 3개 중복 사용가능)";
                 case ItemPropType.permanent:
                     return value == 0 ? null : "마법의 시간이 끝나지 않는 미라클 펫입니다.";
+                default:
+                    return null;
+            }
+        }
+
+        public static string GetItemCoreSpecString(ItemCoreSpecType coreSpecType, int value, string desc)
+        {
+            bool hasCoda = false;
+            if (desc?.Length > 0)
+            {
+                char lastCharacter = desc.Last();
+                hasCoda = lastCharacter >= '가' && lastCharacter <= '힣' && (lastCharacter - '가') % 28 != 0;
+            }
+            switch (coreSpecType)
+            {
+                case ItemCoreSpecType.Ctrl_mobLv:
+                    return value == 0 ? null : "몬스터 레벨 " + value + " 증가";
+                case ItemCoreSpecType.Ctrl_mobHPRate:
+                    return value == 0 ? null : "몬스터 HP " + value + "% 증가";
+                case ItemCoreSpecType.Ctrl_mobRate:
+                    return value == 0 ? null : "몬스터 개체 수 " + value + "% 증가";
+                case ItemCoreSpecType.Ctrl_mobRateSpecial:
+                    return value == 0 ? null : "몬스터 개체 수 " + value + "% 추가 증가";
+                case ItemCoreSpecType.Ctrl_change_Mob:
+                    return desc == null ? null : desc + (hasCoda ? "으" : "") + "로 몬스터 이미지 변경";
+                case ItemCoreSpecType.Ctrl_change_BGM:
+                    return desc == null ? null : desc + (hasCoda ? "으" : "") + "로 배경 음악 변경";
+                case ItemCoreSpecType.Ctrl_change_BackGrnd:
+                    return desc == null ? null : desc + (hasCoda ? "으" : "") + "로 배경 이미지 변경";
+                case ItemCoreSpecType.Ctrl_partyExp:
+                    return value == 0 ? null : "파티 경험치 " + value + "% 증가";
+                case ItemCoreSpecType.Ctrl_partyExpSpecial:
+                    return value == 0 ? null : "파티 경험치 " + value + "% 추가 증가";
+                case ItemCoreSpecType.Ctrl_addMob:
+                    return value == 0 || desc == null ? null : desc + ", 링크" + value + " 지역에 추가";
+                case ItemCoreSpecType.Ctrl_dropRate:
+                    return value == 0 ? null : "드롭률 " + value + "% 증가";
+                case ItemCoreSpecType.Ctrl_dropRateSpecial:
+                    return value == 0 ? null : "드롭률 " + value + "% 추가 증가";
+                case ItemCoreSpecType.Ctrl_dropRate_Herb:
+                    return value == 0 ? null : "약초 드롭률 " + value + "% 증가";
+                case ItemCoreSpecType.Ctrl_dropRate_Mineral:
+                    return value == 0 ? null : "광물 드롭률 " + value + "% 증가";
+                case ItemCoreSpecType.Ctrl_dropRareEquip:
+                    return value == 0 ? null : "장비 아이템이 미확인 상태로 드롭";
+                case ItemCoreSpecType.Ctrl_reward:
+                case ItemCoreSpecType.Ctrl_addMission:
+                    return desc;
                 default:
                     return null;
             }
