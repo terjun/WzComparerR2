@@ -171,6 +171,36 @@ namespace WzComparerR2.CharaSim
             }
         }
 
+        public void Upgrade(Wz_Node infoNode, int count)
+        {
+            this.ScrollUp += count;
+            foreach (Wz_Node subNode in infoNode.Nodes)
+            {
+                GearPropType type;
+                if (!int.TryParse(subNode.Text, out _) && Enum.TryParse(subNode.Text, out type) && (int)type < 100)
+                {
+                    try
+                    {
+                        if (this.Props.ContainsKey(type))
+                        {
+                            this.Props[type] += Convert.ToInt32(subNode.Value) * count;
+                        }
+                        else
+                        {
+                            this.Props.Add(type, Convert.ToInt32(subNode.Value) * count);
+                        }
+                    }
+                    finally
+                    {
+                    }
+                }
+            }
+            if (this.Props.ContainsKey(GearPropType.tuc))
+            {
+                this.Props[GearPropType.tuc] -= count;
+            }
+        }
+
         public static bool IsWeapon(GearType type)
         {
             return IsLeftWeapon(type)

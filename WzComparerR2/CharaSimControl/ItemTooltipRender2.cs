@@ -94,9 +94,28 @@ namespace WzComparerR2.CharaSimControl
                             if (imgNode != null)
                             {
                                 Gear gear = Gear.CreateFromNode(imgNode, path=>PluginManager.FindWz(path));
-                                gear.Props[GearPropType.timeLimited] = 0;
                                 if (gear != null)
                                 {
+                                    gear.Props[GearPropType.timeLimited] = 0;
+                                    int tuc, tucCnt;
+                                    if (Item.Props.TryGetValue(ItemPropType.addTooltip_tuc, out tuc) && Item.Props.TryGetValue(ItemPropType.addTooltip_tucCnt, out tucCnt))
+                                    {
+                                        Wz_Node itemWz = PluginManager.FindWz(Wz_Type.Item);
+                                        if (itemWz != null)
+                                        {
+                                            string imgClass = (tuc / 10000).ToString("d4") + ".img\\" + tuc.ToString("d8") + "\\info";
+                                            foreach (Wz_Node node1 in itemWz.Nodes)
+                                            {
+                                                Wz_Node infoNode = node1.FindNodeByPath(imgClass, true);
+                                                if (infoNode != null)
+                                                {
+                                                    gear.Upgrade(infoNode, tucCnt);
+
+                                                    break;
+                                                }
+                                            }
+                                        }
+                                    }
                                     recipeItemBmps.Add(RenderLinkRecipeGear(gear));
                                 }
 
