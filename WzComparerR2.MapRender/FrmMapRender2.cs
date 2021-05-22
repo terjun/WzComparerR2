@@ -43,6 +43,7 @@ namespace WzComparerR2.MapRender
             this.patchVisibility.FootHoldVisible = false;
             this.patchVisibility.LadderRopeVisible = false;
             this.patchVisibility.SkyWhaleVisible = false;
+            this.patchVisibility.IlluminantClusterPathVisible = false;
             
             var form = Form.FromHandle(this.Window.Handle) as Form;
             form.Load += Form_Load;
@@ -223,6 +224,7 @@ namespace WzComparerR2.MapRender
                 this.patchVisibility.FootHoldVisible = !visible;
                 this.patchVisibility.LadderRopeVisible = !visible;
                 this.patchVisibility.SkyWhaleVisible = !visible;
+                this.patchVisibility.IlluminantClusterPathVisible = !visible;
             }), KeyCode.D7, ModifierKeys.Control));
             this.ui.InputBindings.Add(new KeyBinding(new RelayCommand(_ =>
             {
@@ -235,6 +237,7 @@ namespace WzComparerR2.MapRender
                     {
                         item.View.IsEditorMode = false;
                     }
+                    this.patchVisibility.IlluminantClusterVisible = true;
                 }
                 else if (!this.patchVisibility.PortalInEditMode)
                 {
@@ -243,6 +246,7 @@ namespace WzComparerR2.MapRender
                     {
                         item.View.IsEditorMode = true;
                     }
+                    this.patchVisibility.IlluminantClusterVisible = false;
                 }
                 else
                 {
@@ -419,7 +423,7 @@ namespace WzComparerR2.MapRender
                     int y = (int)point.Y;
                     var mouseTarget = this.allItems.Reverse<ItemRect>().FirstOrDefault(item =>
                     {
-                        return item.rect.Contains(x, y) && (item.item is PortalItem || item.item is ReactorItem);
+                        return item.rect.Contains(x, y) && (item.item is PortalItem || item.item is IlluminantClusterItem || item.item is ReactorItem);
                     });
                     return mouseTarget.item;
                 },
