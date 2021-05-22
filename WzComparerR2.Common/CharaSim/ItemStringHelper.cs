@@ -486,6 +486,7 @@ namespace WzComparerR2.CharaSim
                 case GearType.magicWing: return GetExtraJobReqString(152);
 
                 case GearType.pathOfAbyss: return GetExtraJobReqString(155);
+                case GearType.handFan:
                 case GearType.fanTassel: return GetExtraJobReqString(164);
 
                 case GearType.tuner:
