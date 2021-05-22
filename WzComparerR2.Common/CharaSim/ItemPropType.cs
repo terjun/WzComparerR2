@@ -53,5 +53,6 @@ namespace WzComparerR2.CharaSim
         BTSLabel,
         addTooltip_tuc,
         addTooltip_tucCnt,
+        pointCost,
     }
 }

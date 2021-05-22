@@ -634,6 +634,11 @@ namespace WzComparerR2.CharaSimControl
                 if (!string.IsNullOrEmpty(attr))
                     GearGraphics.DrawString(g, "#c" + attr + "#", GearGraphics.ItemDetailFont2, 100, right, ref picH, 16);
             }
+            if (item.Props.TryGetValue(ItemPropType.pointCost, out value) && value > 0)
+            {
+                picH += 16;
+                GearGraphics.DrawString(g, "· " + value + " 포인트", GearGraphics.ItemDetailFont, 100, right, ref picH, 16);
+            }
             if (item.Specs.TryGetValue(ItemSpecType.recipeValidDay, out value) && value > 0)
             {
                 GearGraphics.DrawString(g, "( 제작 가능 기간 : " + value + "일 )", GearGraphics.ItemDetailFont, 100, right, ref picH, 16);
