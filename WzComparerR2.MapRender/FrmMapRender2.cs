@@ -521,6 +521,8 @@ namespace WzComparerR2.MapRender
                     this.ui.ChatBox.AppendTextHelp(@"/questset (questID) (questState) 해당 퀘스트의 상태 설정");
                     this.ui.ChatBox.AppendTextHelp(@"/datelist 관련된 시간 목록 보기");
                     this.ui.ChatBox.AppendTextHelp(@"/dateset (yyyyMMddHHmm) 렌더링 기준 시각 설정");
+                    this.ui.ChatBox.AppendTextHelp(@"/multibgmlist Multi BGM 목록 보기");
+                    this.ui.ChatBox.AppendTextHelp(@"/multibgmset (multiBgm) 해당 Multi BGM 재생");
                     break;
 
                 case "/map":
