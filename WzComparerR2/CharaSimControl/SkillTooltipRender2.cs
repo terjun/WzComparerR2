@@ -106,13 +106,13 @@ namespace WzComparerR2.CharaSimControl
             {
                 string hdesc = SummaryParser.GetSkillSummary(sr.Desc, Skill.Level, Skill.Common, SummaryParams.Default);
                 //string hStr = SummaryParser.GetSkillSummary(skill, skill.Level, sr, SummaryParams.Default);
-                GearGraphics.DrawString(g, hdesc, GearGraphics.ItemDetailFont2, Skill.Icon.Bitmap == null ? 10 : region.SkillDescLeft, region.TextRight, ref picH, 16);
+                GearGraphics.DrawString(g, hdesc, GearGraphics.ItemDetailFont2, Skill.Icon.Bitmap == null ? region.LevelDescLeft : region.SkillDescLeft, region.TextRight, ref picH, 16);
             }
             if (Skill.TimeLimited)
             {
                 DateTime time = DateTime.Now.AddDays(7d);
                 string expireStr = time.ToString("유효기간 : yyyy년 M월 d일 HH시 mm분");
-                GearGraphics.DrawString(g, "#c" + expireStr + "#", GearGraphics.ItemDetailFont2, Skill.Icon.Bitmap == null ? 10 : 92, 414, ref picH, 16);
+                GearGraphics.DrawString(g, "#c" + expireStr + "#", GearGraphics.ItemDetailFont2, Skill.Icon.Bitmap == null ? region.LevelDescLeft : region.SkillDescLeft, region.TextRight, ref picH, 16);
             }
             if (Skill.RelationSkill != null)
             {
@@ -124,11 +124,11 @@ namespace WzComparerR2.CharaSimControl
                 }
                 DateTime time = DateTime.Now.AddMinutes(Skill.RelationSkill.Item2);
                 string expireStr = time.ToString("유효기간 : yyyy년 M월 d일 H시 m분");
-                GearGraphics.DrawString(g, "#c" + sr2.Name + "의 " + expireStr + "#", GearGraphics.ItemDetailFont2, Skill.Icon.Bitmap == null ? 10 : 92, 414, ref picH, 16);
+                GearGraphics.DrawString(g, "#c" + sr2.Name + "의 " + expireStr + "#", GearGraphics.ItemDetailFont2, Skill.Icon.Bitmap == null ? region.LevelDescLeft : region.SkillDescLeft, region.TextRight, ref picH, 16);
             }
             if (Skill.IsPetAutoBuff)
             {
-                GearGraphics.DrawString(g, "#c펫 버프 자동스킬 등록 가능#", GearGraphics.ItemDetailFont2, Skill.Icon.Bitmap == null ? 10 : 92, 414, ref picH, 16);
+                GearGraphics.DrawString(g, "#c펫 버프 자동스킬 등록 가능#", GearGraphics.ItemDetailFont2, Skill.Icon.Bitmap == null ? region.LevelDescLeft : region.SkillDescLeft, region.TextRight, ref picH, 16);
             }
             /*if (Skill.ReqLevel > 0)
             {
@@ -183,9 +183,9 @@ namespace WzComparerR2.CharaSimControl
 
             if (Skill.AddAttackToolTipDescSkill != 0)
             {
-                g.DrawLine(Pens.White, 6, picH, 423, picH);
+                g.DrawLine(Pens.White, region.SplitterX1, picH, region.SplitterX2, picH);
                 picH += 9;
-                GearGraphics.DrawPlainText(g, "[콤비네이션 스킬]", GearGraphics.ItemDetailFont, Color.FromArgb(119, 204, 255), 10, 412, ref picH, 16);
+                GearGraphics.DrawPlainText(g, "[콤비네이션 스킬]", GearGraphics.ItemDetailFont, Color.FromArgb(119, 204, 255), region.LevelDescLeft, region.TextRight, ref picH, 16);
                 BitmapOrigin icon = new BitmapOrigin();
                 Wz_Node skillNode = PluginBase.PluginManager.FindWz(string.Format(@"Skill\{0}.img\skill\{1}", Skill.AddAttackToolTipDescSkill / 10000, Skill.AddAttackToolTipDescSkill));
                 if (skillNode != null)
@@ -207,16 +207,16 @@ namespace WzComparerR2.CharaSimControl
                     skillName = Skill.AddAttackToolTipDescSkill.ToString();
                 }
                 picH += 10;
-                GearGraphics.DrawString(g, skillName, GearGraphics.ItemDetailFont, 46, 412, ref picH, 16);
+                GearGraphics.DrawString(g, skillName, GearGraphics.ItemDetailFont, region.LinkedSkillNameLeft, region.TextRight, ref picH, 16);
                 picH += 6;
                 picH += 8;
             }
 
             if (Skill.AssistSkillLink != 0)
             {
-                g.DrawLine(Pens.White, 6, picH, 423, picH);
+                g.DrawLine(Pens.White, region.SplitterX1, picH, region.SplitterX2, picH);
                 picH += 9;
-                GearGraphics.DrawPlainText(g, "[어시스트 스킬]", GearGraphics.ItemDetailFont, ((SolidBrush)GearGraphics.OrangeBrush).Color, 10, 412, ref picH, 16);
+                GearGraphics.DrawPlainText(g, "[어시스트 스킬]", GearGraphics.ItemDetailFont, ((SolidBrush)GearGraphics.OrangeBrush).Color, region.LevelDescLeft, region.TextRight, ref picH, 16);
                 BitmapOrigin icon = new BitmapOrigin();
                 Wz_Node skillNode = PluginBase.PluginManager.FindWz(string.Format(@"Skill\{0}.img\skill\{1}", Skill.AssistSkillLink / 10000, Skill.AssistSkillLink));
                 if (skillNode != null)
@@ -238,7 +238,7 @@ namespace WzComparerR2.CharaSimControl
                     skillName = Skill.AssistSkillLink.ToString();
                 }
                 picH += 10;
-                GearGraphics.DrawString(g, skillName, GearGraphics.ItemDetailFont, 46, 412, ref picH, 16);
+                GearGraphics.DrawString(g, skillName, GearGraphics.ItemDetailFont, region.LinkedSkillNameLeft, region.TextRight, ref picH, 16);
                 picH += 6;
                 picH += 8;
             }
@@ -328,6 +328,7 @@ namespace WzComparerR2.CharaSimControl
             public int SplitterX1 { get; private set; }
             public int SplitterX2 { get; private set; }
             public int SkillDescLeft { get; private set; }
+            public int LinkedSkillNameLeft { get; private set; }
             public int LevelDescLeft { get; private set; }
             public int TextRight { get; private set; }
 
@@ -338,6 +339,7 @@ namespace WzComparerR2.CharaSimControl
                 SplitterX1 = 6,
                 SplitterX2 = 283,
                 SkillDescLeft = 90,
+                LinkedSkillNameLeft = 46,
                 LevelDescLeft = 8,
                 TextRight = 272,
             };
@@ -349,6 +351,7 @@ namespace WzComparerR2.CharaSimControl
                 SplitterX1 = 6,
                 SplitterX2 = 423,
                 SkillDescLeft = 92,
+                LinkedSkillNameLeft = 46,
                 LevelDescLeft = 10,
                 TextRight = 411,
             };
