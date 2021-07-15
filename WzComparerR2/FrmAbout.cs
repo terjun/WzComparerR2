@@ -45,7 +45,7 @@ namespace WzComparerR2
         {
             this.advTree1.Nodes.Clear();
 
-            this.advTree1.Nodes.Add(new Node("KMS <font color=\"#808080\">v3.4.2</font>"));
+            this.advTree1.Nodes.Add(new Node("KMS <font color=\"#808080\">v3.4.3</font>"));
 
             foreach (var contribution in new[]
             {
