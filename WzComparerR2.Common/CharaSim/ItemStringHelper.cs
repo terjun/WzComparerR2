@@ -355,6 +355,8 @@ namespace WzComparerR2.CharaSim
 
                 case GearType.breathShooter: return "브레스 슈터";
                 case GearType.weaponBelt: return "웨폰 벨트";
+
+                case GearType.norigae: return "노리개";
                 default: return null;
             }
         }
@@ -494,6 +496,8 @@ namespace WzComparerR2.CharaSim
 
                 case GearType.boxingCannon:
                 case GearType.boxingSky: return GetExtraJobReqString(175);
+
+                case GearType.norigae: return GetExtraJobReqString(162);
                 default: return null;
             }
         }
@@ -529,6 +533,7 @@ namespace WzComparerR2.CharaSim
                 case 151: return "아델 착용 가능";
                 case 152: return "일리움 착용 가능";
                 case 155: return "아크 착용 가능";
+                case 162: return "라라 착용 가능";
                 case 164: return "호영 착용 가능";
                 case 175: return "墨玄可穿戴装备";
                 default: return null;
@@ -856,6 +861,11 @@ namespace WzComparerR2.CharaSim
                 case 15512: return "아크(4차)";
 
                 case 16000: return "호영";
+                case 16001: return "라라";
+                case 16200: return "라라(1차)";
+                case 16210: return "라라(2차)";
+                case 16211: return "라라(3차)";
+                case 16212: return "라라(4차)";
                 case 16400: return "호영(1차)";
                 case 16410: return "호영(2차)";
                 case 16411: return "호영(3차)";
