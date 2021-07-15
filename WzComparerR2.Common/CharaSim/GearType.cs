@@ -152,7 +152,7 @@ namespace WzComparerR2.CharaSim
         /// </summary>
         tuner = 1213,
         /// <summary>
-        /// 브레스 슈터 1214
+        /// 龙息臂箭 1214
         /// </summary>
         breathShooter = 1214,
         /// <summary>
@@ -368,7 +368,7 @@ namespace WzComparerR2.CharaSim
         /// </summary>
         bracelet = 135400,
         /// <summary>
-        /// 웨폰 벨트 135401x
+        /// 武器腰带 135401x
         /// </summary>
         weaponBelt = 135401,
         /// <summary>

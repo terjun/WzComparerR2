@@ -29,6 +29,7 @@ namespace WzComparerR2.CharaSimControl
         public bool ShowReqSkill { get; set; } = true;
         public bool DisplayCooltimeMSAsSec { get; set; } = true;
         public bool DisplayPermyriadAsPercent { get; set; } = true;
+        public bool IsWideMode { get; set; } = true;
 
         public override Bitmap Render()
         {
@@ -37,16 +38,18 @@ namespace WzComparerR2.CharaSimControl
                 return null;
             }
 
+            CanvasRegion region = this.IsWideMode ? CanvasRegion.Wide : CanvasRegion.Original;
+
             int picHeight;
-            Bitmap originBmp = RenderSkill(out picHeight);
-            Bitmap tooltip = new Bitmap(430, picHeight);
+            Bitmap originBmp = RenderSkill(region, out picHeight);
+            Bitmap tooltip = new Bitmap(originBmp.Width, picHeight);
             Graphics g = Graphics.FromImage(tooltip);
 
             //绘制背景区域
             GearGraphics.DrawNewTooltipBack(g, 0, 0, tooltip.Width, tooltip.Height);
 
             //复制图像
-            g.DrawImage(originBmp, 0, 0, new Rectangle(0, 0, 430, picHeight), GraphicsUnit.Pixel);
+            g.DrawImage(originBmp, 0, 0, new Rectangle(0, 0, originBmp.Width, picHeight), GraphicsUnit.Pixel);
 
             //左上角
             g.DrawImage(Resource.UIToolTip_img_Item_Frame2_cover, 3, 3);
@@ -63,9 +66,9 @@ namespace WzComparerR2.CharaSimControl
             return tooltip;
         }
 
-        private Bitmap RenderSkill(out int picH)
+        private Bitmap RenderSkill(CanvasRegion region, out int picH)
         {
-            Bitmap bitmap = new Bitmap(430, DefaultPicHeight);
+            Bitmap bitmap = new Bitmap(region.Width, DefaultPicHeight);
             Graphics g = Graphics.FromImage(bitmap);
             StringFormat format = (StringFormat)StringFormat.GenericDefault.Clone();
             picH = 0;
@@ -95,15 +98,15 @@ namespace WzComparerR2.CharaSimControl
             //绘制desc
             picH = 35;
             if (Skill.HyperStat)
-                GearGraphics.DrawString(g, "[최대 레벨 : " + Skill.MaxLevel + "]", GearGraphics.ItemDetailFont2, 10, 414, ref picH, 16);
+                GearGraphics.DrawString(g, "[최대 레벨 : " + Skill.MaxLevel + "]", GearGraphics.ItemDetailFont2, region.LevelDescLeft, region.TextRight, ref picH, 16);
             else if (!Skill.PreBBSkill)
-                GearGraphics.DrawString(g, "[마스터 레벨 : " + Skill.MaxLevel + "]", GearGraphics.ItemDetailFont2, 92, 414, ref picH, 16);
+                GearGraphics.DrawString(g, "[마스터 레벨 : " + Skill.MaxLevel + "]", GearGraphics.ItemDetailFont2, region.SkillDescLeft, region.TextRight, ref picH, 16);
 
             if (sr.Desc != null)
             {
                 string hdesc = SummaryParser.GetSkillSummary(sr.Desc, Skill.Level, Skill.Common, SummaryParams.Default);
                 //string hStr = SummaryParser.GetSkillSummary(skill, skill.Level, sr, SummaryParams.Default);
-                GearGraphics.DrawString(g, hdesc, GearGraphics.ItemDetailFont2, Skill.Icon.Bitmap == null ? 10 : 92, 414, ref picH, 16);
+                GearGraphics.DrawString(g, hdesc, GearGraphics.ItemDetailFont2, Skill.Icon.Bitmap == null ? 10 : region.SkillDescLeft, region.TextRight, ref picH, 16);
             }
             if (Skill.TimeLimited)
             {
@@ -129,16 +132,16 @@ namespace WzComparerR2.CharaSimControl
             }
             /*if (Skill.ReqLevel > 0)
             {
-                GearGraphics.DrawString(g, "#c[要求等级：" + Skill.ReqLevel.ToString() + "]#", GearGraphics.ItemDetailFont2, 90, 270, ref picH, 16);
+                GearGraphics.DrawString(g, "#c[要求等级：" + Skill.ReqLevel.ToString() + "]#", GearGraphics.ItemDetailFont2, region.SkillDescLeft, region.TextRight, ref picH, 16);
             }
             if (Skill.ReqAmount > 0)
             {
-                GearGraphics.DrawString(g, "#c" + ItemStringHelper.GetSkillReqAmount(Skill.SkillID, Skill.ReqAmount) + "#", GearGraphics.ItemDetailFont2, 90, 270, ref picH, 16);
+                GearGraphics.DrawString(g, "#c" + ItemStringHelper.GetSkillReqAmount(Skill.SkillID, Skill.ReqAmount) + "#", GearGraphics.ItemDetailFont2, region.SkillDescLeft, region.TextRight, ref picH, 16);
             }*/
 
             //分割线
             picH = Math.Max(picH, 114);
-            g.DrawLine(Pens.White, 6, picH, 423, picH);
+            g.DrawLine(Pens.White, region.SplitterX1, picH, region.SplitterX2, picH);
             picH += 9;
 
             if (Skill.Level > 0)
@@ -148,14 +151,14 @@ namespace WzComparerR2.CharaSimControl
                     ConvertCooltimeMS = this.DisplayCooltimeMSAsSec,
                     ConvertPerM = this.DisplayPermyriadAsPercent
                 });
-                GearGraphics.DrawString(g, "[현재레벨 " + Skill.Level + "]", GearGraphics.ItemDetailFont, 10, 412, ref picH, 16);
+                GearGraphics.DrawString(g, "[현재레벨 " + Skill.Level + "]", GearGraphics.ItemDetailFont, region.LevelDescLeft, region.TextRight, ref picH, 16);
                 if (Skill.SkillID / 10000 / 1000 == 10 && Skill.Level == 1 && Skill.ReqLevel > 0)
                 {
-                    GearGraphics.DrawPlainText(g, "[필요 레벨: " + Skill.ReqLevel.ToString() + "레벨 이상]", GearGraphics.ItemDetailFont2, GearGraphics.skillYellowColor, 10, 412, ref picH, 16);
+                    GearGraphics.DrawPlainText(g, "[필요 레벨: " + Skill.ReqLevel.ToString() + "레벨 이상]", GearGraphics.ItemDetailFont2, GearGraphics.skillYellowColor, region.LevelDescLeft, region.TextRight, ref picH, 16);
                 }
                 if (hStr != null)
                 {
-                    GearGraphics.DrawString(g, hStr, GearGraphics.ItemDetailFont2, 10, 412, ref picH, 16);
+                    GearGraphics.DrawString(g, hStr, GearGraphics.ItemDetailFont2, region.LevelDescLeft, region.TextRight, ref picH, 16);
                 }
             }
 
@@ -166,14 +169,14 @@ namespace WzComparerR2.CharaSimControl
                     ConvertCooltimeMS = this.DisplayCooltimeMSAsSec,
                     ConvertPerM = this.DisplayPermyriadAsPercent
                 });
-                GearGraphics.DrawString(g, "[다음레벨 " + (Skill.Level + 1) + "]", GearGraphics.ItemDetailFont, 10, 412, ref picH, 16);
+                GearGraphics.DrawString(g, "[다음레벨 " + (Skill.Level + 1) + "]", GearGraphics.ItemDetailFont, region.LevelDescLeft, region.TextRight, ref picH, 16);
                 if (Skill.SkillID / 10000 / 1000 == 10 && (Skill.Level + 1) == 1 && Skill.ReqLevel > 0)
                 {
-                    GearGraphics.DrawPlainText(g, "[필요 레벨: " + Skill.ReqLevel.ToString() + "레벨 이상]", GearGraphics.ItemDetailFont2, GearGraphics.skillYellowColor, 10, 412, ref picH, 16);
+                    GearGraphics.DrawPlainText(g, "[필요 레벨: " + Skill.ReqLevel.ToString() + "레벨 이상]", GearGraphics.ItemDetailFont2, GearGraphics.skillYellowColor, region.LevelDescLeft, region.TextRight, ref picH, 16);
                 }
                 if (hStr != null)
                 {
-                    GearGraphics.DrawString(g, hStr, GearGraphics.ItemDetailFont2, 10, 412, ref picH, 16);
+                    GearGraphics.DrawString(g, hStr, GearGraphics.ItemDetailFont2, region.LevelDescLeft, region.TextRight, ref picH, 16);
                 }
             }
             picH += 3;
@@ -302,11 +305,11 @@ namespace WzComparerR2.CharaSimControl
 
             if (skillDescEx.Count > 0)
             {
-                g.DrawLine(Pens.White, 6, picH, 423, picH);
+                g.DrawLine(Pens.White, region.SplitterX1, picH, region.SplitterX2, picH);
                 picH += 9;
                 foreach (var descEx in skillDescEx)
                 {
-                    GearGraphics.DrawString(g, descEx, GearGraphics.ItemDetailFont, 10, 412, ref picH, 16);
+                    GearGraphics.DrawString(g, descEx, GearGraphics.ItemDetailFont, region.LevelDescLeft, region.TextRight, ref picH, 16);
                 }
                 picH += 3;
             }
@@ -316,6 +319,39 @@ namespace WzComparerR2.CharaSimControl
             format.Dispose();
             g.Dispose();
             return bitmap;
+        }
+
+        private class CanvasRegion
+        {
+            public int Width { get; private set; }
+            public int TitleCenterX { get; private set; }
+            public int SplitterX1 { get; private set; }
+            public int SplitterX2 { get; private set; }
+            public int SkillDescLeft { get; private set; }
+            public int LevelDescLeft { get; private set; }
+            public int TextRight { get; private set; }
+
+            public static CanvasRegion Original { get; } = new CanvasRegion()
+            {
+                Width = 290,
+                TitleCenterX = 144,
+                SplitterX1 = 6,
+                SplitterX2 = 283,
+                SkillDescLeft = 90,
+                LevelDescLeft = 8,
+                TextRight = 272,
+            };
+
+            public static CanvasRegion Wide { get; } = new CanvasRegion()
+            {
+                Width = 430,
+                TitleCenterX = 215,
+                SplitterX1 = 6,
+                SplitterX2 = 423,
+                SkillDescLeft = 92,
+                LevelDescLeft = 10,
+                TextRight = 411,
+            };
         }
     }
 }

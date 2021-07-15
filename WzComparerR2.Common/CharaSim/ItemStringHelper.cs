@@ -350,11 +350,11 @@ namespace WzComparerR2.CharaSim
                 case GearType.tuner: return "튜너";
                 case GearType.bracelet: return "브레이슬릿";
 
-                case GearType.breathShooter: return "브레스 슈터";
-                case GearType.weaponBelt: return "웨폰 벨트";
-
                 case GearType.boxingCannon: return "拳封";
                 case GearType.boxingSky: return "拳天";
+
+                case GearType.breathShooter: return "브레스 슈터";
+                case GearType.weaponBelt: return "웨폰 벨트";
                 default: return null;
             }
         }
@@ -465,8 +465,8 @@ namespace WzComparerR2.CharaSim
 
                 //6xxx
                 case GearType.novaMarrow: return GetExtraJobReqString(61);
-                case GearType.breathShooter:
-                case GearType.weaponBelt: return GetExtraJobReqString(63);
+                case GearType.weaponBelt:
+                case GearType.breathShooter: return GetExtraJobReqString(63);
                 case GearType.chain2:
                 case GearType.transmitter: return GetExtraJobReqString(64);
                 case GearType.soulBangle:
