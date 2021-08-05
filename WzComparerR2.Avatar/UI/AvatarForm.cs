@@ -958,12 +958,13 @@ namespace WzComparerR2.Avatar.UI
                 return;
             }
 
-            var characWz = PluginManager.FindWz(Wz_Type.Character);
-            if (characWz == null)
+            if (PluginManager.FindWz(Wz_Type.Base) == null)
             {
-                MessageBoxEx.Show("Character.wz 파일을 열 수 없습니다.", "오류");
+                MessageBoxEx.Show("Base.wz 파일을 열 수 없습니다.", "오류");
                 return;
             }
+
+            var characWz = PluginManager.FindWz(Wz_Type.Character);
 
             //试图初始化
             if (!this.inited && !this.AvatarInit())

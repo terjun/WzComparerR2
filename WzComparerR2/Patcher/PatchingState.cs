@@ -17,5 +17,9 @@ namespace WzComparerR2.Patcher
         CompareStarted,
         CompareProcessChanged,
         CompareFinished,
+
+        PrepareVerifyOldChecksumBegin,
+        PrepareVerifyOldChecksumEnd,
+        ApplyFile,
     }
 }

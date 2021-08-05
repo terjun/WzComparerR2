@@ -55,6 +55,7 @@ namespace WzComparerR2
         Thread patchThread;
         EventWaitHandle waitHandle;
         bool waiting;
+        string loggingFileName;
 
         private void combineUrl()
         {
@@ -217,6 +218,7 @@ namespace WzComparerR2
             advTreePatchFiles.Nodes.Clear();
             txtNotice.Clear();
             txtPatchState.Clear();
+            this.loggingFileName = Path.Combine(msFolder, $"wcpatcher_{DateTime.Now:yyyyMMdd_HHmmssfff}.log");
             try
             {
                 patcher = new WzPatcher(patchFile);
@@ -228,8 +230,16 @@ namespace WzComparerR2
                 {
                     AppendStateText("패치 준비중... \r\n");
                     long decompressedSize = patcher.PrePatch();
-                    AppendStateText(string.Format("패치용량 : {0:N0}B...\r\n", decompressedSize));
-                    AppendStateText(string.Format("패치할 파일 개수 : {0}개...\r\n",
+                    if (patcher.IsKMST1125Format.Value)
+                    {
+                        AppendStateText("패치 유형: KMST1125\r\n");
+                        if (patcher.OldFileHash != null)
+                        {
+                            AppendStateText($"패치 전 체크섬 확인할 파일 개수: {patcher.OldFileHash.Count}개\r\n");
+                        }
+                    }
+                    AppendStateText(string.Format("패치용량: {0:N0}B...\r\n", decompressedSize));
+                    AppendStateText(string.Format("패치할 파일 개수: {0}개...\r\n",
                         patcher.PatchParts == null ? -1 : patcher.PatchParts.Count));
                     txtNotice.Text = patcher.NoticeText;
                     foreach (PatchPartContext part in patcher.PatchParts)
@@ -284,16 +294,18 @@ namespace WzComparerR2
                     {
                     }
                 }
+                AppendStateText("완료\r\n");
                 TimeSpan interval = DateTime.Now - time;
                 MessageBoxEx.Show(this, "패치완료: 소요 시간 " + interval.ToString(), "패쳐");
             }
             catch (ThreadAbortException)
             {
-                MessageBoxEx.Show("패치가 중단되었습니다.", "오류");
+                MessageBoxEx.Show("패치가 중단되었습니다.", "패쳐");
             }
             catch (Exception ex)
             {
-                MessageBoxEx.Show(this, ex.ToString(), "오류");
+                AppendStateText(ex.ToString());
+                MessageBoxEx.Show(this, ex.ToString(), "패쳐");
             }
             finally
             {
@@ -449,10 +461,18 @@ namespace WzComparerR2
                         }
                     }
 
-                    if (string.IsNullOrEmpty(this.compareFolder) && this.deadPatch && e.Part.Type == 1)
+                    if (string.IsNullOrEmpty(this.compareFolder) && this.deadPatch && e.Part.Type == 1 && sender is WzPatcher patcher)
                     {
-                        ((WzPatcher)sender).SafeMove(e.Part.TempFilePath, e.Part.OldFilePath);
-                        AppendStateText("  파일 적용...\r\n");
+                        if (patcher.IsKMST1125Format.Value)
+                        {
+                            // TODO: we should build the file dependency tree to make sure all old files could be overridden safely.
+                            AppendStateText("  (즉시 패치) 파일 적용 연기...\r\n");
+                        }
+                        else
+                        {
+                            patcher.SafeMove(e.Part.TempFilePath, e.Part.OldFilePath);
+                            AppendStateText("  (즉시 패치) 파일 적용...\r\n");
+                        }
                     }
                     break;
                 case PatchingState.CompareStarted:
@@ -467,12 +487,25 @@ namespace WzComparerR2
                     progressBarX1.Maximum = 0;
                     progressBarX1.Text = string.Empty;
                     break;
+                case PatchingState.PrepareVerifyOldChecksumBegin:
+                    AppendStateText($"패치 전 체크섬 확인: {e.Part.FileName}");
+                    break;
+                case PatchingState.PrepareVerifyOldChecksumEnd:
+                    AppendStateText(" 완료\r\n");
+                    break;
+                case PatchingState.ApplyFile:
+                    AppendStateText($"파일 적용: {e.Part.FileName}\r\n");
+                    break;
             }
         }
 
         private void AppendStateText(string text)
         {
-            this.Invoke((Action<string>)(t => this.txtPatchState.AppendText(t)), text);
+            this.Invoke((Action<string>)(t => { this.txtPatchState.AppendText(t); }), text);
+            if (this.loggingFileName != null)
+            {
+                File.AppendAllText(this.loggingFileName, text, Encoding.UTF8);
+            }
         }
 
         private Node CreateFileNode(PatchPartContext part)
@@ -489,35 +522,14 @@ namespace WzComparerR2
             }
             node.Cells.Add(new Cell(part.NewFileLength.ToString("n0"), style));
             node.Cells.Add(new Cell(part.NewChecksum.ToString("x8"), style));
-            node.Cells.Add(new Cell(part.OldChecksum.ToString("x8"), style));
+            node.Cells.Add(new Cell(part.OldChecksum?.ToString("x8"), style));
             if (part.Type == 1)
             {
-                node.Cells.Add(new Cell(part.Action0 + "|" + part.Action1 + "|" + part.Action2, style));
+                string text = string.Format("{0}|{1}|{2}|{3}", part.Action0, part.Action1, part.Action2, part.DependencyFiles.Count);
+                node.Cells.Add(new Cell(text, style));
             }
             node.Tag = part;
             return node;
-        }
-
-        /// <summary>
-        /// ForTestOnly
-        /// </summary>
-        private void buttonX1_Click(object sender, EventArgs e)
-        {
-            WzPatcher patcher = new WzPatcher(@"F:\TDDOWNLOAD\Anime\00475to00476.patch");
-            patcher.OpenDecompress();
-            patcher.PrePatch();
-            System.Diagnostics.Stopwatch sw = System.Diagnostics.Stopwatch.StartNew();
-            foreach (PatchPartContext part in patcher.PatchParts)
-            {
-                if (part.FileName.Equals("map.wz", StringComparison.OrdinalIgnoreCase))
-                {
-                    patcher.RebuildFile(part, @"E:\", @"E:\MapleT");
-                    break;
-                }
-            }
-            sw.Stop();
-            MessageBoxEx.Show(sw.ElapsedMilliseconds.ToString());
-            patcher.Close();
         }
 
         private void buttonXOpen3_Click(object sender, EventArgs e)
@@ -547,7 +559,8 @@ namespace WzComparerR2
 > 还没完成 所以请选择patch文件  exe补丁暂时懒得分离
 > 没有检查原客户端版本 为了正确执行请预先确认
 > 暂时不提供文件块的筛选或文件缺失提示
-> 没优化 于是可能生成文件体积较大 但是几乎可以保证完整性", "声明");
+> 没优化 于是可能生成文件体积较大 但是几乎可以保证完整性
+> 对于KMST1125后无法正常工作", "声明");
 
             SaveFileDialog dlg = new SaveFileDialog();
             dlg.Filter = "패치 파일 (*.patch)|*.patch";

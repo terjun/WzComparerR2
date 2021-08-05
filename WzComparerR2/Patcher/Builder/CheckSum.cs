@@ -214,7 +214,7 @@ namespace WzComparerR2.Patcher.Builder
             {
                 this.fs = fs;
                 this.length = length;
-                this.crc = crc;
+                this.crc = 0;
                 this.evCheckSum = new AutoResetEvent(false);
                 this.evCallBack = new AutoResetEvent(true);
                 this.PatchingStateChanged = PatchingStateChanged;

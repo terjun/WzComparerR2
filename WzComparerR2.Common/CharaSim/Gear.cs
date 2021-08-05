@@ -106,7 +106,7 @@ namespace WzComparerR2.CharaSim
             int reqLevel;
             this.Props.TryGetValue(GearPropType.reqLevel, out reqLevel);
             int[] data = null;
-            foreach(int[] item in starData)
+            foreach (int[] item in starData)
             {
                 if (reqLevel >= item[0])
                 {
@@ -387,10 +387,6 @@ namespace WzComparerR2.CharaSim
             }
             if (code / 10000 == 135)
             {
-                if (code / 10 == 135401)
-                {
-                    return GearType.weaponBelt;
-                }
                 switch (code / 100)
                 {
                     case 13522:
@@ -765,7 +761,8 @@ namespace WzComparerR2.CharaSim
                             break;
 
                         case "onlyUpgrade":
-                            gear.Props.Add(GearPropType.onlyUpgrade, Convert.ToInt32(subNode.Nodes["0"]?.Value));
+                            int upgradeItemID = subNode.Nodes["0"]?.GetValueEx(0) ?? 0;
+                            gear.Props.Add(GearPropType.onlyUpgrade, upgradeItemID);
                             break;
 
                         case "epic":

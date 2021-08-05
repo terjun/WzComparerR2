@@ -192,7 +192,7 @@ namespace WzComparerR2.Comparer
             foreach (var childNode in wzFile.Node.Nodes)
             {
                 var subFile = childNode.GetValue<Wz_File>();
-                if (subFile != null) //wz子文件
+                if (subFile != null && !subFile.IsSubDir) //wz子文件
                 {
                     subFiles.Add(subFile);
                 }
@@ -295,7 +295,7 @@ namespace WzComparerR2.Comparer
                 sw.WriteLine("<html>");
                 sw.WriteLine("<head>");
                 sw.WriteLine("<meta http-equiv=\"content-type\" content=\"text/html;charset=utf-8\">");
-                sw.WriteLine("<title>{0} {1}←{2}</title>", type, fileNew[0].Header.WzVersion, fileOld[0].Header.WzVersion);
+                sw.WriteLine("<title>{0} {1}←{2}</title>", type, fileNew[0].GetMergedVersion(), fileOld[0].GetMergedVersion());
                 sw.WriteLine("<link type=\"text/css\" rel=\"stylesheet\" href=\"style.css\" />");
                 sw.WriteLine("</head>");
                 sw.WriteLine("<body>");
@@ -304,14 +304,14 @@ namespace WzComparerR2.Comparer
                 sw.WriteLine("<table>");
                 sw.WriteLine("<tr><th>&nbsp;</th><th>파일명</th><th>용량</th><th>버전</th></tr>");
                 sw.WriteLine("<tr><td>신버전</td><td>{0}</td><td>{1}</td><td>{2}</td></tr>",
-                    string.Join("<br/>", fileNew.Select(wzf => wzf.Header.FileName).ToArray()),
-                    string.Join("<br/>", fileNew.Select(wzf => wzf.Header.FileSize.ToString("N0")).ToArray()),
-                    string.Join("<br/>", fileNew.Select(wzf => wzf.Header.WzVersion.ToString()).ToArray())
+                    string.Join("<br/>", fileNew.Select(wzf => wzf.Header.FileName)),
+                    string.Join("<br/>", fileNew.Select(wzf => wzf.Header.FileSize.ToString("N0"))),
+                    string.Join("<br/>", fileNew.Select(wzf => wzf.GetMergedVersion()))
                     );
                 sw.WriteLine("<tr><td>구버전</td><td>{0}</td><td>{1}</td><td>{2}</td></tr>",
                     string.Join("<br/>", fileOld.Select(wzf => wzf.Header.FileName).ToArray()),
-                    string.Join("<br/>", fileOld.Select(wzf => wzf.Header.FileSize.ToString("N0")).ToArray()),
-                    string.Join("<br/>", fileOld.Select(wzf => wzf.Header.WzVersion.ToString()).ToArray())
+                    string.Join("<br/>", fileOld.Select(wzf => wzf.Header.FileSize.ToString("N0"))),
+                    string.Join("<br/>", fileOld.Select(wzf => wzf.GetMergedVersion()))
                     );
                 sw.WriteLine("<tr><td>현재시간</td><td colspan='3'>{0:yyyy-MM-dd HH:mm:ss.fff}</td></tr>", DateTime.Now);
                 sw.WriteLine("<tr><td>옵션</td><td colspan='3'>{0}</td></tr>", string.Join("<br/>", new[] {
