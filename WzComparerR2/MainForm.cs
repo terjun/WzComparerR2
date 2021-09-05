@@ -665,7 +665,7 @@ namespace WzComparerR2
 
                 if (config.AutoSaveEnabled)
                 {
-                    pngFileName = Path.Combine(config.AutoSavePictureFolder, pngFileName);
+                    pngFileName = Path.Combine(config.AutoSavePictureFolder, string.Join("_", pngFileName.Split(Path.GetInvalidFileNameChars(), StringSplitOptions.None)));
                 }
                 else
                 {
@@ -704,7 +704,7 @@ namespace WzComparerR2
 
             if (config.AutoSaveEnabled)
             {
-                var fullFileName = Path.Combine(config.AutoSavePictureFolder, aniFileName);
+                var fullFileName = Path.Combine(config.AutoSavePictureFolder, string.Join("_", aniFileName.Split(Path.GetInvalidFileNameChars(), StringSplitOptions.None)));
                 int i = 1;
                 while (File.Exists(fullFileName))
                 {
