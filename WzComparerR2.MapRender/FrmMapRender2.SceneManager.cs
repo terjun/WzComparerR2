@@ -208,7 +208,7 @@ namespace WzComparerR2.MapRender
                             var spot = new UIWorldMap.MapSpot();
                             spot.Title = sr["mapName"];
                             spot.MapNo.Add(portal.ToMap ?? 0);
-                            tooltip = new UIWorldMap.Tooltip() { Spot = spot };
+                            tooltip = new UIWorldMap.MapSpotTooltip() { Spot = spot };
                         }
                         this.ui.Minimap.Icons.Add(new UIMinimap2.MapIcon()
                         {
