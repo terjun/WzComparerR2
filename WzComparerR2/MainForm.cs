@@ -623,7 +623,7 @@ namespace WzComparerR2
         {
             using (FolderBrowserDialog dlg = new FolderBrowserDialog())
             {
-                dlg.Description = "이미지를 자동으로 저장할 폴더를 선택하세요.";
+                dlg.Description = "그림을 자동으로 저장할 폴더를 선택하세요.";
                 dlg.SelectedPath = ImageHandlerConfig.Default.AutoSavePictureFolder;
                 if (DialogResult.OK == dlg.ShowDialog())
                 {
@@ -670,7 +670,7 @@ namespace WzComparerR2
                 else
                 {
                     var dlg = new SaveFileDialog();
-                    dlg.Filter = "Png图片(*.png)|*.png|全部文件(*.*)|*.*";
+                    dlg.Filter = "PNG (*.png)|*.png|모든 파일 (*.*)|*.*";
                     dlg.FileName = pngFileName;
                     if (dlg.ShowDialog() != DialogResult.OK)
                     {
@@ -684,11 +684,11 @@ namespace WzComparerR2
                 {
                     bmp.Save(pngFileName, System.Drawing.Imaging.ImageFormat.Png);
                 }
-                labelItemStatus.Text = "图片保存于" + pngFileName;
+                labelItemStatus.Text = "그림 저장 완료: " + pngFileName;
             }
             else
             {
-                labelItemStatus.Text = "没有文件被保存。";
+                labelItemStatus.Text = "그림 저장 실패";
             }
         }
 
@@ -718,7 +718,7 @@ namespace WzComparerR2
             {
                 var dlg = new SaveFileDialog();
 
-                dlg.Filter = string.Format("{0}(*{1})|*{1}|全部文件(*.*)|*.*", encParams.FileDescription, encParams.FileExtension);
+                dlg.Filter = string.Format("{0} (*{1})|*{1}|모든 파일(*.*)|*.*", encParams.FileDescription, encParams.FileExtension);
                 dlg.FileName = aniFileName;
 
                 if (dlg.ShowDialog() != DialogResult.OK)
@@ -731,7 +731,7 @@ namespace WzComparerR2
             var clonedAniItem = (AnimationItem)aniItem.Clone();
             if (this.pictureBoxEx1.SaveAsGif(clonedAniItem, aniFileName, config, options))
             {
-                labelItemStatus.Text = "图片保存于" + aniFileName;
+                labelItemStatus.Text = "그림 저장 완료: " + aniFileName;
             }
         }
         #endregion
@@ -2073,7 +2073,7 @@ namespace WzComparerR2
             }
             catch (Exception ex)
             {
-                MessageBoxEx.Show(ex.Message, "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBoxEx.Show(ex.Message, "오류", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             finally
             {

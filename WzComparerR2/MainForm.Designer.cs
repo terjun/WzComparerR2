@@ -1050,7 +1050,7 @@
             // 
             this.buttonItemPatcher.Name = "buttonItemPatcher";
             this.buttonItemPatcher.SubItemsExpandWidth = 14;
-            this.buttonItemPatcher.Text = "패쳐";
+            this.buttonItemPatcher.Text = "패치 도구";
             this.buttonItemPatcher.Click += new System.EventHandler(this.buttonItemPatcher_Click);
             // 
             // ribbonBar4
@@ -1215,7 +1215,7 @@
             // checkBoxItemRegex2
             // 
             this.checkBoxItemRegex2.Name = "checkBoxItemRegex2";
-            this.checkBoxItemRegex2.Text = "Regex";
+            this.checkBoxItemRegex2.Text = "정규표현식";
             // 
             // buttonItemSearchString
             // 
@@ -1376,7 +1376,7 @@
             // checkBoxItemRegex1
             // 
             this.checkBoxItemRegex1.Name = "checkBoxItemRegex1";
-            this.checkBoxItemRegex1.Text = "Regex";
+            this.checkBoxItemRegex1.Text = "정규표현식";
             // 
             // buttonItemSearchWz
             // 
@@ -2025,7 +2025,7 @@
             // buttonItemSaveWithOptions
             // 
             this.buttonItemSaveWithOptions.Name = "buttonItemSaveWithOptions";
-            this.buttonItemSaveWithOptions.Text = "Save with options";
+            this.buttonItemSaveWithOptions.Text = "사용자 지정 저장";
             this.buttonItemSaveWithOptions.Click += new System.EventHandler(this.buttonItemSaveWithOptions_Click);
             // 
             // buttonItemGif
@@ -2034,7 +2034,7 @@
             this.buttonItemGif.SubItems.AddRange(new DevComponents.DotNetBar.BaseItem[] {
             this.itemContainer36});
             this.buttonItemGif.SubItemsExpandWidth = 14;
-            this.buttonItemGif.Text = "Gif 활성화";
+            this.buttonItemGif.Text = "애니메이션 활성화";
             this.buttonItemGif.Click += new System.EventHandler(this.buttonItemGif_Click);
             // 
             // itemContainer36
@@ -2055,7 +2055,7 @@
             // buttonItemGifSetting
             // 
             this.buttonItemGifSetting.Name = "buttonItemGifSetting";
-            this.buttonItemGifSetting.Text = "Gif 설정";
+            this.buttonItemGifSetting.Text = "애니메이션 설정";
             this.buttonItemGifSetting.Click += new System.EventHandler(this.buttonItemGifSetting_Click);
             // 
             // textBoxX1

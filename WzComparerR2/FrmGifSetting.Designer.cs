@@ -468,7 +468,7 @@
             // 
             // comboItem4
             // 
-            this.comboItem4.Text = "이미지 경로";
+            this.comboItem4.Text = "Img 경로";
             // 
             // comboItem5
             // 
@@ -513,7 +513,7 @@
             this.MinimizeBox = false;
             this.Name = "FrmGifSetting";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "Gif 설정";
+            this.Text = "애니메이션 설정";
             this.panelExMosaic.ResumeLayout(false);
             this.panelExMosaic.PerformLayout();
             this.panelExColor.ResumeLayout(false);

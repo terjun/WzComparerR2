@@ -972,7 +972,7 @@ namespace WzComparerR2.Avatar.UI
                 var dlg = new SaveFileDialog()
                 {
                     Title = "Save avatar frame",
-                    Filter = "*.png|*.png|*.*|*.*",
+                    Filter = "PNG (*.png)|*.png|*.*|*.*",
                     FileName = "avatar.png"
                 };
 
@@ -997,7 +997,7 @@ namespace WzComparerR2.Avatar.UI
                 var dlg = new SaveFileDialog()
                 {
                     Title = "Save avatar",
-                    Filter = string.Format("{0}(*{1})|*{1}|All files(*.*)|*.*", encParams.FileDescription, encParams.FileExtension),
+                    Filter = string.Format("{0} (*{1})|*{1}|모든 파일(*.*)|*.*", encParams.FileDescription, encParams.FileExtension),
                     FileName = string.Format("avatar{0}", encParams.FileExtension)
                 };
 

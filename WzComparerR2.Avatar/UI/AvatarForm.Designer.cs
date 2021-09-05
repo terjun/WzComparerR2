@@ -615,25 +615,25 @@
             this.btnCharac.SubItems.AddRange(new DevComponents.DotNetBar.BaseItem[] {
             this.btnMale,
             this.btnFemale});
-            this.btnCharac.Tooltip = "기본설정";
+            this.btnCharac.Tooltip = "초기화";
             // 
             // btnMale
             // 
             this.btnMale.Name = "btnMale";
-            this.btnMale.Text = "남자기본";
+            this.btnMale.Text = "남자 기본";
             this.btnMale.Click += new System.EventHandler(this.btnMale_Click);
             // 
             // btnFemale
             // 
             this.btnFemale.Name = "btnFemale";
-            this.btnFemale.Text = "여자기본";
+            this.btnFemale.Text = "여자 기본";
             this.btnFemale.Click += new System.EventHandler(this.btnFemale_Click);
             // 
             // btnReset
             // 
             this.btnReset.Image = global::WzComparerR2.Avatar.Properties.Resources.arrow_in;
             this.btnReset.Name = "btnReset";
-            this.btnReset.Tooltip = "원래위치로";
+            this.btnReset.Tooltip = "처음 위치로";
             this.btnReset.Click += new System.EventHandler(this.btnReset_Click);
             // 
             // btnLock

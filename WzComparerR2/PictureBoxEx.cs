@@ -457,7 +457,7 @@ namespace WzComparerR2
                 }
                 catch (Exception ex)
                 {
-                    context.Message = $"Error: {ex.Message}";
+                    context.Message = $"오류: {ex.Message}";
                     throw;
                 }
                 finally
@@ -468,7 +468,7 @@ namespace WzComparerR2
                 }
             }
 
-            var dialogResult = ProgressDialog.Show(this.FindForm(), "Exporting...", "Save animation file...", true, false, RenderJob);
+            var dialogResult = ProgressDialog.Show(this.FindForm(), "내보내는 중...", "애니메이션 저장하는 중...", true, false, RenderJob);
             return dialogResult == DialogResult.OK;
         }
 

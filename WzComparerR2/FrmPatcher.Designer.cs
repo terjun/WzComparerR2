@@ -376,7 +376,7 @@
             this.expandablePanel2.TitleStyle.BorderColor.ColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBorder;
             this.expandablePanel2.TitleStyle.ForeColor.ColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelText;
             this.expandablePanel2.TitleStyle.GradientAngle = 90;
-            this.expandablePanel2.TitleText = "수동 패쳐";
+            this.expandablePanel2.TitleText = "수동 패치 도구";
             // 
             // chkOutputRemovedImg
             // 
@@ -421,7 +421,7 @@
             this.cmbComparePng.Name = "cmbComparePng";
             this.cmbComparePng.Size = new System.Drawing.Size(120, 21);
             this.cmbComparePng.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
-            this.superTooltip1.SetSuperTooltip(this.cmbComparePng, new DevComponents.DotNetBar.SuperTooltipInfo("PNG 비교", "", "PNG 비교 방식을 지정합니다.\r\nSizeOnly - 이미지 크기만 비교\r\nSizeAndDataLength - 이미지 크기와 용량만 비교" +
+            this.superTooltip1.SetSuperTooltip(this.cmbComparePng, new DevComponents.DotNetBar.SuperTooltipInfo("PNG 비교", "", "PNG 비교 방식을 지정합니다.\r\nSizeOnly - 그림 크기만 비교\r\nSizeAndDataLength - 그림 크기와 파일 용량만 비교" +
             "\r\nPixel - 모든 픽셀 비교 (오래 걸릴 수 있음)", null, null, DevComponents.DotNetBar.eTooltipColor.System, true, true, new System.Drawing.Size(300, 100)));
             this.cmbComparePng.TabIndex = 12;
             // 
@@ -892,7 +892,7 @@
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "FrmPatcher";
-            this.Text = "패쳐";
+            this.Text = "패치 도구";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.FrmPatcher_FormClosed);
             ((System.ComponentModel.ISupportInitialize)(this.integerInput1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.integerInput2)).EndInit();

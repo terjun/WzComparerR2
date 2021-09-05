@@ -296,16 +296,16 @@ namespace WzComparerR2
                 }
                 AppendStateText("완료\r\n");
                 TimeSpan interval = DateTime.Now - time;
-                MessageBoxEx.Show(this, "패치완료: 소요 시간 " + interval.ToString(), "패쳐");
+                MessageBoxEx.Show(this, "패치완료: 소요 시간 " + interval.ToString(), "패치 도구");
             }
             catch (ThreadAbortException)
             {
-                MessageBoxEx.Show("패치가 중단되었습니다.", "패쳐");
+                MessageBoxEx.Show("패치가 중단되었습니다.", "패치 도구");
             }
             catch (Exception ex)
             {
                 AppendStateText(ex.ToString());
-                MessageBoxEx.Show(this, ex.ToString(), "패쳐");
+                MessageBoxEx.Show(this, ex.ToString(), "패치 도구");
             }
             finally
             {
