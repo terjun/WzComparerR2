@@ -967,22 +967,25 @@ namespace WzComparerR2.Avatar.UI
 
             if (aniCount == 0)
             {
+                this.GetSelectedBodyFrame(out int bodyFrame, out _);
+                this.GetSelectedEmotionFrame(out int emoFrame, out _);
+                this.GetSelectedTamingFrame(out int tamingFrame, out _);
+
                 // no animation is playing, save as png
                 var dlg = new SaveFileDialog()
                 {
                     Title = "Save avatar frame",
                     Filter = "PNG (*.png)|*.png|*.*|*.*",
-                    FileName = "avatar.png"
+                    FileName = string.Format("avatar{0}{1}{2}.png",
+                        string.IsNullOrEmpty(avatar.ActionName) ? "" : ("_" + avatar.ActionName + "(" + bodyFrame + ")"),
+                        string.IsNullOrEmpty(avatar.EmotionName) ? "" : ("_" + avatar.EmotionName + "(" + emoFrame + ")"),
+                        string.IsNullOrEmpty(avatar.TamingActionName) ? "" : ("_" + avatar.TamingActionName + "(" + tamingFrame + ")"))
                 };
 
                 if (dlg.ShowDialog() != DialogResult.OK)
                 {
                     return;
                 }
-
-                this.GetSelectedBodyFrame(out int bodyFrame, out _);
-                this.GetSelectedEmotionFrame(out int emoFrame, out _);
-                this.GetSelectedTamingFrame(out int tamingFrame, out _);
 
                 var bone = this.avatar.CreateFrame(bodyFrame, emoFrame, tamingFrame);
                 var frame = this.avatar.DrawFrame(bone);
@@ -997,7 +1000,11 @@ namespace WzComparerR2.Avatar.UI
                 {
                     Title = "Save avatar",
                     Filter = string.Format("{0} (*{1})|*{1}|모든 파일(*.*)|*.*", encParams.FileDescription, encParams.FileExtension),
-                    FileName = string.Format("avatar{0}", encParams.FileExtension)
+                    FileName = string.Format("avatar{0}{1}{2}{3}",
+                        string.IsNullOrEmpty(avatar.ActionName) ? "" : ("_" + avatar.ActionName),
+                        string.IsNullOrEmpty(avatar.EmotionName) ? "" : ("_" + avatar.EmotionName),
+                        string.IsNullOrEmpty(avatar.TamingActionName) ? "" : ("_" + avatar.TamingActionName),
+                        encParams.FileExtension)
                 };
 
                 if (dlg.ShowDialog() != DialogResult.OK)
