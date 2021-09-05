@@ -264,7 +264,7 @@ namespace WzComparerR2.MapRender
             {
                 object tooltip = null;
                 var npcNode = PluginManager.FindWz(string.Format("Npc/{0:D7}.img/info", npc.ID));
-                if ((npcNode?.Nodes["hide"].GetValueEx(0) ?? 0) != 0 || (npcNode?.Nodes["hideName"].GetValueEx(0) ?? 0) != 0)
+                if ((npcNode?.Nodes["hide"].GetValueEx(0) ?? 0) != 0)
                 {
                     continue;
                 }
