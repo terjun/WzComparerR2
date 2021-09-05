@@ -325,6 +325,17 @@ namespace WzComparerR2.MapRender
                     });
                 }
             }
+            if (mapData.MapMark == "MonsterPark")
+            {
+                foreach (var mob in mapData.Scene.Mobs)
+                {
+                    this.ui.Minimap.Icons.Add(new UIMinimap2.MapIcon()
+                    {
+                        IconType = UIMinimap2.IconType.Another,
+                        WorldPosition = new EmptyKeys.UserInterface.PointF(mob.X, mob.Y)
+                    });
+                }
+            }
 
             if (mapData.MiniMap.Width > 0 && mapData.MiniMap.Height > 0)
             {
