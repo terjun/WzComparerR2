@@ -5,13 +5,13 @@ using System.Runtime.InteropServices;
 
 namespace WzComparerR2.Common
 {
-    public class ProgressDialog
+    public class SystemProgressDialog
     {
         private IntPtr _parentHandle;
 
         private Win32IProgressDialog pd = null;
 
-        public ProgressDialog(IntPtr parentHandle)
+        public SystemProgressDialog(IntPtr parentHandle)
         {
             this._parentHandle = parentHandle;
         }

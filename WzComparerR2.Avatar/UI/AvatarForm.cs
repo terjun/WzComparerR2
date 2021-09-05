@@ -53,7 +53,7 @@ namespace WzComparerR2.Avatar.UI
         Animator animator;
 
         BackgroundWorker worker;
-        ProgressDialog progressDialog;
+        SystemProgressDialog progressDialog;
 
         /// <summary>
         /// wz1节点选中事件。
@@ -1246,14 +1246,14 @@ namespace WzComparerR2.Avatar.UI
                 {
                     this.Enabled = false;
 
-                    this.progressDialog = new ProgressDialog(this.Handle);
+                    this.progressDialog = new SystemProgressDialog(this.Handle);
                     this.progressDialog.Title = "동작 내보내는 중";
                     this.progressDialog.Maximum = (uint)avatar.Actions.Count;
                     this.progressDialog.Value = 0;
                     this.progressDialog.Line1 = string.Format("{0:N0}개 항목 (내보내는 중)", this.progressDialog.Maximum);
                     this.progressDialog.Line2 = string.Format("남은 항목: {0:N0}", this.progressDialog.Maximum);
                     this.progressDialog.Line3 = "남은 시간: 계산 중...";
-                    this.progressDialog.ShowDialog(ProgressDialog.PROGDLG.AutoTime);
+                    this.progressDialog.ShowDialog(SystemProgressDialog.PROGDLG.AutoTime);
 
                     this.worker.RunWorkerAsync(new Tuple<string, int>(dlg.SelectedPath, emoFrame));
                 }
