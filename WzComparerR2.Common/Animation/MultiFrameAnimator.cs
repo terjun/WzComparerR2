@@ -155,6 +155,13 @@ namespace WzComparerR2.Animation
             };
         }
 
+        public override object Clone()
+        {
+            var clonedAnimator = new MultiFrameAnimator(this.Data);
+            clonedAnimator.SelectedAnimationIndex = this.SelectedAnimationIndex;
+            return clonedAnimator;
+        }
+
         public static int[] CreateTimeline(IEnumerable<int> delays)
         {
             var timeLine = new List<int>() { 0 };
