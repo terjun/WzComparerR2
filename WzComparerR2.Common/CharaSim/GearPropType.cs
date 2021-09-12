@@ -90,6 +90,7 @@ namespace WzComparerR2.CharaSim
         incINTlv,
         incLUKlv,
         incMaxDamage,
+        incMHPlv,
         incPADlv,
         incMADlv,
         incCriticaldamage,
