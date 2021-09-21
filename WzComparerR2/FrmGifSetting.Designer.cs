@@ -486,7 +486,7 @@
             this.checkBoxX3.Size = new System.Drawing.Size(76, 16);
             this.checkBoxX3.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
             this.checkBoxX3.TabIndex = 23;
-            this.checkBoxX3.Text = "최적화";
+            this.checkBoxX3.Text = "최적화 (APNG용)";
             // 
             // FrmGifSetting
             // 
