@@ -385,6 +385,40 @@ namespace WzComparerR2.CharaSimControl
             //绘制职业需求
             DrawJobReq(g, ref picH);
 
+            if (Gear.type == GearType.android && Gear.Props.TryGetValue(GearPropType.android, out value) && value > 0)
+            {
+                TextRenderer.DrawText(g, "외형 :", GearGraphics.EquipDetailFont, new Point(13, picH), Color.White, TextFormatFlags.NoPadding);
+                picH += 15;
+
+                Wz_Node android = PluginBase.PluginManager.FindWz(string.Format("Etc/Android/{0:D4}.img", value));
+
+                int morphID = android?.Nodes["info"]?.Nodes["morphID"]?.GetValueEx<int>(0) ?? 0;
+                BitmapOrigin appearance = BitmapOrigin.CreateFromNode(PluginBase.PluginManager.FindWz(morphID != 0 ? string.Format("Morph/{0:D4}.img/stand/0", morphID) : "Npc/0010300.img/stand/0"), PluginBase.PluginManager.FindWz);
+                appearance.Bitmap.RotateFlip(RotateFlipType.RotateNoneFlipX);
+
+                g.DrawImage(appearance.Bitmap, 63, picH + 9);
+                picH += 9 + appearance.Bitmap.Height + 13;
+
+                Wz_Node costume = android?.Nodes["costume"];
+                List<string> randomParts = new List<string>();
+                if (costume?.Nodes["face"]?.Nodes["1"] != null)
+                {
+                    randomParts.Add("성형");
+                }
+                if (costume?.Nodes["hair"]?.Nodes["1"] != null)
+                {
+                    randomParts.Add("헤어");
+                }
+                if (costume?.Nodes["skin"]?.Nodes["1"] != null)
+                {
+                    randomParts.Add("피부");
+                }
+                if (randomParts.Count > 0)
+                {
+                    GearGraphics.DrawString(g, $"#c{string.Join(", ", randomParts)} 이미지는 예시 중 하나로 최초 장착 시 외형이 결정되는 안드로이드이다.#", GearGraphics.EquipDetailFont, 13, 244, ref picH, 15, ((SolidBrush)GearGraphics.OrangeBrush2).Color);
+                }
+            }
+
             //分割线2号
             g.DrawImage(res["dotline"].Image, 0, picH);
             picH += 8;
