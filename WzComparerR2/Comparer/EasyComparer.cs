@@ -327,7 +327,7 @@ namespace WzComparerR2.Comparer
                     string.Join("<br/>", fileOld.SelectMany(wzf => GetFileInfo(wzf, ewzf => ewzf.Header.FileSize.ToString("N0")))),
                     string.Join("<br/>", fileOld.Select(wzf => wzf.GetMergedVersion()))
                     );
-                sw.WriteLine("<tr><td>현재시간</td><td colspan='3'>{0:yyyy-MM-dd HH:mm:ss.fff}</td></tr>", DateTime.Now);
+                sw.WriteLine("<tr><td>현재시각</td><td colspan='3'>{0:yyyy-MM-dd HH:mm:ss.fff}</td></tr>", DateTime.Now);
                 sw.WriteLine("<tr><td>옵션</td><td colspan='3'>{0}</td></tr>", string.Join("<br/>", new[] {
                     this.OutputPng ? "-OutputPng" : null,
                     this.OutputAddedImg ? "-OutputAddedImg" : null,
