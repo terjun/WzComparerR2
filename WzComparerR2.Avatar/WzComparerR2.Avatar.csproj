@@ -123,10 +123,7 @@
     <Content Include="Resources\disk.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\save.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\export.png" />
+    <Content Include="Resources\export.png" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\WzComparerR2.Common\WzComparerR2.Common.csproj">

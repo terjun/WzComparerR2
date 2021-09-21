@@ -235,6 +235,9 @@
     <None Include="Resources\UIWindow2.img.WorldMap.Border.0.png" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Resources\UIWindow3.img.mirrorFrame.1024.png" />
+    <Content Include="Resources\UIWindow3.img.mirrorFrame.1366.png" />
+    <Content Include="Resources\UIWindow3.img.mirrorFrame.800.png" />
     <None Include="Resources\Basic.img.BtCancel4.disabled.0.png" />
     <None Include="Resources\Basic.img.BtCancel4.mouseOver.0.png" />
     <None Include="Resources\Basic.img.BtCancel4.normal.0.png" />
@@ -257,6 +260,18 @@
     <Content Include="Resources\Basic.img.Notice6.s.png" />
     <Content Include="Resources\Basic.img.Notice6.s_box.png" />
     <Content Include="Resources\Basic.img.Notice6.t.png" />
+    <Content Include="Resources\Basic.img.ShowLevel.0.0.png" />
+    <Content Include="Resources\Basic.img.ShowLevel.0.1.png" />
+    <Content Include="Resources\Basic.img.ShowLevel.0.2.png" />
+    <Content Include="Resources\Basic.img.ShowLevel.0.3.png" />
+    <Content Include="Resources\Basic.img.ShowLevel.0.4.png" />
+    <Content Include="Resources\Basic.img.ShowLevel.0.5.png" />
+    <Content Include="Resources\Basic.img.ShowLevel.0.6.png" />
+    <Content Include="Resources\Basic.img.ShowLevel.0.7.png" />
+    <Content Include="Resources\Basic.img.ShowLevel.0.8.png" />
+    <Content Include="Resources\Basic.img.ShowLevel.0.9.png" />
+    <Content Include="Resources\Basic.img.ShowLevel.0.left.png" />
+    <Content Include="Resources\Basic.img.ShowLevel.Bracket.right.png" />
     <Content Include="Resources\StatusBar3.img.chat.ingame.input.layer_backgrnd.png" />
     <Content Include="Resources\StatusBar3.img.chat.ingame.input.layer_chatEnter.png" />
     <Content Include="Resources\StatusBar3.img.chat.ingame.view.max.bottom.png" />
