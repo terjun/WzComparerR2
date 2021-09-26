@@ -157,7 +157,7 @@ namespace WzComparerR2.CharaSim
                     sb.Append(H[idx++]);
                 }
             }
-            return sb.ToString().Replace("\t", "");
+            return Regex.Replace(sb.ToString().Replace("\t", ""), @"(\\r|\\n)+$", "");
         }
 
         private static bool GetValueIgnoreCase(Dictionary<string,string> dict, string key, out string value)
