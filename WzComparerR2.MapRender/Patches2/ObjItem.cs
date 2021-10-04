@@ -43,14 +43,14 @@ namespace WzComparerR2.MapRender.Patches2
                 int questID;
                 if (int.TryParse(item.Tags, out questID) || (item.Tags.StartsWith("q") && int.TryParse(item.Tags.Substring(1), out questID)))
                 {
-                    item.Quest.Add(new Tuple<int, int>(questID, 1));
+                    item.Quest.Add(Tuple.Create(questID, 1));
                 }
             }
             if (node.Nodes["quest"] != null)
             {
                 foreach (Wz_Node questNode in node.Nodes["quest"].Nodes)
                 {
-                    item.Quest.Add(new Tuple<int, int>(int.Parse(questNode.Text), Convert.ToInt32(questNode.Value)));
+                    item.Quest.Add(Tuple.Create(int.Parse(questNode.Text), Convert.ToInt32(questNode.Value)));
                 }
             }
             return item;

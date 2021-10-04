@@ -62,11 +62,11 @@ namespace WzComparerR2.MapRender.Patches2
                     {
                         foreach (Wz_Node questNode in conditionNode.Nodes.Where(n => n.Text.All(char.IsDigit)))
                         {
-                            item.Quest.Add(new Tuple<int, int>(int.Parse(questNode.Text), Convert.ToInt32(questNode.Value)));
+                            item.Quest.Add(Tuple.Create(int.Parse(questNode.Text), Convert.ToInt32(questNode.Value)));
                         }
                         if (conditionNode.Nodes["dateStart"] != null || conditionNode.Nodes["dateEnd"] != null)
                         {
-                            item.Date.Add(new Tuple<long, long>(conditionNode.Nodes["dateStart"].GetValueEx<long>(0), conditionNode.Nodes["dateEnd"].GetValueEx<long>(0)));
+                            item.Date.Add(Tuple.Create(conditionNode.Nodes["dateStart"].GetValueEx<long>(0), conditionNode.Nodes["dateEnd"].GetValueEx<long>(0)));
                         }
                     }
                 }

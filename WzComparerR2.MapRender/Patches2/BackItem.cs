@@ -56,7 +56,7 @@ namespace WzComparerR2.MapRender.Patches2
                 int questID;
                 if (int.TryParse(node.Nodes["backTags"].GetValueEx<string>(null), out questID))
                 {
-                    item.Quest.Add(new Tuple<int, int>(questID, 1));
+                    item.Quest.Add(Tuple.Create(questID, 1));
                 }
             }
             return item;

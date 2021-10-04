@@ -32,7 +32,7 @@ namespace WzComparerR2.MapRender.Patches2
             {
                 foreach (Wz_Node questNode in node.Nodes["quest"].Nodes)
                 {
-                    item.Quest.Add(new Tuple<int, int>(int.Parse(questNode.Text), Convert.ToInt32(questNode.Value)));
+                    item.Quest.Add(Tuple.Create(int.Parse(questNode.Text), Convert.ToInt32(questNode.Value)));
                 }
             }
 
@@ -54,7 +54,7 @@ namespace WzComparerR2.MapRender.Patches2
                 {
                     foreach (Wz_Node questNode in subNode.Nodes["quest"].Nodes)
                     {
-                        subitem.Quest.Add(new Tuple<int, int>(int.Parse(questNode.Text), Convert.ToInt32(questNode.Value)));
+                        subitem.Quest.Add(Tuple.Create(int.Parse(questNode.Text), Convert.ToInt32(questNode.Value)));
                     }
                 }
                 subItems.Add(subitem);

@@ -165,7 +165,7 @@ namespace WzComparerR2.CharaSim
                         skill.TimeLimited = childNode.GetValue<int>() != 0;
                         break;
                     case "relationSkill":
-                        skill.RelationSkill = new Tuple<int, int>(childNode.Nodes["skillID"].GetValueEx<int>(0), childNode.Nodes["periodMin"].GetValueEx<int>(0));
+                        skill.RelationSkill = Tuple.Create(childNode.Nodes["skillID"].GetValueEx<int>(0), childNode.Nodes["periodMin"].GetValueEx<int>(0));
                         break;
                     case "isPetAutoBuff":
                         skill.IsPetAutoBuff = childNode.GetValue<int>() != 0;
