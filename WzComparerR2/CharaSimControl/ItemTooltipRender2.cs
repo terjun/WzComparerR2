@@ -333,8 +333,14 @@ namespace WzComparerR2.CharaSimControl
                 sr = new StringResult();
                 sr.Name = "(null)";
             }
+            string itemName = sr.Name.Replace(Environment.NewLine, "");
+            string nameAdd = item.ItemID / 10000 == 313 || item.ItemID / 10000 == 501 ? "OFF" : null;
+            if (!string.IsNullOrEmpty(nameAdd))
+            {
+                itemName += " (" + nameAdd + ")";
+            }
 
-            SizeF titleSize = TextRenderer.MeasureText(g, sr.Name.Replace(Environment.NewLine, ""), GearGraphics.ItemNameFont2, new Size(int.MaxValue, int.MaxValue), TextFormatFlags.NoPrefix);
+            SizeF titleSize = TextRenderer.MeasureText(g, itemName, GearGraphics.ItemNameFont2, new Size(int.MaxValue, int.MaxValue), TextFormatFlags.NoPrefix);
             titleSize.Width += 9 * 2;
             if (titleSize.Width > 290)
             {
@@ -350,7 +356,7 @@ namespace WzComparerR2.CharaSimControl
             //绘制标题
             bool hasPart2 = false;
             format.Alignment = StringAlignment.Center;
-            TextRenderer.DrawText(g, sr.Name.Replace(Environment.NewLine, ""), GearGraphics.ItemNameFont2, new Point(tooltip.Width, picH), Color.White, TextFormatFlags.HorizontalCenter | TextFormatFlags.NoPrefix);
+            TextRenderer.DrawText(g, itemName, GearGraphics.ItemNameFont2, new Point(tooltip.Width, picH), Color.White, TextFormatFlags.HorizontalCenter | TextFormatFlags.NoPrefix);
             picH += 21;
 
             if (Item.Props.TryGetValue(ItemPropType.wonderGrade, out value) && value > 0)
