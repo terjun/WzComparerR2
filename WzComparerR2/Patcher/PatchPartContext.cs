@@ -34,6 +34,7 @@ namespace WzComparerR2.Patcher
         private string fileName;
         private int type;
         private Wz_Type wzType;
+        private int? oldFileLength;
         private int newFileLength;
         private uint? oldChecksum;
         private uint newChecksum;
@@ -65,6 +66,12 @@ namespace WzComparerR2.Patcher
         public Wz_Type WzType
         {
             get { return wzType; }
+        }
+
+        public int? OldFileLength
+        {
+            get { return oldFileLength; }
+            set { oldFileLength = value; }
         }
 
         public int NewFileLength

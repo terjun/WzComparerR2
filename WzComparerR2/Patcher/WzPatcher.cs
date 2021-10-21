@@ -561,6 +561,7 @@ namespace WzComparerR2.Patcher
                 else if (part.OldChecksum != null)
                 {
                     var oldWzFile = openFile(part.FileName);
+                    part.OldFileLength = (int)oldWzFile.Length;
                     this.OnVerifyOldChecksumBegin(part);
                     uint oldCheckSum1 = CheckSum.ComputeHash(oldWzFile, oldWzFile.Length, this.PatchingStateChanged); //旧版本文件实际hash
                     this.OnVerifyOldChecksumEnd(part);

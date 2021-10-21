@@ -360,7 +360,7 @@ namespace WzComparerR2
                     break;
                 case PatchingState.VerifyOldChecksumBegin:
                     AppendStateText("  패치 전 체크섬 확인...");
-                    progressBarX1.Maximum = e.Part.NewFileLength;
+                    progressBarX1.Maximum = (int)e.Part.OldFileLength;
                     break;
                 case PatchingState.VerifyOldChecksumEnd:
                     AppendStateText("  완료\r\n");
