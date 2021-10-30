@@ -99,7 +99,7 @@ namespace WzComparerR2
             soundPlayer = new BassSoundPlayer();
             if (!soundPlayer.Init())
             {
-                Un4seen.Bass.BASSError error = soundPlayer.GetLastError();
+                ManagedBass.Errors error = soundPlayer.GetLastError();
                 MessageBoxEx.Show("Bass 사운드 플레이어 오류\r\n\r\nerrorCode : " + (int)error + "(" + error + ")", "오류");
             }
             soundTimer = new Timer(120d);
