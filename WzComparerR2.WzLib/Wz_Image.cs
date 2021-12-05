@@ -75,7 +75,12 @@ namespace WzComparerR2.WzLib
                     {
                         try
                         {
-                            TryDetectEnc();
+                            this.TryDetectEnc();
+                            if (this.Encryption == null)
+                            {
+                                e = null;
+                                return false;
+                            }
                         }
                         catch (Exception ex)
                         {
@@ -231,7 +236,7 @@ namespace WzComparerR2.WzLib
                     return;
                 }
             }
-
+            var oldenc = crypto.EncType;
             crypto.EncType = Wz_Crypto.Wz_CryptoKeyType.KMS;
             if (IsIllegalTag())
             {
@@ -253,7 +258,7 @@ namespace WzComparerR2.WzLib
                 return;
             }
 
-            crypto.EncType = Wz_Crypto.Wz_CryptoKeyType.Unknown;
+            crypto.EncType = oldenc;
         }
 
         private bool IsIllegalTag()

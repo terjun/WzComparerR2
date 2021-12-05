@@ -223,7 +223,8 @@ namespace WzComparerR2
             {
                 patcher = new WzPatcher(patchFile);
                 patcher.PatchingStateChanged += new EventHandler<PatchingEventArgs>(patcher_PatchingStateChanged);
-                AppendStateText("패치 확인중... ");
+                AppendStateText($"패치 파일명: {patchFile}\r\n");
+                AppendStateText("패치 확인중...");
                 patcher.OpenDecompress();
                 AppendStateText("완료\r\n");
                 //if (prePatch)
