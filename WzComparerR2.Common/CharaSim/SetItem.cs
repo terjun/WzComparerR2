@@ -274,6 +274,11 @@ namespace WzComparerR2.CharaSim
                             combinePart = CombinePart(setItem, gearID => Gear.GetGearType(gearID) == GearType.pocket);
                             combineTypeName = ItemStringHelper.GetSetItemGearTypeString(GearType.pocket);
                             break;
+
+                        case "emblem":
+                            combinePart = CombinePart(setItem, gearID => Gear.GetGearType(gearID) == GearType.emblem);
+                            combineTypeName = ItemStringHelper.GetSetItemGearTypeString(GearType.emblem);
+                            break;
                     }
 
                     if (combinePart != null)
