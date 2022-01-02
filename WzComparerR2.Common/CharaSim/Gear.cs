@@ -467,7 +467,27 @@ namespace WzComparerR2.CharaSim
             {
                 switch (prop.Key)
                 {
+                    case GearPropType.incAllStat:
+                        if (combinedProps.ContainsKey(GearPropType.incAllStat_incMHP25))
+                        {
+                            break;
+                        }
+                        else if (propCache.TryGetValue(GearPropType.incMHP, out obj)
+                            && object.Equals((int)prop.Value * 25, obj)
+                            && !propCache.ContainsKey(GearPropType.incMMP))
+                        {
+                            combinedProps.Add(GearPropType.incAllStat_incMHP25, prop.Value);
+                            break;
+                        }
+                        goto default;
+
                     case GearPropType.incMHP:
+                        if (combinedProps.ContainsKey(GearPropType.incAllStat_incMHP25))
+                        {
+                            break;
+                        }
+                        goto case GearPropType.incMMP;
+
                     case GearPropType.incMMP:
                         if (combinedProps.ContainsKey(GearPropType.incMHP_incMMP))
                         {
