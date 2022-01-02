@@ -241,7 +241,7 @@ namespace WzComparerR2.CharaSimControl
                 for (int i = 0; i < attrList.Count; i++)
                 {
                     var newStr = (attrStr != null ? (attrStr + ", ") : null) + attrList[i];
-                    if (TextRenderer.MeasureText(g, newStr, font, new Size(int.MaxValue, int.MaxValue), TextFormatFlags.NoPadding).Width > 261 - 7)
+                    if (TextRenderer.MeasureText(g, newStr, font, new Size(int.MaxValue, int.MaxValue), TextFormatFlags.NoPadding).Width > 261 - 13)
                     {
                         TextRenderer.DrawText(g, attrStr, GearGraphics.EquipDetailFont, new Point(261, picH), ((SolidBrush)GearGraphics.OrangeBrush2).Color, TextFormatFlags.HorizontalCenter | TextFormatFlags.NoPadding);
                         picH += 15;
@@ -925,12 +925,6 @@ namespace WzComparerR2.CharaSimControl
             {
                 if (kv.Value.Items.Contains(Gear.ItemID))
                 {
-                    if (hasPart2)
-                    {
-                        g.DrawImage(res["dotline"].Image, 0, picH);
-                        picH += 8;
-                    }
-
                     string exclusiveEquip;
                     if (!string.IsNullOrEmpty(kv.Value.Info))
                     {
@@ -952,13 +946,21 @@ namespace WzComparerR2.CharaSimControl
                                 itemNames.Add(sr2.Name);
                             }
                         }
-
-                        exclusiveEquip = "#c" + string.Join(", ", itemNames.ToArray());
+                        if (itemNames.Count == 1)
+                        {
+                            break;
+                        }
 
                         char lastCharacter = itemNames.Last().Last();
                         bool hasCoda = lastCharacter >= '가' && lastCharacter <= '힣' && (lastCharacter - '가') % 28 != 0;
 
-                        exclusiveEquip += (hasCoda ? "은" : "는") + " 중복 착용이 불가능합니다.#";
+                        exclusiveEquip = "#c" + string.Join(", ", itemNames) + (hasCoda ? "은" : "는") + " 중복 착용이 불가능합니다.#";
+                    }
+
+                    if (hasPart2)
+                    {
+                        g.DrawImage(res["dotline"].Image, 0, picH);
+                        picH += 8;
                     }
                     GearGraphics.DrawString(g, exclusiveEquip, GearGraphics.EquipDetailFont2, 13, 244, ref picH, 15, orangeColor: ((SolidBrush)GearGraphics.OrangeBrush2).Color);
                     picH += 5;
