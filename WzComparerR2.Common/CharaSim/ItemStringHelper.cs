@@ -357,7 +357,7 @@ namespace WzComparerR2.CharaSim
                 case GearType.breathShooter: return "브레스 슈터";
                 case GearType.weaponBelt: return "웨폰 벨트";
 
-                case GearType.norigae: return "노리개";
+                case GearType.ornament: return "노리개";
                 default: return null;
             }
         }
@@ -498,7 +498,7 @@ namespace WzComparerR2.CharaSim
                 case GearType.boxingCannon:
                 case GearType.boxingSky: return GetExtraJobReqString(175);
 
-                case GearType.norigae: return GetExtraJobReqString(162);
+                case GearType.ornament: return GetExtraJobReqString(162);
                 default: return null;
             }
         }

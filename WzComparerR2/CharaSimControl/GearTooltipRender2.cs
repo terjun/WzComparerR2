@@ -615,14 +615,20 @@ namespace WzComparerR2.CharaSimControl
 
             /*if (hasTuc && Gear.Hammer > -1)
             {
-                picH += 2;
-                TextRenderer.DrawText(g, "金锤子已提高的强化次数", GearGraphics.EquipDetailFont, new Point(13, picH), ((SolidBrush)GearGraphics.GoldHammerBrush).Color, TextFormatFlags.NoPadding);
+                g.DrawString("金锤子已提高的强化次数", GearGraphics.ItemDetailFont, GearGraphics.GoldHammerBrush, 11, picH + 2);
                 g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
-                TextRenderer.DrawText(g, ": " + Gear.Hammer.ToString() + (Gear.Hammer == 2 ? "(MAX)" : null), GearGraphics.TahomaFont, new Point(145, picH - 2), ((SolidBrush)GearGraphics.GoldHammerBrush).Color, TextFormatFlags.NoPadding);
+                g.DrawString(": " + Gear.Hammer.ToString() + (Gear.Hammer == 2 ? "(MAX)" : null), GearGraphics.TahomaFont, GearGraphics.GoldHammerBrush, 145, picH);
                 g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.SystemDefault;
                 picH += 15;
                 hasPart2 = true;
             }*/
+
+            if (hasTuc && Gear.PlatinumHammer > -1)
+            {
+                g.DrawString("白金锤强化次数：" + Gear.PlatinumHammer, GearGraphics.ItemDetailFont, Brushes.White, 11, picH);
+                picH += 16;
+                hasPart2 = true;
+            }
 
             if (Gear.type == GearType.shovel || Gear.type == GearType.pickaxe)
             {
@@ -657,6 +663,7 @@ namespace WzComparerR2.CharaSimControl
                     hasPart2 = true;
                 }
             }
+
             picH += 5;
 
             //绘制浮动属性
