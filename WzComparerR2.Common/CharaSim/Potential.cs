@@ -61,8 +61,9 @@ namespace WzComparerR2.CharaSim
             switch (optionType)
             {
                 case 0: return true;
-                case 10: return Gear.IsWeapon(gearType) || 
-                    (Gear.IsSubWeapon(gearType) && gearType != GearType.shield);
+                case 10: return Gear.IsWeapon(gearType) 
+                    || Gear.IsSubWeapon(gearType) // IsSubWeapon should return `true` for GearType.katara
+                    || gearType == GearType.shield;
                 case 11:
                     return !CheckOptionType(10, gearType);
                 case 20: return gearType == GearType.pants
