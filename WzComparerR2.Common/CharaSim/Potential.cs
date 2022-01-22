@@ -66,20 +66,22 @@ namespace WzComparerR2.CharaSim
                     || gearType == GearType.shield;
                 case 11:
                     return !CheckOptionType(10, gearType);
-                case 20: return gearType == GearType.pants
+                case 20: return Gear.IsSubWeapon(gearType)
+                    || gearType == GearType.pants
                     || gearType == GearType.shoes
                     || gearType == GearType.cap
                     || gearType == GearType.coat
                     || gearType == GearType.longcoat
                     || gearType == GearType.glove
-                    || gearType == GearType.cape;
+                    || gearType == GearType.cape
+                    || gearType == GearType.belt
+                    || gearType == GearType.shoulderPad;
                 case 40: return gearType == GearType.ring
                     || gearType == GearType.earrings
-                    || gearType == GearType.pendant
-                    || gearType == GearType.belt;
+                    || gearType == GearType.pendant;
                 case 51: return gearType == GearType.cap;
                 case 52: return gearType == GearType.coat || gearType == GearType.longcoat;
-                case 53: return gearType == GearType.pants || gearType == GearType.longcoat;
+                case 53: return gearType == GearType.pants;
                 case 54: return gearType == GearType.glove;
                 case 55: return gearType == GearType.shoes;
                 default: return false;
