@@ -76,7 +76,9 @@ namespace WzComparerR2.CharaSim
                     || gearType == GearType.cape
                     || gearType == GearType.belt
                     || gearType == GearType.shoulderPad;
-                case 40: return gearType == GearType.ring
+                case 40: return gearType == GearType.faceAccessory
+                    || gearType == GearType.eyeAccessory
+                    || gearType == GearType.ring
                     || gearType == GearType.earrings
                     || gearType == GearType.pendant;
                 case 51: return gearType == GearType.cap;
