@@ -303,6 +303,11 @@ namespace WzComparerR2
             {
                 MessageBoxEx.Show("패치가 중단되었습니다.", "패치 도구");
             }
+            catch (UnauthorizedAccessException ex)
+            {
+                // File IO permission error
+                MessageBoxEx.Show(this, ex.ToString(), "패치 도구");
+            }
             catch (Exception ex)
             {
                 AppendStateText(ex.ToString());
@@ -403,6 +408,7 @@ namespace WzComparerR2
                             comparer.OutputPng = chkOutputPng.Checked;
                             comparer.OutputAddedImg = chkOutputAddedImg.Checked;
                             comparer.OutputRemovedImg = chkOutputRemovedImg.Checked;
+                            comparer.EnableDarkMode = chkEnableDarkMode.Checked;
                             comparer.Comparer.PngComparison = (WzPngComparison)cmbComparePng.SelectedItem;
                             comparer.Comparer.ResolvePngLink = chkResolvePngLink.Checked;
                             comparer.PatchingStateChanged += new EventHandler<PatchingEventArgs>(patcher_PatchingStateChanged);

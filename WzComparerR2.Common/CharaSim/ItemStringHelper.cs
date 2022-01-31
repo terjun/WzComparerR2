@@ -94,6 +94,7 @@ namespace WzComparerR2.CharaSim
                 case GearPropType.damR:
                 case GearPropType.incDAMr: return "데미지 : " + sign + value + "%";
                 case GearPropType.incCr: return "크리티컬 확률 : " + sign + value + "%";
+                case GearPropType.incCDr: return "크리티컬 데미지 : " + sign + value + "%";
                 case GearPropType.knockback: return "직접 타격시 " + value + "%의 확률로 넉백";
                 case GearPropType.incPVPDamage: return "대난투 시 추가 공격력 " + sign + " " + value;
                 case GearPropType.incPQEXPr: return "파티퀘스트 경험치 " + value + "% 증가";
