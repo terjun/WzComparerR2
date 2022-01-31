@@ -759,7 +759,7 @@ namespace WzComparerR2.CharaSimControl
             int minLev = 0, maxLev = 0;
             bool willDrawExp = item.Props.TryGetValue(ItemPropType.exp_minLev, out minLev) && item.Props.TryGetValue(ItemPropType.exp_maxLev, out maxLev);
 
-            if (!string.IsNullOrEmpty(descLeftAlign) || item.CoreSpecs.Count > 0 || item.Sample.Bitmap != null || willDrawNickTag || willDrawExp)
+            if (!string.IsNullOrEmpty(descLeftAlign) || item.CoreSpecs.Count > 0 || item.Sample.Bitmap != null || item.SamplePath != null || willDrawNickTag || willDrawExp)
             {
                 if (picH < iconY + 84)
                 {
@@ -814,6 +814,29 @@ namespace WzComparerR2.CharaSimControl
                     g.DrawImage(item.Sample.Bitmap, (tooltip.Width - item.Sample.Bitmap.Width) / 2, picH);
                     picH += item.Sample.Bitmap.Height;
                     picH += 2;
+                }
+                if (item.SamplePath != null)
+                {
+                    Wz_Node sampleNode = PluginManager.FindWz(item.SamplePath);
+                    int sampleW = 15;
+                    for (int i = 1; ; i++)
+                    {
+                        Wz_Node effectNode = sampleNode.FindNodeByPath(string.Format("{0}{1:D4}\\effect\\0", sampleNode.Text, i));
+                        if (effectNode == null)
+                        {
+                            break;
+                        }
+
+                        BitmapOrigin effect = BitmapOrigin.CreateFromNode(effectNode, PluginManager.FindWz);
+                        if (sampleW + 87 >= tooltip.Width)
+                        {
+                            picH += 62;
+                            sampleW = 15;
+                        }
+                        g.DrawImage(effect.Bitmap, sampleW + (85 - effect.Bitmap.Width - 1) / 2, picH + (62 - effect.Bitmap.Height - 1) / 2);
+                        sampleW += 87;
+                    }
+                    picH += 62;
                 }
                 if (nickResNode != null)
                 {
