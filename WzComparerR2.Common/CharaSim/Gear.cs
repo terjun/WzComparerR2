@@ -202,6 +202,18 @@ namespace WzComparerR2.CharaSim
             }
         }
 
+        public static bool IsFace(GearType type)
+        {
+            string gearTypeName = Enum.GetName(typeof(GearType), type);
+            return gearTypeName != null && Regex.IsMatch(gearTypeName, @"^face\d*$");
+        }
+
+        public static bool IsHair(GearType type)
+        {
+            string gearTypeName = Enum.GetName(typeof(GearType), type);
+            return gearTypeName != null && Regex.IsMatch(gearTypeName, @"^hair\d*$");
+        }
+
         public static bool IsWeapon(GearType type)
         {
             return IsLeftWeapon(type)
@@ -890,12 +902,12 @@ namespace WzComparerR2.CharaSim
             //追加限时属性
             gear.MakeTimeLimitedPropAvailable();
 
-            if (gear.type == GearType.face || gear.type == GearType.face2)
+            if (Gear.IsFace(gear.type))
             {
                 gear.Icon = BitmapOrigin.CreateFromNode(findNode(@"Item\Install\0380.img\03801284\info\icon"), findNode);
                 gear.IconRaw = BitmapOrigin.CreateFromNode(findNode(@"Item\Install\0380.img\03801284\info\iconRaw"), findNode);
             }
-            if (gear.type == GearType.hair || gear.type == GearType.hair2 || gear.type == GearType.hair3)
+            if (Gear.IsHair(gear.type))
             {
                 gear.Icon = BitmapOrigin.CreateFromNode(findNode(@"Item\Install\0380.img\03801283\info\icon"), findNode);
                 gear.IconRaw = BitmapOrigin.CreateFromNode(findNode(@"Item\Install\0380.img\03801283\info\iconRaw"), findNode);

@@ -30,11 +30,11 @@ namespace WzComparerR2.Avatar
             {
                 this.ID = Convert.ToInt32(m.Result("$1"));
                 GearType type = Gear.GetGearType(this.ID.Value);
-                if (type == GearType.face || type == GearType.face2)
+                if (Gear.IsFace(type))
                 {
                     Icon = BitmapOrigin.CreateFromNode(PluginBase.PluginManager.FindWz(@"Item\Install\0380.img\03801284\info\icon"), PluginBase.PluginManager.FindWz);
                 }
-                if (type == GearType.hair || type == GearType.hair2 || type == GearType.hair3)
+                if (Gear.IsHair(type))
                 {
                     Icon = BitmapOrigin.CreateFromNode(PluginBase.PluginManager.FindWz(@"Item\Install\0380.img\03801283\info\icon"), PluginBase.PluginManager.FindWz);
                 }
