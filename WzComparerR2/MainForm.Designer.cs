@@ -1164,10 +1164,11 @@
             this.comboItem9,
             this.comboItem19});
             this.comboBoxItem2.Name = "comboBoxItem2";
+            this.comboBoxItem2.SelectedIndex = 0;
             // 
             // comboItem3
             // 
-            this.comboItem3.Text = "모두";
+            this.comboItem3.Text = "전체";
             // 
             // comboItem4
             // 
@@ -1345,6 +1346,7 @@
             this.comboItem11,
             this.comboItem12});
             this.comboBoxItem1.Name = "comboBoxItem1";
+            this.comboBoxItem1.SelectedIndex = 0;
             // 
             // comboItem10
             // 
