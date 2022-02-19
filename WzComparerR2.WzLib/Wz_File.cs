@@ -170,6 +170,7 @@ namespace WzComparerR2.WzLib
                 // not sure if nexon will change this magic version, just hard coded.
                 this.Header.SetWzVersion(777);
                 this.Header.VersionChecked = true;
+                this.Header.Capabilities |= Wz_Capabilities.EncverMissing;
             }
             else
             {
@@ -365,7 +366,8 @@ namespace WzComparerR2.WzLib
                         foreach (Wz_Crypto.Wz_CryptoKeyType encType in new[] { Wz_Crypto.Wz_CryptoKeyType.BMS, Wz_Crypto.Wz_CryptoKeyType.KMS, Wz_Crypto.Wz_CryptoKeyType.GMS, this.WzStructure.encryption.EncType })
                         {
                             long oldoffset = this.FileStream.Position;
-                            int stroffset = this.Header.HeaderSize + 1 + this.BReader.ReadInt32();
+                            int stringOffAdd = this.Header.HasCapabilities(Wz_Capabilities.EncverMissing) ? 2 : 1;
+                            int stroffset = this.Header.HeaderSize + stringOffAdd + this.BReader.ReadInt32();
                             name = this.ReadStringAt(stroffset);
                             if (this.WzStructure.encryption.IsLegalNodeName(name))
                             {
