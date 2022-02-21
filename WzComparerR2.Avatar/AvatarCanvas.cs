@@ -299,6 +299,20 @@ namespace WzComparerR2.Avatar
             return part;
         }
 
+        public AvatarPart AddTamingPart(Wz_Node imgNode, BitmapOrigin forceIcon, int forceID)
+        {
+            Wz_Node infoNode = imgNode.FindNodeByPath("info");
+            if (infoNode == null)
+            {
+                return null;
+            }
+            AvatarPart part = new AvatarPart(imgNode, forceIcon, forceID);
+
+            this.Taming = part;
+
+            return part;
+        }
+
         /// <summary>
         /// 获取角色动作的动画帧。
         /// </summary>

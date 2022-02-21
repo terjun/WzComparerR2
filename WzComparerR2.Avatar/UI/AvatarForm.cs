@@ -84,6 +84,67 @@ namespace WzComparerR2.Avatar.UI
             }
         }
 
+        /// <summary>
+        /// wz2节点选中事件。
+        /// </summary>
+        public void OnSelectedNode2Changed(object sender, WzNodeEventArgs e)
+        {
+            if (PluginEntry.Context.SelectedTab != PluginEntry.Tab || e.Node == null
+                || this.btnLock.Checked)
+            {
+                return;
+            }
+
+            Wz_File file = e.Node.GetNodeWzFile();
+            if (file == null)
+            {
+                return;
+            }
+
+            switch (file.Type)
+            {
+                case Wz_Type.Skill:
+                    Wz_Node skillNode = e.Node;
+                    if (Int32.TryParse(skillNode.Text, out int skillID))
+                    {
+                        int tamingMobID = skillNode.Nodes["vehicleID"].GetValueEx<int>(0);
+                        if (tamingMobID == 0)
+                        {
+                            tamingMobID = PluginBase.PluginManager.FindWz(string.Format(@"Skill\RidingSkillInfo.img\{0:D7}\vehicleID", skillID)).GetValueEx<int>(0);
+                        }
+                        if (tamingMobID != 0)
+                        {
+                            var tamingMobNode = PluginBase.PluginManager.FindWz(string.Format(@"Character\TamingMob\{0:D8}.img", tamingMobID));
+                            if (tamingMobNode != null)
+                            {
+                                this.SuspendUpdateDisplay();
+                                LoadTamingPart(tamingMobNode, BitmapOrigin.CreateFromNode(skillNode.Nodes["icon"], PluginBase.PluginManager.FindWz) , skillID);
+                                this.ResumeUpdateDisplay();
+                            }
+                        }
+                    }
+                    break;
+
+                case Wz_Type.Item:
+                    Wz_Node itemNode = e.Node;
+                    if (Int32.TryParse(itemNode.Text, out int itemID))
+                    {
+                        int tamingMobID = itemNode.FindNodeByPath("info\\tamingMob").GetValueEx<int>(0);
+                        if (tamingMobID != 0)
+                        {
+                            var tamingMobNode = PluginBase.PluginManager.FindWz(string.Format(@"Character\TamingMob\{0:D8}.img", tamingMobID));
+                            if (tamingMobNode != null)
+                            {
+                                this.SuspendUpdateDisplay();
+                                LoadTamingPart(tamingMobNode, BitmapOrigin.CreateFromNode(itemNode.FindNodeByPath("info\\icon"), PluginBase.PluginManager.FindWz), itemID);
+                                this.ResumeUpdateDisplay();
+                            }
+                        }
+                    }
+                    break;
+            }
+        }
+
         public void OnWzClosing(object sender, WzStructureEventArgs e)
         {
             bool hasChanged = false;
@@ -137,6 +198,22 @@ namespace WzComparerR2.Avatar.UI
             }
 
             AvatarPart part = this.avatar.AddPart(imgNode);
+            if (part != null)
+            {
+                OnNewPartAdded(part);
+                FillAvatarParts();
+                UpdateDisplay();
+            }
+        }
+
+        private void LoadTamingPart(Wz_Node imgNode, BitmapOrigin forceIcon, int forceID)
+        {
+            if (!this.inited && !this.AvatarInit() && imgNode == null)
+            {
+                return;
+            }
+
+            AvatarPart part = this.avatar.AddTamingPart(imgNode, forceIcon, forceID);
             if (part != null)
             {
                 OnNewPartAdded(part);

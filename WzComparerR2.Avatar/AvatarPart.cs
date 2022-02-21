@@ -17,6 +17,12 @@ namespace WzComparerR2.Avatar
             this.LoadInfo();
         }
 
+        public AvatarPart(Wz_Node node, BitmapOrigin forceIcon, int forceID) : this (node)
+        {
+            this.Icon = forceIcon;
+            this.ID = forceID;
+        }
+
         public Wz_Node Node { get; private set; }
         public string ISlot { get; private set; }
         public BitmapOrigin Icon { get; private set; }
