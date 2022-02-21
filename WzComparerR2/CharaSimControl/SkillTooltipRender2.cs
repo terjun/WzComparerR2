@@ -31,6 +31,8 @@ namespace WzComparerR2.CharaSimControl
         public bool DisplayPermyriadAsPercent { get; set; } = true;
         public bool IsWideMode { get; set; } = true;
 
+        public TooltipRender LinkRidingGearRender { get; set; }
+
         public override Bitmap Render()
         {
             if (this.Skill == null)
@@ -42,11 +44,41 @@ namespace WzComparerR2.CharaSimControl
 
             int picHeight;
             Bitmap originBmp = RenderSkill(region, out picHeight);
-            Bitmap tooltip = new Bitmap(originBmp.Width, picHeight);
+            Bitmap ridingGearBmp = null;
+
+            int vehicleID = Skill.VehicleID;
+            if (vehicleID == 0)
+            {
+                vehicleID = PluginBase.PluginManager.FindWz(string.Format(@"Skill\RidingSkillInfo.img\{0:D7}\vehicleID", Skill.SkillID)).GetValueEx<int>(0);
+            }
+            if (vehicleID != 0)
+            {
+                Wz_Node imgNode = PluginBase.PluginManager.FindWz(string.Format(@"Character\TamingMob\{0:D8}.img", vehicleID));
+                if (imgNode != null)
+                {
+                    Gear gear = Gear.CreateFromNode(imgNode, path => PluginBase.PluginManager.FindWz(path));
+                    if (gear != null)
+                    {
+                        ridingGearBmp = RenderLinkRidingGear(gear);
+                    }
+                }
+            }
+
+            Size totalSize = new Size(originBmp.Width, picHeight);
+            Point ridingGearOrigin = Point.Empty;
+
+            if (ridingGearBmp != null)
+            {
+                totalSize.Width += ridingGearBmp.Width;
+                totalSize.Height = Math.Max(picHeight, ridingGearBmp.Height);
+                ridingGearOrigin.X = originBmp.Width;
+            }
+
+            Bitmap tooltip = new Bitmap(totalSize.Width, totalSize.Height);
             Graphics g = Graphics.FromImage(tooltip);
 
             //绘制背景区域
-            GearGraphics.DrawNewTooltipBack(g, 0, 0, tooltip.Width, tooltip.Height);
+            GearGraphics.DrawNewTooltipBack(g, 0, 0, originBmp.Width, picHeight);
 
             //复制图像
             g.DrawImage(originBmp, 0, 0, new Rectangle(0, 0, originBmp.Width, picHeight), GraphicsUnit.Pixel);
@@ -59,8 +91,16 @@ namespace WzComparerR2.CharaSimControl
                 GearGraphics.DrawGearDetailNumber(g, 3, 3, Skill.SkillID.ToString("d7"), true);
             }
 
+            if (ridingGearBmp != null)
+            {
+                g.DrawImage(ridingGearBmp, ridingGearOrigin.X, ridingGearOrigin.Y,
+                    new Rectangle(Point.Empty, ridingGearBmp.Size), GraphicsUnit.Pixel);
+            }
+
             if (originBmp != null)
                 originBmp.Dispose();
+            if (ridingGearBmp != null)
+                ridingGearBmp.Dispose();
 
             g.Dispose();
             return tooltip;
@@ -319,6 +359,21 @@ namespace WzComparerR2.CharaSimControl
             format.Dispose();
             g.Dispose();
             return bitmap;
+        }
+
+        private Bitmap RenderLinkRidingGear(Gear gear)
+        {
+            TooltipRender renderer = this.LinkRidingGearRender;
+            if (renderer == null)
+            {
+                GearTooltipRender2 defaultRenderer = new GearTooltipRender2();
+                defaultRenderer.StringLinker = this.StringLinker;
+                defaultRenderer.ShowObjectID = false;
+                renderer = defaultRenderer;
+            }
+
+            renderer.TargetItem = gear;
+            return renderer.Render();
         }
 
         private class CanvasRegion

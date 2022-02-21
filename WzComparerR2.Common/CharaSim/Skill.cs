@@ -71,6 +71,7 @@ namespace WzComparerR2.CharaSim
         public List<string> Action { get; private set; }
         public int AddAttackToolTipDescSkill { get; set; }
         public int AssistSkillLink { get; set; }
+        public int VehicleID { get; set; }
 
         public int MaxLevel
         {
@@ -218,6 +219,9 @@ namespace WzComparerR2.CharaSim
                         break;
                     case "assistSkillLink":
                         skill.AssistSkillLink = childNode.FindNodeByPath("skill").GetValue<int>();
+                        break;
+                    case "vehicleID":
+                        skill.VehicleID = childNode.GetValue<int>();
                         break;
                 }
             }

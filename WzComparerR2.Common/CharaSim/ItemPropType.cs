@@ -54,5 +54,6 @@ namespace WzComparerR2.CharaSim
         addTooltip_tuc,
         addTooltip_tucCnt,
         pointCost,
+        tamingMob,
     }
 }

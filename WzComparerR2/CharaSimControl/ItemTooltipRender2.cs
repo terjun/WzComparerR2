@@ -183,6 +183,11 @@ namespace WzComparerR2.CharaSimControl
                 int itemID = value;
                 AppendGearOrItem(itemID);
             }
+            if (this.item.Props.TryGetValue(ItemPropType.tamingMob, out value))
+            {
+                int itemID = value;
+                AppendGearOrItem(itemID);
+            }
 
             if (this.item.AddTooltips.Count > 0)
             {
