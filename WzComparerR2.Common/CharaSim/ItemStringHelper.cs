@@ -558,6 +558,8 @@ namespace WzComparerR2.CharaSim
                     return GetGearPropString(GearPropType.accountSharable, value);
                 case ItemPropType.sharableOnce:
                     return GetGearPropString(GearPropType.sharableOnce, value);
+                case ItemPropType.exchangeableOnce:
+                    return value == 0 ? null : "1회 교환가능 (사용 또는 거래 후 교환불가)";
                 case ItemPropType.quest:
                     return value == 0 ? null : "퀘스트 아이템";
                 case ItemPropType.pquest:

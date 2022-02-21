@@ -986,6 +986,10 @@ namespace WzComparerR2.CharaSimControl
                     tags.Add(ItemStringHelper.GetItemPropString(ItemPropType.accountSharable, value));
                 }
             }
+            if (item.Props.TryGetValue(ItemPropType.exchangeableOnce, out value) && value != 0)
+            {
+                tags.Add(ItemStringHelper.GetItemPropString(ItemPropType.exchangeableOnce, value));
+            }
             if (item.Props.TryGetValue(ItemPropType.multiPet, out value))
             {
                 tags.Add(ItemStringHelper.GetItemPropString(ItemPropType.multiPet, value));
