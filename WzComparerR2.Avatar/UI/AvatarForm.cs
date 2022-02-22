@@ -544,7 +544,7 @@ namespace WzComparerR2.Avatar.UI
                     var stringLinker = this.PluginEntry.Context.DefaultStringLinker;
                     StringResult sr;
                     string text;
-                    if (part.ID != null && stringLinker.StringEqp.TryGetValue(part.ID.Value, out sr))
+                    if (part.ID != null && (stringLinker.StringEqp.TryGetValue(part.ID.Value, out sr) || stringLinker.StringSkill.TryGetValue(part.ID.Value, out sr) || stringLinker.StringItem.TryGetValue(part.ID.Value, out sr)))
                     {
                         text = string.Format("{0}\r\n{1}", sr.Name, part.ID);
                     }
