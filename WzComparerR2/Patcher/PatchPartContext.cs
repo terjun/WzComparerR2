@@ -19,6 +19,11 @@ namespace WzComparerR2.Patcher
             {
                 fileName = m.Result("$1");
             }
+            m = Regex.Match(fileName, @"^Data\\([A-Za-z]+)\\.*(?:\.wz)$");
+            if (m.Success)
+            {
+                fileName = m.Result("$1");
+            }
 
             try
             {

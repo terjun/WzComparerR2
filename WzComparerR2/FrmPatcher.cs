@@ -274,7 +274,7 @@ namespace WzComparerR2
                 AppendStateText("패치중...\r\n");
                 DateTime time = DateTime.Now;
                 patcher.Patch(msFolder);
-                if (!string.IsNullOrEmpty(this.compareFolder))
+                if (sw != null)
                 {
                     sw.WriteLine("</table>");
                     sw.WriteLine("</p>");
@@ -415,18 +415,44 @@ namespace WzComparerR2
                             //wznew.Load(e.Part.TempFilePath, false);
                             //wzold.Load(e.Part.OldFilePath, false);
                             //comparer.EasyCompareWzFiles(wznew.wz_files[0], wzold.wz_files[0], this.compareFolder);
-                            foreach (PatchPartContext part in typedParts[e.Part.WzType])
+                            string tempDir = e.Part.TempFilePath;
+                            while (Path.GetDirectoryName(tempDir) != msFolder)
                             {
-                                if (part.Type != 2)
+                                tempDir = Path.GetDirectoryName(tempDir);
+                            }
+                            string newWzFilePath = Path.Combine(tempDir, "Data", e.Part.WzType.ToString(), e.Part.WzType + ".wz");
+                            string oldWzFilePath = Path.Combine(msFolder, "Data", e.Part.WzType.ToString(), e.Part.WzType + ".wz");
+                            bool isNewKMST1125WzFormat = wznew.IsKMST1125WzFormat(newWzFilePath, oldWzFilePath); // TODO: check if deleted
+                            bool isOldKMST1125WzFormat = wzold.IsKMST1125WzFormat(oldWzFilePath);
+                            if (isNewKMST1125WzFormat) 
+                            {
+                                wznew.LoadKMST1125DataWz(newWzFilePath, oldWzFilePath);
+                            }
+                            else
+                            {
+                                foreach (PatchPartContext part in typedParts[e.Part.WzType])
                                 {
-                                    wznew.Load(part.TempFilePath, false);
-                                }
-                                if (part.Type != 0)
-                                {
-                                    wzold.Load(part.OldFilePath, false);
+                                    if (part.Type != 2)
+                                    {
+                                        wznew.Load(part.TempFilePath, false);
+                                    }
                                 }
                             }
-                            if (htmlFilePath == null)
+                            if (isOldKMST1125WzFormat)
+                            {
+                                wzold.LoadKMST1125DataWz(oldWzFilePath);
+                            }
+                            else
+                            {
+                                foreach (PatchPartContext part in typedParts[e.Part.WzType])
+                                {
+                                    if (part.Type != 0)
+                                    {
+                                        wzold.Load(part.OldFilePath, false);
+                                    }
+                                }
+                            }
+                            if (sw == null)
                             {
                                 htmlFilePath = Path.Combine(this.compareFolder, "index.html");
 
@@ -445,7 +471,18 @@ namespace WzComparerR2
                                 sw.WriteLine("<table>");
                                 sw.WriteLine("<tr><th>파일명</th><th>신버전 용량</th><th>구버전 용량</th><th>변경</th><th>추가</th><th>제거</th></tr>");
                             }
-                            comparer.EasyCompareWzStructures(wznew, wzold, this.compareFolder, sw);
+                            if (isNewKMST1125WzFormat && isOldKMST1125WzFormat)
+                            {
+                                comparer.EasyCompareWzFiles(wznew.wz_files[0], wzold.wz_files[0], this.compareFolder, sw);
+                            }
+                            else if (!isNewKMST1125WzFormat && !isOldKMST1125WzFormat)
+                            {
+                                comparer.EasyCompareWzStructures(wznew, wzold, this.compareFolder, sw);
+                            }
+                            else
+                            {
+                                // TODO
+                            }
                         }
                         catch (Exception ex)
                         {

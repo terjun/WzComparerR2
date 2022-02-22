@@ -66,11 +66,11 @@ namespace WzComparerR2.Comparer
                 this.PatchingStateChanged(this, e);
         }
 
-        public void EasyCompareWzFiles(Wz_File fileNew, Wz_File fileOld, string outputDir)
+        public void EasyCompareWzFiles(Wz_File fileNew, Wz_File fileOld, string outputDir, StreamWriter index = null)
         {
             StateInfo = "Wz 비교중...";
            
-            if (fileNew.Type == Wz_Type.Base || fileOld.Type == Wz_Type.Base) //至少有一个base 拆分对比
+            if ((fileNew.Type == Wz_Type.Base || fileOld.Type == Wz_Type.Base) && index == null) //至少有一个base 拆分对比
             {
                 var virtualNodeNew = RebuildWzFile(fileNew);
                 var virtualNodeOld = RebuildWzFile(fileOld);
@@ -148,13 +148,13 @@ namespace WzComparerR2.Comparer
                 comparer.IgnoreWzFile = false;
                 var cmp = comparer.Compare(fileNew.Node, fileOld.Node);
                 CreateStyleSheet(outputDir);
-                OutputFile(fileNew, fileOld, fileNew.Type, cmp.ToList(), outputDir);
+                OutputFile(fileNew, fileOld, fileNew.Type, cmp.ToList(), outputDir, index);
             }
 
             GC.Collect();
         }
 
-        public void EasyCompareWzStructures(Wz_Structure structureNew, Wz_Structure structureOld, string outputDir, StreamWriter sw = null)
+        public void EasyCompareWzStructures(Wz_Structure structureNew, Wz_Structure structureOld, string outputDir, StreamWriter index)
         {
             var virtualNodeNew = RebuildWzStructure(structureNew);
             var virtualNodeOld = RebuildWzStructure(structureOld);
@@ -180,7 +180,7 @@ namespace WzComparerR2.Comparer
                     wzType,
                     cmp.ToList(),
                     outputDir,
-                    sw);
+                    index);
             }
         }
 
@@ -276,13 +276,14 @@ namespace WzComparerR2.Comparer
             return result;
         }
 
-        private void OutputFile(Wz_File fileNew, Wz_File fileOld, Wz_Type type, List<CompareDifference> diffLst, string outputDir)
+        private void OutputFile(Wz_File fileNew, Wz_File fileOld, Wz_Type type, List<CompareDifference> diffLst, string outputDir, StreamWriter index)
         {
             OutputFile(new List<Wz_File>() { fileNew },
                 new List<Wz_File>() { fileOld },
                 type,
                 diffLst,
-                outputDir);
+                outputDir,
+                index);
         }
         private void OutputFile(List<Wz_File> fileNew, List<Wz_File> fileOld, Wz_Type type, List<CompareDifference> diffLst, string outputDir, StreamWriter index = null)
         {
@@ -469,6 +470,7 @@ namespace WzComparerR2.Comparer
                         count[4],
                         count[5]
                         );
+                    index.Flush();
                 }
             }
             finally
