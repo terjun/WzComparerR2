@@ -9,13 +9,13 @@ namespace WzComparerR2.WzLib
 {
     public class Wz_File : IDisposable
     {
-        public Wz_File(string fileName, Wz_Structure wz)
+        public Wz_File(string fileName, Wz_Structure wz, string fallbackFileName = null)
         {
             this.imageCount = 0;
             this.wzStructure = wz;
-            this.fileStream = new FileStream(fileName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+            this.fileStream = new FileStream(File.Exists(fileName) ? fileName : fallbackFileName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
             this.bReader = new BinaryReader(this.FileStream);
-            this.loaded = this.GetHeader(fileName);
+            this.loaded = this.GetHeader(File.Exists(fileName) ? fileName : fallbackFileName);
             this.stringTable = new Dictionary<long, string>();
             this.directories = new List<Wz_Directory>();
         }
@@ -347,7 +347,7 @@ namespace WzComparerR2.WzLib
             return offset;
         }
 
-        public void GetDirTree(Wz_Node parent, bool useBaseWz = false, bool loadWzAsFolder = false)
+        public void GetDirTree(Wz_Node parent, bool useBaseWz = false, bool loadWzAsFolder = false, string fileName = null, string fallbackFileName = null)
         {
             List<string> dirs = new List<string>();
             string name = null;
@@ -421,7 +421,8 @@ namespace WzComparerR2.WzLib
             int dirCount = dirs.Count;
             bool willLoadBaseWz = useBaseWz ? parent.Text.Equals("base.wz", StringComparison.OrdinalIgnoreCase) : false;
 
-            var baseFolder = Path.GetDirectoryName(this.header.FileName);
+            var baseFolder = Path.GetDirectoryName(fileName ?? this.header.FileName);
+            var fallbackBaseFolder = Path.GetDirectoryName(fallbackFileName);
 
             if (willLoadBaseWz && this.WzStructure.AutoDetectExtFiles)
             {
@@ -489,9 +490,10 @@ namespace WzComparerR2.WzLib
                         if (loadWzAsFolder)
                         {
                             string wzFolder = willLoadBaseWz ? Path.Combine(Path.GetDirectoryName(baseFolder), dir) : Path.Combine(baseFolder, dir);
-                            if (Directory.Exists(wzFolder))
+                            string fallbackWzFolder = fallbackBaseFolder == null ? null : (willLoadBaseWz ? Path.Combine(Path.GetDirectoryName(fallbackBaseFolder), dir) : Path.Combine(fallbackBaseFolder, dir));
+                            if (Directory.Exists(wzFolder) || Directory.Exists(fallbackWzFolder))
                             {
-                                this.wzStructure.LoadWzFolder(wzFolder, ref t, false);
+                                this.wzStructure.LoadWzFolder(wzFolder, ref t, false, fallbackWzFolder);
                                 if (!willLoadBaseWz)
                                 {
                                     var dirWzFile = t.GetValue<Wz_File>();
