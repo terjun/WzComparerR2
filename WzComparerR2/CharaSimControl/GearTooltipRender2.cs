@@ -621,14 +621,14 @@ namespace WzComparerR2.CharaSimControl
                 g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.SystemDefault;
                 picH += 15;
                 hasPart2 = true;
-            }*/
+            }
 
             if (hasTuc && Gear.PlatinumHammer > -1)
             {
                 g.DrawString("白金锤强化次数：" + Gear.PlatinumHammer, GearGraphics.ItemDetailFont, Brushes.White, 11, picH);
                 picH += 16;
                 hasPart2 = true;
-            }
+            }*/
 
             if (Gear.type == GearType.shovel || Gear.type == GearType.pickaxe)
             {
