@@ -189,9 +189,8 @@ namespace WzComparerR2.MapRender.UI
             }
 
             Dictionary<string, string> nameDictionary = new Dictionary<string, string>();
-            string[] searchList = { "worldSearch", "regionSearch1", "regionSearch2", "regionSearch3" };
             var uiNode = PluginBase.PluginManager.FindWz("UI/UIWindow2.img/WorldMap");
-            foreach (var search in searchList)
+            foreach (var search in new[] { "worldSearch", "regionSearch1", "regionSearch2", "regionSearch3" })
             {
                 var searchNode = uiNode.FindNodeByPath("combo:" + search + "\\contents\\" + search);
                 foreach (var unitNode in searchNode.Nodes)
