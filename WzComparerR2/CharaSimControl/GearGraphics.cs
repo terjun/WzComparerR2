@@ -466,6 +466,10 @@ namespace WzComparerR2.CharaSimControl
             var fmt = StringFormat.GenericTypographic;
             //int width = string.IsNullOrEmpty(tagName) ? 0 : (int)Math.Ceiling(g.MeasureString(tagName, font, 261, fmt).Width);
             int width = string.IsNullOrEmpty(tagName) ? 0 : TextRenderer.MeasureText(g, tagName, font, new Size(int.MaxValue, int.MaxValue), TextFormatFlags.NoPadding).Width;
+            if (wce[1].Bitmap != null)
+            {
+                width = (int)Math.Ceiling(1.0 * width / wce[1].Bitmap.Width) * wce[1].Bitmap.Width;
+            }
             int left = picW / 2 - width / 2;
             int right = left + width;
 
@@ -493,7 +497,7 @@ namespace WzComparerR2.CharaSimControl
             {
                 var brush = new SolidBrush(color);
                 //g.DrawString(tagName, font, brush, left, picH, fmt);
-                TextRenderer.DrawText(g, tagName, font, new Point(left, picH), color, TextFormatFlags.NoPadding);
+                TextRenderer.DrawText(g, tagName, font, new Rectangle(left, picH, right - left, int.MaxValue), color, TextFormatFlags.HorizontalCenter | TextFormatFlags.NoPadding);
                 brush.Dispose();
             }
 

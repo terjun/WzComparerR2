@@ -910,7 +910,7 @@ namespace WzComparerR2.CharaSimControl
                 }
                 if (medalResNode != null)
                 {
-                    GearGraphics.DrawNameTag(g, medalResNode, sr.Name, bitmap.Width, ref picH);
+                    GearGraphics.DrawNameTag(g, medalResNode, sr.Name.Replace("의 훈장", ""), bitmap.Width, ref picH);
                     picH += 4;
                 }
                 if (!string.IsNullOrEmpty(sr.Desc))
