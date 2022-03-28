@@ -134,8 +134,9 @@ namespace WzComparerR2.CharaSim
                 case GearPropType.jokerToSetItem: return value == 0 ? null : "#c3개 이상 착용하고 있는 모든 세트 아이템에 포함되는 럭키 아이템!#";
                 case GearPropType.abilityTimeLimited: return value == 0 ? null : "기간 한정 능력치";
                 case GearPropType.blockGoldHammer: return value == 0 ? null : "황금망치 사용 불가";
-                case GearPropType.cantRepair: return value == 0 ? null : "수리 불가";
                 case GearPropType.colorvar: return value == 0 ? null : "#c该装备可通过染色颜料来变更颜色.#";
+                case GearPropType.cantRepair: return value == 0 ? null : "수리 불가";
+                case GearPropType.noLookChange: return value == 0 ? null : "훈장 신비의 모루 사용 불가";
 
                 case GearPropType.incAllStat_incMHP25: return "올스탯: " + sign + value + ", 최대 HP : " + sign + (value * 25);
                 case GearPropType.incAllStat_incMHP50_incMMP50: return "올스탯: " + sign + value + ", 최대 HP / 최대 MP : " + sign + (value * 50);

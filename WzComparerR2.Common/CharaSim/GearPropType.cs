@@ -184,6 +184,7 @@ namespace WzComparerR2.CharaSim
         noPetEquipStatMoveItem,
         BTSLabel,
         android,
+        noLookChange,
 
         gatherTool_incSkillLevel = 2000,
         gatherTool_incSpeed,

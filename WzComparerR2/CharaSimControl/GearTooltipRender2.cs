@@ -1267,6 +1267,10 @@ namespace WzComparerR2.CharaSimControl
             {
                 tags.Add(ItemStringHelper.GetGearPropString(GearPropType.cantRepair, value));
             }
+            if (Gear.Props.TryGetValue(GearPropType.noLookChange, out value) && value != 0)
+            {
+                tags.Add(ItemStringHelper.GetGearPropString(GearPropType.noLookChange, value));
+            }
             if ((Gear.ItemID / 10000 >= 161 && Gear.ItemID / 10000 <= 165) || (Gear.ItemID / 10000 >= 194 && Gear.ItemID / 10000 <= 197))
             {
                 tags.Add("신비의 모루 사용 불가");
