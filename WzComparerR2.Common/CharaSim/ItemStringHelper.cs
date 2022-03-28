@@ -138,6 +138,7 @@ namespace WzComparerR2.CharaSim
                 case GearPropType.colorvar: return value == 0 ? null : "#c该装备可通过染色颜料来变更颜色.#";
 
                 case GearPropType.incAllStat_incMHP25: return "올스탯: " + sign + value + ", 최대 HP : " + sign + (value * 25);
+                case GearPropType.incAllStat_incMHP50_incMMP50: return "올스탯: " + sign + value + ", 최대 HP / 최대 MP : " + sign + (value * 50);
                 case GearPropType.incMHP_incMMP: return "최대 HP / 최대 MP : " + sign + value;
                 case GearPropType.incMHPr_incMMPr: return "최대 HP / 최대 MP : " + sign + value + "%";
                 case GearPropType.incPAD_incMAD:

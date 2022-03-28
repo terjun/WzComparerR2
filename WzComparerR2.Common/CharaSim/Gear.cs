@@ -481,7 +481,7 @@ namespace WzComparerR2.CharaSim
                 switch (prop.Key)
                 {
                     case GearPropType.incAllStat:
-                        if (combinedProps.ContainsKey(GearPropType.incAllStat_incMHP25))
+                        if (combinedProps.ContainsKey(GearPropType.incAllStat_incMHP25) || combinedProps.ContainsKey(GearPropType.incAllStat_incMHP50_incMMP50))
                         {
                             break;
                         }
@@ -490,6 +490,14 @@ namespace WzComparerR2.CharaSim
                             && !propCache.ContainsKey(GearPropType.incMMP))
                         {
                             combinedProps.Add(GearPropType.incAllStat_incMHP25, prop.Value);
+                            break;
+                        }
+                        else if (propCache.TryGetValue(GearPropType.incMHP, out obj)
+                            && object.Equals((int)prop.Value * 50, obj)
+                            && propCache.TryGetValue(GearPropType.incMMP, out obj)
+                            && object.Equals((int)prop.Value * 50, obj))
+                        {
+                            combinedProps.Add(GearPropType.incAllStat_incMHP50_incMMP50, prop.Value);
                             break;
                         }
                         goto default;
@@ -502,12 +510,13 @@ namespace WzComparerR2.CharaSim
                         goto case GearPropType.incMMP;
 
                     case GearPropType.incMMP:
-                        if (combinedProps.ContainsKey(GearPropType.incMHP_incMMP))
+                        if (combinedProps.ContainsKey(GearPropType.incMHP_incMMP) || combinedProps.ContainsKey(GearPropType.incAllStat_incMHP50_incMMP50))
                         {
                             break;
                         }
                         else if (propCache.TryGetValue(prop.Key == GearPropType.incMHP ? GearPropType.incMMP : GearPropType.incMHP, out obj)
-                            && object.Equals(prop.Value, obj))
+                            && object.Equals(prop.Value, obj)
+                            && !combinedProps.ContainsKey(GearPropType.incAllStat_incMHP50_incMMP50))
                         {
                             combinedProps.Add(GearPropType.incMHP_incMMP, prop.Value);
                             break;
