@@ -299,14 +299,14 @@ namespace WzComparerR2.Avatar
             return part;
         }
 
-        public AvatarPart AddTamingPart(Wz_Node imgNode, BitmapOrigin forceIcon, int forceID)
+        public AvatarPart AddTamingPart(Wz_Node imgNode, BitmapOrigin forceIcon, int forceID, bool isSkill)
         {
             Wz_Node infoNode = imgNode.FindNodeByPath("info");
             if (infoNode == null)
             {
                 return null;
             }
-            AvatarPart part = new AvatarPart(imgNode, forceIcon, forceID);
+            AvatarPart part = new AvatarPart(imgNode, forceIcon, forceID, isSkill);
 
             this.Taming = part;
 

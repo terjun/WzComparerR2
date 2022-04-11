@@ -118,7 +118,7 @@ namespace WzComparerR2.Avatar.UI
                             if (tamingMobNode != null)
                             {
                                 this.SuspendUpdateDisplay();
-                                LoadTamingPart(tamingMobNode, BitmapOrigin.CreateFromNode(skillNode.Nodes["icon"], PluginBase.PluginManager.FindWz) , skillID);
+                                LoadTamingPart(tamingMobNode, BitmapOrigin.CreateFromNode(skillNode.Nodes["icon"], PluginBase.PluginManager.FindWz) , skillID, true);
                                 this.ResumeUpdateDisplay();
                             }
                         }
@@ -136,7 +136,7 @@ namespace WzComparerR2.Avatar.UI
                             if (tamingMobNode != null)
                             {
                                 this.SuspendUpdateDisplay();
-                                LoadTamingPart(tamingMobNode, BitmapOrigin.CreateFromNode(itemNode.FindNodeByPath("info\\icon"), PluginBase.PluginManager.FindWz), itemID);
+                                LoadTamingPart(tamingMobNode, BitmapOrigin.CreateFromNode(itemNode.FindNodeByPath("info\\icon"), PluginBase.PluginManager.FindWz), itemID, false);
                                 this.ResumeUpdateDisplay();
                             }
                         }
@@ -206,14 +206,14 @@ namespace WzComparerR2.Avatar.UI
             }
         }
 
-        private void LoadTamingPart(Wz_Node imgNode, BitmapOrigin forceIcon, int forceID)
+        private void LoadTamingPart(Wz_Node imgNode, BitmapOrigin forceIcon, int forceID, bool isSkill)
         {
             if (!this.inited && !this.AvatarInit() && imgNode == null)
             {
                 return;
             }
 
-            AvatarPart part = this.avatar.AddTamingPart(imgNode, forceIcon, forceID);
+            AvatarPart part = this.avatar.AddTamingPart(imgNode, forceIcon, forceID, isSkill);
             if (part != null)
             {
                 OnNewPartAdded(part);
@@ -392,7 +392,7 @@ namespace WzComparerR2.Avatar.UI
                 var part = avatar.Parts[i];
                 if (part != null && part.Visible)
                 {
-                    partsID[i] = part.ID.ToString();
+                    partsID[i] = (part.IsSkill ? "s" : "") + part.ID.ToString();
                 }
             }
             return string.Join(",", partsID);
@@ -546,7 +546,7 @@ namespace WzComparerR2.Avatar.UI
                     string text;
                     if (part.ID != null && (stringLinker.StringEqp.TryGetValue(part.ID.Value, out sr) || stringLinker.StringSkill.TryGetValue(part.ID.Value, out sr) || stringLinker.StringItem.TryGetValue(part.ID.Value, out sr)))
                     {
-                        text = string.Format("{0}\r\n{1}", sr.Name, part.ID);
+                        text = string.Format("{0}\r\n{1}{2}", sr.Name, part.IsSkill ? "s" : "", part.ID);
                     }
                     else
                     {
@@ -1316,7 +1316,7 @@ namespace WzComparerR2.Avatar.UI
         private void LoadCode(string code, int loadType)
         {
             //解析
-            var matches = Regex.Matches(code, @"(\d+)([,\s]|$)");
+            var matches = Regex.Matches(code, @"s?(\d+)([,\s]|$)");
             if (matches.Count <= 0)
             {
                 MessageBoxEx.Show("아이템 코드에 해당되는 아이템이 없습니다.", "오류");
@@ -1330,6 +1330,8 @@ namespace WzComparerR2.Avatar.UI
             }
 
             var characWz = PluginManager.FindWz(Wz_Type.Character);
+            var skillWz = PluginManager.FindWz(Wz_Type.Skill);
+            var itemWz = PluginManager.FindWz(Wz_Type.Item);
 
             //试图初始化
             if (!this.inited && !this.AvatarInit())
@@ -1360,8 +1362,46 @@ namespace WzComparerR2.Avatar.UI
                     {
                         var part = this.avatar.AddPart(imgNode);
                         OnNewPartAdded(part);
+                        continue;
                     }
-                    else
+                    if (m.ToString().StartsWith("s"))
+                    {
+                        imgNode = FindNodeBySkillID(skillWz, gearID);
+                        if (imgNode != null)
+                        {
+                            int tamingMobID = imgNode.Nodes["vehicleID"].GetValueEx<int>(0);
+                            if (tamingMobID == 0)
+                            {
+                                tamingMobID = PluginBase.PluginManager.FindWz(string.Format(@"Skill\RidingSkillInfo.img\{0:D7}\vehicleID", gearID)).GetValueEx<int>(0);
+                            }
+                            if (tamingMobID != 0)
+                            {
+                                var tamingMobNode = PluginBase.PluginManager.FindWz(string.Format(@"Character\TamingMob\{0:D8}.img", tamingMobID));
+                                if (tamingMobNode != null)
+                                {
+                                    var part = this.avatar.AddTamingPart(tamingMobNode, BitmapOrigin.CreateFromNode(imgNode.Nodes["icon"], PluginBase.PluginManager.FindWz), gearID, true);
+                                    OnNewPartAdded(part);
+                                }
+                            }
+                            continue;
+                        }
+                    }
+                    imgNode = FindNodeByItemID(itemWz, gearID);
+                    if (imgNode != null)
+                    {
+                        int tamingMobID = imgNode.FindNodeByPath("info\\tamingMob").GetValueEx<int>(0);
+                        if (tamingMobID != 0)
+                        {
+                            var tamingMobNode = PluginBase.PluginManager.FindWz(string.Format(@"Character\TamingMob\{0:D8}.img", tamingMobID));
+                            if (tamingMobNode != null)
+                            {
+                                var part = this.avatar.AddTamingPart(tamingMobNode, BitmapOrigin.CreateFromNode(imgNode.FindNodeByPath("info\\icon"), PluginBase.PluginManager.FindWz), gearID, false);
+                                OnNewPartAdded(part);
+                            }
+                        }
+                        continue;
+                    }
+                    // else
                     {
                         failList.Add(gearID);
                     }
@@ -1421,6 +1461,80 @@ namespace WzComparerR2.Avatar.UI
                 if (img != null && img.TryExtract())
                 {
                     return img.Node;
+                }
+            }
+
+            return null;
+        }
+
+        private Wz_Node FindNodeBySkillID(Wz_Node skillWz, int id)
+        {
+            string idName = id.ToString();
+
+            foreach (var node1 in skillWz.Nodes)
+            {
+                if (idName.StartsWith(node1.Text.Replace(".img", "")))
+                {
+                    Wz_Image img = node1.GetValue<Wz_Image>();
+                    if (img != null && img.TryExtract())
+                    {
+                        if (img.Node.Nodes["skill"].Nodes.Count > 0)
+                        {
+                            foreach (var skillNode in img.Node.Nodes["skill"].Nodes)
+                            {
+                                if (skillNode.Text == idName)
+                                {
+                                    return skillNode;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            return null;
+        }
+
+
+        private Wz_Node FindNodeByItemID(Wz_Node itemWz, int id)
+        {
+            string idName = id.ToString("D8");
+            Wz_Node imgNode = null;
+
+            foreach (var node1 in itemWz.Nodes)
+            {
+                if (node1.Nodes.Count > 0)
+                {
+                    foreach (var node2 in node1.Nodes)
+                    {
+                        if (idName.StartsWith(node2.Text.Replace(".img", "")))
+                        {
+                            imgNode = node2;
+                            break;
+                        }
+                    }
+                    if (imgNode != null)
+                    {
+                        break;
+                    }
+                }
+            }
+
+            if (imgNode != null)
+            {
+                Wz_Image img = imgNode.GetValue<Wz_Image>();
+                if (img != null && img.TryExtract())
+                {
+                    if (img.Node.Nodes.Count > 0)
+                    {
+                        foreach (var itemNode in img.Node.Nodes)
+                        {
+                            if (itemNode.Text == idName)
+                            {
+                                return itemNode;
+                            }
+                        }
+                    }
                 }
             }
 

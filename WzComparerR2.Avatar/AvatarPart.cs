@@ -17,10 +17,11 @@ namespace WzComparerR2.Avatar
             this.LoadInfo();
         }
 
-        public AvatarPart(Wz_Node node, BitmapOrigin forceIcon, int forceID) : this (node)
+        public AvatarPart(Wz_Node node, BitmapOrigin forceIcon, int forceID, bool isSkill) : this (node)
         {
             this.Icon = forceIcon;
             this.ID = forceID;
+            this.IsSkill = isSkill;
         }
 
         public Wz_Node Node { get; private set; }
@@ -28,6 +29,7 @@ namespace WzComparerR2.Avatar
         public BitmapOrigin Icon { get; private set; }
         public bool Visible { get; set; }
         public int? ID { get; private set; }
+        public bool IsSkill { get; private set; }
 
         private void LoadInfo()
         {
