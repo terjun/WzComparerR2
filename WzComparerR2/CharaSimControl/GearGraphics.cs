@@ -620,6 +620,12 @@ namespace WzComparerR2.CharaSimControl
             private void MeasureBatch(List<Run> runs)
             {
                 string text = sb.ToString();
+                Func<int, bool> isSingleKoreanChar = (i) => i >= 0 && runs[i].Length == 1 && text[runs[i].StartIndex] >= '가' && text[runs[i].StartIndex] <= '힣';
+                var koreanSize = TR.MeasureText(g, "가", font, Size.Round(infinityRect.Size), TextFormatFlags.NoPadding | TextFormatFlags.NoPrefix);
+                Func<int, bool> isSpace = (i) => i >= 0 && runs[i].Length == 1 && text[runs[i].StartIndex] == ' ';
+                var spaceSize = TR.MeasureText(g, " ", font, Size.Round(infinityRect.Size), TextFormatFlags.NoPadding | TextFormatFlags.NoPrefix);
+                Func<int, bool> isNumber = (i) => i >= 0 && runs[i].Length == 1 && text[runs[i].StartIndex] >= '0' && text[runs[i].StartIndex] <= '9';
+                var numberSize = TR.MeasureText(g, "0", font, Size.Round(infinityRect.Size), TextFormatFlags.NoPadding | TextFormatFlags.NoPrefix);
                 if (runs.Count > 0 && !runs.All(run => run.IsBreakLine))
                 {
                     fmt.SetMeasurableCharacterRanges(runs.Select(r => new CharacterRange(r.StartIndex, r.Length)).ToArray());
@@ -628,7 +634,29 @@ namespace WzComparerR2.CharaSimControl
                     {
                         var layout = new RectangleF();
                         if (this.UseGDIRenderer)
-                            layout = new RectangleF(new Point(TR.MeasureText(g, text.Substring(0, runs[i].StartIndex), font, Size.Round(infinityRect.Size), TextFormatFlags.NoPadding | TextFormatFlags.NoPrefix).Width, 0), TR.MeasureText(g, text.Substring(runs[i].StartIndex, runs[i].Length), font, Size.Round(infinityRect.Size), TextFormatFlags.NoPadding | TextFormatFlags.NoPrefix));
+                        {
+                            var prefixLayout = new Point();
+                            if (isSingleKoreanChar(i - 1))
+                                prefixLayout = new Point(runs[i - 1].X + koreanSize.Width, 0);
+                            else if (isSpace(i - 1))
+                                prefixLayout = new Point(runs[i - 1].X + spaceSize.Width, 0);
+                            else if (isNumber(i - 1))
+                                prefixLayout = new Point(runs[i - 1].X + numberSize.Width, 0);
+                            else
+                                prefixLayout = new Point(TR.MeasureText(g, text.Substring(0, runs[i].StartIndex), font, Size.Round(infinityRect.Size), TextFormatFlags.NoPadding | TextFormatFlags.NoPrefix).Width, 0);
+
+                            var currentLayout = new Size();
+                            if (isSingleKoreanChar(i))
+                                currentLayout = koreanSize;
+                            else if (isSpace(i))
+                                currentLayout = spaceSize;
+                            else if (isNumber(i))
+                                currentLayout = numberSize;
+                            else
+                                currentLayout = TR.MeasureText(g, text.Substring(runs[i].StartIndex, runs[i].Length), font, Size.Round(infinityRect.Size), TextFormatFlags.NoPadding | TextFormatFlags.NoPrefix);
+
+                            layout = new RectangleF(prefixLayout, currentLayout);
+                        }
                         else
                             layout = regions[i].GetBounds(g);
                         runs[i].X = (int)Math.Round(layout.Left);
