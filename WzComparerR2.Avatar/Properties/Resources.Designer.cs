@@ -119,5 +119,325 @@ namespace WzComparerR2.Avatar.Properties {
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
+        
+        /// <summary>
+        ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+        /// </summary>
+        internal static System.Drawing.Bitmap UtilDlgEx_MixHair_KR_BtColor_button_BtColor0_normal_0 {
+            get {
+                object obj = ResourceManager.GetObject("UtilDlgEx_MixHair_KR_BtColor_button_BtColor0_normal_0", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+        /// </summary>
+        internal static System.Drawing.Bitmap UtilDlgEx_MixHair_KR_BtColor_button_BtColor0_pressed_0 {
+            get {
+                object obj = ResourceManager.GetObject("UtilDlgEx_MixHair_KR_BtColor_button_BtColor0_pressed_0", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+        /// </summary>
+        internal static System.Drawing.Bitmap UtilDlgEx_MixHair_KR_BtColor_button_BtColor1_normal_0 {
+            get {
+                object obj = ResourceManager.GetObject("UtilDlgEx_MixHair_KR_BtColor_button_BtColor1_normal_0", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+        /// </summary>
+        internal static System.Drawing.Bitmap UtilDlgEx_MixHair_KR_BtColor_button_BtColor1_pressed_0 {
+            get {
+                object obj = ResourceManager.GetObject("UtilDlgEx_MixHair_KR_BtColor_button_BtColor1_pressed_0", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+        /// </summary>
+        internal static System.Drawing.Bitmap UtilDlgEx_MixHair_KR_BtColor_button_BtColor2_normal_0 {
+            get {
+                object obj = ResourceManager.GetObject("UtilDlgEx_MixHair_KR_BtColor_button_BtColor2_normal_0", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+        /// </summary>
+        internal static System.Drawing.Bitmap UtilDlgEx_MixHair_KR_BtColor_button_BtColor2_pressed_0 {
+            get {
+                object obj = ResourceManager.GetObject("UtilDlgEx_MixHair_KR_BtColor_button_BtColor2_pressed_0", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+        /// </summary>
+        internal static System.Drawing.Bitmap UtilDlgEx_MixHair_KR_BtColor_button_BtColor3_normal_0 {
+            get {
+                object obj = ResourceManager.GetObject("UtilDlgEx_MixHair_KR_BtColor_button_BtColor3_normal_0", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+        /// </summary>
+        internal static System.Drawing.Bitmap UtilDlgEx_MixHair_KR_BtColor_button_BtColor3_pressed_0 {
+            get {
+                object obj = ResourceManager.GetObject("UtilDlgEx_MixHair_KR_BtColor_button_BtColor3_pressed_0", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+        /// </summary>
+        internal static System.Drawing.Bitmap UtilDlgEx_MixHair_KR_BtColor_button_BtColor4_normal_0 {
+            get {
+                object obj = ResourceManager.GetObject("UtilDlgEx_MixHair_KR_BtColor_button_BtColor4_normal_0", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+        /// </summary>
+        internal static System.Drawing.Bitmap UtilDlgEx_MixHair_KR_BtColor_button_BtColor4_pressed_0 {
+            get {
+                object obj = ResourceManager.GetObject("UtilDlgEx_MixHair_KR_BtColor_button_BtColor4_pressed_0", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+        /// </summary>
+        internal static System.Drawing.Bitmap UtilDlgEx_MixHair_KR_BtColor_button_BtColor5_normal_0 {
+            get {
+                object obj = ResourceManager.GetObject("UtilDlgEx_MixHair_KR_BtColor_button_BtColor5_normal_0", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+        /// </summary>
+        internal static System.Drawing.Bitmap UtilDlgEx_MixHair_KR_BtColor_button_BtColor5_pressed_0 {
+            get {
+                object obj = ResourceManager.GetObject("UtilDlgEx_MixHair_KR_BtColor_button_BtColor5_pressed_0", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+        /// </summary>
+        internal static System.Drawing.Bitmap UtilDlgEx_MixHair_KR_BtColor_button_BtColor6_normal_0 {
+            get {
+                object obj = ResourceManager.GetObject("UtilDlgEx_MixHair_KR_BtColor_button_BtColor6_normal_0", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+        /// </summary>
+        internal static System.Drawing.Bitmap UtilDlgEx_MixHair_KR_BtColor_button_BtColor6_pressed_0 {
+            get {
+                object obj = ResourceManager.GetObject("UtilDlgEx_MixHair_KR_BtColor_button_BtColor6_pressed_0", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+        /// </summary>
+        internal static System.Drawing.Bitmap UtilDlgEx_MixHair_KR_BtColor_button_BtColor7_normal_0 {
+            get {
+                object obj = ResourceManager.GetObject("UtilDlgEx_MixHair_KR_BtColor_button_BtColor7_normal_0", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+        /// </summary>
+        internal static System.Drawing.Bitmap UtilDlgEx_MixHair_KR_BtColor_button_BtColor7_pressed_0 {
+            get {
+                object obj = ResourceManager.GetObject("UtilDlgEx_MixHair_KR_BtColor_button_BtColor7_pressed_0", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+        /// </summary>
+        internal static System.Drawing.Bitmap UtilDlgEx_MixLens_KR_BtColor_button_BtColor0_normal_0 {
+            get {
+                object obj = ResourceManager.GetObject("UtilDlgEx_MixLens_KR_BtColor_button_BtColor0_normal_0", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+        /// </summary>
+        internal static System.Drawing.Bitmap UtilDlgEx_MixLens_KR_BtColor_button_BtColor0_pressed_0 {
+            get {
+                object obj = ResourceManager.GetObject("UtilDlgEx_MixLens_KR_BtColor_button_BtColor0_pressed_0", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+        /// </summary>
+        internal static System.Drawing.Bitmap UtilDlgEx_MixLens_KR_BtColor_button_BtColor1_normal_0 {
+            get {
+                object obj = ResourceManager.GetObject("UtilDlgEx_MixLens_KR_BtColor_button_BtColor1_normal_0", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+        /// </summary>
+        internal static System.Drawing.Bitmap UtilDlgEx_MixLens_KR_BtColor_button_BtColor1_pressed_0 {
+            get {
+                object obj = ResourceManager.GetObject("UtilDlgEx_MixLens_KR_BtColor_button_BtColor1_pressed_0", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+        /// </summary>
+        internal static System.Drawing.Bitmap UtilDlgEx_MixLens_KR_BtColor_button_BtColor2_normal_0 {
+            get {
+                object obj = ResourceManager.GetObject("UtilDlgEx_MixLens_KR_BtColor_button_BtColor2_normal_0", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+        /// </summary>
+        internal static System.Drawing.Bitmap UtilDlgEx_MixLens_KR_BtColor_button_BtColor2_pressed_0 {
+            get {
+                object obj = ResourceManager.GetObject("UtilDlgEx_MixLens_KR_BtColor_button_BtColor2_pressed_0", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+        /// </summary>
+        internal static System.Drawing.Bitmap UtilDlgEx_MixLens_KR_BtColor_button_BtColor3_normal_0 {
+            get {
+                object obj = ResourceManager.GetObject("UtilDlgEx_MixLens_KR_BtColor_button_BtColor3_normal_0", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+        /// </summary>
+        internal static System.Drawing.Bitmap UtilDlgEx_MixLens_KR_BtColor_button_BtColor3_pressed_0 {
+            get {
+                object obj = ResourceManager.GetObject("UtilDlgEx_MixLens_KR_BtColor_button_BtColor3_pressed_0", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+        /// </summary>
+        internal static System.Drawing.Bitmap UtilDlgEx_MixLens_KR_BtColor_button_BtColor4_normal_0 {
+            get {
+                object obj = ResourceManager.GetObject("UtilDlgEx_MixLens_KR_BtColor_button_BtColor4_normal_0", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+        /// </summary>
+        internal static System.Drawing.Bitmap UtilDlgEx_MixLens_KR_BtColor_button_BtColor4_pressed_0 {
+            get {
+                object obj = ResourceManager.GetObject("UtilDlgEx_MixLens_KR_BtColor_button_BtColor4_pressed_0", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+        /// </summary>
+        internal static System.Drawing.Bitmap UtilDlgEx_MixLens_KR_BtColor_button_BtColor5_normal_0 {
+            get {
+                object obj = ResourceManager.GetObject("UtilDlgEx_MixLens_KR_BtColor_button_BtColor5_normal_0", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+        /// </summary>
+        internal static System.Drawing.Bitmap UtilDlgEx_MixLens_KR_BtColor_button_BtColor5_pressed_0 {
+            get {
+                object obj = ResourceManager.GetObject("UtilDlgEx_MixLens_KR_BtColor_button_BtColor5_pressed_0", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+        /// </summary>
+        internal static System.Drawing.Bitmap UtilDlgEx_MixLens_KR_BtColor_button_BtColor6_normal_0 {
+            get {
+                object obj = ResourceManager.GetObject("UtilDlgEx_MixLens_KR_BtColor_button_BtColor6_normal_0", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+        /// </summary>
+        internal static System.Drawing.Bitmap UtilDlgEx_MixLens_KR_BtColor_button_BtColor6_pressed_0 {
+            get {
+                object obj = ResourceManager.GetObject("UtilDlgEx_MixLens_KR_BtColor_button_BtColor6_pressed_0", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+        /// </summary>
+        internal static System.Drawing.Bitmap UtilDlgEx_MixLens_KR_BtColor_button_BtColor7_normal_0 {
+            get {
+                object obj = ResourceManager.GetObject("UtilDlgEx_MixLens_KR_BtColor_button_BtColor7_normal_0", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+        /// </summary>
+        internal static System.Drawing.Bitmap UtilDlgEx_MixLens_KR_BtColor_button_BtColor7_pressed_0 {
+            get {
+                object obj = ResourceManager.GetObject("UtilDlgEx_MixLens_KR_BtColor_button_BtColor7_pressed_0", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
     }
 }

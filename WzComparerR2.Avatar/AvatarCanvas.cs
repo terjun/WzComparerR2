@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Collections.ObjectModel;
 using System.Drawing;
+using System.Linq;
 using WzComparerR2.WzLib;
 using WzComparerR2.CharaSim;
 
@@ -620,8 +621,8 @@ namespace WzComparerR2.Avatar
         public Bone CreateFrame(ActionFrame bodyAction, ActionFrame faceAction, ActionFrame tamingAction)
         {
             //获取所有部件
-            Wz_Node[] playerNodes = LinkPlayerParts(bodyAction, faceAction);
-            Wz_Node[] tamingNodes = LinkTamingParts(tamingAction);
+            Tuple<Wz_Node, int>[] playerNodes = LinkPlayerParts(bodyAction, faceAction);
+            Tuple<Wz_Node, int>[] tamingNodes = LinkTamingParts(tamingAction);
 
             //根骨骼 作为角色原点
             Bone bodyRoot = new Bone("@root");
@@ -694,13 +695,13 @@ namespace WzComparerR2.Avatar
             }
         }
 
-        private void CreateBone(Bone root, Wz_Node[] frameNodes, bool? bodyFace = null)
+        private void CreateBone(Bone root, Tuple<Wz_Node, int>[] frameNodes, bool? bodyFace = null)
         {
             bool face = true;
 
-            foreach (Wz_Node partNode in frameNodes)
+            foreach (Tuple<Wz_Node, int> partNode in frameNodes)
             {
-                Wz_Node linkPartNode = partNode;
+                Wz_Node linkPartNode = partNode.Item1;
                 while (linkPartNode.Value is Wz_Uol)
                 {
                     linkPartNode = linkPartNode.GetValue<Wz_Uol>().HandleUol(linkPartNode);
@@ -761,6 +762,12 @@ namespace WzComparerR2.Avatar
                         Skin skin = new Skin();
                         skin.Name = childNode.Text;
                         skin.Image = BitmapOrigin.CreateFromNode(linkNode, PluginBase.PluginManager.FindWz);
+
+                        if (partNode.Item2 != 100)
+                        {
+                            skin.Image = new BitmapOrigin(ChangeBitmapOpacity(skin.Image.Bitmap, partNode.Item2 / 100.0f), skin.Image.Origin);
+                        }
+
                         var zNode = linkNode.FindNodeByPath("z");
                         if (zNode != null)
                         {
@@ -1076,10 +1083,10 @@ namespace WzComparerR2.Avatar
             }
         }
 
-        private Wz_Node[] LinkPlayerParts(ActionFrame bodyAction, ActionFrame faceAction)
+        private Tuple<Wz_Node, int>[] LinkPlayerParts(ActionFrame bodyAction, ActionFrame faceAction)
         {
             //寻找所有部件
-            List<Wz_Node> partNode = new List<Wz_Node>();
+            List<Tuple<Wz_Node, int>> partNode = new List<Tuple<Wz_Node, int>>();
 
             //链接人
             if (this.Body != null && this.Head != null && bodyAction != null
@@ -1087,7 +1094,7 @@ namespace WzComparerR2.Avatar
             {
                 //身体
                 Wz_Node bodyNode = FindBodyActionNode(bodyAction);
-                partNode.Add(bodyNode);
+                partNode.Add(Tuple.Create(bodyNode, 100));
 
                 //计算面向
                 bool? face = bodyAction.Face; //扩展动作规定头部
@@ -1118,20 +1125,25 @@ namespace WzComparerR2.Avatar
                         headNode = FindActionFrameNode(this.Head.Node, headAction);
                     }
                 }
-                partNode.Add(headNode);
+                partNode.Add(Tuple.Create(headNode, 100));
 
                 //脸
                 if (this.Face != null && this.Face.Visible && faceAction != null)
                 {
                     if ((face ?? true) && !invisibleFace)
                     {
-                        partNode.Add(FindActionFrameNode(this.Face.Node, faceAction));
+                        partNode.Add(Tuple.Create(FindActionFrameNode(this.Face.Node, faceAction), 100));
+                        if (this.Face.IsMixing)
+                        {
+                            partNode.Add(Tuple.Create(FindActionFrameNode(this.Face.MixNodes[this.Face.MixColor], faceAction), this.Face.MixOpacity));
+                        }
                     }
                 }
                 //毛
                 if (headNode != null && this.Hair != null && this.Hair.Visible)
                 {
                     var hairNode = FindActionFrameNode(this.Hair.Node, bodyAction);
+                    var mixHairNode = FindActionFrameNode(this.Hair.MixNodes[this.Hair.MixColor], bodyAction);
                     if (hairNode == null)
                     {
                         string actName = this.GetHairActionName(bodyAction.Action, face);
@@ -1139,9 +1151,14 @@ namespace WzComparerR2.Avatar
                         {
                             ActionFrame hairAction = new ActionFrame() { Action = actName, Frame = 0 };
                             hairNode = FindActionFrameNode(this.Hair.Node, hairAction);
+                            mixHairNode = FindActionFrameNode(this.Hair.MixNodes[this.Hair.MixColor], hairAction);
                         }  
                     }
-                    partNode.Add(hairNode);
+                    partNode.Add(Tuple.Create(hairNode, 100));
+                    if (this.Hair.IsMixing)
+                    {
+                        partNode.Add(Tuple.Create(mixHairNode, this.Hair.MixOpacity));
+                    }
                 }
                 //其他部件
                 for (int i = 4; i < 16; i++)
@@ -1152,29 +1169,29 @@ namespace WzComparerR2.Avatar
                         if (i == 12 && Gear.GetGearType(part.ID.Value) == GearType.cashWeapon) //点装武器
                         {
                             var wpNode = part.Node.FindNodeByPath(this.WeaponType.ToString());
-                            partNode.Add(FindActionFrameNode(wpNode, bodyAction));
+                            partNode.Add(Tuple.Create(FindActionFrameNode(wpNode, bodyAction), 100));
                         }
                         else if (i == 14) //脸
                         {
                             if (face ?? true)
                             {
-                                partNode.Add(FindActionFrameNode(part.Node, faceAction));
+                                partNode.Add(Tuple.Create(FindActionFrameNode(part.Node, faceAction), 100));
                             }
                         }
                         else //其他部件
                         {
-                            partNode.Add(FindActionFrameNode(part.Node, bodyAction));
+                            partNode.Add(Tuple.Create(FindActionFrameNode(part.Node, bodyAction), 100));
                         }
                     }
                 }
             }
 
-            partNode.RemoveAll(node => node == null);
+            partNode.RemoveAll(node => node.Item1 == null);
 
             return partNode.ToArray();
         }
 
-        private Wz_Node[] LinkTamingParts(ActionFrame tamingAction)
+        private Tuple<Wz_Node, int>[] LinkTamingParts(ActionFrame tamingAction)
         {
             List<Wz_Node> partNode = new List<Wz_Node>();
 
@@ -1191,7 +1208,7 @@ namespace WzComparerR2.Avatar
 
             partNode.RemoveAll(node => node == null);
 
-            return partNode.ToArray();
+            return partNode.Select(node => Tuple.Create(node, 100)).ToArray();
         }
 
         private Wz_Node FindBodyActionNode(ActionFrame actionFrame)
@@ -1503,6 +1520,27 @@ namespace WzComparerR2.Avatar
                     mt1.m31 * mt2.m11 + mt1.m32 * mt2.m21 + mt2.m31,
                     mt1.m31 * mt2.m12 + mt1.m32 * mt2.m22 + mt2.m32);
             }
+        }
+
+        private Bitmap ChangeBitmapOpacity(Image originalImage, float opacity)
+        {
+            var attr = new System.Drawing.Imaging.ImageAttributes();
+            var matrix = new System.Drawing.Imaging.ColorMatrix(
+                new[] {
+                        new float[] { 1, 0, 0, 0, 0 },
+                        new float[] { 0, 1, 0, 0, 0 },
+                        new float[] { 0, 0, 1, 0, 0 },
+                        new float[] { 0, 0, 0, opacity, 0 },
+                        new float[] { 0, 0, 0, 0, 1 },
+                    });
+            attr.SetColorMatrix(matrix);
+
+            Bitmap newImage = new Bitmap(originalImage.Width, originalImage.Height);
+            using (Graphics graphics = Graphics.FromImage(newImage))
+            {
+                graphics.DrawImage(originalImage, new Rectangle(0, 0, newImage.Width, newImage.Height), 0, 0, originalImage.Width, originalImage.Height, GraphicsUnit.Pixel, attr);
+            }
+            return newImage;
         }
     }
 }

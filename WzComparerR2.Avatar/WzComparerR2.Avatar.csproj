@@ -126,6 +126,102 @@
     <Content Include="Resources\export.png" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Resources\UtilDlgEx_MixHair_KR.BtColor.button_BtColor0.normal.0.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\UtilDlgEx_MixHair_KR.BtColor.button_BtColor0.pressed.0.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\UtilDlgEx_MixHair_KR.BtColor.button_BtColor1.normal.0.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\UtilDlgEx_MixHair_KR.BtColor.button_BtColor1.pressed.0.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\UtilDlgEx_MixHair_KR.BtColor.button_BtColor2.normal.0.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\UtilDlgEx_MixHair_KR.BtColor.button_BtColor2.pressed.0.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\UtilDlgEx_MixHair_KR.BtColor.button_BtColor3.normal.0.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\UtilDlgEx_MixHair_KR.BtColor.button_BtColor3.pressed.0.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\UtilDlgEx_MixHair_KR.BtColor.button_BtColor4.normal.0.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\UtilDlgEx_MixHair_KR.BtColor.button_BtColor4.pressed.0.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\UtilDlgEx_MixHair_KR.BtColor.button_BtColor5.normal.0.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\UtilDlgEx_MixHair_KR.BtColor.button_BtColor5.pressed.0.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\UtilDlgEx_MixHair_KR.BtColor.button_BtColor6.normal.0.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\UtilDlgEx_MixHair_KR.BtColor.button_BtColor6.pressed.0.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\UtilDlgEx_MixHair_KR.BtColor.button_BtColor7.normal.0.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\UtilDlgEx_MixHair_KR.BtColor.button_BtColor7.pressed.0.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\UtilDlgEx_MixLens_KR.BtColor.button_BtColor0.normal.0.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\UtilDlgEx_MixLens_KR.BtColor.button_BtColor0.pressed.0.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\UtilDlgEx_MixLens_KR.BtColor.button_BtColor1.normal.0.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\UtilDlgEx_MixLens_KR.BtColor.button_BtColor1.pressed.0.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\UtilDlgEx_MixLens_KR.BtColor.button_BtColor2.normal.0.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\UtilDlgEx_MixLens_KR.BtColor.button_BtColor2.pressed.0.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\UtilDlgEx_MixLens_KR.BtColor.button_BtColor3.normal.0.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\UtilDlgEx_MixLens_KR.BtColor.button_BtColor3.pressed.0.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\UtilDlgEx_MixLens_KR.BtColor.button_BtColor4.normal.0.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\UtilDlgEx_MixLens_KR.BtColor.button_BtColor4.pressed.0.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\UtilDlgEx_MixLens_KR.BtColor.button_BtColor5.normal.0.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\UtilDlgEx_MixLens_KR.BtColor.button_BtColor5.pressed.0.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\UtilDlgEx_MixLens_KR.BtColor.button_BtColor6.normal.0.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\UtilDlgEx_MixLens_KR.BtColor.button_BtColor6.pressed.0.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\UtilDlgEx_MixLens_KR.BtColor.button_BtColor7.normal.0.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\UtilDlgEx_MixLens_KR.BtColor.button_BtColor7.pressed.0.png" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\WzComparerR2.Common\WzComparerR2.Common.csproj">
       <Project>{818060bc-404c-470a-94b3-5160716c5247}</Project>
       <Name>WzComparerR2.Common</Name>

@@ -11,6 +11,7 @@ using System.Windows.Forms;
 using DevComponents.DotNetBar;
 using DevComponents.Editors;
 using DevComponents.DotNetBar.Controls;
+using WzComparerR2.CharaSim;
 using WzComparerR2.Common;
 using WzComparerR2.WzLib;
 using WzComparerR2.PluginBase;
@@ -393,6 +394,10 @@ namespace WzComparerR2.Avatar.UI
                 if (part != null && part.Visible)
                 {
                     partsID[i] = (part.IsSkill ? "s" : "") + part.ID.ToString();
+                    if (part.IsMixing)
+                    {
+                        partsID[i] += "+" + part.MixColor + "*" + part.MixOpacity;
+                    }
                 }
             }
             return string.Join(",", partsID);
@@ -540,25 +545,23 @@ namespace WzComparerR2.Avatar.UI
             {
                 if (part != null)
                 {
-                    var btn = new AvatarPartButtonItem();
-                    var stringLinker = this.PluginEntry.Context.DefaultStringLinker;
-                    StringResult sr;
-                    string text;
-                    if (part.ID != null && (stringLinker.StringEqp.TryGetValue(part.ID.Value, out sr) || stringLinker.StringSkill.TryGetValue(part.ID.Value, out sr) || stringLinker.StringItem.TryGetValue(part.ID.Value, out sr)))
-                    {
-                        text = string.Format("{0}\r\n{1}{2}", sr.Name, part.IsSkill ? "s" : "", part.ID);
-                    }
-                    else
-                    {
-                        text = string.Format("{0}\r\n{1}", "(null)", part.ID == null ? "-" : part.ID.ToString());
-                    }
-                    btn.Text = text;
+                    var btn = new AvatarPartButtonItem(part.ID.Value, part.IsMixing ? part.MixColor : (int?)null, part.IsMixing ? part.MixOpacity : (int?)null);
+                    this.SetButtonText(part, btn);
                     btn.SetIcon(part.Icon.Bitmap);
                     btn.Tag = part;
                     btn.Checked = part.Visible;
                     btn.btnItemShow.Click += BtnItemShow_Click;
                     btn.btnItemDel.Click += BtnItemDel_Click;
                     btn.CheckedChanged += Btn_CheckedChanged;
+                    btn.rdoMixColor0.CheckedChanged += RadioMixColor0_CheckedChanged;
+                    btn.rdoMixColor1.CheckedChanged += RadioMixColor1_CheckedChanged;
+                    btn.rdoMixColor2.CheckedChanged += RadioMixColor2_CheckedChanged;
+                    btn.rdoMixColor3.CheckedChanged += RadioMixColor3_CheckedChanged;
+                    btn.rdoMixColor4.CheckedChanged += RadioMixColor4_CheckedChanged;
+                    btn.rdoMixColor5.CheckedChanged += RadioMixColor5_CheckedChanged;
+                    btn.rdoMixColor6.CheckedChanged += RadioMixColor6_CheckedChanged;
+                    btn.rdoMixColor7.CheckedChanged += RadioMixColor7_CheckedChanged;
+                    btn.sliderMixRatio.ValueChanged += SliderMixRatio_ValueChanged;
                     itemPanel1.Items.Add(btn);
                 }
             }
@@ -605,6 +608,159 @@ namespace WzComparerR2.Avatar.UI
                     this.UpdateDisplay();
                 }
             }
+        }
+
+        private void RadioMixColor0_CheckedChanged(object sender, EventArgs e)
+        {
+            if ((sender as CheckBoxItem).Checked)
+            {
+                RadioMixColor_CheckedChanged(sender, 0);
+            }
+        }
+
+        private void RadioMixColor1_CheckedChanged(object sender, EventArgs e)
+        {
+            if ((sender as CheckBoxItem).Checked)
+            {
+                RadioMixColor_CheckedChanged(sender, 1);
+            }
+        }
+
+        private void RadioMixColor2_CheckedChanged(object sender, EventArgs e)
+        {
+            if ((sender as CheckBoxItem).Checked)
+            {
+                RadioMixColor_CheckedChanged(sender, 2);
+            }
+        }
+
+        private void RadioMixColor3_CheckedChanged(object sender, EventArgs e)
+        {
+            if ((sender as CheckBoxItem).Checked)
+            {
+                RadioMixColor_CheckedChanged(sender, 3);
+            }
+        }
+
+        private void RadioMixColor4_CheckedChanged(object sender, EventArgs e)
+        {
+            if ((sender as CheckBoxItem).Checked)
+            {
+                RadioMixColor_CheckedChanged(sender, 4);
+            }
+        }
+
+        private void RadioMixColor5_CheckedChanged(object sender, EventArgs e)
+        {
+            if ((sender as CheckBoxItem).Checked)
+            {
+                RadioMixColor_CheckedChanged(sender, 5);
+            }
+        }
+
+        private void RadioMixColor6_CheckedChanged(object sender, EventArgs e)
+        {
+            if ((sender as CheckBoxItem).Checked)
+            {
+                RadioMixColor_CheckedChanged(sender, 6);
+            }
+        }
+
+        private void RadioMixColor7_CheckedChanged(object sender, EventArgs e)
+        {
+            if ((sender as CheckBoxItem).Checked)
+            {
+                RadioMixColor_CheckedChanged(sender, 7);
+            }
+        }
+
+        private void RadioMixColor_CheckedChanged(object sender, int mixColor)
+        {
+            var btn = (sender as BaseItem).Parent as AvatarPartButtonItem;
+            if (btn != null)
+            {
+                var part = btn.Tag as AvatarPart;
+                if (part != null)
+                {
+                    part.MixColor = mixColor;
+                    this.UpdateDisplay();
+                    this.SetButtonText(part, btn);
+                }
+            }
+        }
+
+        private void SliderMixRatio_ValueChanged(object sender, EventArgs e)
+        {
+            var slider = sender as SliderItem;
+            var btn = (sender as BaseItem).Parent as AvatarPartButtonItem;
+            if (btn != null)
+            {
+                var part = btn.Tag as AvatarPart;
+                if (part != null)
+                {
+                    part.MixOpacity = slider.Value;
+                    this.UpdateDisplay();
+                    this.SetButtonText(part, btn);
+                }
+            }
+        }
+
+        private void SetButtonText(AvatarPart part, AvatarPartButtonItem btn)
+        {
+            var stringLinker = this.PluginEntry.Context.DefaultStringLinker;
+            StringResult sr;
+            string text;
+            if (part.ID != null && (stringLinker.StringEqp.TryGetValue(part.ID.Value, out sr) || stringLinker.StringSkill.TryGetValue(part.ID.Value, out sr) || stringLinker.StringItem.TryGetValue(part.ID.Value, out sr)))
+            {
+                text = string.Format("{0}\r\n{1}{2}", sr.Name, part.IsSkill ? "s" : "", part.ID);
+                if (part.IsMixing)
+                {
+                    text = string.Format("{0} ( {1} {2} : {3} {4} )\r\n{5}+{6}*{7}",
+                        Regex.Replace(sr.Name, "^([^ ]+색 )?", "믹스 "),
+                        GetColorName(part.ID.Value),
+                        100 - part.MixOpacity,
+                        GetMixColorName(part.MixColor, part.ID.Value),
+                        part.MixOpacity,
+                        part.ID,
+                        part.MixColor,
+                        part.MixOpacity);
+                }
+            }
+            else
+            {
+                text = string.Format("{0}\r\n{1}", "(null)", part.ID == null ? "-" : part.ID.ToString());
+            }
+            btn.Text = text;
+            btn.NeedRecalcSize = true;
+            btn.Refresh();
+        }
+
+        private string GetColorName(int ID)
+        {
+            GearType type = Gear.GetGearType(ID);
+            if (Gear.IsFace(type))
+            {
+                return GetMixColorName(ID / 100 % 10, ID);
+            }
+            if (Gear.IsHair(type))
+            {
+                return GetMixColorName(ID % 10, ID);
+            }
+            return null;
+        }
+
+        private string GetMixColorName(int mixColor, int baseID)
+        {
+            GearType type = Gear.GetGearType(baseID);
+            if (Gear.IsFace(type))
+            {
+                return AvatarPartButtonItem.LensColors[mixColor];
+            }
+            if (Gear.IsHair(type))
+            {
+                return AvatarPartButtonItem.HairColors[mixColor];
+            }
+            return null;
         }
 
         private void FillBodyActionFrame()
@@ -1316,7 +1472,7 @@ namespace WzComparerR2.Avatar.UI
         private void LoadCode(string code, int loadType)
         {
             //解析
-            var matches = Regex.Matches(code, @"s?(\d+)([,\s]|$)");
+            var matches = Regex.Matches(code, @"s?(\d+)(\+([0-7])\*(\d{1,2}))?([,\s]|$)");
             if (matches.Count <= 0)
             {
                 MessageBoxEx.Show("아이템 코드에 해당되는 아이템이 없습니다.", "오류");
@@ -1361,6 +1517,11 @@ namespace WzComparerR2.Avatar.UI
                     if (imgNode != null)
                     {
                         var part = this.avatar.AddPart(imgNode);
+                        if (m.Groups.Count >= 4 && Int32.TryParse(m.Result("$3"), out int mixColor) && Int32.TryParse(m.Result("$4"), out int mixOpacity))
+                        {
+                            part.MixColor = mixColor;
+                            part.MixOpacity = mixOpacity;
+                        }
                         OnNewPartAdded(part);
                         continue;
                     }
