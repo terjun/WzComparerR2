@@ -263,7 +263,7 @@
             this.labelX2.Name = "labelX2";
             this.labelX2.Size = new System.Drawing.Size(68, 18);
             this.labelX2.TabIndex = 7;
-            this.labelX2.Text = "wz版本验证";
+            this.labelX2.Text = "Wz 버전 확인";
             // 
             // FrmOptions
             // 
