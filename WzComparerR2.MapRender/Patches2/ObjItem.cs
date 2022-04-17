@@ -40,9 +40,12 @@ namespace WzComparerR2.MapRender.Patches2
             if (item.Tags != null)
             {
                 int questID;
-                if (int.TryParse(item.Tags, out questID) || (item.Tags.StartsWith("q") && int.TryParse(item.Tags.Substring(1), out questID)))
+                foreach (string tag in item.Tags)
                 {
-                    item.Quest.Add(Tuple.Create(questID, 1));
+                    if (int.TryParse(tag, out questID) || (tag.StartsWith("q") && int.TryParse(tag.Substring(1), out questID)))
+                    {
+                        item.Quest.Add(Tuple.Create(questID, 1));
+                    }
                 }
             }
             if (node.Nodes["quest"] != null)
