@@ -397,6 +397,10 @@ namespace WzComparerR2.MapRender
                     }
                     item.GraphTargetMap = temp;
                 }
+                else
+                {
+                    item.GraphTargetMap = new List<string>();
+                }
                 Scene.Fly.Portal.Slots.Add(item);
             }
         }
