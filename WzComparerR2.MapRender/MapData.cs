@@ -305,9 +305,9 @@ namespace WzComparerR2.MapRender
             }
         }
 
-        private string GetGraphNum(int? mapID)
+        private string GetGraphNum(string mapID)
         {
-            var ftwo = int.Parse(mapID.ToString().Substring(0, 2));
+            var ftwo = int.Parse(mapID.Substring(0, 2));
             if (ftwo == 99) return "99";
             if (ftwo == 80) return "10";
             if (ftwo == 12) return "10";
@@ -350,16 +350,16 @@ namespace WzComparerR2.MapRender
 
         private void LoadPortal(Wz_Node portalNode)
         {
-            int? mapID = this.ID;
+            string mapID = this.ID.ToString().PadLeft(9, '0');
             var portalTooltipNode = PluginManager.FindWz("String/ToolTipHelp.img/PortalTooltip/" + mapID);
             var graphMapNode = PluginManager.FindWz("Map/Map/Graph.img/" + GetGraphNum(mapID) + "/" + mapID + "/portal");
 
             foreach (var node in portalNode.Nodes)
             {
-
                 var item = PortalItem.LoadFromNode(node);
                 item.Name = $"portal_{node.Text}";
                 item.Index = int.Parse(node.Text);
+
                 //加载tooltip
                 if (portalTooltipNode != null && !string.IsNullOrEmpty(item.PName))
                 {
