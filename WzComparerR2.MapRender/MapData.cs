@@ -324,53 +324,10 @@ namespace WzComparerR2.MapRender
             }
         }
 
-        private string GetGraphNum(string mapID)
-        {
-            var ftwo = int.Parse(mapID.Substring(0, 2));
-            if (ftwo == 99) return "99";
-            if (ftwo == 80) return "10";
-            if (ftwo == 12) return "10";
-            if (ftwo >= 92) return "92";
-            if (ftwo >= 91) return "91";
-            if (ftwo >= 90) return "90";
-            if (ftwo >= 87) return "87";
-            if (ftwo >= 86) return "86";
-            if (ftwo >= 74) return "74";
-            if (ftwo >= 70) return "70";
-            if (ftwo >= 68) return "68";
-            if (ftwo >= 61) return "61";
-            if (ftwo >= 60) return "60";
-            if (ftwo >= 55) return "55";
-            if (ftwo >= 54) return "54";
-            if (ftwo >= 51) return "51";
-            if (ftwo >= 50) return "50";
-            if (ftwo >= 45) return "45";
-            if (ftwo >= 40) return "40";
-            if (ftwo >= 39) return "39";
-            if (ftwo >= 31) return "31";
-            if (ftwo >= 30) return "30";
-            if (ftwo >= 28) return "28";
-            if (ftwo >= 27) return "27";
-            if (ftwo >= 26) return "26";
-            if (ftwo >= 25) return "25";
-            if (ftwo >= 24) return "24";
-            if (ftwo >= 23) return "23";
-            if (ftwo >= 22) return "22";
-            if (ftwo >= 20) return "20";
-            if (ftwo >= 19) return "19";
-            if (ftwo >= 16) return "16";
-            if (ftwo >= 15) return "15";
-            if (ftwo >= 14) return "14";
-            if (ftwo >= 13) return "13";
-            if (ftwo >= 11) return "11";
-            if (ftwo >= 10) return "10";
-            return "00";
-        }
-
         private void LoadPortal(Wz_Node portalNode)
         {
             string mapID = this.ID.ToString().PadLeft(9, '0');
-            var portalTooltipNode = PluginManager.FindWz("String/ToolTipHelp.img/PortalTooltip/" + mapID);
+            var portalTooltipNode = PluginManager.FindWz("String/ToolTipHelp.img/PortalTooltip/" + this.ID);
             var graphMapNode = PluginManager.FindWz(string.Format("Map/Map/Graph.img/{0:D2}/{1}/portal", this.ID / 10000000, mapID));
             if (graphMapNode == null)
             {
@@ -410,26 +367,20 @@ namespace WzComparerR2.MapRender
                     }
                 }
                 //Graph.img에 따른 이동경로 출력
+                item.GraphTargetMap = new List<int>();
                 if (graphMapNode != null)
                 {
-                    List<string> temp = new List<string>();
-
                     foreach (var graphPortalNode in graphMapNode.Nodes)
                     {
                         if (item.Index == graphPortalNode.Nodes["portalNum"].GetValueEx<int>())
                         {
-                            var targetMapID = graphPortalNode.Nodes["targetMap"].GetValueEx<string>(null);
+                            var targetMapID = graphPortalNode.Nodes["targetMap"].GetValueEx<int>();
                             if (targetMapID != null)
                             {
-                                temp.Add(targetMapID);
+                                item.GraphTargetMap.Add(targetMapID.Value);
                             }
                         }
                     }
-                    item.GraphTargetMap = temp;
-                }
-                else
-                {
-                    item.GraphTargetMap = new List<string>();
                 }
                 Scene.Fly.Portal.Slots.Add(item);
             }

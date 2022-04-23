@@ -225,6 +225,10 @@ namespace WzComparerR2.MapRender
                 {
                     MoveToPortal(portal.ToMap, portal.ToName, portal.PName);
                 }
+                else if (portal.GraphTargetMap.Count == 1)
+                {
+                    MoveToPortal(portal.GraphTargetMap[0], "sp", portal.PName);
+                }
             }
             else if (item is IlluminantClusterItem)
             {

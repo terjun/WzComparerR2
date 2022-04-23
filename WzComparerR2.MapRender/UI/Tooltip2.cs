@@ -219,7 +219,7 @@ namespace WzComparerR2.MapRender.UI
                     foreach (var targetMapID in item.GraphTargetMap)
                     {
                         sb.Append(targetMapID);
-                        this.StringLinker?.StringMap.TryGetValue(int.Parse(targetMapID), out sr);
+                        this.StringLinker?.StringMap.TryGetValue(targetMapID, out sr);
                         string toMapName = sr?.Name;
                         sb.Append("(").Append(sr?.Name ?? "null").AppendLine(")");
                     }
