@@ -543,12 +543,9 @@ namespace WzComparerR2.MapRender
                     this.ui.ChatBox.AppendTextHelp(@"/history [maxCount] 방문 기록 보기");
                     this.ui.ChatBox.AppendTextHelp(@"/minimap 设置迷你地图状态。");
                     this.ui.ChatBox.AppendTextHelp(@"/scene 设置地图场景显示状态。");
-                    this.ui.ChatBox.AppendTextHelp(@"/questlist 관련된 퀘스트 목록 보기");
-                    this.ui.ChatBox.AppendTextHelp(@"/questset (questID) (questState) 해당 퀘스트의 상태 설정");
-                    this.ui.ChatBox.AppendTextHelp(@"/datelist 관련된 시간 목록 보기");
-                    this.ui.ChatBox.AppendTextHelp(@"/dateset (yyyyMMddHHmm) 렌더링 기준 시각 설정");
-                    this.ui.ChatBox.AppendTextHelp(@"/multibgmlist Multi BGM 목록 보기");
-                    this.ui.ChatBox.AppendTextHelp(@"/multibgmset (multiBgm) 해당 Multi BGM 재생");
+                    this.ui.ChatBox.AppendTextHelp(@"/quest 퀘스트 설정");
+                    this.ui.ChatBox.AppendTextHelp(@"/date 시각 설정");
+                    this.ui.ChatBox.AppendTextHelp(@"/multibgm Multi BGM 설정");
                     break;
 
                 case "/map":
@@ -736,109 +733,137 @@ namespace WzComparerR2.MapRender
                     }
                     break;
 
-                case "/questlist":
-                    List<Tuple<int, int>> questList = this?.mapData.Scene.Back.Slots.SelectMany(item => ((BackItem)item).Quest)
-                        .Concat(this?.mapData.Scene.Layers.Nodes.SelectMany(l => ((LayerNode)l).Obj.Slots.SelectMany(item => ((ObjItem)item).Quest)))
-                        .Concat(this?.mapData.Scene.Npcs.SelectMany(item => item.Quest))
-                        .Concat(this?.mapData.Scene.Front.Slots.SelectMany(item => ((BackItem)item).Quest))
-                        .Concat(this?.mapData.Scene.Effect.Slots.Where(item => item is ParticleItem).SelectMany(item => ((ParticleItem)item).Quest))
-                        .Concat(this?.mapData.Scene.Effect.Slots.Where(item => item is ParticleItem).SelectMany(item => ((ParticleItem)item).SubItems).SelectMany(item => item.Quest))
-                        .Distinct().ToList();
-                    this.ui.ChatBox.AppendTextHelp($"관련된 퀘스트 개수: ({questList.Count()})");
-                    foreach (Tuple<int, int> item in questList)
+                case "/quest":
+                    switch (arguments.ElementAtOrDefault(1))
                     {
-                        Wz_Node questInfoNode = PluginBase.PluginManager.FindWz($@"Quest\QuestInfo.img\{item.Item1}");
-                        string questName = questInfoNode?.Nodes["name"].GetValueEx<string>(null) ?? "null";
-                        this.ui.ChatBox.AppendTextHelp($"  {questName}({item.Item1}) / {item.Item2}");
+                        case "list":
+                            List<Tuple<int, int>> questList = this?.mapData.Scene.Back.Slots.SelectMany(item => ((BackItem)item).Quest)
+                                .Concat(this?.mapData.Scene.Layers.Nodes.SelectMany(l => ((LayerNode)l).Obj.Slots.SelectMany(item => ((ObjItem)item).Quest)))
+                                .Concat(this?.mapData.Scene.Npcs.SelectMany(item => item.Quest))
+                                .Concat(this?.mapData.Scene.Front.Slots.SelectMany(item => ((BackItem)item).Quest))
+                                .Concat(this?.mapData.Scene.Effect.Slots.Where(item => item is ParticleItem).SelectMany(item => ((ParticleItem)item).Quest))
+                                .Concat(this?.mapData.Scene.Effect.Slots.Where(item => item is ParticleItem).SelectMany(item => ((ParticleItem)item).SubItems).SelectMany(item => item.Quest))
+                                .Distinct().ToList();
+                            this.ui.ChatBox.AppendTextHelp($"관련된 퀘스트 개수: ({questList.Count()})");
+                            foreach (Tuple<int, int> item in questList)
+                            {
+                                Wz_Node questInfoNode = PluginBase.PluginManager.FindWz($@"Quest\QuestInfo.img\{item.Item1}");
+                                string questName = questInfoNode?.Nodes["name"].GetValueEx<string>(null) ?? "null";
+                                this.ui.ChatBox.AppendTextHelp($"  {questName}({item.Item1}) / {item.Item2}");
+                            }
+                            break;
+
+                        case "set":
+                            if (Int32.TryParse(arguments.ElementAtOrDefault(2), out int questID) && questID > -1 && Int32.TryParse(arguments.ElementAtOrDefault(3), out int questState) && questState >= -1 && questState <= 2)
+                            {
+                                this.patchVisibility.SetVisible(questID, questState);
+                                this.mapData.PreloadResource(resLoader);
+                                Wz_Node questInfoNode = PluginBase.PluginManager.FindWz($@"Quest\QuestInfo.img\{questID}");
+                                string questName = questInfoNode?.Nodes["name"].GetValueEx<string>(null) ?? "null";
+                                this.ui.ChatBox.AppendTextSystem($"{questName}({questID})의 상태를 {questState}(으)로 변경했습니다.");
+                            }
+                            else
+                            {
+                                this.ui.ChatBox.AppendTextSystem($"정확한 퀘스트 상태를 입력하세요.");
+                            }
+                            break;
+
+                        default:
+                            this.ui.ChatBox.AppendTextHelp(@"/quest list 관련된 퀘스트 목록 보기");
+                            this.ui.ChatBox.AppendTextHelp(@"/quest set (questID) (questState) 해당 퀘스트의 상태 설정");
+                            break;
                     }
                     break;
 
-                case "/questset":
-                    int questID, questState;
-                    if (arguments.Length > 2 && Int32.TryParse(arguments[1], out questID) && questID > -1 && Int32.TryParse(arguments[2], out questState) && questState >= -1 && questState <= 2)
+                case "/date":
+                    switch (arguments.ElementAtOrDefault(1))
                     {
-                        this.patchVisibility.SetVisible(questID, questState);
-                        this.mapData.PreloadResource(resLoader);
-                        Wz_Node questInfoNode = PluginBase.PluginManager.FindWz($@"Quest\QuestInfo.img\{questID}");
-                        string questName = questInfoNode?.Nodes["name"].GetValueEx<string>(null) ?? "null";
-                        this.ui.ChatBox.AppendTextSystem($"{questName}({questID})의 상태를 {questState}(으)로 변경했습니다.");
-                    }
-                    else
-                    {
-                        this.ui.ChatBox.AppendTextSystem($"정확한 퀘스트 상태를 입력하세요.");
+                        case "list":
+                            List<Tuple<long, long>> dateList = this?.mapData.Scene.Npcs.SelectMany(item => item.Date).ToList();
+                            this.ui.ChatBox.AppendTextHelp($"관련된 시각 개수: ({dateList.Count()})");
+                            foreach (Tuple<long, long> item in dateList)
+                            {
+                                this.ui.ChatBox.AppendTextHelp($"  {item.Item1} - {item.Item2}");
+                            }
+                            break;
+
+                        case "set":
+                            if (DateTime.TryParseExact(arguments.ElementAtOrDefault(2), "yyyyMMddHHmm", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out DateTime datetime))
+                            {
+                                this.mapData.Date = datetime;
+                                this.mapData.PreloadResource(resLoader);
+                                this.ui.ChatBox.AppendTextSystem($"렌더링 기준 시각을 {datetime}(으)로 변경했습니다.");
+                            }
+                            else
+                            {
+                                this.ui.ChatBox.AppendTextSystem($"정확한 시각을 입력하세요.");
+                            }
+                            break;
+
+                        default:
+                            this.ui.ChatBox.AppendTextHelp(@"/date list 관련된 시간 목록 보기");
+                            this.ui.ChatBox.AppendTextHelp(@"/date set (yyyyMMddHHmm) 렌더링 기준 시각 설정");
+                            break;
                     }
                     break;
 
-                case "/datelist":
-                    List<Tuple<long, long>> dateList = this?.mapData.Scene.Npcs.SelectMany(item => item.Date).ToList();
-                    this.ui.ChatBox.AppendTextHelp($"관련된 시각 개수: ({dateList.Count()})");
-                    foreach (Tuple<long, long> item in dateList)
+                case "/multibgm":
+                    switch (arguments.ElementAtOrDefault(1))
                     {
-                        this.ui.ChatBox.AppendTextHelp($"  {item.Item1} - {item.Item2}");
-                    }
-                    break;
+                        case "list":
+                            if (!string.IsNullOrEmpty(this.mapData.Bgm))
+                            {
+                                var path = new List<string>() { "Sound" };
+                                path.AddRange(this.mapData.Bgm.Split('/'));
+                                path[1] += ".img";
+                                var bgmNode = PluginBase.PluginManager.FindWz(string.Join("\\", path));
+                                var subNodes = bgmNode?.Nodes ?? new Wz_Node.WzNodeCollection(null);
+                                this.ui.ChatBox.AppendTextHelp($"Multi BGM 개수: {subNodes.Count}");
+                                foreach (Wz_Node subNode in subNodes)
+                                {
+                                    this.ui.ChatBox.AppendTextHelp($"  {subNode.Text}");
+                                }
+                            }
+                            else
+                            {
+                                this.ui.ChatBox.AppendTextHelp($"Multi BGM 개수: 0");
+                            }
+                            break;
 
-                case "/dateset":
-                    DateTime datetime;
-                    if (arguments.Length > 1 && DateTime.TryParseExact(arguments[1], "yyyyMMddHHmm", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out datetime))
-                    {
-                        this.mapData.Date = datetime;
-                        this.mapData.PreloadResource(resLoader);
-                        this.ui.ChatBox.AppendTextSystem($"렌더링 기준 시각을 {datetime}(으)로 변경했습니다.");
-                    }
-                    else
-                    {
-                        this.ui.ChatBox.AppendTextSystem($"정확한 시각을 입력하세요.");
-                    }
-                    break;
+                        case "set":
+                            Music multiBgm = LoadBgm(this.mapData, arguments.ElementAtOrDefault(2));
+                            if (multiBgm != null)
+                            {
+                                this.ui.ChatBox.AppendTextSystem($"Multi BGM을 {arguments.ElementAtOrDefault(2)}(으)로 변경했습니다.");
 
-                case "/multibgmlist":
-                    if (!string.IsNullOrEmpty(this.mapData.Bgm))
-                    {
-                        var path = new List<string>() { "Sound" };
-                        path.AddRange(this.mapData.Bgm.Split('/'));
-                        path[1] += ".img";
-                        var bgmNode = PluginBase.PluginManager.FindWz(string.Join("\\", path));
-                        var subNodes = bgmNode?.Nodes ?? new Wz_Node.WzNodeCollection(null);
-                        this.ui.ChatBox.AppendTextHelp($"Multi BGM 개수: {subNodes.Count}");
-                        foreach (Wz_Node subNode in subNodes)
-                        {
-                            this.ui.ChatBox.AppendTextHelp($"  {subNode.Text}");
-                        }
-                    }
-                    else
-                    {
-                        this.ui.ChatBox.AppendTextHelp($"Multi BGM 개수: 0");
-                    }
-                    break;
+                                Task bgmTask = null;
+                                bool willSwitchBgm = this.bgm != multiBgm;
+                                if (willSwitchBgm && this.bgm != null) //准备切换
+                                {
+                                    bgmTask = FadeOut(this.bgm, 1000);
+                                }
 
-                case "/multibgmset":
-                    Music multiBgm;
-                    if (arguments.Length > 1 && (multiBgm = LoadBgm(this.mapData, arguments[1])) != null)
-                    {
-                        this.ui.ChatBox.AppendTextSystem($"Multi BGM을 {arguments[1]}(으)로 변경했습니다.");
+                                if (bgmTask != null)
+                                {
+                                    await bgmTask;
+                                }
 
-                        Task bgmTask = null;
-                        bool willSwitchBgm = this.bgm != multiBgm;
-                        if (willSwitchBgm && this.bgm != null) //准备切换
-                        {
-                            bgmTask = FadeOut(this.bgm, 1000);
-                        }
+                                this.bgm = multiBgm;
+                                if (willSwitchBgm && this.bgm != null)
+                                {
+                                    bgmTask = FadeIn(this.bgm, 1000);
+                                }
+                            }
+                            else
+                            {
+                                this.ui.ChatBox.AppendTextHelp($"정확한 Multi BGM을 입력하세요.");
+                            }
+                            break;
 
-                        if (bgmTask != null)
-                        {
-                            await bgmTask;
-                        }
-
-                        this.bgm = multiBgm;
-                        if (willSwitchBgm && this.bgm != null)
-                        {
-                            bgmTask = FadeIn(this.bgm, 1000);
-                        }
-                    }
-                    else
-                    {
-                        this.ui.ChatBox.AppendTextHelp($"정확한 Multi BGM을 입력하세요.");
+                        default:
+                            this.ui.ChatBox.AppendTextHelp(@"/multibgm list Multi BGM 목록 보기");
+                            this.ui.ChatBox.AppendTextHelp(@"/multibgm set (multiBgm) 해당 Multi BGM 재생");
+                            break;
                     }
                     break;
 
