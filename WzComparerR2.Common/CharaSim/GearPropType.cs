@@ -185,6 +185,7 @@ namespace WzComparerR2.CharaSim
         BTSLabel,
         android,
         noLookChange,
+        tucIgnoreForPotential,
 
         gatherTool_incSkillLevel = 2000,
         gatherTool_incSpeed,

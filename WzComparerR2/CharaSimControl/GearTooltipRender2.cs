@@ -592,6 +592,17 @@ namespace WzComparerR2.CharaSimControl
                 hasPart2 = true;
             }
 
+            if (!Gear.CanPotential)
+            {
+                TextRenderer.DrawText(g, "잠재능력 설정 불가", GearGraphics.EquipDetailFont, new Point(13, picH), Color.White, TextFormatFlags.NoPadding);
+                picH += 15;
+            }
+            if (Gear.Props.TryGetValue(GearPropType.fixedPotential, out value) && value > 0)
+            {
+                TextRenderer.DrawText(g, "에디셔널 잠재능력 설정 불가", GearGraphics.EquipDetailFont, new Point(13, picH), Color.White, TextFormatFlags.NoPadding);
+                picH += 15;
+            }
+
             //星星锤子
             if (hasTuc && Gear.Hammer > -1 && Gear.GetMaxStar() > 0)
             {
