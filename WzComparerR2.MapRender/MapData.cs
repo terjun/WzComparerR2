@@ -352,7 +352,17 @@ namespace WzComparerR2.MapRender
         {
             string mapID = this.ID.ToString().PadLeft(9, '0');
             var portalTooltipNode = PluginManager.FindWz("String/ToolTipHelp.img/PortalTooltip/" + mapID);
-            var graphMapNode = PluginManager.FindWz("Map/Map/Graph.img/" + GetGraphNum(mapID) + "/" + mapID + "/portal");
+            var graphMapNode = PluginManager.FindWz(string.Format("Map/Map/Graph.img/{0:D2}/{1}/portal", this.ID / 10000000, mapID));
+            if (graphMapNode == null)
+            {
+                foreach (var graphImgSubNode in PluginManager.FindWz("Map/Map/Graph.img").Nodes)
+                {
+                    if (graphImgSubNode.Nodes[mapID] != null)
+                    {
+                        graphMapNode = graphImgSubNode.Nodes[mapID].Nodes["portal"];
+                    }
+                }
+            }
 
             foreach (var node in portalNode.Nodes)
             {
