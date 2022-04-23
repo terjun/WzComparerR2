@@ -541,8 +541,8 @@ namespace WzComparerR2.MapRender
                     this.ui.ChatBox.AppendTextHelp(@"/back 이전 맵으로 이동");
                     this.ui.ChatBox.AppendTextHelp(@"/home 마을로 귀환");
                     this.ui.ChatBox.AppendTextHelp(@"/history [maxCount] 방문 기록 보기");
-                    this.ui.ChatBox.AppendTextHelp(@"/minimap 设置迷你地图状态。");
-                    this.ui.ChatBox.AppendTextHelp(@"/scene 设置地图场景显示状态。");
+                    this.ui.ChatBox.AppendTextHelp(@"/minimap 미니맵 설정");
+                    this.ui.ChatBox.AppendTextHelp(@"/scene 장면 설정");
                     this.ui.ChatBox.AppendTextHelp(@"/quest 퀘스트 설정");
                     this.ui.ChatBox.AppendTextHelp(@"/date 시각 설정");
                     this.ui.ChatBox.AppendTextHelp(@"/multibgm Multi BGM 설정");
@@ -612,7 +612,7 @@ namespace WzComparerR2.MapRender
                     switch (arguments.ElementAtOrDefault(1))
                     {
                         case "list":
-                            this.ui.ChatBox.AppendTextHelp($"minimap: {string.Join(", ", canvasList?.Keys)}");
+                            this.ui.ChatBox.AppendTextHelp($"미니맵: {string.Join(", ", canvasList?.Keys)}");
                             break;
 
                         case "set":
@@ -620,17 +620,17 @@ namespace WzComparerR2.MapRender
                             if (canvasList != null && canvasList.TryGetValue(canvasName, out Texture2D canvas))
                             {
                                 this.ui.Minimap.MinimapCanvas = engine.Renderer.CreateTexture(canvas);
-                                this.ui.ChatBox.AppendTextHelp($"设置迷你地图：{canvasName}");
+                                this.ui.ChatBox.AppendTextHelp($"미니맵 변경 완료: {canvasName}");
                             }
                             else
                             {
-                                this.ui.ChatBox.AppendTextSystem($"找不到迷你地图：{canvasName}");
+                                this.ui.ChatBox.AppendTextSystem($"미니맵을 찾을 수 없습니다: {canvasName}");
                             }
                             break;
 
                         default:
-                            this.ui.ChatBox.AppendTextHelp(@"/minimap list 显示所有迷你地图名称。");
-                            this.ui.ChatBox.AppendTextHelp(@"/minimap set (canvasName) 设置迷你地图。");
+                            this.ui.ChatBox.AppendTextHelp(@"/minimap list 미니맵 목록 보기");
+                            this.ui.ChatBox.AppendTextHelp(@"/minimap set (canvasName) 해당 미니맵으로 변경");
                             break;
                     }
                     break;
@@ -649,14 +649,14 @@ namespace WzComparerR2.MapRender
                                         .Distinct()
                                         .OrderBy(tag => tag)
                                         .ToList();
-                                    this.ui.ChatBox.AppendTextHelp($"当前地图tags: {string.Join(", ", mapTags)}");
+                                    this.ui.ChatBox.AppendTextHelp($"태그 목록: {string.Join(", ", mapTags)}");
                                     break;
                                 case "info":
                                     var visibleTags = this.patchVisibility.TagsVisible.Where(kv => kv.Value).Select(kv => kv.Key).ToList();
                                     var hiddenTags = this.patchVisibility.TagsVisible.Where(kv => !kv.Value).Select(kv => kv.Key).ToList();
-                                    this.ui.ChatBox.AppendTextHelp($"默认tag显示状态: {this.patchVisibility.DefaultTagVisible}");
-                                    this.ui.ChatBox.AppendTextHelp($"显示tags: {string.Join(", ", visibleTags)}");
-                                    this.ui.ChatBox.AppendTextHelp($"隐藏tags: {string.Join(", ", hiddenTags)}");
+                                    this.ui.ChatBox.AppendTextHelp($"태그 기본 표시 상태: {this.patchVisibility.DefaultTagVisible}");
+                                    this.ui.ChatBox.AppendTextHelp($"보인 태그: {string.Join(", ", visibleTags)}");
+                                    this.ui.ChatBox.AppendTextHelp($"숨긴 태그: {string.Join(", ", hiddenTags)}");
                                     break;
                                 case "show":
                                     string[] tags = arguments.Skip(3).ToArray();
@@ -666,11 +666,11 @@ namespace WzComparerR2.MapRender
                                         {
                                             this.patchVisibility.SetTagVisible(tag, true);
                                         }
-                                        this.ui.ChatBox.AppendTextHelp($"显示tag: {string.Join(", ", tags)}");
+                                        this.ui.ChatBox.AppendTextHelp($"태그 보이기 완료: {string.Join(", ", tags)}");
                                     }
                                     else
                                     {
-                                        this.ui.ChatBox.AppendTextSystem("没有输入tagName。");
+                                        this.ui.ChatBox.AppendTextSystem("태그를 입력해주세요.");
                                     }
                                     break;
                                 case "hide":
@@ -681,11 +681,11 @@ namespace WzComparerR2.MapRender
                                         {
                                             this.patchVisibility.SetTagVisible(tag, false);
                                         }
-                                        this.ui.ChatBox.AppendTextHelp($"隐藏tag: {string.Join(", ", tags)}");
+                                        this.ui.ChatBox.AppendTextHelp($"태그 숨기기 완료: {string.Join(", ", tags)}");
                                     }
                                     else
                                     {
-                                        this.ui.ChatBox.AppendTextSystem("没有输入tagName。");
+                                        this.ui.ChatBox.AppendTextSystem("태그를 입력해주세요.");
                                     }
                                     break;
                                 case "reset":
@@ -693,42 +693,42 @@ namespace WzComparerR2.MapRender
                                     if (tags.Length > 0)
                                     {
                                         this.patchVisibility.ResetTagVisible(tags);
-                                        this.ui.ChatBox.AppendTextHelp($"重置tag: {string.Join(", ", tags)}");
+                                        this.ui.ChatBox.AppendTextHelp($"태그 표시 상태 재설정 완료: {string.Join(", ", tags)}");
                                     }
                                     else
                                     {
-                                        this.ui.ChatBox.AppendTextSystem("没有输入tagName。");
+                                        this.ui.ChatBox.AppendTextSystem("태그를 입력해주세요.");
                                     }
                                     break;
                                 case "reset-all":
                                     this.patchVisibility.ResetTagVisible();
-                                    this.ui.ChatBox.AppendTextHelp($"重置已设置tag。");
+                                    this.ui.ChatBox.AppendTextHelp($"모든 태그 표시 상태 재설정 완료");
                                     break;
                                 case "set-default":
                                     if (bool.TryParse(arguments.ElementAtOrDefault(3), out bool isVisible))
                                     {
                                         this.patchVisibility.DefaultTagVisible = isVisible;
-                                        this.ui.ChatBox.AppendTextHelp($"设置tag默认显示状态：{isVisible}");
+                                        this.ui.ChatBox.AppendTextHelp($"태그 기본 표시 상태 설정 완료: {isVisible}");
                                     }
                                     else
                                     {
-                                        this.ui.ChatBox.AppendTextSystem("参数错误。");
+                                        this.ui.ChatBox.AppendTextSystem("정확한 기본값을 입력하세요.");
                                     }
                                     break;
                                 default:
-                                    this.ui.ChatBox.AppendTextHelp(@"/scene tag list 获取场景中所有物体的tag。");
-                                    this.ui.ChatBox.AppendTextHelp(@"/scene tag info 获取当前自定义显示状态。");
-                                    this.ui.ChatBox.AppendTextHelp(@"/scene tag show (tagName)... 显示tagName的物体。");
-                                    this.ui.ChatBox.AppendTextHelp(@"/scene tag hide (tagName)... 隐藏tagName的物体。");
-                                    this.ui.ChatBox.AppendTextHelp(@"/scene tag reset (tagName)... 重置指定tagName的显示状态。");
-                                    this.ui.ChatBox.AppendTextHelp(@"/scene tag reset-all 重置所有物体为显示状态。");
-                                    this.ui.ChatBox.AppendTextHelp(@"/scene tag set-default (true/false) 设置所有tag的默认显示状态。");
+                                    this.ui.ChatBox.AppendTextHelp(@"/scene tag list 태그 목록 보기");
+                                    this.ui.ChatBox.AppendTextHelp(@"/scene tag info 현재 태그 표시 상태 확인");
+                                    this.ui.ChatBox.AppendTextHelp(@"/scene tag show (tagName)... 해당 태그 보이기");
+                                    this.ui.ChatBox.AppendTextHelp(@"/scene tag hide (tagName)... 해당 태그 숨기기");
+                                    this.ui.ChatBox.AppendTextHelp(@"/scene tag reset (tagName)... 해당 태그 표시 상태 재설정");
+                                    this.ui.ChatBox.AppendTextHelp(@"/scene tag reset-all 모든 태그 표시 상태 재설정");
+                                    this.ui.ChatBox.AppendTextHelp(@"/scene tag set-default (true/false) 태그 기본 표시 상태 설정");
                                     break;
                             }
                             break;
 
                         default:
-                            this.ui.ChatBox.AppendTextHelp(@"/scene tag 设置tag相关的显示状态。");
+                            this.ui.ChatBox.AppendTextHelp(@"/scene tag 태그 표시 상태 설정");
                             break;
                     }
                     break;

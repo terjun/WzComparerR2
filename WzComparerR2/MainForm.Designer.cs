@@ -2393,7 +2393,7 @@
             this.chkEnableDarkMode.Size = new System.Drawing.Size(135, 23);
             this.chkEnableDarkMode.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
             this.chkEnableDarkMode.TabIndex = 9;
-            this.chkEnableDarkMode.Text = "EnableDarkMode";
+            this.chkEnableDarkMode.Text = "다크 모드 활성화";
             // 
             // chkOutputRemovedImg
             // 
