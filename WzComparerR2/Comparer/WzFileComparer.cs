@@ -59,6 +59,22 @@ namespace WzComparerR2.Comparer
             }
         }
 
+        public IEnumerable<CompareDifference> Compare(Wz_Node nodeNew, WzVirtualNode nodeOld)
+        {
+            _currentWzImg.Clear();
+            foreach (var node in nodeOld.LinkNodes)
+                AppendContext(node);
+
+            var cmp = Compare(
+               nodeNew == null ? null : new WzNodeAgent(nodeNew).Children,
+               nodeOld == null ? null : new WzVirtualNodeAgent(nodeOld).Children);
+
+            foreach (var diff in cmp)
+            {
+                yield return diff;
+            }
+        }
+
         private void AppendContext(Wz_Node node)
         {
             Wz_Image wzImg = node.GetNodeWzImage();

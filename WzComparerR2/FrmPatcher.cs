@@ -397,7 +397,7 @@ namespace WzComparerR2
                         //&& e.Part.Type == 1
                         && Path.GetExtension(e.Part.FileName).Equals(".wz", StringComparison.OrdinalIgnoreCase)
                         && !Path.GetFileName(e.Part.FileName).Equals("list.wz", StringComparison.OrdinalIgnoreCase)
-                        && typedParts[e.Part.WzType].Count == ((WzPatcher)sender).PatchParts.Where(part => part.WzType == e.Part.WzType).Count())
+                        && typedParts[e.Part.WzType].Count == ((WzPatcher)sender).PatchParts.Where(part => part.Type != 2 && part.WzType == e.Part.WzType).Count())
                     {
                         Wz_Structure wznew = new Wz_Structure();
                         Wz_Structure wzold = new Wz_Structure();
@@ -444,11 +444,11 @@ namespace WzComparerR2
                             }
                             else
                             {
-                                foreach (PatchPartContext part in typedParts[e.Part.WzType])
+                                foreach (PatchPartContext part in ((WzPatcher)sender).PatchParts.Where(part => part.WzType == e.Part.WzType))
                                 {
-                                    if (part.Type != 0)
+                                    if (part.Type != 0 && File.Exists(Path.Combine(msFolder, part.FileName)))
                                     {
-                                        wzold.Load(part.OldFilePath, false);
+                                        wzold.Load(Path.Combine(msFolder, part.FileName), false);
                                     }
                                 }
                             }
@@ -479,6 +479,10 @@ namespace WzComparerR2
                             {
                                 comparer.EasyCompareWzStructures(wznew, wzold, this.compareFolder, sw);
                             }
+                            else if (isNewKMST1125WzFormat && !isOldKMST1125WzFormat)
+                            {
+                                comparer.EasyCompareWzStructuresToWzFiles(wznew.wz_files[0], wzold, this.compareFolder, sw);
+                            }
                             else
                             {
                                 // TODO
@@ -486,7 +490,7 @@ namespace WzComparerR2
                         }
                         catch (Exception ex)
                         {
-                            txtPatchState.AppendText(ex.ToString());
+                            AppendStateText(ex.ToString());
                         }
                         finally
                         {

@@ -184,6 +184,33 @@ namespace WzComparerR2.Comparer
             }
         }
 
+        public void EasyCompareWzStructuresToWzFiles(Wz_File fileNew, Wz_Structure structureOld, string outputDir, StreamWriter index)
+        {
+            var virtualNodeOld = RebuildWzStructure(structureOld);
+            WzFileComparer comparer = new WzFileComparer();
+            comparer.IgnoreWzFile = true;
+
+            var dictOld = SplitVirtualNode(virtualNodeOld);
+
+            //寻找共同wzType
+            var wzTypeList = dictOld.Select(kv => kv.Key)
+                .Where(wzType => dictOld.ContainsKey(wzType));
+
+            CreateStyleSheet(outputDir);
+
+            foreach (var wzType in wzTypeList)
+            {
+                var vNodeOld = dictOld[wzType];
+                var cmp = comparer.Compare(fileNew.Node, vNodeOld);
+                OutputFile(new List<Wz_File>() { fileNew },
+                    vNodeOld.LinkNodes.Select(node => node.Value).OfType<Wz_File>().ToList(),
+                    wzType,
+                    cmp.ToList(),
+                    outputDir,
+                    index);
+            }
+        }
+
         private WzVirtualNode RebuildWzFile(Wz_File wzFile)
         {
             //分组
