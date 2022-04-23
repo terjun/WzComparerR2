@@ -67,6 +67,7 @@ namespace WzComparerR2
                 Tuple.Create("[KMS] 패치와 함께 비교시 오류 제보", "@lowrt"),
                 Tuple.Create("[KMS] 아바타 모두 내보내기 오류 제보", "@pid011"),
                 Tuple.Create("[KMS] 툴팁 관련 기능 추가, 오류 수정 및 제보", "@sh-cho"),
+                Tuple.Create("[KMS] 아바타 믹스 색 조합 방법 구현", "snlt7d"),
             })
             {
                 string nodeTxt = string.Format("{0} <font color=\"#808080\">{1}</font>",
