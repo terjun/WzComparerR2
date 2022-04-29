@@ -592,7 +592,7 @@ namespace WzComparerR2.CharaSimControl
                 hasPart2 = true;
             }
 
-            if (!Gear.CanPotential)
+            if (!Gear.CanPotential && !Gear.Cash)
             {
                 TextRenderer.DrawText(g, "잠재능력 설정 불가", GearGraphics.EquipDetailFont, new Point(13, picH), Color.White, TextFormatFlags.NoPadding);
                 picH += 15;
