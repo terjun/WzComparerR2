@@ -411,7 +411,7 @@ namespace WzComparerR2.CharaSimControl
                 for (int i = 0; i < attrList.Count; i++)
                 {
                     var newStr = (attrStr != null ? (attrStr + ", ") : null) + attrList[i];
-                    if (TextRenderer.MeasureText(g, newStr, font, new Size(int.MaxValue, int.MaxValue), TextFormatFlags.NoPadding).Width > tooltip.Width - 7)
+                    if (TextRenderer.MeasureText(g, newStr, font, new Size(int.MaxValue, int.MaxValue), TextFormatFlags.NoPadding).Width > tooltip.Width - 7 || (attrList[i].Contains('\n') && attrStr != null))
                     {
                         TextRenderer.DrawText(g, attrStr, GearGraphics.ItemDetailFont, new Point(tooltip.Width, picH), ((SolidBrush)GearGraphics.OrangeBrush4).Color, TextFormatFlags.HorizontalCenter | TextFormatFlags.NoPadding);
                         picH += 16;
@@ -424,8 +424,12 @@ namespace WzComparerR2.CharaSimControl
                 }
                 if (!string.IsNullOrEmpty(attrStr))
                 {
-                    TextRenderer.DrawText(g, attrStr, GearGraphics.ItemDetailFont, new Point(tooltip.Width, picH), ((SolidBrush)GearGraphics.OrangeBrush4).Color, TextFormatFlags.HorizontalCenter | TextFormatFlags.NoPadding);
-                    picH += 16;
+                    foreach (string attrLine in attrStr.Split('\n'))
+                    {
+                        TextRenderer.DrawText(g, attrLine, GearGraphics.ItemDetailFont, new Point(tooltip.Width, picH), ((SolidBrush)GearGraphics.OrangeBrush4).Color, TextFormatFlags.HorizontalCenter | TextFormatFlags.NoPadding);
+                        picH += 19;
+                    }
+                    picH -= 3;
                 }
                 hasPart2 = true;
             }
@@ -979,7 +983,7 @@ namespace WzComparerR2.CharaSimControl
                 }
                 if (item.Props.TryGetValue(ItemPropType.sharableOnce, out value2) && value2 != 0)
                 {
-                    tags.AddRange(ItemStringHelper.GetItemPropString(ItemPropType.sharableOnce, value2).Split('\n'));
+                    tags.Add(ItemStringHelper.GetItemPropString(ItemPropType.sharableOnce, value2));
                 }
                 else
                 {
