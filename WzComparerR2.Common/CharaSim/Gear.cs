@@ -858,7 +858,7 @@ namespace WzComparerR2.CharaSim
                 gear.HasTuc = true;
                 gear.CanPotential = true;
             }
-            else if (Gear.SpecialCanPotential(gear.type) || Gear.IsSubWeapon(gear.type) || (gear.Props.TryGetValue(GearPropType.fixedPotential, out value) && value > 0) || (gear.Props.TryGetValue(GearPropType.tucIgnoreForPotential, out value) && value > 0))
+            else if (Gear.SpecialCanPotential(gear.type) || Gear.IsSubWeapon(gear.type) || (gear.Props.TryGetValue(GearPropType.tucIgnoreForPotential, out value) && value > 0))
             {
                 gear.CanPotential = true;
             }
