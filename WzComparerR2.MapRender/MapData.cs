@@ -331,7 +331,7 @@ namespace WzComparerR2.MapRender
             var graphMapNode = PluginManager.FindWz(string.Format("Map/Map/Graph.img/{0:D2}/{1}/portal", this.ID / 10000000, mapID));
             if (graphMapNode == null)
             {
-                foreach (var graphImgSubNode in PluginManager.FindWz("Map/Map/Graph.img").Nodes)
+                foreach (var graphImgSubNode in PluginManager.FindWz("Map/Map/Graph.img")?.Nodes ?? new Wz_Node.WzNodeCollection(null))
                 {
                     if (graphImgSubNode.Nodes[mapID] != null)
                     {
