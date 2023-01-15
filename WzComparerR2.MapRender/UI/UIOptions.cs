@@ -269,7 +269,7 @@ namespace WzComparerR2.MapRender.UI
 
             TextBlock lbl6 = new TextBlock();
             lbl6.VerticalAlignment = VerticalAlignment.Center;
-            lbl6.Text = "截图";
+            lbl6.Text = "스크린샷";
             lbl6.Foreground = Brushes.Yellow;
             Grid.SetRow(lbl6, 10);
             Grid.SetColumn(lbl6, 0);
@@ -287,7 +287,7 @@ namespace WzComparerR2.MapRender.UI
             lbl7.HorizontalAlignment = HorizontalAlignment.Center;
             lbl7.VerticalAlignment = VerticalAlignment.Center;
             lbl7.Padding = new Thickness(24, 0, 0, 0);
-            lbl7.Text = "背景色(argb)";
+            lbl7.Text = "배경색(ARGB)";
             pnl2.Children.Add(lbl7);
 
             TextBox tb1 = new TextBox();
