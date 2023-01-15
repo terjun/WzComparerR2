@@ -361,6 +361,9 @@ namespace WzComparerR2.CharaSim
                 case GearType.weaponBelt: return "웨폰 벨트";
 
                 case GearType.ornament: return "노리개";
+
+                case GearType.chakram: return "차크람";
+                case GearType.hexSeeker: return "헥스시커";
                 default: return null;
             }
         }
@@ -502,6 +505,9 @@ namespace WzComparerR2.CharaSim
                 case GearType.boxingSky: return GetExtraJobReqString(175);
 
                 case GearType.ornament: return GetExtraJobReqString(162);
+
+                case GearType.chakram:
+                case GearType.hexSeeker: return GetExtraJobReqString(154);
                 default: return null;
             }
         }
@@ -536,6 +542,7 @@ namespace WzComparerR2.CharaSim
                 case 142: return "키네시스 착용 가능";
                 case 151: return "아델 착용 가능";
                 case 152: return "일리움 착용 가능";
+                case 154: return "칼리 착용 가능";
                 case 155: return "아크 착용 가능";
                 case 162: return "라라 착용 가능";
                 case 164: return "호영 착용 가능";
@@ -853,6 +860,7 @@ namespace WzComparerR2.CharaSim
                 case 15000: return "일리움";
                 case 15001: return "아크";
                 case 15002: return "아델";
+                case 15003: return "칼리";
                 case 15100: return "아델(1차)";
                 case 15110: return "아델(2차)";
                 case 15111: return "아델(3차)";
@@ -861,6 +869,10 @@ namespace WzComparerR2.CharaSim
                 case 15210: return "일리움(2차)";
                 case 15211: return "일리움(3차)";
                 case 15212: return "일리움(4차)";
+                case 15400: return "칼리(1차)";
+                case 15410: return "칼리(2차)";
+                case 15411: return "칼리(3차)";
+                case 15412: return "칼리(4차)";
                 case 15500: return "아크(1차)";
                 case 15510: return "아크(2차)";
                 case 15511: return "아크(3차)";
