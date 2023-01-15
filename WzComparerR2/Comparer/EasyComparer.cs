@@ -697,7 +697,7 @@ namespace WzComparerR2.Comparer
             {
                 return "(img)";
             }
-            return Convert.ToString(value.Value);
+            return WebUtility.HtmlEncode(Convert.ToString(value.Value));
 
         }
 
