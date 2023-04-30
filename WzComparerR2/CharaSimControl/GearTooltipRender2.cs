@@ -799,6 +799,18 @@ namespace WzComparerR2.CharaSimControl
                 }
             }
 
+            if (Gear.Props.TryGetValue(GearPropType.Etuc, out value) && value > 0)
+            {
+                //分割线5号
+                if (hasPart2)
+                {
+                    g.DrawImage(res["dotline"].Image, 0, picH);
+                    picH += 8;
+                }
+                TextRenderer.DrawText(g, "익셉셔널 강화가 가능합니다. (최대 : " + value + "회)", GearGraphics.EquipDetailFont, new Point(13, picH), Color.White, TextFormatFlags.NoPadding);
+                picH += 23;
+            }
+
             //绘制desc
             List<string> desc = new List<string>();
             GearPropType[] descTypes = new GearPropType[]{

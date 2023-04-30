@@ -187,6 +187,7 @@ namespace WzComparerR2.CharaSim
         android,
         noLookChange,
         tucIgnoreForPotential,
+        Etuc,
 
         gatherTool_incSkillLevel = 2000,
         gatherTool_incSpeed,
