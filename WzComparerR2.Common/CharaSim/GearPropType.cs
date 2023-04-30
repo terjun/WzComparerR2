@@ -183,6 +183,7 @@ namespace WzComparerR2.CharaSim
         cantRepair,
         noPetEquipStatMoveItem,
         BTSLabel,
+        BLACKPINKLabel,
         android,
         noLookChange,
         tucIgnoreForPotential,
