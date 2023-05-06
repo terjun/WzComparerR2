@@ -35,6 +35,7 @@ namespace WzComparerR2.MapRender.UI
         public UIWorldMap WorldMap { get; private set; }
         public UITopBar TopBar { get; private set; }
         public UIChatBox ChatBox { get; private set; }
+        public UITeleport Teleport { get; private set; }
 
         private void InitializeComponents()
         {
@@ -78,6 +79,12 @@ namespace WzComparerR2.MapRender.UI
             chatBox.SetBinding(UIChatBox.TopProperty, new Binding(HeightProperty) { Source = this, Converter = UIHelper.CreateConverter((float height) => height - chatBox.Height) });
             this.ChatBox = chatBox;
             this.Windows.Add(chatBox);
+
+            var teleport = new UITeleport();
+            teleport.Parent = this;
+            teleport.Hide();
+            this.Teleport = teleport;
+            this.Windows.Add(teleport);
 
             ImageManager.Instance.AddImage(nameof(MRes.Basic_img_BtOK4_normal_0));
             ImageManager.Instance.AddImage(nameof(MRes.Basic_img_BtOK4_mouseOver_0));
