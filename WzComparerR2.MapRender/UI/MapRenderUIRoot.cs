@@ -83,6 +83,7 @@ namespace WzComparerR2.MapRender.UI
             var teleport = new UITeleport();
             teleport.Parent = this;
             teleport.Hide();
+            teleport.Visible += Teleport_Visible;
             this.Teleport = teleport;
             this.Windows.Add(teleport);
 
@@ -119,6 +120,13 @@ namespace WzComparerR2.MapRender.UI
             {
                 wnd.JumpToCurrentMap();
             }
+        }
+
+        private void Teleport_Visible(object sender, RoutedEventArgs e)
+        {
+            UITeleport wnd = sender as UITeleport;
+            wnd.Left = (int)Math.Max(0, (this.Width - wnd.Width) / 2);
+            wnd.Top = (int)Math.Max(0, (this.Height - wnd.Height) / 2);
         }
 
         public void LoadContent(object contentManager)
