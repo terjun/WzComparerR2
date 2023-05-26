@@ -231,11 +231,6 @@ namespace WzComparerR2.CharaSimControl
                 TextRenderer.DrawText(g, "BTS 라벨", GearGraphics.EquipDetailFont, new Point(261, picH), Color.FromArgb(187, 102, 238), TextFormatFlags.HorizontalCenter);
                 picH += 15;
             }
-            else if (Gear.Props.TryGetValue(GearPropType.BLACKPINKLabel, out value) && value > 0)
-            {
-                TextRenderer.DrawText(g, "BLACKPINK 라벨", GearGraphics.EquipDetailFont, new Point(261, picH), Color.FromArgb(255, 136, 170), TextFormatFlags.HorizontalCenter);
-                picH += 15;
-            }
 
             //额外属性
             var attrList = GetGearAttributeString();
@@ -347,11 +342,6 @@ namespace WzComparerR2.CharaSimControl
                 else if (Gear.Props.TryGetValue(GearPropType.BTSLabel, out value) && value > 0)
                 {
                     cashImg = Resource.CashShop_img_CashItem_label_10;
-                    cashOrigin = new Point(cashImg.Width, cashImg.Height);
-                }
-                else if (Gear.Props.TryGetValue(GearPropType.BLACKPINKLabel, out value) && value > 0)
-                {
-                    cashImg = Resource.CashShop_img_CashItem_label_11;
                     cashOrigin = new Point(cashImg.Width, cashImg.Height);
                 }
                 if (cashImg == null) //default cashImg
@@ -524,7 +514,7 @@ namespace WzComparerR2.CharaSimControl
             //  if (gear.Props.TryGetValue(GearPropType.attackSpeed, out value) && value > 0)
             if (!Gear.Cash && value > 0)
             {
-                TextRenderer.DrawText(g, "공격속도 : " + ItemStringHelper.GetAttackSpeedString(value),
+                TextRenderer.DrawText(g, "공격속도 : " + ItemStringHelper.GetAttackSpeedString(value) + (ShowSpeed ? (" (" + value + ")") : null),
                     GearGraphics.EquipDetailFont, new Point(13, picH), Color.White, TextFormatFlags.NoPadding);
                 picH += 15;
                 hasPart2 = true;
@@ -799,21 +789,10 @@ namespace WzComparerR2.CharaSimControl
                 }
             }
 
-            if (Gear.Props.TryGetValue(GearPropType.Etuc, out value) && value > 0)
-            {
-                //分割线5号
-                if (hasPart2)
-                {
-                    g.DrawImage(res["dotline"].Image, 0, picH);
-                    picH += 8;
-                }
-                TextRenderer.DrawText(g, "익셉셔널 강화가 가능합니다. (최대 : " + value + "회)", GearGraphics.EquipDetailFont, new Point(13, picH), Color.White, TextFormatFlags.NoPadding);
-                picH += 23;
-            }
-
             //绘制desc
             List<string> desc = new List<string>();
             GearPropType[] descTypes = new GearPropType[]{
+                GearPropType.cubeExBaseOptionLevel,
                 GearPropType.tradeAvailable,
                 GearPropType.accountShareTag,
                 GearPropType.jokerToSetItem,
@@ -1441,6 +1420,18 @@ namespace WzComparerR2.CharaSimControl
             int value;
             string extraReq = ItemStringHelper.GetExtraJobReqString(Gear.type) ??
                 (Gear.Props.TryGetValue(GearPropType.reqSpecJob, out value) ? ItemStringHelper.GetExtraJobReqString(value) : null);
+
+            Gear.Props.TryGetValue(GearPropType.reqJob2, out value);
+            if (Gear.type == GearType.fan && value == 99)
+            {
+                extraReq = "ハク着用可能";
+            }
+
+            if (Gear.type == GearType.bandfist && value == 190)
+            {
+                extraReq = "바키타 착용 가능";
+            }
+
             Image jobImage = extraReq == null ? Resource.UIToolTip_img_Item_Equip_Job_normal : Resource.UIToolTip_img_Item_Equip_Job_expand;
             g.DrawImage(jobImage, 12, picH);
 
