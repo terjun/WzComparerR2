@@ -138,6 +138,7 @@ namespace WzComparerR2.CharaSim
         reqJob,
         reqPOP,
         reqSpecJob,
+        reqJob2,
         reqWeekDay, //要求日子
         grade,
 
@@ -183,11 +184,11 @@ namespace WzComparerR2.CharaSim
         cantRepair,
         noPetEquipStatMoveItem,
         BTSLabel,
-        BLACKPINKLabel,
         android,
         noLookChange,
         tucIgnoreForPotential,
-        Etuc,
+        cubeExBaseOptionLevel,
+
 
         gatherTool_incSkillLevel = 2000,
         gatherTool_incSpeed,
