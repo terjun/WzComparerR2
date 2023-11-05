@@ -2982,7 +2982,7 @@
             this.chkHashPngFileName.Size = new System.Drawing.Size(115, 23);
             this.chkHashPngFileName.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
             this.chkHashPngFileName.TabIndex = 10;
-            this.chkHashPngFileName.Text = "HashPngFileName";
+            this.chkHashPngFileName.Text = "PNG 파일명 해시";
             // 
             // MainForm
             // 

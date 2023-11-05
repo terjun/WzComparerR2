@@ -590,7 +590,7 @@
             this.checkBoxX15.Size = new System.Drawing.Size(125, 18);
             this.checkBoxX15.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
             this.checkBoxX15.TabIndex = 10;
-            this.checkBoxX15.Text = "忽略公式求解错误";
+            this.checkBoxX15.Text = "계산 오류 무시";
             // 
             // FrmQuickViewSetting
             // 

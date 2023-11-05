@@ -2490,7 +2490,7 @@ namespace WzComparerR2
             {
                 SaveFileDialog dlg = new SaveFileDialog();
                 dlg.FileName = advTree3.SelectedNode.Text;
-                dlg.Filter = "*.*|*.*";
+                dlg.Filter = "모든 파일 (*.*)|*.*";
                 if (dlg.ShowDialog() == DialogResult.OK)
                 {
                     try
@@ -2514,11 +2514,11 @@ namespace WzComparerR2
                                 }
                             }
                         }
-                        this.labelItemStatus.Text = "保存成功。";
+                        this.labelItemStatus.Text = "파일 저장 완료";
                     }
                     catch (Exception ex)
                     {
-                        MessageBoxEx.Show("文件保存失败。\r\n" + ex.ToString(), "提示");
+                        MessageBoxEx.Show("파일 저장 실패\r\n" + ex.ToString(), "오류");
                     }
                 }
             }
