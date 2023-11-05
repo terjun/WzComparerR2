@@ -149,6 +149,8 @@ namespace WzComparerR2.CharaSim
 
                 case GearPropType.incARC: return "ARC : " + sign + value;
                 case GearPropType.incAUT: return "AUT : " + sign + value;
+
+                case GearPropType.Etuc: return "익셉셔널 강화가 가능합니다. (최대 : " + value + "회)";
                 default: return null;
             }
         }
@@ -366,6 +368,7 @@ namespace WzComparerR2.CharaSim
 
                 case GearType.chakram: return "차크람";
                 case GearType.hexSeeker: return "헥스시커";
+
                 default: return null;
             }
         }
@@ -377,23 +380,19 @@ namespace WzComparerR2.CharaSim
         /// <returns></returns>
         public static string GetAttackSpeedString(int attackSpeed)
         {
-            string str;
             switch (attackSpeed)
             {
                 case 2:
-                case 3: str = "매우빠름"; break;
+                case 3: return "매우빠름";
                 case 4:
-                case 5: str = "빠름"; break;
-                case 6: str = "보통"; break;
+                case 5: return "빠름";
+                case 6: return "보통";
                 case 7:
-                case 8: str = "느림"; break;
-                case 9: str = "매우느림"; break;
+                case 8: return "느림";
+                case 9: return "매우느림";
                 default:
-                    if (attackSpeed < 2) return "吃屎一样快";
-                    else if (attackSpeed > 9) return "吃屎一样慢";
-                    else return attackSpeed.ToString();
+                    return attackSpeed.ToString();
             }
-            return str + " (" + (10 - attackSpeed) + "단계)";
         }
 
         /// <summary>
