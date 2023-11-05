@@ -514,6 +514,7 @@ namespace WzComparerR2.MapRender
             var message = mapName + (last == 0 || last == 8 ? "" : "으") + "로 이동하시겠습니까?";
             MessageBox.Show(message, "", MessageBoxButton.OKCancel, callback, false);
         }
+
         private void Teleport_SelectedMapGo(object sender, UITeleport.SelectedMapGoEventArgs e)
         {
             int mapID = e.MapID;
