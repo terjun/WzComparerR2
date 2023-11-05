@@ -249,9 +249,11 @@ namespace WzComparerR2.CharaSimControl
 
             if (Skill.AddAttackToolTipDescSkill != 0)
             {
-                g.DrawLine(Pens.White, region.SplitterX1, picH, region.SplitterX2, picH);
-                picH += 9;
+                //delay rendering v6 splitter
+                splitterH.Add(picH);
+                picH += 15;
                 GearGraphics.DrawPlainText(g, "[콤비네이션 스킬]", GearGraphics.ItemDetailFont, Color.FromArgb(119, 204, 255), region.LevelDescLeft, region.TextRight, ref picH, 16);
+                picH += 4;
                 BitmapOrigin icon = new BitmapOrigin();
                 Wz_Node skillNode = PluginBase.PluginManager.FindWz(string.Format(@"Skill\{0}.img\skill\{1}", Skill.AddAttackToolTipDescSkill / 10000, Skill.AddAttackToolTipDescSkill));
                 if (skillNode != null)
@@ -261,7 +263,7 @@ namespace WzComparerR2.CharaSimControl
                 }
                 if (icon.Bitmap != null)
                 {
-                    g.DrawImage(icon.Bitmap, 10 - icon.Origin.X, picH + 32 - icon.Origin.Y);
+                    g.DrawImage(icon.Bitmap, 13 - icon.Origin.X, picH + 32 - icon.Origin.Y);
                 }
                 string skillName;
                 if (this.StringLinker != null && this.StringLinker.StringSkill.TryGetValue(Skill.AddAttackToolTipDescSkill, out sr))
@@ -275,14 +277,16 @@ namespace WzComparerR2.CharaSimControl
                 picH += 10;
                 GearGraphics.DrawString(g, skillName, GearGraphics.ItemDetailFont, region.LinkedSkillNameLeft, region.TextRight, ref picH, 16);
                 picH += 6;
-                picH += 8;
+                picH += 13;
             }
 
             if (Skill.AssistSkillLink != 0)
             {
-                g.DrawLine(Pens.White, region.SplitterX1, picH, region.SplitterX2, picH);
-                picH += 9;
-                GearGraphics.DrawPlainText(g, "[어시스트 스킬]", GearGraphics.ItemDetailFont, ((SolidBrush)GearGraphics.OrangeBrush).Color, region.LevelDescLeft, region.TextRight, ref picH, 16);
+                //delay rendering v6 splitter
+                splitterH.Add(picH);
+                picH += 15;
+                GearGraphics.DrawPlainText(g, "[어시스트 스킬]", GearGraphics.ItemDetailFont, GearGraphics.SkillSummaryOrangeTextColor, region.LevelDescLeft, region.TextRight, ref picH, 16);
+                picH += 4;
                 BitmapOrigin icon = new BitmapOrigin();
                 Wz_Node skillNode = PluginBase.PluginManager.FindWz(string.Format(@"Skill\{0}.img\skill\{1}", Skill.AssistSkillLink / 10000, Skill.AssistSkillLink));
                 if (skillNode != null)
@@ -292,7 +296,7 @@ namespace WzComparerR2.CharaSimControl
                 }
                 if (icon.Bitmap != null)
                 {
-                    g.DrawImage(icon.Bitmap, 10 - icon.Origin.X, picH + 32 - icon.Origin.Y);
+                    g.DrawImage(icon.Bitmap, 13 - icon.Origin.X, picH + 32 - icon.Origin.Y);
                 }
                 string skillName;
                 if (this.StringLinker != null && this.StringLinker.StringSkill.TryGetValue(Skill.AssistSkillLink, out sr))
@@ -306,7 +310,7 @@ namespace WzComparerR2.CharaSimControl
                 picH += 10;
                 GearGraphics.DrawString(g, skillName, GearGraphics.ItemDetailFont, region.LinkedSkillNameLeft, region.TextRight, ref picH, 16);
                 picH += 6;
-                picH += 8;
+                picH += 13;
             }
 
             List<string> skillDescEx = new List<string>();
@@ -444,8 +448,8 @@ namespace WzComparerR2.CharaSimControl
                 SplitterX1 = 4,
                 SplitterX2 = 424,
                 SkillDescLeft = 92,
-                LinkedSkillNameLeft = 46,
-                LevelDescLeft = 10,
+                LinkedSkillNameLeft = 49,
+                LevelDescLeft = 13,
                 TextRight = 411,
             };
         }
