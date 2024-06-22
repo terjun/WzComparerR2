@@ -163,6 +163,7 @@ namespace WzComparerR2.CharaSim
         accountShareTag,
         noPotential,
         fixedPotential,
+        exUpgradeChangeBlock,
         timeLimited,
         specialGrade,
         fixedGrade,
@@ -194,5 +195,6 @@ namespace WzComparerR2.CharaSim
         gatherTool_incSpeed,
         gatherTool_incNum,
         gatherTool_reqSkillLevel,
+        reqSpecJobs,
     }
 }
