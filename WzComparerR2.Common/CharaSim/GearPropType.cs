@@ -138,7 +138,6 @@ namespace WzComparerR2.CharaSim
         reqJob,
         reqPOP,
         reqSpecJob,
-        reqJob2,
         reqWeekDay, //要求日子
         grade,
 
@@ -163,7 +162,6 @@ namespace WzComparerR2.CharaSim
         accountShareTag,
         noPotential,
         fixedPotential,
-        exUpgradeChangeBlock,
         timeLimited,
         specialGrade,
         fixedGrade,
@@ -185,16 +183,16 @@ namespace WzComparerR2.CharaSim
         cantRepair,
         noPetEquipStatMoveItem,
         BTSLabel,
+        BLACKPINKLabel,
         android,
         noLookChange,
         tucIgnoreForPotential,
-        cubeExBaseOptionLevel,
-
+        Etuc,
+        CuttableCount,
 
         gatherTool_incSkillLevel = 2000,
         gatherTool_incSpeed,
         gatherTool_incNum,
         gatherTool_reqSkillLevel,
-        reqSpecJobs,
     }
 }

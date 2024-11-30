@@ -69,8 +69,8 @@ namespace WzComparerR2.CharaSim
                 case GearPropType.incINTr: return "INT : " + sign + value + "%";
                 case GearPropType.incLUK: return "LUK : " + sign + value;
                 case GearPropType.incLUKr: return "LUK : " + sign + value + "%";
-                case GearPropType.incAllStat: return "올스탯: " + sign + value;
-                case GearPropType.statR: return "올스탯: " + sign + value + "%";
+                case GearPropType.incAllStat: return "올스탯 : " + sign + value;
+                case GearPropType.statR: return "올스탯 : " + sign + value + "%";
                 case GearPropType.incMHP: return "최대 HP : " + sign + value;
                 case GearPropType.incMHPr: return "최대 HP : " + sign + value + "%";
                 case GearPropType.incMMP: return "최대 MP : " + sign + value;
@@ -103,7 +103,7 @@ namespace WzComparerR2.CharaSim
                 case GearPropType.bdR: return "보스 몬스터 공격 시 데미지 +" + value + "%";
                 case GearPropType.incIMDR:
                 case GearPropType.imdR: return "몬스터 방어율 무시 : +" + value + "%";
-                //case GearPropType.limitBreak: return "최대 데미지 제한 증가 : +" + value;
+                //case GearPropType.limitBreak:return "伤害上限突破至" + ToChineseNumberExpr(value) + "。";
                 case GearPropType.reduceReq: return "착용 레벨 감소 : - " + value;
                 case GearPropType.nbdR: return "일반 몬스터 공격 시 데미지 : +" + value + "%";
 
@@ -137,7 +137,6 @@ namespace WzComparerR2.CharaSim
                 case GearPropType.colorvar: return value == 0 ? null : "#c该装备可通过染色颜料来变更颜色.#";
                 case GearPropType.cantRepair: return value == 0 ? null : "수리 불가";
                 case GearPropType.noLookChange: return value == 0 ? null : "훈장 신비의 모루 사용 불가";
-                case GearPropType.cubeExBaseOptionLevel: return value == 0 ? null : "#c잠재능력을 재설정하면 현재 장비 레벨보다 더 높은 수치를 가진 잠재능력이 부여될 수 있는 \r\n장비입니다.#";
 
                 case GearPropType.incAllStat_incMHP25: return "올스탯: " + sign + value + ", 최대 HP : " + sign + (value * 25);
                 case GearPropType.incAllStat_incMHP50_incMMP50: return "올스탯: " + sign + value + ", 최대 HP / 최대 MP : " + sign + (value * 50);
@@ -150,6 +149,9 @@ namespace WzComparerR2.CharaSim
 
                 case GearPropType.incARC: return "ARC : " + sign + value;
                 case GearPropType.incAUT: return "AUT : " + sign + value;
+
+                case GearPropType.Etuc: return "익셉셔널 강화가 가능합니다. (최대 : " + value + "회)";
+                case GearPropType.CuttableCount: return "可使用剪刀：" + value + "次";
                 default: return null;
             }
         }
@@ -299,8 +301,8 @@ namespace WzComparerR2.CharaSim
                 case GearType.taming3: 
                 case GearType.tamingChair: return "라이딩";
                 case GearType.saddle: return "안장";
-                case GearType.katana: return "刀";
-                case GearType.fan: return "扇";
+                case GearType.katana: return "武士刀";
+                case GearType.fan: return "折扇";
                 case GearType.swordZB: return "대검";
                 case GearType.swordZL: return "태도";
                 case GearType.weapon: return "무기";
@@ -331,10 +333,12 @@ namespace WzComparerR2.CharaSim
 
                 case GearType.energySword: return "에너지소드";
                 case GearType.desperado: return "데스페라도";
-                case GearType.magicStick: return "Beast Tamer Scepter";
-                case GearType.whistle: return "哨子";
+                case GearType.magicStick: return "记忆长杖";
+                case GearType.whistle:
+                case GearType.whistle2: return "飞越";
                 case GearType.boxingClaw: return "拳爪";
-                case GearType.katana2: return "小太刀";
+                case GearType.kodachi:
+                case GearType.kodachi2:  return "小太刀";
                 case GearType.espLimiter: return "ESP 리미터";
 
                 case GearType.GauntletBuster: return "건틀렛 리볼버";
@@ -364,9 +368,8 @@ namespace WzComparerR2.CharaSim
                 case GearType.ornament: return "노리개";
 
                 case GearType.chakram: return "차크람";
+                case GearType.hexSeeker: return "헥스시커";
 
-                case GearType.bandfist: return "격투권";
-                case GearType.fistrope: return "권줄";
                 default: return null;
             }
         }
@@ -389,9 +392,7 @@ namespace WzComparerR2.CharaSim
                 case 8: return "느림";
                 case 9: return "매우느림";
                 default:
-                    if (attackSpeed < 2) return "吃屎一样快";
-                    else if (attackSpeed > 9) return "吃屎一样慢";
-                    else return attackSpeed.ToString();
+                    return attackSpeed.ToString();
             }
         }
 
@@ -469,8 +470,9 @@ namespace WzComparerR2.CharaSim
 
                 //4xxx
                 case GearType.katana:
-                case GearType.katana2: return "ハヤト着用可能";
-                case GearType.fan: return "カンナ着用可能";
+                case GearType.kodachi:
+                case GearType.kodachi2: return "剑豪可穿戴装备";
+                case GearType.fan: return "阴阳师可穿戴装备";
 
                 //5xxx
                 case GearType.soulShield: return "미하일 착용 가능";
@@ -489,6 +491,7 @@ namespace WzComparerR2.CharaSim
                 case GearType.swordZL: return GetExtraJobReqString(101);
 
                 case GearType.whistle:
+                case GearType.whistle2:
                 case GearType.magicStick: return GetExtraJobReqString(112);
 
                 case GearType.espLimiter:
@@ -509,10 +512,8 @@ namespace WzComparerR2.CharaSim
 
                 case GearType.ornament: return GetExtraJobReqString(162);
 
-                case GearType.chakram: return GetExtraJobReqString(154);
-
-                case GearType.fistrope: return GetExtraJobReqString(190);
-                case GearType.bandfist: return GetExtraJobReqString(190);
+                case GearType.chakram:
+                case GearType.hexSeeker: return GetExtraJobReqString(154);
                 default: return null;
             }
         }
@@ -535,15 +536,15 @@ namespace WzComparerR2.CharaSim
                 case 31: return "데몬 직업군 착용 가능";
                 case 36: return "제논 착용 가능";
                 case 37: return "블래스터 착용 가능";
-                case 41: return "ハヤト着用可能";
-                case 42: return "カンナ着用可能";
+                case 41: return "剑豪可穿戴装备";
+                case 42: return "阴阳师可穿戴装备";
                 case 51: return "미하일 착용 가능";
                 case 61: return "카이저 착용 가능";
                 case 63: return "카인 착용 가능";
                 case 64: return "카데나 착용 가능";
                 case 65: return "엔젤릭 버스터 착용 가능";
                 case 101: return "제로 착용 가능";
-                case 112: return "Beast Tamer only";
+                case 112: return "琳可穿戴装备";
                 case 142: return "키네시스 착용 가능";
                 case 151: return "아델 착용 가능";
                 case 152: return "일리움 착용 가능";
@@ -552,7 +553,6 @@ namespace WzComparerR2.CharaSim
                 case 162: return "라라 착용 가능";
                 case 164: return "호영 착용 가능";
                 case 175: return "墨玄可穿戴装备";
-                case 190: return "도루돈 착용 가능";
                 default: return null;
             }
         }
@@ -866,6 +866,7 @@ namespace WzComparerR2.CharaSim
                 case 15000: return "일리움";
                 case 15001: return "아크";
                 case 15002: return "아델";
+                case 15003: return "칼리";
                 case 15100: return "아델(1차)";
                 case 15110: return "아델(2차)";
                 case 15111: return "아델(3차)";
@@ -874,6 +875,10 @@ namespace WzComparerR2.CharaSim
                 case 15210: return "일리움(2차)";
                 case 15211: return "일리움(3차)";
                 case 15212: return "일리움(4차)";
+                case 15400: return "칼리(1차)";
+                case 15410: return "칼리(2차)";
+                case 15411: return "칼리(3차)";
+                case 15412: return "칼리(4차)";
                 case 15500: return "아크(1차)";
                 case 15510: return "아크(2차)";
                 case 15511: return "아크(3차)";
@@ -891,6 +896,39 @@ namespace WzComparerR2.CharaSim
                 case 16412: return "호영(4차)";
             }
             return null;
+        }
+
+        private static string ToChineseNumberExpr(int value)
+        {
+            var sb = new StringBuilder(16);
+            bool firstPart = true;
+            if (value < 0)
+            {
+                sb.Append("-");
+                value = -value; // just ignore the exception -2147483648
+            }
+            if (value >= 1_0000_0000)
+            {
+                int part = value / 1_0000_0000;
+                sb.AppendFormat("{0}亿", part);
+                value -= part * 1_0000_0000;
+                firstPart = false;
+            }
+            if (value >= 1_0000)
+            {
+                int part = value / 1_0000;
+                sb.Append(firstPart ? null : " ");
+                sb.AppendFormat("{0}万", part);
+                value -= part * 1_0000;
+                firstPart = false;
+            }
+            if (value > 0)
+            {
+                sb.Append(firstPart ? null : " ");
+                sb.AppendFormat("{0}", value);
+            }
+
+            return sb.Length > 0 ? sb.ToString() : "0";
         }
     }
 }

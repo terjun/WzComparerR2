@@ -110,20 +110,25 @@ namespace WzComparerR2.WzLib
                 else
                 {
                     this.WzFile.FileStream.Position -= 2;
-                    MemoryStream dataStream = new MemoryStream(this.DataLength);
-                    int blocksize = 0;
-                    int endPosition = (int)(this.DataLength + this.WzFile.FileStream.Position);
+                    byte[] buffer = new byte[this.DataLength];
+                    int startIndex = 0;
+                    long endPosition = this.DataLength + this.WzFile.FileStream.Position;
 
                     var encKeys = this.WzImage.EncKeys;
 
                     while (this.WzFile.FileStream.Position < endPosition)
                     {
-                        blocksize = this.WzFile.BReader.ReadInt32();
-                        byte[] dataBlock = this.WzFile.BReader.ReadBytes(blocksize);
-                        encKeys.Decrypt(dataBlock, 0, dataBlock.Length);
+                        int blockSize = this.WzFile.BReader.ReadInt32();
+                        if (this.WzFile.FileStream.Position + blockSize > endPosition)
+                        {
+                            throw new Exception($"Wz_Png exceeds the declared data size. (data length: {this.DataLength}, readed bytes: {startIndex}, next block: {blockSize})");
+                        }
+                        this.WzFile.BReader.Read(buffer, startIndex, blockSize);
+                        encKeys.Decrypt(buffer, startIndex, blockSize);
 
-                        dataStream.Write(dataBlock, 0, dataBlock.Length);
+                        startIndex += blockSize;
                     }
+                    var dataStream = new MemoryStream(buffer);
                     dataStream.Position = 2;
                     zlib = new DeflateStream(dataStream, CompressionMode.Decompress);
                 }
@@ -185,7 +190,7 @@ namespace WzComparerR2.WzLib
 
             switch (this.form)
             {
-                case 1: //16位argba4444
+                case 1: //16位argb4444
                     argb = GetPixelDataBgra4444(pixel, this.w, this.h);
                     pngDecoded = new Bitmap(this.w, this.h, PixelFormat.Format32bppArgb);
                     bmpdata = pngDecoded.LockBits(new Rectangle(Point.Empty, pngDecoded.Size), ImageLockMode.WriteOnly, PixelFormat.Format32bppArgb);
@@ -226,7 +231,7 @@ namespace WzComparerR2.WzLib
                     argb = GetPixelDataForm517(pixel, this.w, this.h);
                     pngDecoded = new Bitmap(this.w, this.h, PixelFormat.Format16bppRgb565);
                     bmpdata = pngDecoded.LockBits(new Rectangle(0, 0, this.w, this.h), ImageLockMode.WriteOnly, PixelFormat.Format16bppRgb565);
-                    CopyBmpDataWithStride(pixel, pngDecoded.Width * 2, bmpdata);
+                    Marshal.Copy(argb, 0, bmpdata.Scan0, argb.Length);
                     pngDecoded.UnlockBits(bmpdata);
                     break;
                    /* pngDecoded = new Bitmap(this.w, this.h);

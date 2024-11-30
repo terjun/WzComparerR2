@@ -96,10 +96,11 @@ namespace WzComparerR2.CharaSimControl
         /// 表示物品附加属性中橙色字体画刷。
         /// </summary>
         public static readonly Brush OrangeBrush2 = new SolidBrush(Color.FromArgb(255, 170, 0));
+        public static readonly Color OrangeBrush3Color = Color.FromArgb(255, 204, 0);
         /// <summary>
         /// 表示装备职业额外说明中使用的橙黄色画刷。
         /// </summary>
-        public static readonly Brush OrangeBrush3 = new SolidBrush(Color.FromArgb(255, 204, 0));
+        public static readonly Brush OrangeBrush3 = new SolidBrush(OrangeBrush3Color);
         public static readonly Brush OrangeBrush4 = new SolidBrush(Color.FromArgb(255, 136, 17));
         /// <summary>
         /// 表示装备属性额外说明中使用的绿色画刷。
@@ -169,6 +170,9 @@ namespace WzComparerR2.CharaSimControl
         public static readonly Color itemPinkColor = Color.FromArgb(255, 102, 204);
         public static readonly Color itemPurpleColor = Color.FromArgb(187, 119, 255);
 
+        public static readonly Color SkillSummaryOrangeTextColor = Color.FromArgb(255, 204, 0);
+        public static readonly Brush SkillSummaryOrangeTextBrush = new SolidBrush(SkillSummaryOrangeTextColor);
+
         public static Brush GetGearNameBrush(int diff, bool up, bool cash = false, bool petEquip = false)
         {
             if (cash && !petEquip)
@@ -236,7 +240,12 @@ namespace WzComparerR2.CharaSimControl
         /// <param Name="x">起始的x坐标。</param>
         /// <param Name="X1">每行终止的x坐标。</param>
         /// <param Name="y">起始行的y坐标。</param>
-        public static void DrawString(Graphics g, string s, Font font, int x, int x1, ref int y, int height, Color? orangeColor = null, Color? textColor = null)
+        public static void DrawString(Graphics g, string s, Font font, int x, int x1, ref int y, int height)
+        {
+            DrawString(g, s, font, null, x, x1, ref y, height);
+        }
+
+        public static void DrawString(Graphics g, string s, Font font, IDictionary<string, Color> fontColorTable, int x, int x1, ref int y, int height)
         {
             if (s == null)
                 return;
@@ -245,7 +254,8 @@ namespace WzComparerR2.CharaSimControl
             {
                 r.WordWrapEnabled = false;
                 r.UseGDIRenderer = true;
-                r.DrawString(g, s, font, x, x1, ref y, height, orangeColor, textColor);
+                r.FontColorTable = fontColorTable;
+                r.DrawString(g, s, font, x, x1, ref y, height);
             }
         }
 
@@ -456,6 +466,12 @@ namespace WzComparerR2.CharaSimControl
             }).ToArray();
 
             Color color = Color.FromArgb(resNode.FindNodeByPath("clr").GetValueEx(-1));
+            BitmapOrigin ani0 = default;
+            Wz_Node ani0Node = resNode.FindNodeByPath(false, "ani", "0");
+            if (ani0Node != null)
+            {
+                ani0 = BitmapOrigin.CreateFromNode(ani0Node, PluginBase.PluginManager.FindWz);
+            }
 
             //测试y轴大小
             int offsetY = wce.Min(bmp => bmp.OpOrigin.Y);
@@ -464,41 +480,70 @@ namespace WzComparerR2.CharaSimControl
             //测试宽度
             var font = GearGraphics.ItemDetailFont2;
             var fmt = StringFormat.GenericTypographic;
-            //int width = string.IsNullOrEmpty(tagName) ? 0 : (int)Math.Ceiling(g.MeasureString(tagName, font, 261, fmt).Width);
-            int width = string.IsNullOrEmpty(tagName) ? 0 : TextRenderer.MeasureText(g, tagName, font, new Size(int.MaxValue, int.MaxValue), TextFormatFlags.NoPadding).Width;
-            if (wce[1].Bitmap != null)
-            {
-                width = (int)Math.Ceiling(1.0 * width / wce[1].Bitmap.Width) * wce[1].Bitmap.Width;
-            }
-            int left = picW / 2 - width / 2;
-            int right = left + width;
+            //int nameWidth = string.IsNullOrEmpty(tagName) ? 0 : (int)Math.Ceiling(g.MeasureString(tagName, font, 261, fmt).Width);
+            int nameWidth = string.IsNullOrEmpty(tagName) ? 0 : TextRenderer.MeasureText(g, tagName, font, new Size(int.MaxValue, int.MaxValue), TextFormatFlags.NoPadding).Width;
+            int center = picW / 2;
 
-            //开始绘制背景
-            picH -= offsetY;
-            if (wce[0].Bitmap != null)
+            if (ani0.Bitmap == null) // legacy mode
             {
-                g.DrawImage(wce[0].Bitmap, left - wce[0].Origin.X, picH - wce[0].Origin.Y);
-            }
-            if (wce[1].Bitmap != null) //不用拉伸 用纹理平铺 看运气
-            {
-                var brush = new TextureBrush(wce[1].Bitmap);
-                Rectangle rect = new Rectangle(left, picH - wce[1].Origin.Y, right - left, brush.Image.Height);
-                brush.TranslateTransform(rect.X, rect.Y);
-                g.FillRectangle(brush, rect);
-                brush.Dispose();
-            }
-            if (wce[2].Bitmap != null)
-            {
-                g.DrawImage(wce[2].Bitmap, right - wce[2].Origin.X, picH - wce[2].Origin.Y);
-            }
+                if (wce[1].Bitmap != null)
+                {
+                    nameWidth = (int)Math.Ceiling(1.0 * nameWidth / wce[1].Bitmap.Width) * wce[1].Bitmap.Width;
+                }
+                int left = center - nameWidth / 2;
+                int right = left + nameWidth;
 
-            //绘制文字
-            if (!string.IsNullOrEmpty(tagName))
+                //开始绘制背景
+                picH -= offsetY;
+                if (wce[0].Bitmap != null)
+                {
+                    g.DrawImage(wce[0].Bitmap, left - wce[0].Origin.X, picH - wce[0].Origin.Y);
+                }
+                if (wce[1].Bitmap != null) //不用拉伸 用纹理平铺 看运气
+                {
+                    var brush = new TextureBrush(wce[1].Bitmap);
+                    Rectangle rect = new Rectangle(left, picH - wce[1].Origin.Y, right - left, brush.Image.Height);
+                    brush.TranslateTransform(rect.X, rect.Y);
+                    g.FillRectangle(brush, rect);
+                    brush.Dispose();
+                }
+                if (wce[2].Bitmap != null)
+                {
+                    g.DrawImage(wce[2].Bitmap, right - wce[2].Origin.X, picH - wce[2].Origin.Y);
+                }
+
+                //绘制文字
+                if (!string.IsNullOrEmpty(tagName))
+                {
+                    using var brush = new SolidBrush(color);
+                    g.DrawString(tagName, font, brush, left, picH, fmt);
+                }
+            }
+            else //  ani mode
             {
-                var brush = new SolidBrush(color);
-                //g.DrawString(tagName, font, brush, left, picH, fmt);
-                TextRenderer.DrawText(g, tagName, font, new Rectangle(left, picH, right - left, int.MaxValue), color, TextFormatFlags.HorizontalCenter | TextFormatFlags.NoPadding);
-                brush.Dispose();
+                offsetY = Math.Min(offsetY, ani0.OpOrigin.Y);
+                height = Math.Max(height, ani0.Rectangle.Bottom);
+
+                int bgWidth = wce[1].Bitmap?.Width ?? 0;
+                int left = center - bgWidth / 2;
+                int right = left + bgWidth;
+                int nameLeft = center - nameWidth / 2;
+
+                picH -= offsetY;
+
+                if (wce[1].Bitmap != null) // draw center only
+                {
+                    g.DrawImage(wce[1].Bitmap, left - wce[1].Origin.X, picH - wce[1].Origin.Y);
+                }
+                // draw ani0 based on bg center position
+                g.DrawImage(ani0.Bitmap, left - wce[1].Origin.X - ani0.Origin.X, picH - wce[1].Origin.Y - ani0.Origin.Y);
+                // draw name
+                if (!string.IsNullOrEmpty(tagName))
+                {
+                    using var brush = new SolidBrush(color);
+                    // offsetX with bg for better alignment
+                    g.DrawString(tagName, font, brush, nameLeft - wce[1].Origin.X, picH, fmt);
+                }
             }
 
             picH += height;
@@ -524,6 +569,7 @@ namespace WzComparerR2.CharaSimControl
             }
 
             public bool UseGDIRenderer { get; set; }
+            public IDictionary<string, Color> FontColorTable { get; set; }
 
             const int MAX_RANGES = 32;
             StringFormat fmt;
@@ -532,22 +578,13 @@ namespace WzComparerR2.CharaSimControl
             RectangleF infinityRect;
             int drawX;
             Color defaultColor;
-            Color orangeColor;
 
-            public void DrawString(Graphics g, string s, Font font, int x, int x1, ref int y, int height, Color? orangeColor = null, Color? textColor = null)
+            public void DrawString(Graphics g, string s, Font font, int x, int x1, ref int y, int height)
             {
                 //初始化环境
                 this.g = g;
                 this.drawX = x;
-                this.defaultColor = textColor ?? Color.White;
-                if (orangeColor != null)
-                {
-                    this.orangeColor = (Color)orangeColor;
-                }
-                else
-                {
-                    this.orangeColor = GearGraphics.OrangeBrushColor;
-                }
+                this.defaultColor = Color.White;
                 float fontLineHeight = GetFontLineHeight(font);
                 this.infinityRect = new RectangleF(0, 0, ushort.MaxValue, fontLineHeight);
 
@@ -719,13 +756,17 @@ namespace WzComparerR2.CharaSimControl
             protected override void Flush(StringBuilder sb, int startIndex, int length, int x, int y, string colorID)
             {
                 string content = sb.ToString(startIndex, length);
-                Color color;
-                switch (colorID)
+                colorID = colorID ?? string.Empty;
+                Color color = Color.Transparent; // VS2019 fix
+                if (!(this.FontColorTable?.TryGetValue(colorID, out color) ?? false))
                 {
-                    case "c": color = this.orangeColor; break;
-                    case "g": color = GearGraphics.gearGreenColor; break;
-                    case "$": color = GearGraphics.gearCyanColor; break;
-                    default: color = this.defaultColor; break;
+                    switch (colorID)
+                    {
+                        case "c": color = GearGraphics.OrangeBrushColor; break;
+                        case "g": color = GearGraphics.gearGreenColor; break;
+                        case "$": color = GearGraphics.gearCyanColor; break;
+                        default: color = this.defaultColor; break;
+                    }
                 }
                 if (this.UseGDIRenderer)
                 {
