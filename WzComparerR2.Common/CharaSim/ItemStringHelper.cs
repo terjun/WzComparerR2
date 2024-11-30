@@ -137,7 +137,6 @@ namespace WzComparerR2.CharaSim
                 case GearPropType.colorvar: return value == 0 ? null : "#c该装备可通过染色颜料来变更颜色.#";
                 case GearPropType.cantRepair: return value == 0 ? null : "수리 불가";
                 case GearPropType.noLookChange: return value == 0 ? null : "훈장 신비의 모루 사용 불가";
-                case GearPropType.Etuc: return value == 0 ? null : "익셉셔널 강화가 가능합니다. (최대 : " + value + "회)";
 
                 case GearPropType.incAllStat_incMHP25: return "올스탯: " + sign + value + ", 최대 HP : " + sign + (value * 25);
                 case GearPropType.incAllStat_incMHP50_incMMP50: return "올스탯: " + sign + value + ", 최대 HP / 최대 MP : " + sign + (value * 50);
